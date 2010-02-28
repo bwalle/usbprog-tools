@@ -1,3 +1,7 @@
+2010-02-28  Bernhard Walle <bernhard@bwalle.de>
+
+	* Switch to cmake build system.
+
 2010-01-08  Bernhard Walle <bernhard@bwalle.de>
 
 	* Documentation: Mention "ldconfig" after running "make install".
