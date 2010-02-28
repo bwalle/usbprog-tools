@@ -25,7 +25,7 @@ IF (BUILD_GUI)
         usbprogApp.cc
         usbprogFrm.cc
     )
-    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} md5 libusbprog)
+    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog md5)
 ENDIF (BUILD_GUI)
 
 # vim: set sw=4 ts=4 et:

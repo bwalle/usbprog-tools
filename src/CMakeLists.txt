@@ -25,6 +25,6 @@ ADD_EXECUTABLE(usbprog
     shell.cc
     usbprog.cc
 )
-TARGET_LINK_LIBRARIES(usbprog ${EXTRA_LIBS} md5 libusbprog)
+TARGET_LINK_LIBRARIES(usbprog ${EXTRA_LIBS} libusbprog md5)
 
 # vim: set sw=4 ts=4 et:
