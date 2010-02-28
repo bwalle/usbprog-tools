@@ -21,10 +21,7 @@
 #include <cstring>
 
 #include <usbprog/date.h>
-
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 using std::mktime;
 using std::time;
@@ -77,7 +74,7 @@ void DateTime::setDateTime(struct tm *time)
 }
 
 /* -------------------------------------------------------------------------- */
-#ifdef HAVE_STRPTIMEx
+#if HAVE_STRPTIME
 void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
     throw (ParseError)
 {

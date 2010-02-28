@@ -39,6 +39,7 @@
 #include "pindialog.h"
 #include "viewer.h"
 #include "usbprogApp.h"
+#include "config.h"
 
 #include "usbprog.xpm"
 #include "usbprog_icon.xpm"

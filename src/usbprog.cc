@@ -28,10 +28,7 @@
 #include "configuration.h"
 #include "shell.h"
 #include "commands.h"
-
-#ifdef HAVE_CONFIG_H
-#  include "config.h"
-#endif
+#include "config.h"
 
 using std::string;
 using std::cerr;
