@@ -28,4 +28,29 @@ IF (BUILD_GUI)
     TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog md5)
 ENDIF (BUILD_GUI)
 
+IF (BUILD_MANPAGE)
+    ADD_CUSTOM_COMMAND(
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+        COMMAND
+            ${POD2MAN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
+            --center="USBprog" --release=${PACKAGE_VERSION} > usbprog-gui.1
+        DEPENDS
+            ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
+        WORKING_DIRECTORY
+            ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    ADD_CUSTOM_TARGET(
+        gui-manpage
+        DEPENDS
+            ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+    )
+
+    ADD_DEPENDENCIES(
+        usbprog-gui
+        gui-manpage
+    )
+ENDIF (BUILD_MANPAGE)
+
 # vim: set sw=4 ts=4 et:

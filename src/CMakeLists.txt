@@ -27,4 +27,29 @@ ADD_EXECUTABLE(usbprog
 )
 TARGET_LINK_LIBRARIES(usbprog ${EXTRA_LIBS} libusbprog md5)
 
+IF (BUILD_MANPAGE)
+    ADD_CUSTOM_COMMAND(
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
+        COMMAND
+            ${POD2MAN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/usbprog.pod
+            --center="USBprog" --release=${PACKAGE_VERSION} > usbprog.1
+        DEPENDS
+            ${CMAKE_CURRENT_SOURCE_DIR}/usbprog.pod
+        WORKING_DIRECTORY
+            ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    ADD_CUSTOM_TARGET(
+        manpages
+        DEPENDS
+            ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
+    )
+
+    ADD_DEPENDENCIES(
+        usbprog
+        manpages
+    )
+ENDIF (BUILD_MANPAGE)
+
 # vim: set sw=4 ts=4 et:
