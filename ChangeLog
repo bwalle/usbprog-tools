@@ -1,0 +1,292 @@
+2010-01-08  Bernhard Walle <bernhard@bwalle.de>
+
+	* Documentation: Mention "ldconfig" after running "make install".
+
+2010-01-06  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix Help -> User's Manual on MacOS.
+	* Allow the sources to be built with wxWidgets 2.4.
+
+2010-01-05  Bernhard Walle <bernhard@bwalle.de>
+
+	* First "finished" version of the PDF documentation.
+	* Rename "JP" to "JP4" in the pin information dialog to make it more
+	  clear that the "JP4" jumper is the firmware-specific one.
+
+2010-01-04  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix usbprog(1): The short form for --debug is -D, not -d.
+
+2010-01-03  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix all compiler warnings when building with gcc 4.4 and
+	  '-O2 -Wall -D_FORTIFY_SOURCE=2'.
+	* Don't install the filter driver on Win32. This makes USBprog
+	  compatible with Windows Vista and Windows 7.
+	* Register the uninstaller on Windows in the Control Panel.
+	* Install the driver files in c:\Program Files\USBprog\driver.
+	* Ensure that the complete program directory gets uninstalled.
+	* Install usbprog.pdf to $(docdir)/usbprog on Unix and in the program
+	  directory on Windows.
+	* Create a help menu entry to open the PDF documentation in the
+	  system's default PDF viewer.
+
+2010-01-02  Bernhard Walle <bernhard@bwalle.de>
+
+	* Add usbprog.rules.in that could be used by distributors as template
+	  for their udev configuration (based on the Debian file from
+	  uwe@debian.org).
+	* Also uninstall the link to the Embedded Projects website in the
+	  "Start" menu on Win32.
+
+2009-12-26  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix the problem that the menu bar is not displayed on MacOS.
+	* Check for "glibtoolize" before running "libtoolize" to fix build
+	  after a fresh SVN checkout on MacOS.
+	* Use "/bin/echo -n" instead of "echo -n" because /bin/sh echo of
+	  MacOS doesn't support the "-n" argument.
+
+2009-11-29  Bernhard Walle <bernhard@bwalle.de>
+
+	* Update libusb on Win32 to version 0.1.12.2.
+
+2009-11-08  Bernhard Walle <bernhard@bwalle.de>
+
+	* Replace email address (bernhard.walle@gmx.de -> bernhard@bwalle.de)
+	  in all dialogs and source files.
+	* Update Copyright date to 2009.
+
+2009-04-04  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix GUI on MacOS X (contributed by Nabil Sayegh)
+
+2009-03-17  Bernhard Walle <bernhard@bwalle.de>
+
+	* Change some autoconf/automake/libtool stuff.
+	* Print error when downloading fails with a non 400 status code.
+
+2009-01-31  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix problem that prevented the last byte of the firmware from
+	  being copied
+	  (http://www.embedded-projects.net/bugs/index.php?do=details&task_id=5)
+
+2009-01-27  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix problem with recent wxGtk versions that the whole GUI was
+	  hanging when updating the progress bar.
+
+2008-11-09  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix build with gcc 4.4, patch from Martin Michlmayr <tbm@cyrius.com>
+
+2008-08-03  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix tab completion for multiple matches (like 'device' and 'devices')
+
+2008-07-03  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix indentation
+	* fix compiler warning: commands.cc:997: warning: control reaches end
+	  of non-void function
+
+2008-07-02  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix problem that firmware with more than 16k can't be flashed
+	  (http://www.embedded-projects.net/bugs/index.php?do=details&task_id=2)
+
+2008-06-28  Bernhard Walle <bernhard@bwalle.de>
+
+	* add warning in Windows installer that Windows Vista is unsupported
+	  so that users don't get broken systems
+
+2008-03-31  Bernhard Walle <bernhard@bwalle.de>
+
+	* use "usbprog-gui" in the usbprog.desktop instead of the command line
+	  "usbprog" binary (thanks to Uwe Herrmann for the patch)
+
+2008-03-25  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix mechanism to avoid downloading the index file again and again if
+	  the CLI is invoked repeatedly in small intervals
+	* remove GPL-incompatible md5_loc.h from source distribution
+
+2008-03-23  Bernhard Walle <bernhard@bwalle.de>
+
+	* add '2008' to 'license' command
+
+2008-03-21  Bernhard Walle <bernhard@bwalle.de>
+
+	* add 'Categories' and 'X-SuSE-translate' to usbprog.desktop
+
+2008-03-18  Bernhard Walle <bernhard@bwalle.de>
+
+	* only install the desktop file and icon when GUI is compiled
+
+2008-03-17  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix completion of "-nostart" for the "upload" command
+
+2008-03-16  Bernhard Walle <bernhard@bwalle.de>
+
+	* implement command completion
+	* increase library version due to added string functions
+
+2008-03-02  Bernhard Walle <bernhard@bwalle.de>
+
+	* add .desktop file and install icon
+	* moved OptionParser from usbprog to libusbprog
+	* implemented -h / -v / -D command line options for GUI
+
+2008-02-09  Bernhard Walle <bernhard@bwalle.de>
+
+	* always re-discover devices with the "devices" command
+	* new "start" command to only start the firmware without uploading
+	  anything
+	* added "-nostart" option to "upload" command
+
+2008-02-05  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix order and add missing checks in configure.in so that the
+	  automatic reconfiguration with make works when something has
+	  changed in configure.in (thanks to Raymund Will for the patch)
+	* use autoconf to detect endianess of the system (instead of macros
+	  that contain a whitelist of architectures) to increase portability
+
+2008-01-20  Bernhard Walle <bernhard@bwalle.de>
+
+	* Windows: fix proxy settings when different proxys for different
+	  protocols are specified
+
+2008-01-19  Bernhard Walle <bernhard@bwalle.de>
+
+	* Windows: honor IE proxy settings
+	* CLI: make (Internet) download progress working
+
+2008-01-10  Bernhard Walle <bernhard@bwalle.de>
+
+	* GUI: make offline mode working, show only firmwares that are
+	  available offline
+
+2008-01-07  Bernhard Walle <bernhard@bwalle.de>
+
+	* GUI: Fix local upload function (error in conversion from wxString
+	  to std::string)
+	* GUI: Fix alignment of the device information label (below the
+	  combo box) if the string is long, especially on Windows
+
+2008-01-06  Bernhard Walle <bernhard@bwalle.de>
+
+	* GUI: implement firmware information dialog (and pin information)
+	* GUI: Add http://www.embedded-projects.net/usbprog in the main window
+
+2008-01-05  Bernhard Walle <bernhard@bwalle.de>
+
+	* new string tokenizer that can deal with spaces by using quoting
+	* Unix: local paths can contain "~" and "~user" now
+	* new function Firmwarepool::readFromFile() to unify reading a
+	  firmware file into a ByteVector
+
+2008-01-04  Bernhard Walle <bernhard@bwalle.de>
+
+	* delete the versions.xml file if parsing was not possible
+	* moved strip(), parse_long() and wordwrap() from util.cc to
+	  stringutil.cc
+
+2008-01-03  Bernhard Walle <bernhard@bwalle.de>
+
+	* new option --disable-gui in the configure script
+	* if wxGTK is not detected in the configure script, don't build and
+	  install the GUI instead of failing to build
+
+2008-01-02  Bernhard Walle <bernhard@bwalle.de>
+
+	* add support for checksum testing after download to ensure
+	  that the download was correct
+	* don't include XML stuff in usbprog headers to fix compilation
+	  with some old wxWidgets stuff
+	* before reporting that a file is already on disk, check the
+	  checksum, if it's wrong, try to download the file again
+
+2008-01-01  Bernhard Walle <bernhard@bwalle.de>
+
+	* trace downloading
+	* Windows: fix problem that download is corrupted since Windows
+	  discriminates between binary and text files and the ios::binary
+	  was missing in the download code
+
+2007-12-31  Bernhard Walle <bernhard@bwalle.de>
+
+	* GUI: report downloading in status bar
+	* CLI: re-discover update devices after upload, and reset the current
+	  update device in that case
+	* bump version to 0.1.1
+	* GUI: implement logfile option
+
+2007-12-30  Bernhard Walle <bernhard@bwalle.de>
+
+	* CLI: enable USB debugging in debugging mode (-D)
+	* improve debugging functions (Debug class to print debug messages)
+
+2007-12-27  Bernhard Walle <bernhard@bwalle.de>
+
+	* fix compilation with gcc 4.3
+	* fix libusb detection for old libusb versions that have no .pc file
+
+2007-12-16  Bernhard Walle <bernhard@bwalle.de>
+
+	* implemented cache commands in the GUI
+	* small corrections in command descriptions
+	* added manpages
+
+2007-12-11  Bernhard Walle <bernhard@bwalle.de>
+
+	* fixed wrong "firmware file invalid" error in the GUI when specifying
+	  a local file for uploading
+	* it's now possible to specify a device name for the "device" command
+	  instead of the device number
+
+2007-12-10  Bernhard Walle <bernhard@bwalle.de>
+
+	* the "upload" command also accepts filenames directly now
+
+2007-11-22  Bernhard Walle <bernhard@bwalle.de>
+
+	* fixed and tested GUI on Win32
+	* added the GUI to the installer on Win32
+
+2007-11-21  Bernhard Walle <bernhard@bwalle.de>
+
+	* implemented GUI (tested on Linux)
+
+2007-11-18  Bernhard Walle <bernhard@bwalle.de>
+
+	* created installer (based on installer for the USBprog GUI)
+	* added resource file to get an application icon on MS Windows
+
+2007-11-17  Bernhard Walle <bernhard@bwalle.de>
+
+	* Win32 port.
+	* replace strptime() by snprintf() for Win32
+	* reset fill character to ' ' in the "devices" and "list" command
+	  to fix the "pin" command
+	* make the output of the "devices" command 2 lines for each device
+	  because the device "number" is much longer on Win32 than on Linux
+	* various other small improvements
+	* make "pins" an alias for "pin"
+	* make 'x' and 'q' an alias for "quit" (mostly for Windows where
+	  Ctrl-d doesn't work)
+
+2007-11-16  Bernhard Walle <bernhard@bwalle.de>
+
+	* added README, INSTALL, NEWS and COPYING
+	* remove superfluous usbprog/usbprog.cc file (which was only there for
+	  testing)
+	* always print the current update device (*) in the "devices" command,
+	  not only if there are more than 1 update devices
+	* run DeviceManager::discoverUpdateDevices() in the "devices" command
+	  instead of printing an error message when zero update devices are
+	  currently registered
+
+:tabSize=8:

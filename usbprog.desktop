@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Categories=Development;Building;
+Type=Application
+Name=USBprog
+Comment=USBprog firmware programmer
+TryExec=usbprog-gui
+Exec=usbprog-gui
+Icon=usbprog_icon
+X-SuSE-translate=false

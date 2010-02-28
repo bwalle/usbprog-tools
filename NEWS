@@ -1,0 +1,88 @@
+0.2.1
+-----
+  * MacOS
+    o Fix Help -> User's Manual.
+
+0.2.0
+------
+  * Install PDF documentation and add a new menu entry in "Help"
+    that opens a PDF viewer and shows that PDF documentation.
+  * Rename "JP" to "JP4" in the pin information dialog to make it more clear
+    that the "JP4" jumper is the firmware-specific one.
+  * MacOS:
+    o Fix the problem that the menu bar is not displayed on MacOS.
+    o Build system fixes for MacOS.
+  * Windows:
+    o Don't install the filter driver on Win32. This makes USBprog
+      compatible with Windows Vista and Windows 7.
+    o Register the uninstaller on Windows in the Control Panel.
+    o Install the driver files in c:\Program Files\USBprog\driver.
+    o Ensure that the complete program directory gets uninstalled.
+
+0.1.10
+------
+  * Update libusb version to 0.1.12.2 on Windows.
+
+0.1.9
+-----
+  * Print error when downloading fails with a non 400 status code.
+  * Fix GUI on MacOS X (contributed by Nabil Sayegh)
+
+0.1.8
+-----
+  * fix tab completion for multiple matches (like 'device' and 'devices')
+  * Fix problem with recent wxGtk versions that the whole GUI was
+    hanging when updating the progress bar.
+
+0.1.7
+-----
+  * fix problem that firmware with more than 16k can't be flashed
+  * add warning to installer that Microsoft Windows Vista is not supported
+
+0.1.6
+-----
+  * CLI: fix mechanism to avoid downloading the index file again and again if
+    the CLI is invoked repeatedly in small intervals
+  * remove GPL-incompatible md5_loc.h from source distribution
+
+0.1.5
+-----
+ * Linux: add desktop file and install icon
+ * GUI: implemented -h / -v / -D command line options for GUI
+ * CLI: implement command completion
+
+0.1.4
+-----
+ * Windows: honor IE proxy settings
+ * CLI: make (Internet) download progress working
+ * CLI: always re-discover devices with the "devices" command
+ * CLI: new "start" command to only start the firmware without uploading
+   anything and added "-nostart" option to "upload" command
+ * Unix: build system fixes
+
+0.1.3 (2007-01-13, r948)
+-----
+ * GUI: fix local upload
+ * GUI: make offline mode working, show only firmwares that are
+   available offline
+
+0.1.2 (2007-01-06, r931)
+-----
+ * improved error handling
+ * autoconf fixes (building without GUI is now possible)
+ * CLI: new string tokenizer to be able to deal with spaces
+   (use "string with spaces" or string\ with\ spaces like in bash)
+ * GUI: new firmware and pin information
+
+0.1.1 (2007-01-02, r914)
+-----
+ * compilation and build fixes
+ * CLI: improve debugging messages
+ * GUI: new "logfile" option for debugging
+ * Windows: fix problem that download is corrupted
+ * add support for checksum testing after download to ensure that the download
+   was correct
+
+0.1.0 (2007-12-27, r877)
+-----
+ * initial release with basic features
