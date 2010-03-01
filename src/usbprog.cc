@@ -17,12 +17,14 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdexcept>
+#include <vector>
+
+#include <boost/program_options.hpp>
 
 #include <usbprog/util.h>
 #include <usbprog/firmwarepool.h>
 #include <usbprog/devices.h>
 #include <usbprog/usbprog.h>
-#include <usbprog/optionparser.h>
 
 #include "usbprog.h"
 #include "configuration.h"
@@ -30,7 +32,10 @@
 #include "commands.h"
 #include "config.h"
 
+namespace po = boost::program_options;
+
 using std::string;
+using std::vector;
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -113,47 +118,62 @@ void Usbprog::parseCommandLine(int argc, char *argv[])
 {
     Configuration *conf = Configuration::config();
 
-    OptionParser op;
-    op.addOption("help", 'h', OT_FLAG, "Prints a help message");
-    op.addOption("version", 'v', OT_FLAG, "Shows version information");
-    op.addOption("datadir", 'd', OT_STRING, "Uses the specified data "
-            "directory instead of " + conf->getDataDir());
-    op.addOption("offline", 'o', OT_FLAG, "Use only the local cache "
-            "and don't connect to the internet");
-    op.addOption("debug", 'D', OT_FLAG, "Enables debug output");
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", "Prints a help message")
+        ("version,v", "Prints version information")
+        ("datadir,d", po::value<string>(), string("Uses the specified data "
+            "directory instead of " + conf->getDataDir()).c_str())
+        ("offline,o", "Use only the local cache "
+            "and don't connect to the internet")
+        ("debug,D", "Enables debug output");
 
-    bool ret;
-    ret = op.parse(argc, argv);
-    if (!ret)
-        throw ApplicationError("Parsing command line failed");
+    po::options_description hidden("Hidden options");
+    hidden.add_options()
+        ("commands", po::value< vector<string> >(), "Commands");
 
-    if (op.getValue("debug").getFlag()) {
+    po::options_description commandline_options;
+    commandline_options.add(desc).add(hidden);
+
+    po::positional_options_description p;
+    p.add("commands", -1);
+
+    po::variables_map vm;
+    try {
+        po::store(po::command_line_parser(argc, argv).
+                  options(commandline_options).positional(p).run(), vm);
+    } catch (const po::error &err) {
+        throw ApplicationError("Parsing command line failed: " + string(err.what()));
+    }
+    po::notify(vm);    
+
+    if (vm.count("debug")) {
         conf->setDebug(true);
         Debug::debug()->setLevel(Debug::DL_TRACE);
     }
 
-    if (op.getValue("help").getFlag()) {
-        op.printHelp(cerr, "usbprog " USBPROG_VERSION_STRING);
+    if (vm.count("help")) {
+        cout << desc << endl;
         exit(EXIT_SUCCESS);
     }
 
-    if (op.getValue("version").getFlag()) {
+    if (vm.count("version")) {
         cerr << "usbprog " << USBPROG_VERSION_STRING << endl;
         exit(EXIT_SUCCESS);
     }
 
-    OptionValue option = op.getValue("datadir");
-    if (option.getType() != OT_INVALID)
-        conf->setDataDir(option.getString());
-    if (op.getValue("offline").getFlag())
+    if (vm.count("datadir"))
+        conf->setDataDir(vm["datadir"].as<string>());
+    if (vm.count("offline"))
         conf->setOffline(true);
 
     if (conf->getDebug())
         conf->dumpConfig(cerr);
 
     // batch mode?
-    conf->setBatchMode(op.getArgs().size() > 0);
-    m_args = op.getArgs();
+    conf->setBatchMode(vm.count("commands") != 0);
+    if (conf->getBatchMode())
+        m_args = vm["commands"].as< vector<string> >();
 
     if (conf->isOffline() && !conf->getBatchMode())
         cout << "WARNING: You're using usbprog in offline mode!" << endl;

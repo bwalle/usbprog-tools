@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <cstdio>
-#include <usbprog/optionparser.h>
+#include <cstdlib>
+
+#include <boost/program_options.hpp>
 
 #include "usbprogApp.h"
 #include "usbprogFrm.h"
@@ -24,47 +26,44 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
+namespace po = boost::program_options;
+
+using std::cout;
 using std::cerr;
 using std::endl;
+using std::exit;
 
 IMPLEMENT_APP(usbprogFrmApp)
 
 /* -------------------------------------------------------------------------- */
 void parse_command_line(int argc, wxChar **argv)
 {
-    char **nargv = new char*[argc];
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", "Prints a help message")
+        ("version,v", "Prints version information")
+        ("debug,D", "Enables debug output");
 
-    for (int i = 0; i < argc; i++)
-        nargv[i] = strdup(wxString(argv[i]).mb_str());
-
-    OptionParser op;
-    op.addOption("help", 'h', OT_FLAG, "Prints a help message");
-    op.addOption("version", 'v', OT_FLAG, "Shows version information");
-    op.addOption("debug", 'D', OT_FLAG, "Enables debug output");
-
-    bool ret;
-    ret = op.parse(argc, nargv);
-    if (!ret) {
-        cerr << "Parsing command line failed" << endl;
-        exit(EXIT_FAILURE);
+    po::variables_map vm;
+    try {
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+    } catch (const po::error &err) {
+        std:: cerr << "Parsing command line failed: " << err.what() << std::endl;
     }
+    po::notify(vm);    
 
-    if (op.getValue("debug").getFlag())
+    if (vm.count("debug"))
         Debug::debug()->setLevel(Debug::DL_TRACE);
 
-    if (op.getValue("help").getFlag()) {
-        op.printHelp(cerr, "usbprog " USBPROG_VERSION_STRING);
+    if (vm.count("help")) {
+        cout << desc << endl;
         exit(EXIT_SUCCESS);
     }
 
-    if (op.getValue("version").getFlag()) {
+    if (vm.count("version")) {
         cerr << "usbprog-gui " << USBPROG_VERSION_STRING << endl;
         exit(EXIT_SUCCESS);
     }
-
-    for (int i = 0; i < argc; i++)
-        free(nargv[i]);
-    delete[] nargv;
 }
 
 /* -------------------------------------------------------------------------- */

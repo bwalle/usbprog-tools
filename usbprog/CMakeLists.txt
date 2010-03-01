@@ -23,7 +23,6 @@ ADD_LIBRARY(libusbprog STATIC
         stringutil.cc
         date.cc
         downloader.cc
-        optionparser.cc
         util.cc
         digest.cc
         inifile.cc
