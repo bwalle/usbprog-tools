@@ -50,7 +50,7 @@ void parse_command_line(int argc, wxChar **argv)
     } catch (const po::error &err) {
         std:: cerr << "Parsing command line failed: " << err.what() << std::endl;
     }
-    po::notify(vm);    
+    po::notify(vm);
 
     if (vm.count("debug"))
         Debug::debug()->setLevel(Debug::DL_TRACE);
