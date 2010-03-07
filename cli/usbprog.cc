@@ -40,6 +40,7 @@ using std::vector;
 using std::cerr;
 using std::cout;
 using std::endl;
+using std::flush;
 using std::exit;
 using std::runtime_error;
 
@@ -70,6 +71,8 @@ int HashNotifier::progressed(double total, double now)
         cout << '#';
         m_lastProgress++;
     }
+
+    cout << flush;
 
     return true;
 }
