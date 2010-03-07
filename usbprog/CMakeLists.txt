@@ -17,10 +17,20 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(libusbprog STATIC
-        firmwarepool.cc
-        downloader.cc
+SET(libusbprog_SRCS
+    firmwarepool.cc
+    downloader.cc
 )
+
+IF (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_mac.cpp)
+ELSEIF (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_win.cpp)
+ELSE ()
+    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_posix.cpp)
+ENDIF ()
+
+ADD_LIBRARY(libusbprog STATIC ${libusbprog_SRCS})
 TARGET_LINK_LIBRARIES(libusbprog libusbprog-core ${EXTRA_LIBS})
 
 # vim: set sw=4 ts=4 et:
