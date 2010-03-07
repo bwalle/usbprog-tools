@@ -27,11 +27,11 @@
 #include <cerrno>
 #include <unistd.h>
 
+#include <QDomDocument>
+#include <QFile>
+
 #include <sys/types.h>
 #include <dirent.h>
-
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 
 #include <usbprog-core/stringutil.h>
 #include <usbprog-core/util.h>
@@ -65,14 +65,15 @@ class FirmwareXMLParser {
         FirmwareXMLParser(Firmwarepool *pool);
 
     public:
-        void parsePool(xmlDocPtr doc, xmlNodePtr pool)
-            throw (ParseError);
+        void parsePool(const QDomDocument &doc, const QDomElement &pool)
+        throw (ParseError);
 
     protected:
-        void parseFirmware(xmlDocPtr doc, xmlNodePtr firmware)
-            throw (ParseError);
-        Firmware *newFirmwareFromXml(xmlDocPtr doc, xmlNodePtr cur)
-            throw (ParseError);
+        void parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
+        throw (ParseError);
+
+        Firmware *newFirmwareFromXml(const QDomDocument &doc, const QDomElement &cur)
+        throw (ParseError);
 
     private:
         Firmwarepool *m_firmwarepool;
@@ -89,118 +90,63 @@ FirmwareXMLParser::FirmwareXMLParser(Firmwarepool *pool)
 {}
 
 /* -------------------------------------------------------------------------- */
-void FirmwareXMLParser::parsePool(xmlDocPtr doc, xmlNodePtr pool)
+void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &pool)
     throw (ParseError)
 {
-    for (xmlNodePtr cur = pool->xmlChildrenNode; cur != NULL; cur = cur->next)
-		if (xmlStrcmp(cur->name, XMLCHAR("firmware")) == 0)
-            parseFirmware(doc, cur);
+    for (QDomNode node = pool.firstChild(); !node.isNull(); node = node.nextSibling()) {
+        if (!node.isElement())
+            continue;
+        QDomElement childElement = node.toElement();
+        if (childElement.tagName() == "firmware")
+            parseFirmware(doc, childElement);
+    }
 }
 
 /* -------------------------------------------------------------------------- */
-void FirmwareXMLParser::parseFirmware(xmlDocPtr doc, xmlNodePtr firmware)
+void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
     throw (ParseError)
 {
     Firmware *fw;
 
     // set name
-    xmlChar *attrib = xmlGetProp(firmware, XMLCHAR("name"));
-    if (!attrib)
+    QString name = firmware.attribute("name");
+    if (name.isEmpty())
         throw ParseError("Firmware has no name");
-    fw = new Firmware(string(reinterpret_cast<char *>(attrib)));
-    xmlFree(attrib);
+    fw = new Firmware(name.toStdString());
 
     // set label
-    attrib = xmlGetProp(firmware, XMLCHAR("label"));
-    if (attrib) {
-        fw->setLabel(string(reinterpret_cast<char *>(attrib)));
-        xmlFree(attrib);
-    }
+    fw->setLabel(firmware.attribute("label").toStdString());
 
-    for (xmlNodePtr cur = firmware->xmlChildrenNode; cur != NULL; cur = cur->next)
-		if (xmlStrcmp(cur->name, XMLCHAR("binary")) == 0) {
-            attrib = xmlGetProp(cur, XMLCHAR("url"));
-            if (attrib) {
-                fw->setUrl(string(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
+    for (QDomNode node = firmware.firstChild(); !node.isNull(); node = node.nextSibling()) {
+        if (!node.isElement())
+            continue;
 
-            attrib = xmlGetProp(cur, XMLCHAR("file"));
-            if (attrib) {
-                fw->setFilename(string(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-        } else if (xmlStrcmp(cur->name, XMLCHAR("info")) == 0) {
-            attrib = xmlGetProp(cur, XMLCHAR("version"));
-            if (attrib) {
-                fw->setVersion(atoi(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-
-            attrib = xmlGetProp(cur, XMLCHAR("author"));
-            if (attrib) {
-                fw->setAuthor(string(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-
-            attrib = xmlGetProp(cur, XMLCHAR("date"));
-            if (attrib) {
-                fw->setDate(DateTime(reinterpret_cast<char *>(attrib), DTF_ISO_DATE));
-                xmlFree(attrib);
-            }
-
-            attrib = xmlGetProp(cur, XMLCHAR("md5sum"));
-            if (attrib) {
-                fw->setMD5Sum(string(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-        } else if (xmlStrcmp(cur->name, XMLCHAR("description")) == 0) {
-            attrib = xmlGetProp(cur, XMLCHAR("vendorid"));
-            if (attrib) {
-                fw->setVendorId(parse_long(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-
-            attrib = xmlGetProp(cur, XMLCHAR("productid"));
-            if (attrib) {
-                fw->setProductId(parse_long(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-
-            attrib = xmlGetProp(cur, XMLCHAR("bcddevice"));
-            if (attrib) {
-                fw->setBcdDevice(parse_long(reinterpret_cast<char *>(attrib)));
-                xmlFree(attrib);
-            }
-
-            xmlChar *key = xmlNodeListGetString(doc, cur->xmlChildrenNode, 1);
-            if (key) {
-                fw->setDescription(strip(string(reinterpret_cast<char *>(key))));
-                xmlFree(key);
-            }
-        } else if (xmlStrcmp(cur->name, XMLCHAR("pins")) == 0) {
-            for (xmlNodePtr pin = cur->xmlChildrenNode; pin != NULL;
-                    pin = pin->next) {
-
-                string number, desc;
-                xmlChar *key;
-
-                attrib = xmlGetProp(pin, XMLCHAR("number"));
-                if (attrib) {
-                    number = string(reinterpret_cast<char *>(attrib));
-                    xmlFree(attrib);
-                }
-
-                key = xmlNodeListGetString(doc, pin->xmlChildrenNode, 1);
-                if (key) {
-                    desc = string(reinterpret_cast<char *>(key));
-                    xmlFree(key);
-                }
-
-                if (desc.length() > 0 && number.length() > 0)
-                    fw->setPin(number, desc);
+        QDomElement childElement = node.toElement();
+        if (childElement.tagName() == "binary") {
+            fw->setUrl(childElement.attribute("url").toStdString());
+            fw->setFilename(childElement.attribute("file").toStdString());
+        } else if (childElement.tagName() == "info") {
+            fw->setVersion(childElement.attribute("version").toInt());
+            fw->setAuthor(childElement.attribute("author").toStdString());
+            fw->setDate(DateTime(childElement.attribute("date").toStdString(), DTF_ISO_DATE));
+            fw->setMD5Sum(childElement.attribute("md5sum").toStdString());
+        } else if (childElement.tagName() == "description") {
+            fw->setVendorId(parse_long(childElement.attribute("vendorid").toAscii()));
+            fw->setProductId(parse_long(childElement.attribute("productid").toAscii()));
+            fw->setBcdDevice(parse_long(childElement.attribute("bcddevice").toAscii()));
+            fw->setDescription(strip(childElement.text().toStdString()));
+        } else if (childElement.tagName() == "pins") {
+            for (QDomNode subnode = childElement.firstChild();
+                    !subnode.isNull();
+                    subnode = subnode.nextSibling()) {
+                if (!subnode.isElement())
+                    continue;
+                QDomElement subChildElement = subnode.toElement();
+                fw->setPin(subChildElement.attribute("number").toStdString(),
+                           subChildElement.text().toStdString());
             }
         }
+    }
 
     m_firmwarepool->addFirmware(fw);
 }
@@ -572,33 +518,29 @@ void Firmwarepool::downloadIndex(const string &url)
 void Firmwarepool::readIndex()
     throw (IOError, ParseError)
 {
-    xmlDocPtr doc;
-	xmlNodePtr cur;
+    QDomDocument doc("usbprog");
 
-    string file = pathconcat(m_cacheDir, INDEX_FILE_NAME);
-	doc = xmlParseFile(file.c_str());
-	if (!doc) {
-        remove(file.c_str());
-        throw ParseError("Couldn't open " + file);
-    }
+    string filename = pathconcat(m_cacheDir, INDEX_FILE_NAME);
+    QFile file(filename.c_str());
+    if (!file.open(QIODevice::ReadOnly))
+        throw ParseError("Couldn't open " + filename);
 
-    cur = xmlDocGetRootElement(doc);
-	if (!cur) {
-        xmlFreeDoc(doc);
-        throw ParseError("Emty document");
-    }
+    bool success = doc.setContent(&file);
+    file.close();
+    if (!success)
+        throw ParseError("Unable to parse '" + filename + "'");
 
-	if (xmlStrcmp(cur->name, XMLCHAR("usbprog")) != 0) {
-		xmlFreeDoc(doc);
-        throw ParseError("Root element is not \"usbprog\"");
-	}
+
+    QDomElement docElem = doc.documentElement();
 
     FirmwareXMLParser parser(this);
-    for (cur = cur->xmlChildrenNode; cur != NULL; cur = cur->next)
-		if (xmlStrcmp(cur->name, XMLCHAR("pool")) == 0)
-            parser.parsePool(doc, cur);
-
-    xmlFreeDoc(doc);
+    for (QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling()) {
+        if (!node.isElement())
+            continue;
+        QDomElement element = node.toElement();
+        if (element.tagName() == "pool")
+            parser.parsePool(doc, element);
+    }
 }
 
 /* -------------------------------------------------------------------------- */
