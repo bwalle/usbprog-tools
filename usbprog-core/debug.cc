@@ -18,7 +18,7 @@
 #include <cstring>
 #include <cstdarg>
 
-#include <usbprog/usbprog.h>
+#include <usbprog-core/debug.h>
 
 /* -------------------------------------------------------------------------- */
 Debug *Debug::m_instance = NULL;

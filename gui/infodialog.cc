@@ -20,9 +20,9 @@
 #include <wx/gbsizer.h>
 #include <wx/sizer.h>
 
+#include <usbprog-core/stringutil.h>
 #include "infodialog.h"
 #include "usbprogApp.h"
-#include <usbprog/stringutil.h>
 
 using std::stringstream;
 

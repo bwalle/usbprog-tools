@@ -19,8 +19,8 @@
 #include <sstream>
 #include <cstdlib>
 
-#include <usbprog/util.h>
-#include <usbprog/date.h>
+#include <usbprog-core/util.h>
+#include <usbprog-core/date.h>
 
 #ifdef _WIN32
 #  include <windows.h>

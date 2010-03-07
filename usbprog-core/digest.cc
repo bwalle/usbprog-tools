@@ -20,7 +20,7 @@
 #include <iomanip>
 
 #include <md5/md5.h>
-#include <usbprog/digest.h>
+#include <usbprog-core/digest.h>
 
 /* -------------------------------------------------------------------------- */
 using std::string;

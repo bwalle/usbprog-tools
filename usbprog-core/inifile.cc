@@ -19,7 +19,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <usbprog/inifile.h>
+#include <usbprog-core/inifile.h>
 
 using std::string;
 using std::map;

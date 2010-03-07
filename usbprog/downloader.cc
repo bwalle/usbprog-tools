@@ -24,6 +24,7 @@
 
 #include <curl/curl.h>
 
+#include <usbprog-core/debug.h>
 #include <usbprog/downloader.h>
 #include <usbprog/usbprog.h>
 

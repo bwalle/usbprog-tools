@@ -33,10 +33,11 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 
+#include <usbprog-core/stringutil.h>
+#include <usbprog-core/util.h>
+#include <usbprog-core/digest.h>
+#include <usbprog-core/debug.h>
 #include <usbprog/firmwarepool.h>
-#include <usbprog/util.h>
-#include <usbprog/digest.h>
-#include <usbprog/stringutil.h>
 
 using std::vector;
 using std::string;

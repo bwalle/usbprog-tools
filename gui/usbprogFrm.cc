@@ -32,7 +32,9 @@
 #  include <wx/msw/registry.h>
 #endif
 
-#include <usbprog/util.h>
+#include <usbprog-core/util.h>
+#include <usbprog-core/debug.h>
+
 #include "usbprogFrm.h"
 #include "usbprogApp.h"
 #include "infodialog.h"

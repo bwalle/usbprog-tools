@@ -22,9 +22,9 @@
 #include <vector>
 #include <fstream>
 
+#include <usbprog-core/stringutil.h>
+#include <usbprog-core/util.h>
 #include <usbprog/firmwarepool.h>
-#include <usbprog/util.h>
-#include <usbprog/stringutil.h>
 
 #include "commands.h"
 #include "configuration.h"

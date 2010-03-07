@@ -17,7 +17,7 @@
 #ifndef USBPROG_UTIL_H
 #define USBPROG_UTIL_H
 
-#include <usbprog/date.h>
+#include <usbprog-core/date.h>
 
 class Fileutil {
     public:

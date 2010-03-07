@@ -33,7 +33,7 @@
 #include <wx/combobox.h>
 #include <wx/statbox.h>
 
-#include <usbprog/devices.h>
+#include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
 class usbprogFrm : public wxFrame {

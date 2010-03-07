@@ -19,8 +19,8 @@
 
 #include <stdexcept>
 
+#include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
-#include <usbprog/devices.h>
 
 /* constants {{{ */
 

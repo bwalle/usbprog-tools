@@ -20,7 +20,7 @@
 #include <wx/gbsizer.h>
 #include <wx/sizer.h>
 
-#include <usbprog/stringutil.h>
+#include <usbprog-core/stringutil.h>
 
 #include "pindialog.h"
 #include "usbprogApp.h"

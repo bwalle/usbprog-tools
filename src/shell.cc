@@ -21,8 +21,8 @@
 #include <vector>
 #include <algorithm>
 
+#include <usbprog-core/stringutil.h>
 #include <usbprog/usbprog.h>
-#include <usbprog/stringutil.h>
 
 #include "shell.h"
 #include "io.h"

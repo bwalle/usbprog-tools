@@ -21,9 +21,10 @@
 
 #include <boost/program_options.hpp>
 
-#include <usbprog/util.h>
+#include <usbprog-core/devices.h>
+#include <usbprog-core/util.h>
+#include <usbprog-core/debug.h>
 #include <usbprog/firmwarepool.h>
-#include <usbprog/devices.h>
 #include <usbprog/usbprog.h>
 
 #include "usbprog.h"

@@ -20,7 +20,7 @@
 #include <time.h>
 #include <cstring>
 
-#include <usbprog/date.h>
+#include <usbprog-core/date.h>
 #include "config.h"
 
 using std::mktime;

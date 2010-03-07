@@ -26,6 +26,8 @@
 #include <ApplicationServices/ApplicationServices.h>
 #endif
 
+#include <usbprog-core/debug.h>
+
 namespace po = boost::program_options;
 
 using std::cout;

@@ -19,10 +19,10 @@
 #include <stdexcept>
 #include <cstdlib>
 
+#include <usbprog-core/stringutil.h>
+#include <usbprog-core/date.h>
 #include <usbprog/usbprog.h>
 #include <usbprog/downloader.h>
-#include <usbprog/date.h>
-#include <usbprog/stringutil.h>
 
 #include "usbprog.h"
 #include "io.h"

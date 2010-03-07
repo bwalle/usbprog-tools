@@ -23,8 +23,8 @@
 #include <map>
 #include <list>
 
-#include <usbprog/date.h>
-#include <usbprog/inifile.h>
+#include <usbprog-core/date.h>
+#include <usbprog-core/inifile.h>
 #include <usbprog/downloader.h>
 
 /* Typedefs {{{ */

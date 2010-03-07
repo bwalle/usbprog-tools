@@ -28,8 +28,8 @@
 # include <readline/history.h>
 #endif
 
+#include <usbprog-core/stringutil.h>
 #include <usbprog/usbprog.h>
-#include <usbprog/stringutil.h>
 #include "io.h"
 
 using std::string;

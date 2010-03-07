@@ -1,3 +1,8 @@
+2010-03-07  Bernhard Walle <bernhard@bwalle.de>
+
+	* Move parts that don't require network access or XML parsing to
+	  libusbprog-core.
+
 2010-03-01  Bernhard Walle <bernhard@bwalle.de>
 
 	* Replace option parsing with boost::program_options. getopt() is not

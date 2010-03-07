@@ -21,7 +21,7 @@
 #include <cstring>
 #include <cstdlib>
 
-#include <usbprog/stringutil.h>
+#include <usbprog-core/stringutil.h>
 
 using std::string;
 using std::hex;

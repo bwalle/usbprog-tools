@@ -17,10 +17,15 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(libusbprog STATIC
-        firmwarepool.cc
-        downloader.cc
+ADD_LIBRARY(libusbprog-core STATIC
+        devices.cc
+        stringutil.cc
+        util.cc
+        date.cc
+        digest.cc
+        inifile.cc
+        debug.cc
 )
-TARGET_LINK_LIBRARIES(libusbprog libusbprog-core ${EXTRA_LIBS})
+TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS})
 
 # vim: set sw=4 ts=4 et:

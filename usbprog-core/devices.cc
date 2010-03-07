@@ -24,8 +24,9 @@
 
 #include <unistd.h>
 #include <usb.h>
-#include <usbprog/devices.h>
-#include <usbprog/util.h>
+#include <usbprog-core/devices.h>
+#include <usbprog-core/util.h>
+#include <usbprog-core/debug.h>
 #include <usbprog/usbprog.h>
 
 using std::vector;
