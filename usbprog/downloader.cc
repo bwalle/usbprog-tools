@@ -70,6 +70,12 @@ void Downloader::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 }
 
 /* -------------------------------------------------------------------------- */
+void Downloader::downloadFinished()
+{
+    m_finished = true;
+}
+
+/* -------------------------------------------------------------------------- */
 void Downloader::download() throw (DownloadError)
 {
     std::string userAgent("USBprog/" USBPROG_VERSION_STRING);
@@ -79,13 +85,15 @@ void Downloader::download() throw (DownloadError)
     QNetworkRequest request(QUrl(m_url.c_str()));
     request.setRawHeader("User-Agent", userAgent.c_str());
     Debug::debug()->dbg("Setting 'User-Agent' header to '%s'", userAgent.c_str());
+    m_finished = false;
 
     QNetworkReply *reply(manager->get(request));
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
             SLOT(downloadProgress(qint64, qint64)));
+    connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
 
     Debug::debug()->dbg("Performing download");
-    while (!reply->isFinished()) {
+    while (!m_finished) {
         QByteArray readData = reply->readAll();
         m_output << readData.constData();
         qApp->processEvents(QEventLoop::WaitForMoreEvents);

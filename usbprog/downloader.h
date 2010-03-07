@@ -52,11 +52,13 @@ class Downloader : public QObject
 
     public slots:
         void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+        void downloadFinished();
 
     private:
         ProgressNotifier        *m_notifier;
         std::string             m_url;
         std::ostream            &m_output;
+        bool                    m_finished;
 };
 
 /* }}} */
