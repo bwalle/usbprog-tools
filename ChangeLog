@@ -2,6 +2,7 @@
 
 	* Move parts that don't require network access or XML parsing to
 	  libusbprog-core.
+	* Move 'src' to 'cli' to make the directory structure more clear.
 
 2010-03-01  Bernhard Walle <bernhard@bwalle.de>
 
