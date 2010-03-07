@@ -90,8 +90,12 @@ void HashNotifier::finished()
 /* Usbprog {{{ */
 
 /* -------------------------------------------------------------------------- */
-Usbprog::Usbprog()
-    : m_firmwarepool(NULL), m_progressNotifier(NULL)
+Usbprog::Usbprog(int argc, char **argv)
+    : m_coreApp(argc, argv)
+    , m_firmwarepool(NULL)
+    , m_progressNotifier(NULL)
+    , m_argc(argc)
+    , m_argv(argv)
 {}
 
 /* -------------------------------------------------------------------------- */
@@ -118,7 +122,7 @@ void Usbprog::initConfig()
 }
 
 /* -------------------------------------------------------------------------- */
-void Usbprog::parseCommandLine(int argc, char *argv[])
+void Usbprog::parseCommandLine()
 {
     Configuration *conf = Configuration::config();
 
@@ -144,7 +148,7 @@ void Usbprog::parseCommandLine(int argc, char *argv[])
 
     po::variables_map vm;
     try {
-        po::store(po::command_line_parser(argc, argv).
+        po::store(po::command_line_parser(m_argc, m_argv).
                   options(commandline_options).positional(p).run(), vm);
     } catch (const po::error &err) {
         throw ApplicationError("Parsing command line failed: " + string(err.what()));

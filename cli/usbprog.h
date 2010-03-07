@@ -19,6 +19,8 @@
 
 #include <stdexcept>
 
+#include <QCoreApplication>
+
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
@@ -57,13 +59,13 @@ class HashNotifier : public ProgressNotifier {
 
 class Usbprog {
     public:
-        Usbprog();
+        Usbprog(int argc, char *argv[]);
         virtual ~Usbprog();
 
     public:
         void initConfig()
             throw (ApplicationError);
-        void parseCommandLine(int argc, char *argv[]);
+        void parseCommandLine();
         void initFirmwarePool()
             throw (ApplicationError);
         void initDeviceManager()
@@ -75,10 +77,13 @@ class Usbprog {
         void printHelp();
 
     private:
+        QCoreApplication m_coreApp;
         Firmwarepool *m_firmwarepool;
         std::vector<std::string> m_args;
         DeviceManager *m_devicemanager;
         ProgressNotifier *m_progressNotifier;
+        int m_argc;
+        char **m_argv;
 };
 
 /* }}} */

@@ -3,6 +3,8 @@
 	* Move parts that don't require network access or XML parsing to
 	  libusbprog-core.
 	* Move 'src' to 'cli' to make the directory structure more clear.
+	* Fix download progress on console by flushing output buffers.
+	* Drop CURL dependency. Rewrite downloader with Qt.
 
 2010-03-01  Bernhard Walle <bernhard@bwalle.de>
 

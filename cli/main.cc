@@ -15,31 +15,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include <string>
 #include <stdexcept>
-#include <cstdlib>
 
-#include <usbprog-core/stringutil.h>
-#include <usbprog-core/date.h>
+#include <QCoreApplication>
+
 #include <usbprog/usbprog.h>
-#include <usbprog/downloader.h>
 
 #include "usbprog.h"
 #include "io.h"
 
-using std::string;
-using std::cout;
 using std::endl;
 using std::cerr;
 using std::runtime_error;
 
 int main(int argc, char *argv[])
 {
-    Usbprog usbprog;
+    Usbprog usbprog(argc, argv);
 
     try {
         usbprog.initConfig();
-        usbprog.parseCommandLine(argc, argv);
+        usbprog.parseCommandLine();
         usbprog.initFirmwarePool();
         usbprog.initDeviceManager();
         usbprog.exec();

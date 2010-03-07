@@ -17,6 +17,10 @@
 # 02110-1301, USA.
 #
 
+SET(libusbprog_MOCS
+    downloader.h
+)
+
 SET(libusbprog_SRCS
     firmwarepool.cc
     downloader.cc
@@ -30,7 +34,8 @@ ELSE ()
     SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_posix.cpp)
 ENDIF ()
 
-ADD_LIBRARY(libusbprog STATIC ${libusbprog_SRCS})
+QT4_WRAP_CPP(libusbprog_MOC_SRCS ${libusbprog_MOCS})
+ADD_LIBRARY(libusbprog STATIC ${libusbprog_SRCS} ${libusbprog_MOC_SRCS})
 TARGET_LINK_LIBRARIES(libusbprog libusbprog-core ${EXTRA_LIBS})
 
 # vim: set sw=4 ts=4 et:
