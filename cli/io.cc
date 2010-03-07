@@ -202,7 +202,8 @@ ReadlineLineReader::ReadlineLineReader(const string &prompt)
 
 /* -------------------------------------------------------------------------- */
 string ReadlineLineReader::readLine(const char *prompt)
-{ char *line_read; string ret;
+{
+    char *line_read; string ret;
 
     line_read = readline(prompt ? prompt : getPrompt().c_str());
     if (!line_read)
