@@ -26,6 +26,6 @@ ADD_LIBRARY(libusbprog-core STATIC
         inifile.cc
         debug.cc
 )
-TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS})
+TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5)
 
 # vim: set sw=4 ts=4 et:
