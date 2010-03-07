@@ -49,20 +49,6 @@ int main(int argc, char *argv[])
     }
 
     return EXIT_SUCCESS;
-
-    Downloader d(cout);
-    d.setUrl("http://www.bwalle.de/temp/Test.java");
-    d.download();
-
-    DateTime dt;
-    cout << dt.getDateTimeString(DTF_ISO_DATETIME) << endl;
-
-    LineReader *r = LineReader::defaultLineReader("(gdb) ");
-    string s = r->readLine();
-    cout << s << endl;
-    delete r;
-
-    return EXIT_SUCCESS;
 }
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:
