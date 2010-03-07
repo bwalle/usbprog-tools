@@ -32,7 +32,7 @@ static const char *formatstrings[] = {
     "%Y-%m-%d %H:%M",           /* DTF_ISO_DATETIME */
     "%Y-%m-%d",                 /* DTF_ISO_DATE */
     "%y-%m-%d %H:%M",           /* DTF_ISO_SHORT_DATETIME */
-    "%y-%m-%d"                  /* case DTF_ISO_SHORT_DATE */
+    "%y-%m-%d"                  /* DTF_ISO_SHORT_DATE */
 };
 
 /* DateTime {{{ */
