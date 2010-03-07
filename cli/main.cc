@@ -16,6 +16,7 @@
  */
 #include <iostream>
 #include <stdexcept>
+#include <cstdlib>
 
 #include <QCoreApplication>
 
