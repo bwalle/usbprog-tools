@@ -25,10 +25,6 @@
 #include "usbprog.h"
 #include "io.h"
 
-using std::endl;
-using std::cerr;
-using std::runtime_error;
-
 int main(int argc, char *argv[])
 {
     Usbprog usbprog(argc, argv);
@@ -39,8 +35,8 @@ int main(int argc, char *argv[])
         usbprog.initFirmwarePool();
         usbprog.initDeviceManager();
         usbprog.exec();
-    } catch (runtime_error &e) {
-        cerr << "Error: " << e.what() << endl;
+    } catch (const std::runtime_error &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 

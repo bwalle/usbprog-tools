@@ -31,27 +31,23 @@
 #include <usbprog/downloader.h>
 #include <usbprog/usbprog.h>
 
-using std::string;
-using std::ostream;
-using std::strlen;
-
 /* Members {{{ */
 
 /* -------------------------------------------------------------------------- */
-Downloader::Downloader(ostream &output) throw (DownloadError)
+Downloader::Downloader(std::ostream &output) throw (DownloadError)
     : m_notifier(NULL)
     , m_output(output)
 {}
 
 /* -------------------------------------------------------------------------- */
-void Downloader::setUrl(const string &url) throw (DownloadError)
+void Downloader::setUrl(const std::string &url) throw (DownloadError)
 {
     Debug::debug()->dbg("Setting URL to %s", m_url.c_str());
     m_url = url;
 }
 
 /* -------------------------------------------------------------------------- */
-string Downloader::getUrl() const
+std::string Downloader::getUrl() const
 {
     return m_url;
 }

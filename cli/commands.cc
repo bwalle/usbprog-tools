@@ -31,31 +31,18 @@
 #include "usbprog.h"
 #include "config.h"
 
-using std::vector;
-using std::ostream;
-using std::stringstream;
-using std::string;
-using std::cout;
-using std::endl;
-using std::left;
-using std::right;
-using std::setw;
-using std::setfill;
-using std::max;
-using std::find;
-using std::hex;
 
 /* functions {{{ */
 
 /* -------------------------------------------------------------------------- */
-StringVector complete_firmware(const string &start, Firmwarepool *pool)
+StringVector complete_firmware(const std::string &start, Firmwarepool *pool)
 {
     StringVector result;
     StringList firmwarelist = pool->getFirmwareNameList();
 
     for (StringList::const_iterator it = firmwarelist.begin();
             it != firmwarelist.end(); ++it) {
-        string fwname = *it;
+        std::string fwname = *it;
         if (str_starts_with(fwname, start))
             result.push_back(fwname);
     }
@@ -75,7 +62,7 @@ ListCommand::ListCommand(Firmwarepool *firmwarepool)
 /* -------------------------------------------------------------------------- */
 bool ListCommand::execute(CommandArgVector  args,
                           StringVector      options,
-                          ostream           &os)
+                          std::ostream           &os)
     throw (ApplicationError)
 {
     StringList firmwarelist = m_firmwarepool->getFirmwareNameList();
@@ -83,23 +70,23 @@ bool ListCommand::execute(CommandArgVector  args,
     size_t maxSize = 0;
     for (StringList::const_iterator it = firmwarelist.begin();
             it != firmwarelist.end(); ++it)
-        maxSize = max(maxSize, it->size());
+        maxSize = std::max(maxSize, it->size());
 
     maxSize += 2;
 
     for (StringList::const_iterator it = firmwarelist.begin();
             it != firmwarelist.end(); ++it) {
         Firmware *fw = m_firmwarepool->getFirmware(*it);
-        os << left << setw(maxSize) << fw->getName();
+        os << std::left << std::setw(maxSize) << fw->getName();
         if (m_firmwarepool->isFirmwareOnDisk(fw->getName()))
             os << "[*] ";
         else
             os << "[ ] ";
-        os << fw->getLabel() << endl;
+        os << fw->getLabel() << std::endl;
     }
 
     if (!CliConfiguration::config()->getBatchMode())
-        os << endl << "*: Firmware file downloaded" << endl;
+        os << std::endl << "*: Firmware file downloaded" << std::endl;
 
     return true;
 }
@@ -113,20 +100,20 @@ StringVector ListCommand::aliases() const
 }
 
 /* -------------------------------------------------------------------------- */
-string ListCommand::help() const
+std::string ListCommand::help() const
 {
     return "Lists all available firmwares.";
 }
 
 /* -------------------------------------------------------------------------- */
-void ListCommand::printLongHelp(ostream &os) const
+void ListCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            list\n"
        << "Aliases:         firmwares\n\n"
        << "Description:\n"
        << "Prints a list of all availalbe firmwares. The identifier has\n"
        << "to be used for other commands."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -139,39 +126,39 @@ InfoCommand::InfoCommand(Firmwarepool *firmwarepool)
 /* -------------------------------------------------------------------------- */
 bool InfoCommand::execute(CommandArgVector   args,
                           StringVector       options,
-                          ostream            &os)
+                          std::ostream       &os)
     throw (ApplicationError)
 {
-    string fwstr = args[0]->getString();
+    std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
     if (!fw)
         throw ApplicationError(fwstr + ": Invalid firmware specified.");
 
-    os << "Identifier   : " << fw->getName() << endl;
-    os << "Name         : " << fw->getLabel() << endl;
-    os << "URL          : " << fw->getUrl() << endl;
-    os << "File name    : " << fw->getFilename() << endl;
-    os << "Author       : " << fw->getAuthor() << endl;
-    os << "Version      : " << fw->formatDateVersion() << endl;
+    os << "Identifier   : " << fw->getName() << std::endl;
+    os << "Name         : " << fw->getLabel() << std::endl;
+    os << "URL          : " << fw->getUrl() << std::endl;
+    os << "File name    : " << fw->getFilename() << std::endl;
+    os << "Author       : " << fw->getAuthor() << std::endl;
+    os << "Version      : " << fw->formatDateVersion() << std::endl;
     if (fw->getMD5Sum().size() > 0)
-        os << "MD5sum       : " << fw->getMD5Sum() << endl;
+        os << "MD5sum       : " << fw->getMD5Sum() << std::endl;
 
     // vendor ID and/or Product ID
     if (fw->hasDeviceId())
-        os << "Device ID(s) : " << fw->formatDeviceId() << endl;
+        os << "Device ID(s) : " << fw->formatDeviceId() << std::endl;
 
-    os << endl;
-    os << "Description" << endl;
-    os << wordwrap(fw->getDescription(), DEFAULT_TERMINAL_WIDTH) << endl;
+    os << std::endl;
+    os << "Description" << std::endl;
+    os << wordwrap(fw->getDescription(), DEFAULT_TERMINAL_WIDTH) << std::endl;
 
     if (!CliConfiguration::config()->getBatchMode()) {
-        os << endl;
+        os << std::endl;
         os << "For information about the Pin assignment, use the "
-           << "\"pin " << fw->getName() << "\" command." << endl;
+           << "\"pin " << fw->getName() << "\" command." << std::endl;
     }
 
     // reset fill character
-    os << setfill(' ');
+    os << std::setfill(' ');
 
     return true;
 }
@@ -192,7 +179,7 @@ CommandArg::Type InfoCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string InfoCommand::getArgTitle(size_t pos) const
+std::string InfoCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "firmware";
@@ -210,7 +197,7 @@ StringVector InfoCommand::aliases() const
 
 /* -------------------------------------------------------------------------- */
 StringVector InfoCommand::getCompletions(
-        const string &start, size_t pos, bool option,
+        const std::string &start, size_t pos, bool option,
         bool *filecompletion) const
 {
     if (pos != 0 || option)
@@ -220,13 +207,13 @@ StringVector InfoCommand::getCompletions(
 }
 
 /* -------------------------------------------------------------------------- */
-string InfoCommand::help() const
+std::string InfoCommand::help() const
 {
     return "Prints information about a specific firmware.";
 }
 
 /* -------------------------------------------------------------------------- */
-void InfoCommand::printLongHelp(ostream &os) const
+void InfoCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            info\n"
        << "Aliases:         firmware\n\n"
@@ -234,7 +221,7 @@ void InfoCommand::printLongHelp(ostream &os) const
        << "Displays information about a specific firmware. To obtain a list\n"
        << "of all available firmwares, use the \"list\" command. To get\n"
        << "information about pin assignment, use \"pin <firmware>\"."
-       << endl;
+       << std::endl;
 }
 
 /* PinCommand {{{ */
@@ -245,20 +232,20 @@ PinCommand::PinCommand(Firmwarepool *firmwarepool)
 /* -------------------------------------------------------------------------- */
 bool PinCommand::execute(CommandArgVector   args,
                          StringVector       options,
-                         ostream            &os)
+                         std::ostream       &os)
     throw (ApplicationError)
 {
-    string fwstr = args[0]->getString();
+    std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
     if (!fw)
         throw ApplicationError(fwstr + ": Invalid firmware specified.");
 
     if (!CliConfiguration::config()->getBatchMode()) {
-        os << "            +----------------+" << endl;
-        os << "            |  9  7  5  3  1 |" << endl;
-        os << "            | 10  8  6  4  2 |" << endl;
-        os << "            +----------------+" << endl;
-        os << endl;
+        os << "            +----------------+" << std::endl;
+        os << "            |  9  7  5  3  1 |" << std::endl;
+        os << "            | 10  8  6  4  2 |" << std::endl;
+        os << "            +----------------+" << std::endl;
+        os << std::endl;
     }
 
     // calc max length
@@ -266,18 +253,18 @@ bool PinCommand::execute(CommandArgVector   args,
     StringVector pins = fw->getPins();
     for (StringVector::const_iterator it = pins.begin();
             it != pins.end(); ++it)
-        maxlen = max(maxlen, fw->getPin(*it).size());
+        maxlen = std::max(maxlen, fw->getPin(*it).size());
     maxlen += 5;
 
     for (int i = 1; i <= 10; i += 2) {
-        stringstream name1, name2;
+        std::stringstream name1, name2;
         name1 << "P" << i;
         name2 << "P" << i+1;
 
-        os << "[" << right << setw(5) << name1.str() << "] "
-             << setw(maxlen) << left << fw->getPin(name1.str());
-        os << "[" << right << setw(5) << name2.str() << "] "
-             << left << fw->getPin(name2.str()) << endl;
+        os << "[" << std::right << std::setw(5) << name1.str() << "] "
+             << std::setw(maxlen) << std::left << fw->getPin(name1.str());
+        os << "[" << std::right << std::setw(5) << name2.str() << "] "
+             << std::left << fw->getPin(name2.str()) << std::endl;
 
         StringVector::iterator delit = find(pins.begin(), pins.end(), name1.str());
         if (delit != pins.end())
@@ -288,13 +275,13 @@ bool PinCommand::execute(CommandArgVector   args,
     }
 
     for (unsigned int i = 0; i < pins.size(); i += 2) {
-        os << "[" << right << setw(5) << pins[i] << "] "
-             << setw(maxlen) << left << fw->getPin(pins[i]);
+        os << "[" << std::right << std::setw(5) << pins[i] << "] "
+             << std::setw(maxlen) << std::left << fw->getPin(pins[i]);
 
         if (i + 1 < pins.size())
-            os << "[" << right << setw(5) << pins[i+1] << "] "
-                << left << fw->getPin(pins[i+1]);
-        os << endl;
+            os << "[" << std::right << std::setw(5) << pins[i+1] << "] "
+                << std::left << fw->getPin(pins[i+1]);
+        os << std::endl;
     }
 
     return true;
@@ -316,7 +303,7 @@ CommandArg::Type PinCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string PinCommand::getArgTitle(size_t pos) const
+std::string PinCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "firmware";
@@ -334,7 +321,7 @@ StringVector PinCommand::aliases() const
 
 /* -------------------------------------------------------------------------- */
 StringVector PinCommand::getCompletions(
-        const string &start, size_t pos, bool option,
+        const std::string &start, size_t pos, bool option,
         bool *filecompletion) const
 {
     if (pos != 0 || option)
@@ -344,13 +331,13 @@ StringVector PinCommand::getCompletions(
 }
 
 /* -------------------------------------------------------------------------- */
-string PinCommand::help() const
+std::string PinCommand::help() const
 {
     return "Prints information about pin assignment.";
 }
 
 /* -------------------------------------------------------------------------- */
-void PinCommand::printLongHelp(ostream &os) const
+void PinCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            pin\n"
        << "Aliases:         pins\n"
@@ -358,7 +345,7 @@ void PinCommand::printLongHelp(ostream &os) const
        << "Description:\n"
        << "Prints a list about pin usage. This might help you when connecting\n"
        << "something to your USBprog."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -370,24 +357,24 @@ DownloadCommand::DownloadCommand(Firmwarepool *firmwarepool)
 {}
 
 /* -------------------------------------------------------------------------- */
-bool DownloadCommand::downloadAll(ostream &os)
+bool DownloadCommand::downloadAll(std::ostream &os)
     throw (IOError)
 {
-    vector<Firmware *> firmwares = m_firmwarepool->getFirmwareList();
+    std::vector<Firmware *> firmwares = m_firmwarepool->getFirmwareList();
 
-    for (vector<Firmware *>::const_iterator it = firmwares.begin();
+    for (std::vector<Firmware *>::const_iterator it = firmwares.begin();
             it != firmwares.end(); ++it) {
         try {
             if (m_firmwarepool->isFirmwareOnDisk((*it)->getName()))
                 os << "Firmware " << (*it)->getLabel() << " is already there."
-                   << endl;
+                   << std::endl;
             else {
-                os << "Downloading " << (*it)->getLabel() << " ..." << endl;
+                os << "Downloading " << (*it)->getLabel() << " ..." << std::endl;
                 m_firmwarepool->downloadFirmware((*it)->getName());
             }
         } catch (const std::exception &ex) {
             os << "Error while downloading firmware " + (*it)->getName() +
-                ": " + ex.what() << endl;
+                ": " + ex.what() << std::endl;
         }
     }
 
@@ -397,13 +384,13 @@ bool DownloadCommand::downloadAll(ostream &os)
 /* -------------------------------------------------------------------------- */
 bool DownloadCommand::execute(CommandArgVector   args,
                               StringVector       options,
-                              ostream            &os)
+                              std::ostream       &os)
     throw (ApplicationError)
 {
-    string fwstr = args[0]->getString();
+    std::string fwstr = args[0]->getString();
     if (CliConfiguration::config()->isOffline()) {
         os << "Software is in offline mode. Downloading is not possbile."
-           << endl;
+           << std::endl;
         return true;
     }
 
@@ -417,9 +404,9 @@ bool DownloadCommand::execute(CommandArgVector   args,
     try {
         m_firmwarepool->downloadFirmware(fwstr);
         os << "Firmware " + fw->getName() + " has been downloaded successfully."
-           << endl;
+           << std::endl;
     } catch (const std::exception &ex) {
-        os << "Error while downloading firmware: " << ex.what() << endl;
+        os << "Error while downloading firmware: " << ex.what() << std::endl;
     }
 
     return true;
@@ -441,7 +428,7 @@ CommandArg::Type DownloadCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string DownloadCommand::getArgTitle(size_t pos) const
+std::string DownloadCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "firmware";
@@ -459,7 +446,7 @@ StringVector DownloadCommand::aliases() const
 
 /* -------------------------------------------------------------------------- */
 StringVector DownloadCommand::getCompletions(
-        const string &start, size_t pos, bool option, bool *filecompletion) const
+        const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0 || option)
         return StringVector();
@@ -471,13 +458,13 @@ StringVector DownloadCommand::getCompletions(
 }
 
 /* -------------------------------------------------------------------------- */
-string DownloadCommand::help() const
+std::string DownloadCommand::help() const
 {
     return "Downloads a firmware file.";
 }
 
 /* -------------------------------------------------------------------------- */
-void DownloadCommand::printLongHelp(ostream &os) const
+void DownloadCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            download\n"
        << "Argument:        firmware\n\n"
@@ -485,7 +472,7 @@ void DownloadCommand::printLongHelp(ostream &os) const
        << "Downloads the specified firmware from the internet. Only available\n"
        << "when USBprog is not in offline mode. Use \"download all\" to download\n"
        << "all available firmware files."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -499,10 +486,10 @@ CacheCommand::CacheCommand(Firmwarepool *firmwarepool)
 /* -------------------------------------------------------------------------- */
 bool CacheCommand::execute(CommandArgVector   args,
                            StringVector       options,
-                           ostream            &os)
+                           std::ostream       &os)
     throw (ApplicationError)
 {
-    string cmd = args[0]->getString();
+    std::string cmd = args[0]->getString();
 
     try {
         if (cmd == "clean")
@@ -512,7 +499,7 @@ bool CacheCommand::execute(CommandArgVector   args,
         else
             throw ApplicationError(cmd + ": Invalid command for \"cache\".");
     } catch (const IOError &ioe) {
-        throw ApplicationError(string("I/O error: ") + ioe.what());
+        throw ApplicationError(std::string("I/O error: ") + ioe.what());
     }
 
     return true;
@@ -534,7 +521,7 @@ CommandArg::Type CacheCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string CacheCommand::getArgTitle(size_t pos) const
+std::string CacheCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "operation [clean/delete]";
@@ -544,7 +531,7 @@ string CacheCommand::getArgTitle(size_t pos) const
 
 /* -------------------------------------------------------------------------- */
 StringVector CacheCommand::getCompletions(
-        const string &start, size_t pos, bool option, bool *filecompletion) const
+        const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0 || option)
         return StringVector();
@@ -559,13 +546,13 @@ StringVector CacheCommand::getCompletions(
 }
 
 /* -------------------------------------------------------------------------- */
-string CacheCommand::help() const
+std::string CacheCommand::help() const
 {
     return "Performs operation on the cache.";
 }
 
 /* -------------------------------------------------------------------------- */
-void CacheCommand::printLongHelp(ostream &os) const
+void CacheCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            cache\n"
        << "Argument:        operation (clean/delete)\n\n"
@@ -574,7 +561,7 @@ void CacheCommand::printLongHelp(ostream &os) const
        << "have to be downloaded again. The \"clean\" operation only deletes\n"
        << "obsolete firmware files, i.e. firmware data for which a newer version\n"
        << "is available."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -590,37 +577,37 @@ DevicesCommand::DevicesCommand(DeviceManager *devicemanager,
 /* -------------------------------------------------------------------------- */
 bool DevicesCommand::execute(CommandArgVector   args,
                              StringVector       options,
-                             ostream            &os)
+                             std::ostream       &os)
     throw (ApplicationError)
 {
     m_devicemanager->discoverUpdateDevices(m_firmwarepool);
 
     if (m_devicemanager->getNumberUpdateDevices() == 0)
-        os << "No devices found." << endl;
+        os << "No devices found." << std::endl;
     else
         m_devicemanager->printDevices(os);
 
     if (!CliConfiguration::config()->getBatchMode() &&
             m_devicemanager->getNumberUpdateDevices() > 1)
-        os << endl
-           << "       * = Currently selected update device." << endl;
+        os << std::endl
+           << "       * = Currently selected update device." << std::endl;
 
     return true;
 }
 
 /* -------------------------------------------------------------------------- */
-string DevicesCommand::help() const
+std::string DevicesCommand::help() const
 {
     return "Lists all update devices.";
 }
 
 /* -------------------------------------------------------------------------- */
-void DevicesCommand::printLongHelp(ostream &os) const
+void DevicesCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            devices\n\n"
        << "Description:\n"
        << "Lists all available update devices."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -629,17 +616,18 @@ void DevicesCommand::printLongHelp(ostream &os) const
 /* -------------------------------------------------------------------------- */
 DeviceCommand::DeviceCommand(DeviceManager *devicemanager,
                              Firmwarepool *firmwarepool)
-    : AbstractCommand("device"), m_devicemanager(devicemanager),
-      m_firmwarepool(firmwarepool)
+    : AbstractCommand("device")
+    , m_devicemanager(devicemanager)
+    , m_firmwarepool(firmwarepool)
 {}
 
 /* -------------------------------------------------------------------------- */
 bool DeviceCommand::execute(CommandArgVector   args,
                             StringVector       options,
-                            ostream            &os)
+                            std::ostream       &os)
     throw (ApplicationError)
 {
-    string device = args[0]->getString();
+    std::string device = args[0]->getString();
 
     if (m_devicemanager->getNumberUpdateDevices() == 0)
         m_devicemanager->discoverUpdateDevices(m_firmwarepool);
@@ -655,7 +643,7 @@ bool DeviceCommand::execute(CommandArgVector   args,
     int updatedevice = -1;
 
     if (is_number) {
-        stringstream ss;
+        std::stringstream ss;
         ss << device;
         ss >> updatedevice;
 
@@ -698,7 +686,7 @@ CommandArg::Type DeviceCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string DeviceCommand::getArgTitle(size_t pos) const
+std::string DeviceCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "device";
@@ -708,14 +696,14 @@ string DeviceCommand::getArgTitle(size_t pos) const
 
 /* -------------------------------------------------------------------------- */
 StringVector DeviceCommand::getCompletions(
-        const string &start, size_t pos, bool option, bool *filecompletion) const
+        const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0 || option)
         return StringVector();
 
     StringVector result;
     for (unsigned int i = 0; i < m_devicemanager->getNumberUpdateDevices(); i++) {
-        stringstream ss;
+        std::stringstream ss;
         ss << i;
         result.push_back(ss.str());
     }
@@ -725,13 +713,13 @@ StringVector DeviceCommand::getCompletions(
 
 
 /* -------------------------------------------------------------------------- */
-string DeviceCommand::help() const
+std::string DeviceCommand::help() const
 {
     return "Sets the update device.";
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceCommand::printLongHelp(ostream &os) const
+void DeviceCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            cache\n"
        << "Argument:        device number|device name\n\n"
@@ -740,7 +728,7 @@ void DeviceCommand::printLongHelp(ostream &os) const
        << "an integer number which you can obtain with the \"devices\" command.\n"
        << "Alternatively, you can also use the short device name in the 2nd line\n"
        << "of the output of the \"devices\" command\n"
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -749,17 +737,18 @@ void DeviceCommand::printLongHelp(ostream &os) const
 /* -------------------------------------------------------------------------- */
 UploadCommand::UploadCommand(DeviceManager *devicemanager,
                              Firmwarepool  *firmwarepool)
-    : AbstractCommand("upload"), m_devicemanager(devicemanager),
-      m_firmwarepool(firmwarepool)
+    : AbstractCommand("upload")
+    , m_devicemanager(devicemanager)
+    , m_firmwarepool(firmwarepool)
 {}
 
 /* -------------------------------------------------------------------------- */
 bool UploadCommand::execute(CommandArgVector   args,
                             StringVector       options,
-                            ostream            &os)
+                            std::ostream       &os)
     throw (ApplicationError)
 {
-    string firmware = args[0]->getString();
+    std::string firmware = args[0]->getString();
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
 
     if (m_devicemanager->getNumberUpdateDevices() == 0)
@@ -774,8 +763,7 @@ bool UploadCommand::execute(CommandArgVector   args,
         try {
             Firmwarepool::readFromFile(firmware, data);
         } catch (const IOError &ioe) {
-            throw ApplicationError(string("Error while reading data from file: ")+
-                    ioe.what());
+            throw ApplicationError(std::string("Error while reading data from file: ")+ioe.what());
         }
     } else {
         /* use pool */
@@ -787,9 +775,9 @@ bool UploadCommand::execute(CommandArgVector   args,
         try {
             m_firmwarepool->fillFirmware(firmware);
         } catch (const IOError &err) {
-            throw ApplicationError(string("I/O Error: ") + err.what());
+            throw ApplicationError(std::string("I/O Error: ") + err.what());
         } catch (const GeneralError &err) {
-            throw ApplicationError(string("General Error: ") + err.what());
+            throw ApplicationError(std::string("General Error: ") + err.what());
         }
 
         data = fw->getData();
@@ -802,10 +790,10 @@ bool UploadCommand::execute(CommandArgVector   args,
     // switch in update mode
     if (!dev->isUpdateMode()) {
         try {
-            os << "Switching to update mode ..." << endl;
+            os << "Switching to update mode ..." << std::endl;
             m_devicemanager->switchUpdateMode();
         } catch (const IOError &err) {
-            throw ApplicationError(string("I/O Error: ") + err.what());
+            throw ApplicationError(std::string("I/O Error: ") + err.what());
         }
     }
 
@@ -818,20 +806,20 @@ bool UploadCommand::execute(CommandArgVector   args,
         updater.setProgress(&hn);
 
     try {
-        os << "Opening device ..." << endl;
+        os << "Opening device ..." << std::endl;
         updater.updateOpen();
-        os << "Writing firmware ..." << endl;
+        os << "Writing firmware ..." << std::endl;
         updater.writeFirmware(data);
         if (options.size() == 0) {
-            os << "Starting device ..." << endl;
+            os << "Starting device ..." << std::endl;
             updater.startDevice();
         }
         updater.updateClose();
     } catch (const IOError &err) {
-        throw ApplicationError(string("I/O Error: ") + err.what());
+        throw ApplicationError(std::string("I/O Error: ") + err.what());
     }
 
-    os << "Detecting new USB devices ..." << endl;
+    os << "Detecting new USB devices ..." << std::endl;
     usbprog_sleep(2);
     m_devicemanager->discoverUpdateDevices();
 
@@ -854,7 +842,7 @@ CommandArg::Type UploadCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string UploadCommand::getArgTitle(size_t pos) const
+std::string UploadCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:         return "firmware";
@@ -864,7 +852,7 @@ string UploadCommand::getArgTitle(size_t pos) const
 
 /* -------------------------------------------------------------------------- */
 StringVector UploadCommand::getCompletions(
-        const string &start, size_t pos, bool option,
+        const std::string &start, size_t pos, bool option,
         bool *filecompletion) const
 {
     if (pos != 0)
@@ -887,13 +875,13 @@ StringVector UploadCommand::getCompletions(
 
 
 /* -------------------------------------------------------------------------- */
-string UploadCommand::help() const
+std::string UploadCommand::help() const
 {
     return "Uploads a new firmware.";
 }
 
 /* -------------------------------------------------------------------------- */
-void UploadCommand::printLongHelp(ostream &os) const
+void UploadCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            upload\n"
        << "Option:          -nostart\n"
@@ -904,7 +892,7 @@ void UploadCommand::printLongHelp(ostream &os) const
        << "If you have more than one USBprog device connected, use the \"devices\"\n"
        << "command to obtain a list of available update devices and select one\n"
        << "with the \"device\" command."
-       << endl;
+       << std::endl;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -926,7 +914,7 @@ StartCommand::StartCommand(DeviceManager *devicemanager)
 /* -------------------------------------------------------------------------- */
 bool StartCommand::execute(CommandArgVector args,
                            StringVector     options,
-                           ostream          &os)
+                           std::ostream     &os)
     throw (ApplicationError)
 {
     Device *dev = m_devicemanager->getUpdateDevice();
@@ -941,27 +929,27 @@ bool StartCommand::execute(CommandArgVector args,
     try {
         updater.updateOpen();
         updater.startDevice();
-        os << "Device successfully started." << endl;
+        os << "Device successfully started." << std::endl;
     } catch (const IOError &err) {
-        throw ApplicationError(string("I/O Error: ") + err.what());
+        throw ApplicationError(std::string("I/O Error: ") + err.what());
     }
 
     return true;
 }
 
 /* -------------------------------------------------------------------------- */
-string StartCommand::help() const
+std::string StartCommand::help() const
 {
     return "Starts the firmware.";
 }
 
 /* -------------------------------------------------------------------------- */
-void StartCommand::printLongHelp(ostream &os) const
+void StartCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            start\n\n"
        << "Description:\n"
        << "Starts the currently uploaded firmware on the current update device."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */
@@ -975,10 +963,10 @@ CopyingCommand::CopyingCommand()
 /* -------------------------------------------------------------------------- */
 bool CopyingCommand::execute(CommandArgVector   args,
                              StringVector       options,
-                             ostream            &os)
+                             std::ostream       &os)
     throw (ApplicationError)
 {
-    os << "USBprog " << USBPROG_VERSION_STRING << endl;
+    os << "USBprog " << USBPROG_VERSION_STRING << std::endl;
     os << "Copyright (c) 2007, 2008 Bernhard Walle <bernhard@bwalle.de>\n\n";
     os << "This program is free software: you can redistribute it and/or modify\n"
        << "it under the terms of the GNU General Public License as published by\n"
@@ -995,7 +983,7 @@ bool CopyingCommand::execute(CommandArgVector   args,
 }
 
 /* -------------------------------------------------------------------------- */
-string CopyingCommand::help() const
+std::string CopyingCommand::help() const
 {
     return "Displays the copyright";
 }
@@ -1009,13 +997,13 @@ StringVector CopyingCommand::aliases() const
 }
 
 /* -------------------------------------------------------------------------- */
-void CopyingCommand::printLongHelp(ostream &os) const
+void CopyingCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            copying\n"
        << "Aliases:         license\n\n"
        << "Description:\n"
        << "Shows the license of the program."
-       << endl;
+       << std::endl;
 }
 
 /* }}} */

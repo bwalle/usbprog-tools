@@ -29,21 +29,6 @@
 #include <usbprog-core/debug.h>
 #include <usbprog/usbprog.h>
 
-using std::vector;
-using std::string;
-using std::ostream;
-using std::ios;
-using std::setw;
-using std::endl;
-using std::stringstream;
-using std::setfill;
-using std::min;
-using std::right;
-using std::left;
-using std::setw;
-using std::copy;
-using std::memset;
-
 #define VENDOR_ID_USBPROG       0x1781
 #define PRODUCT_ID_USBPROG      0x0c62
 #define BCDDEVICE_UPDATE        0x0000
@@ -70,13 +55,13 @@ uint16_t Device::getProduct() const
 /* -------------------------------------------------------------------------- */
 std::string Device::getDevice() const
 {
-    return string(m_handle->filename);
+    return std::string(m_handle->filename);
 }
 
 /* -------------------------------------------------------------------------- */
 std::string Device::getBus() const
 {
-    return string(m_handle->bus->dirname);
+    return std::string(m_handle->bus->dirname);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -86,13 +71,13 @@ bool Device::isUpdateMode() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Device::setShortName(const string &shortName)
+void Device::setShortName(const std::string &shortName)
 {
     m_shortName = shortName;
 }
 
 /* -------------------------------------------------------------------------- */
-string Device::getShortName() const
+std::string Device::getShortName() const
 {
     return m_shortName;
 }
@@ -110,27 +95,27 @@ struct usb_device *Device::getHandle() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Device::setName(const string &name)
+void Device::setName(const std::string &name)
 {
     m_name = name;
 }
 
 /* -------------------------------------------------------------------------- */
-string Device::getName() const
+std::string Device::getName() const
 {
     return m_name;
 }
 
 /* -------------------------------------------------------------------------- */
-string Device::toString() const
+std::string Device::toString() const
 {
-    stringstream ss;
+    std::stringstream ss;
 
     ss << "Bus " << getBus() << " ";
     ss << "Device " << getDevice() << ": ";
-    ss << setw(4) << std::hex << setfill('0') << getVendor();
-    ss << setw(1) << ":";
-    ss << setw(4) << std::hex << setfill('0') << getProduct();
+    ss << std::setw(4) << std::hex << std::setfill('0') << getVendor();
+    ss << std::setw(1) << ":";
+    ss << std::setw(4) << std::hex << std::setfill('0') << getProduct();
 
     if (m_name.size() > 0)
         ss << " - " + m_name;
@@ -139,13 +124,13 @@ string Device::toString() const
 }
 
 /* -------------------------------------------------------------------------- */
-string Device::toShortString() const
+std::string Device::toShortString() const
 {
-    stringstream ss;
+    std::stringstream ss;
 
-    ss << setw(4) << std::hex << setfill('0') << getVendor();
-    ss << setw(1) << ":";
-    ss << setw(4) << std::hex << setfill('0') << getProduct();
+    ss << std::setw(4) << std::hex << std::setfill('0') << getVendor();
+    ss << std::setw(1) << ":";
+    ss << std::setw(4) << std::hex << std::setfill('0') << getProduct();
 
     if (m_name.size() > 0)
         ss << " - " + m_name;
@@ -218,7 +203,7 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
     DeviceVector oldDevices = m_updateDevices;
     m_updateDevices.clear();
 
-    vector<Firmware *> firmwares;
+    std::vector<Firmware *> firmwares;
     if (firmwarepool)
         firmwares = firmwarepool->getFirmwareList();
 
@@ -240,7 +225,7 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
                 d->setName("USBprog in update mode");
                 d->setShortName("usbprog");
             } else if (firmwarepool)
-                for (vector<Firmware *>::const_iterator it = firmwares.begin();
+                for (std::vector<Firmware *>::const_iterator it = firmwares.begin();
                         it != firmwares.end(); ++it)
                     if (vendorid != 0 && productid != 0 &&
                             (*it)->getVendorId() == vendorid &&
@@ -268,7 +253,7 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::printDevices(ostream &os) const
+void DeviceManager::printDevices(std::ostream &os) const
 {
     int i = 0;
     Device *up = getUpdateDevice();
@@ -276,24 +261,24 @@ void DeviceManager::printDevices(ostream &os) const
             it != m_updateDevices.end(); ++it) {
 
         Device *dev = *it;
-        os << " [" << setw(2) << right << i++ << "] " << left;
+        os << " [" << std::setw(2) << std::right << i++ << "] " << std::left;
         if (up != NULL && *up == *dev)
             os << " *  ";
         else
             os << "    ";
         os << "Bus " << dev->getBus() << " "
            << "Device " << dev->getDevice() << ": "
-           << setw(4) << std::hex << setfill('0') << dev->getVendor()
-           << setw(1) << ":"
-           << setw(4) << std::hex << setfill('0') << dev->getProduct()
-           << endl;
+           << std::setw(4) << std::hex << std::setfill('0') << dev->getVendor()
+           << std::setw(1) << ":"
+           << std::setw(4) << std::hex << std::setfill('0') << dev->getProduct()
+           << std::endl;
 
         if (dev->getName().size() > 0)
             os << "          " + dev->getShortName() << ": "
-               << dev->getName() << endl;
+               << dev->getName() << std::endl;
 
         // reset fill character
-        os << setfill(' ');
+        os << std::setfill(' ');
     }
 }
 
@@ -309,7 +294,7 @@ void DeviceManager::switchUpdateMode()
     Debug::debug()->trace("usb_open(%p)", dev->getHandle());
     struct usb_dev_handle *usb_handle = usb_open(dev->getHandle());
     if (!usb_handle)
-        throw IOError("Could not open USB device: " + string(usb_strerror()));
+        throw IOError("Could not open USB device: " + std::string(usb_strerror()));
 
     Debug::debug()->trace("usb_set_configuration(%p, %d)",
             usb_handle, dev->getHandle()->config[0].bConfigurationValue);
@@ -331,7 +316,7 @@ void DeviceManager::switchUpdateMode()
     if (ret < 0) {
         usb_release_interface(usb_handle, usb_interface);
         usb_close(usb_handle);
-        throw IOError("Error when setting altinterface to 0: " + string(usb_strerror()));
+        throw IOError("Error when setting altinterface to 0: " + std::string(usb_strerror()));
     }
 
     int timeout = 6;
@@ -458,7 +443,7 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
     memset(cmd, 0, USB_PAGESIZE);
 
     for (unsigned int i = 0; i < bv.size(); i += 64) {
-        size_t sz = min(USB_PAGESIZE, int(bv.size()-i));
+        size_t sz = std::min(USB_PAGESIZE, int(bv.size()-i));
         memset(buf, 0, USB_PAGESIZE);
         copy(bv.begin() + i, bv.begin() + i + sz, buf);
 
@@ -475,7 +460,7 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
             if (m_progressNotifier)
                 m_progressNotifier->finished();
             throw IOError("Error while writing to USB device: "+
-                    string(usb_strerror()));
+                    std::string(usb_strerror()));
         }
 
         // data message
@@ -487,7 +472,7 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
             if (m_progressNotifier)
                 m_progressNotifier->finished();
             throw IOError("Error while writing to USB device: "+
-                    string(usb_strerror()));
+                    std::string(usb_strerror()));
         }
 
         if (m_progressNotifier)
@@ -513,7 +498,7 @@ void UsbprogUpdater::updateOpen()
     Debug::debug()->trace("usb_open(%p)", dev);
     m_devHandle = usb_open(dev);
     if (!m_devHandle)
-        throw IOError("usb_open failed " + string(usb_strerror()));
+        throw IOError("usb_open failed " + std::string(usb_strerror()));
 
     Debug::debug()->trace("usb_set_configuration(handle, %d)",
             dev->config[0].bConfigurationValue);
@@ -524,7 +509,7 @@ void UsbprogUpdater::updateOpen()
     ret = usb_claim_interface(m_devHandle, usb_interface);
     if (ret < 0) {
         updateClose();
-        throw IOError("Claiming interface failed: " + string(usb_strerror()));
+        throw IOError("Claiming interface failed: " + std::string(usb_strerror()));
     }
 }
 
@@ -566,7 +551,7 @@ void UsbprogUpdater::startDevice()
             m_devHandle, buf, USB_PAGESIZE);
     int ret = usb_bulk_write(m_devHandle, 2, buf, USB_PAGESIZE, 100);
     if (ret < 0)
-        throw IOError("Error in bulk write: " + string(usb_strerror()));
+        throw IOError("Error in bulk write: " + std::string(usb_strerror()));
 }
 
 /* }}} */

@@ -28,22 +28,10 @@
 #include "io.h"
 #include "cliconfiguration.h"
 
-using std::ostream;
-using std::string;
-using std::runtime_error;
-using std::stringstream;
-using std::exception;
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::setw;
-using std::vector;
-using std::find;
-
 /* AbstractCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-AbstractCommand::AbstractCommand(const string &name)
+AbstractCommand::AbstractCommand(const std::string &name)
     : m_name(name)
 {}
 
@@ -60,13 +48,13 @@ CommandArg::Type AbstractCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string AbstractCommand::getArgTitle(size_t pos) const
+std::string AbstractCommand::getArgTitle(size_t pos) const
 {
     return "";
 }
 
 /* -------------------------------------------------------------------------- */
-string AbstractCommand::name() const
+std::string AbstractCommand::name() const
 {
     return m_name;
 }
@@ -100,47 +88,47 @@ CommandArg::Type CommandArg::getType() const
 }
 
 /* -------------------------------------------------------------------------- */
-string CommandArg::getString() const
-    throw (runtime_error)
+std::string CommandArg::getString() const
+    throw (std::runtime_error)
 {
     if (m_type != STRING)
-        throw runtime_error("Not a string");
+        throw std::runtime_error("Not a string");
 
     return m_string;
 }
 
 /* -------------------------------------------------------------------------- */
 long long CommandArg::getInteger() const
-    throw (runtime_error)
+    throw (std::runtime_error)
 {
     if (m_type != INTEGER)
-        throw runtime_error("Not an integer");
+        throw std::runtime_error("Not an integer");
 
     return m_int.ll;
 }
 
 /* -------------------------------------------------------------------------- */
 unsigned long long CommandArg::getUInteger() const
-    throw (runtime_error)
+    throw (std::runtime_error)
 {
     if (m_type != UINTEGER)
-        throw runtime_error("Not an unsigned integer");
+        throw std::runtime_error("Not an unsigned integer");
 
     return m_int.ull;
 }
 
 /* -------------------------------------------------------------------------- */
 double CommandArg::getFloat() const
-    throw (runtime_error)
+    throw (std::runtime_error)
 {
     if (m_type != FLOAT)
-        throw runtime_error("Not a float");
+        throw std::runtime_error("Not a float");
 
     return m_int.d;
 }
 
 /* -------------------------------------------------------------------------- */
-void CommandArg::setString(const string &string)
+void CommandArg::setString(const std::string &string)
 {
     m_type = STRING;
     m_string = string;
@@ -170,7 +158,7 @@ void CommandArg::setFloat(double value)
 /* -------------------------------------------------------------------------- */
 CommandArg *CommandArg::fromString(const std::string &str, CommandArg::Type type)
 {
-    stringstream string;
+    std::stringstream string;
     CommandArg *ret = new CommandArg;
 
     string << str;
@@ -212,7 +200,7 @@ CommandArg *CommandArg::fromString(const std::string &str, CommandArg::Type type
 /* Shell {{{ */
 
 /* -------------------------------------------------------------------------- */
-Shell::Shell(const string &prompt)
+Shell::Shell(const std::string &prompt)
 {
     m_lineReader = LineReader::defaultLineReader(prompt);
     try {
@@ -231,21 +219,21 @@ Shell::Shell(const string &prompt)
 /* -------------------------------------------------------------------------- */
 Shell::~Shell()
 {
-    vector<Command *> deleteList;
+    std::vector<Command *> deleteList;
 
     for (StringCommandMap::const_iterator it = m_commands.begin();
             it != m_commands.end(); ++it)
         if (it->second->name() == it->first)
             deleteList.push_back(it->second);
 
-    for (vector<Command *>::const_iterator it = deleteList.begin();
+    for (std::vector<Command *>::const_iterator it = deleteList.begin();
             it != deleteList.end(); ++it)
         delete *it;
 
     try {
         m_lineReader->writeHistory(CliConfiguration::config()->getHistoryFile());
     } catch (const IOError &ioe) {
-        cerr << "Error when saving history: " << ioe.what() << endl;
+        std::cerr << "Error when saving history: " << ioe.what() << std::endl;
     }
     delete m_lineReader;
 }
@@ -269,7 +257,7 @@ void Shell::addCommand(Command *cmd)
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector Shell::complete(const string &text, const string &full_text,
+StringVector Shell::complete(const std::string &text, const std::string &full_text,
         size_t start_idx, ssize_t end_idx)
 {
     //
@@ -279,7 +267,7 @@ StringVector Shell::complete(const string &text, const string &full_text,
         StringVector result;
         for (StringCommandMap::const_iterator it = m_commands.begin();
                 it != m_commands.end(); ++it) {
-            string cmd = it->first;
+            std::string cmd = it->first;
             if (str_starts_with(cmd, text))
                 result.push_back(cmd);
         }
@@ -343,14 +331,14 @@ void Shell::run()
         try {
             result = run(vec, false);
         } catch (const ApplicationError &err) {
-            cout << err.what() << endl;
+            std::cout << err.what() << std::endl;
         }
     }
 
     // output a newline if the readline() library has encountered
     // an EOF
     if (m_lineReader->eof())
-        cout << endl;
+        std::cout << std::endl;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -364,8 +352,8 @@ bool Shell::run(StringVector input, bool multiple)
         throw ApplicationError("Input size == 0");
 
     do {
-        string cmdstr = input[0];
-        string execstr = cmdstr;
+        std::string cmdstr = input[0];
+        std::string execstr = cmdstr;
         input.erase(input.begin());
         StringCommandMap::const_iterator it = m_commands.find(cmdstr);
         if (it == m_commands.end())
@@ -375,7 +363,7 @@ bool Shell::run(StringVector input, bool multiple)
         // separate options from arguments
         StringVector options;
         for (StringVector::iterator it = input.begin(); it != input.end(); ++it) {
-            string option = *it;
+            std::string option = *it;
 
             if (option == "--") {
                 // treat "--" like with GNU getopt
@@ -404,12 +392,12 @@ bool Shell::run(StringVector input, bool multiple)
 
         CommandArgVector vec;
         for (unsigned int argNo = 0; argNo < cmd->getArgNumber(); argNo++) {
-            string argstr;
+            std::string argstr;
             if (input.size() > 0) {
                 argstr = input[0];
                 input.erase(input.begin());
             } else {
-                string prompt = cmd->getArgTitle(argNo) + "> ";
+                std::string prompt = cmd->getArgTitle(argNo) + "> ";
                 argstr = m_lineReader->readLine(prompt.c_str());
             }
 
@@ -421,14 +409,14 @@ bool Shell::run(StringVector input, bool multiple)
 
         try {
             if (multiple && (input.size() > 0 || loop != 0))
-                cout << "===> " << execstr << endl;
+                std::cout << "===> " << execstr << std::endl;
             loop++;
-            result = cmd->execute(vec, options, cout);
+            result = cmd->execute(vec, options, std::cout);
             if (multiple && result && input.size() > 0)
-                cout << endl;
+                std::cout << std::endl;
 
         } catch (const ApplicationError &ex) {
-            cout << ex.what() << endl;
+            std::cout << ex.what() << std::endl;
         }
 
         // free memory
@@ -452,7 +440,7 @@ ExitCommand::ExitCommand()
 /* -------------------------------------------------------------------------- */
 bool ExitCommand::execute(CommandArgVector  args,
                           StringVector      options,
-                          ostream           &os)
+                          std::ostream      &os)
     throw (ApplicationError)
 {
     return false;
@@ -469,19 +457,19 @@ StringVector ExitCommand::aliases() const
 }
 
 /* -------------------------------------------------------------------------- */
-string ExitCommand::help() const
+std::string ExitCommand::help() const
 {
     return "Exits the program";
 }
 
 /* -------------------------------------------------------------------------- */
-void ExitCommand::printLongHelp(ostream &os) const
+void ExitCommand::printLongHelp(std::ostream &os) const
 {
-    os << "Name:            exit" << endl;
-    os << "Aliases:         quit, q, x" << endl;
-    os << endl;
-    os << "Description:" << endl;
-    os << "Exits the program." << endl;
+    os << "Name:            exit" << std::endl;
+    os << "Aliases:         quit, q, x" << std::endl;
+    os << std::endl;
+    os << "Description:" << std::endl;
+    os << "Exits the program." << std::endl;
 }
 
 /* }}} */
@@ -497,38 +485,38 @@ HelpCommand::HelpCommand(Shell *sh)
 /* -------------------------------------------------------------------------- */
 bool HelpCommand::execute(CommandArgVector args,
                           StringVector     options,
-                          ostream          &os)
+                          std::ostream     &os)
     throw (ApplicationError)
 {
     for (StringCommandMap::const_iterator it = m_sh->m_commands.begin();
             it != m_sh->m_commands.end(); ++it) {
         if (it->second->name() == it->first)
-            os << setw(20) << std::left << it->second->name()
-                 << it->second->help() << endl;
+            os << std::setw(20) << std::left << it->second->name()
+                 << it->second->help() << std::endl;
     }
 
-    os << endl;
+    os << std::endl;
     os << "To get more information about a specific command, use "
-       << "\"helpcmd command\"." << endl;
+       << "\"helpcmd command\"." << std::endl;
 
     return true;
 }
 
 /* -------------------------------------------------------------------------- */
-string HelpCommand::help() const
+std::string HelpCommand::help() const
 {
     return "Prints an overview about all commands.";
 }
 
 /* -------------------------------------------------------------------------- */
-void HelpCommand::printLongHelp(ostream &os) const
+void HelpCommand::printLongHelp(std::ostream &os) const
 {
-    os << "Name:            help" << endl;
-    os << "Arguments:       command" << endl;
-    os << endl;
-    os << "Description:" << endl;
-    os << "Prints an overview about all commands. To get help for a specific" << endl;
-    os << "command, use \"helpcmd command\"." << endl;
+    os << "Name:            help" << std::endl;
+    os << "Arguments:       command" << std::endl;
+    os << std::endl;
+    os << "Description:" << std::endl;
+    os << "Prints an overview about all commands. To get help for a specific" << std::endl;
+    os << "command, use \"helpcmd command\"." << std::endl;
 }
 
 /* }}} */
@@ -544,13 +532,13 @@ HelpCmdCommand::HelpCmdCommand(Shell *sh)
 /* -------------------------------------------------------------------------- */
 bool HelpCmdCommand::execute(CommandArgVector args,
                              StringVector     options,
-                             ostream          &os)
+                             std::ostream     &os)
     throw (ApplicationError)
 {
-    string cmd = args[0]->getString();
+    std::string cmd = args[0]->getString();
 
     if (m_sh->m_commands.find(cmd) == m_sh->m_commands.end())
-        os << "Invalid command: " + cmd << endl;
+        os << "Invalid command: " + cmd << std::endl;
     else {
         Command *c = m_sh->m_commands.find(cmd)->second;
         c->printLongHelp(os);
@@ -575,7 +563,7 @@ CommandArg::Type HelpCmdCommand::getArgType(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-string HelpCmdCommand::getArgTitle(size_t pos) const
+std::string HelpCmdCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
         case 0:     return "command";
@@ -593,7 +581,7 @@ StringVector HelpCmdCommand::aliases() const
 
 /* -------------------------------------------------------------------------- */
 std::vector<std::string> HelpCmdCommand::getCompletions(
-        const string &start, size_t pos, bool option, bool *filecompletion) const
+        const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0)
         return StringVector();
@@ -601,7 +589,7 @@ std::vector<std::string> HelpCmdCommand::getCompletions(
     StringVector result;
     for (StringCommandMap::const_iterator it = m_sh->m_commands.begin();
             it != m_sh->m_commands.end(); ++it) {
-        string cmd = it->first;
+        std::string cmd = it->first;
         if (str_starts_with(cmd, start))
             result.push_back(cmd);
     }
@@ -610,21 +598,21 @@ std::vector<std::string> HelpCmdCommand::getCompletions(
 
 
 /* -------------------------------------------------------------------------- */
-string HelpCmdCommand::help() const
+std::string HelpCmdCommand::help() const
 {
     return "Prints help for a command";
 }
 
 /* -------------------------------------------------------------------------- */
-void HelpCmdCommand::printLongHelp(ostream &os) const
+void HelpCmdCommand::printLongHelp(std::ostream &os) const
 {
-    os << "Name:            helpcmd" << endl;
-    os << "Aliases:         ?" << endl;
-    os << "Arguments:       1) the command" << endl;
-    os << endl;
-    os << "Description:" << endl;
-    os << "Prints the help for a given command. To get an overview about" << endl;
-    os << "all commands, use \"help\"." << endl;
+    os << "Name:            helpcmd" << std::endl;
+    os << "Aliases:         ?" << std::endl;
+    os << "Arguments:       1) the command" << std::endl;
+    os << std::endl;
+    os << "Description:" << std::endl;
+    os << "Prints the help for a given command. To get an overview about" << std::endl;
+    os << "all commands, use \"help\"." << std::endl;
 }
 
 /* }}} */

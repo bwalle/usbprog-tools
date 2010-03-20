@@ -23,12 +23,6 @@
 
 #include <usbprog-core/stringutil.h>
 
-using std::string;
-using std::hex;
-using std::stringstream;
-using std::strncmp;
-using std::malloc;
-
 /* ShellStringTokenizer {{{ */
 
 enum ShellStringTokenizerState {
@@ -40,7 +34,7 @@ enum ShellStringTokenizerState {
 };
 
 /* -------------------------------------------------------------------------- */
-ShellStringTokenizer::ShellStringTokenizer(const string &str)
+ShellStringTokenizer::ShellStringTokenizer(const std::string &str)
     : m_string(str), m_pos(0)
 {}
 
@@ -56,10 +50,10 @@ bool ShellStringTokenizer::hasMoreTokens() const
     ((c) == '\\')
 
 /* -------------------------------------------------------------------------- */
-string ShellStringTokenizer::nextToken()
+std::string ShellStringTokenizer::nextToken()
 {
     ShellStringTokenizerState state = STATE_SPACE;
-    string ret;
+    std::string ret;
 
     while (m_pos < m_string.size()) {
         char c = m_string[m_pos++];
@@ -128,10 +122,10 @@ StringVector ShellStringTokenizer::tokenize()
 /* global functions {{{ */
 
 /* -------------------------------------------------------------------------- */
-string wordwrap(const string &text, ssize_t margins)
+std::string wordwrap(const std::string &text, ssize_t margins)
 {
-    string ret, s;
-    stringstream ss;
+    std::string ret, s;
+    std::stringstream ss;
     ss << text;
     int curline = 0;
 
@@ -153,7 +147,7 @@ string wordwrap(const string &text, ssize_t margins)
 }
 
 /* -------------------------------------------------------------------------- */
-string strip(string a)
+std::string strip(std::string a)
 {
     if (a.length() == 0)
         return a;
@@ -162,7 +156,7 @@ string strip(string a)
     a.erase(a.find_last_not_of("\n \t")+1);
 
     char last = a[0];
-    for (string::iterator it = a.begin()+1; it != a.end(); ++it) {
+    for (std::string::iterator it = a.begin()+1; it != a.end(); ++it) {
         if (*it == '\n')
             a.erase(it);
         if (*it == '\t')
@@ -179,9 +173,9 @@ string strip(string a)
 /* -------------------------------------------------------------------------- */
 unsigned long parse_long(const char *string)
 {
-    stringstream ss;
+    std::stringstream ss;
     if (strncmp(string, "0x", 2) == 0)
-        ss << hex << static_cast<const char *>(string + 2);
+        ss << std::hex << static_cast<const char *>(string + 2);
     else
         ss << string;
     unsigned long ret;

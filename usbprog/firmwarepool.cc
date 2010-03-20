@@ -39,22 +39,6 @@
 #include <usbprog-core/debug.h>
 #include <usbprog/firmwarepool.h>
 
-using std::vector;
-using std::string;
-using std::ofstream;
-using std::ifstream;
-using std::copy;
-using std::ios;
-using std::atoi;
-using std::endl;
-using std::stringstream;
-using std::remove;
-using std::back_inserter;
-using std::strncmp;
-using std::hex;
-using std::setw;
-using std::setfill;
-
 #define INDEX_FILE_NAME  "versions.xml"
 #define BUFFERSIZE       2048
 
@@ -154,66 +138,66 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
 /* Firmware {{{1 */
 
 /* -------------------------------------------------------------------------- */
-Firmware::Firmware(const string &name)
+Firmware::Firmware(const std::string &name)
     : m_name(name)
 {}
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getName() const
+std::string Firmware::getName() const
 {
     return m_name;
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setLabel(const string &label)
+void Firmware::setLabel(const std::string &label)
 {
     m_label = label;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getLabel() const
+std::string Firmware::getLabel() const
 {
     return m_label;
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setFilename(const string &filename)
+void Firmware::setFilename(const std::string &filename)
 {
     m_filename = filename;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getFilename() const
+std::string Firmware::getFilename() const
 {
     return m_filename;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getVerFilename() const
+std::string Firmware::getVerFilename() const
 {
     return m_filename + "." + getVersionString();
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setUrl(const string &url)
+void Firmware::setUrl(const std::string &url)
 {
     m_url = url;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getUrl() const
+std::string Firmware::getUrl() const
 {
     return m_url;
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setAuthor(const string &author)
+void Firmware::setAuthor(const std::string &author)
 {
     m_author = author;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getAuthor() const
+std::string Firmware::getAuthor() const
 {
     return m_author;
 }
@@ -255,39 +239,39 @@ int Firmware::getVersion() const
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getVersionString() const
+std::string Firmware::getVersionString() const
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << m_version;
     return ss.str();
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setDescription(const string &description)
+void Firmware::setDescription(const std::string &description)
 {
     m_description = description;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getDescription() const
+std::string Firmware::getDescription() const
 {
     return m_description;
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setPin(const string &name, const string &value)
+void Firmware::setPin(const std::string &name, const std::string &value)
 {
     m_pins[name] = value;
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::getPin(const string &name) const
+std::string Firmware::getPin(const std::string &name) const
 {
     StringStringMap::const_iterator it = m_pins.find(name);
     if (it != m_pins.end())
         return (*it).second;
     else
-        return string();
+        return std::string();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -357,41 +341,41 @@ uint16_t Firmware::getBcdDevice() const
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::toString() const
+std::string Firmware::toString() const
 {
-    stringstream ss;
+    std::stringstream ss;
 
-    ss << "Name            : " << m_name << endl;
-    ss << "Label           : " << m_label << endl;
-    ss << "File name       : " << m_filename << endl;
-    ss << "URL             : " << m_url << endl;
-    ss << "Version         : " << m_version << endl;
-    ss << "Author          : " << m_author << endl;
-    ss << "Date            : " << m_date.getDateTimeString(DTF_ISO_DATETIME) << endl;
-    ss << "MD5sum          : " << m_md5sum << endl;
-    ss << "Description     : " << m_description << endl;
-    ss << "Pins      P1    : " << getPin("P1") << endl;
-    ss << "          P2    : " << getPin("P2") << endl;
-    ss << "          P3    : " << getPin("P3") << endl;
-    ss << "          P4    : " << getPin("P4") << endl;
-    ss << "          P5    : " << getPin("P5") << endl;
-    ss << "          P6    : " << getPin("P6") << endl;
-    ss << "          P7    : " << getPin("P7") << endl;
-    ss << "          P8    : " << getPin("P8") << endl;
-    ss << "          P9    : " << getPin("P9") << endl;
-    ss << "          P10   : " << getPin("P10") << endl;;
-    ss << "          RX    : " << getPin("RX") << endl;
-    ss << "          TX    : " << getPin("TX") << endl;
-    ss << "          LED   : " << getPin("LED") << endl;
-    ss << "          JP    : " << getPin("JP") << endl;
+    ss << "Name            : " << m_name << std::endl;
+    ss << "Label           : " << m_label << std::endl;
+    ss << "File name       : " << m_filename << std::endl;
+    ss << "URL             : " << m_url << std::endl;
+    ss << "Version         : " << m_version << std::endl;
+    ss << "Author          : " << m_author << std::endl;
+    ss << "Date            : " << m_date.getDateTimeString(DTF_ISO_DATETIME) << std::endl;
+    ss << "MD5sum          : " << m_md5sum << std::endl;
+    ss << "Description     : " << m_description << std::endl;
+    ss << "Pins      P1    : " << getPin("P1") << std::endl;
+    ss << "          P2    : " << getPin("P2") << std::endl;
+    ss << "          P3    : " << getPin("P3") << std::endl;
+    ss << "          P4    : " << getPin("P4") << std::endl;
+    ss << "          P5    : " << getPin("P5") << std::endl;
+    ss << "          P6    : " << getPin("P6") << std::endl;
+    ss << "          P7    : " << getPin("P7") << std::endl;
+    ss << "          P8    : " << getPin("P8") << std::endl;
+    ss << "          P9    : " << getPin("P9") << std::endl;
+    ss << "          P10   : " << getPin("P10") << std::endl;;
+    ss << "          RX    : " << getPin("RX") << std::endl;
+    ss << "          TX    : " << getPin("TX") << std::endl;
+    ss << "          LED   : " << getPin("LED") << std::endl;
+    ss << "          JP    : " << getPin("JP") << std::endl;
 
     return ss.str();
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::formatDateVersion() const
+std::string Firmware::formatDateVersion() const
 {
-    stringstream ss;
+    std::stringstream ss;
 
     ss << getVersion();
     ss << " [" << getDate().getDateTimeString(DTF_ISO_DATE) << "]";
@@ -406,21 +390,21 @@ bool Firmware::hasDeviceId() const
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmware::formatDeviceId() const
+std::string Firmware::formatDeviceId() const
 {
-    stringstream ss;
+    std::stringstream ss;
 
     if (getVendorId() != 0)
-        ss << "Vendor: 0x" << setw(4) << hex << setfill('0') << getVendorId();
+        ss << "Vendor: 0x" << std::setw(4) << std::hex << std::setfill('0') << getVendorId();
     if (getVendorId() != 0 && getProductId() != 0)
         ss << ", ";
     if (getProductId() != 0)
-        ss << "Product: 0x" << setw(4) << hex << getProductId();
+        ss << "Product: 0x" << std::setw(4) << std::hex << getProductId();
     if (getBcdDevice() != 0 && (getProductId() != 0
                 || getVendorId() != 0))
         ss << ", ";
     if (getBcdDevice() != 0)
-        ss << "BCDDevice: 0x" << setw(4) << hex << getBcdDevice();
+        ss << "BCDDevice: 0x" << std::setw(4) << std::hex << getBcdDevice();
 
     return ss.str();
 }
@@ -428,12 +412,12 @@ string Firmware::formatDeviceId() const
 /* Firmwarepool {{{1 */
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::readFromFile(const string &file,
+void Firmwarepool::readFromFile(const std::string &file,
         ByteVector &bv) throw (IOError)
 {
     char buffer[BUFFERSIZE];
 
-    ifstream fin(file.c_str(), ios::binary);
+    std::ifstream fin(file.c_str(), std::ios::binary);
     if (!fin)
         throw IOError("Opening " + file + " failed");
 
@@ -450,7 +434,7 @@ void Firmwarepool::readFromFile(const string &file,
 }
 
 /* -------------------------------------------------------------------------- */
-Firmwarepool::Firmwarepool(const string &cacheDir)
+Firmwarepool::Firmwarepool(const std::string &cacheDir)
       throw (IOError)
     : m_cacheDir(cacheDir), m_progressNotifier(NULL),
       m_indexAutoUpdatetime(0)
@@ -469,7 +453,7 @@ Firmwarepool::~Firmwarepool()
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmwarepool::getCacheDir() const
+std::string Firmwarepool::getCacheDir() const
 {
     return m_cacheDir;
 }
@@ -481,12 +465,12 @@ void Firmwarepool::setIndexUpdatetime(int minutes)
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::downloadIndex(const string &url)
+void Firmwarepool::downloadIndex(const std::string &url)
     throw (DownloadError)
 {
-    string newPath(pathconcat(m_cacheDir, string(INDEX_FILE_NAME) + ".new"));
-    string oldPath(pathconcat(m_cacheDir, INDEX_FILE_NAME));
-    string file(newPath);
+    std::string newPath(pathconcat(m_cacheDir, std::string(INDEX_FILE_NAME) + ".new"));
+    std::string oldPath(pathconcat(m_cacheDir, INDEX_FILE_NAME));
+    std::string file(newPath);
 
     // don't download index if the modification time is less than 10 min
     if (m_indexAutoUpdatetime != 0) {
@@ -499,7 +483,7 @@ void Firmwarepool::downloadIndex(const string &url)
         {}
     }
 
-    ofstream fout(file.c_str());
+    std::ofstream fout(file.c_str());
     if (fout.bad())
         throw DownloadError("Opening " + file + " failed");
 
@@ -520,7 +504,7 @@ void Firmwarepool::readIndex()
 {
     QDomDocument doc("usbprog");
 
-    string filename = pathconcat(m_cacheDir, INDEX_FILE_NAME);
+    std::string filename = pathconcat(m_cacheDir, INDEX_FILE_NAME);
     QFile file(filename.c_str());
     if (!file.open(QIODevice::ReadOnly))
         throw ParseError("Couldn't open " + filename);
@@ -547,10 +531,10 @@ void Firmwarepool::readIndex()
 void Firmwarepool::deleteIndex()
     throw (IOError)
 {
-    string file = pathconcat(m_cacheDir, INDEX_FILE_NAME);
+    std::string file = pathconcat(m_cacheDir, INDEX_FILE_NAME);
     int ret = remove(file.c_str());
     if (ret < 0)
-        throw IOError("Deleting index file failed: " + string(strerror(errno)));
+        throw IOError("Deleting index file failed: " + std::string(std::strerror(errno)));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -560,15 +544,15 @@ void Firmwarepool::setProgress(ProgressNotifier *notifier)
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::downloadFirmware(const string &name)
+void Firmwarepool::downloadFirmware(const std::string &name)
     throw (DownloadError, GeneralError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
         throw GeneralError("Firmware doesn't exist");
 
-    string url = fw->getUrl() + "/" + fw->getFilename();
-    string file(pathconcat(m_cacheDir, fw->getVerFilename()));
+    std::string url = fw->getUrl() + "/" + fw->getFilename();
+    std::string file(pathconcat(m_cacheDir, fw->getVerFilename()));
     if (Fileutil::isFile(file)) {
         // check md5 if available, if the checksum is wrong, then delete
         // the file and download again. Check the checksum after that
@@ -582,7 +566,7 @@ void Firmwarepool::downloadFirmware(const string &name)
             return;
     }
 
-    ofstream fout(file.c_str(), ios::binary);
+    std::ofstream fout(file.c_str(), std::ios::binary);
     if (!fout)
         throw IOError("Opening " + file + " failed");
 
@@ -609,19 +593,19 @@ void Firmwarepool::downloadFirmware(const string &name)
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::fillFirmware(const string &name)
+void Firmwarepool::fillFirmware(const std::string &name)
     throw (IOError, GeneralError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
         throw GeneralError("Firmware doesn't exist");
 
-    string file = getFirmwareFilename(fw);
+    std::string file = getFirmwareFilename(fw);
     readFromFile(file, fw->getData());
 }
 
 /* -------------------------------------------------------------------------- */
-string Firmwarepool::getFirmwareFilename(Firmware *fw) const
+std::string Firmwarepool::getFirmwareFilename(Firmware *fw) const
 {
     return pathconcat(m_cacheDir, fw->getVerFilename());
 }
@@ -638,7 +622,7 @@ StringList Firmwarepool::getFirmwareNameList() const
 }
 
 /* -------------------------------------------------------------------------- */
-Firmware *Firmwarepool::getFirmware(const string &name) const
+Firmware *Firmwarepool::getFirmware(const std::string &name) const
 {
     StringFirmwareMap::const_iterator it = m_firmware.find(name);
     if (it == m_firmware.end())
@@ -648,9 +632,9 @@ Firmware *Firmwarepool::getFirmware(const string &name) const
 }
 
 /* -------------------------------------------------------------------------- */
-vector<Firmware *> Firmwarepool::getFirmwareList() const
+std::vector<Firmware *> Firmwarepool::getFirmwareList() const
 {
-    vector<Firmware *> ret;
+    std::vector<Firmware *> ret;
 
     for (StringFirmwareMap::const_iterator it = m_firmware.begin();
             it != m_firmware.end(); ++it)
@@ -675,7 +659,7 @@ void Firmwarepool::deleteCache()
                 strcmp(de->d_name, "..") == 0)
             continue;
 
-        string file = pathconcat(m_cacheDir, de->d_name);
+        std::string file = pathconcat(m_cacheDir, de->d_name);
         int ret = remove(file.c_str());
         if (ret < 0) {
             closedir(dir);
@@ -687,7 +671,7 @@ void Firmwarepool::deleteCache()
 }
 
 /* -------------------------------------------------------------------------- */
-bool Firmwarepool::isFirmwareOnDisk(const string &name)
+bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
     throw (IOError)
 {
     Firmware *fw = getFirmware(name);
@@ -713,15 +697,15 @@ void Firmwarepool::cleanCache()
                 strcmp(de->d_name, "..") == 0)
             continue;
 
-        string name = de->d_name;
+        std::string name = de->d_name;
         size_t last_dot = name.rfind('.', name.length());
-        if (last_dot == string::npos)
+        if (last_dot == std::string::npos)
             continue;
 
-        string firmware = name.substr(0, last_dot);
+        std::string firmware = name.substr(0, last_dot);
         if (firmware.rfind(".bin") == firmware.size() - 4)
             firmware.erase(firmware.size() - 4);
-        string version = name.substr(last_dot+1);
+        std::string version = name.substr(last_dot+1);
 
         Firmware *fw = getFirmware(firmware);
         if (!fw)
@@ -730,7 +714,7 @@ void Firmwarepool::cleanCache()
         if (isFirmwareOnDisk(firmware) && version != fw->getVersionString()) {
             int ret;
 
-            string file(pathconcat(m_cacheDir, name).c_str());
+            std::string file(pathconcat(m_cacheDir, name).c_str());
             ret = remove(file.c_str());
             if (ret < 0) {
                 closedir(dir);

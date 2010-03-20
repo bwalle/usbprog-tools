@@ -21,12 +21,6 @@
 
 #include <usbprog-core/inifile.h>
 
-using std::string;
-using std::map;
-using std::pair;
-using std::istringstream;
-using std::ifstream;
-
 /* -------------------------------------------------------------------------- */
 IniFile::IniFile(const std::string &fileName)
     : m_fileName(fileName)
@@ -35,16 +29,16 @@ IniFile::IniFile(const std::string &fileName)
 /* -------------------------------------------------------------------------- */
 void IniFile::readFile() throw (IOError)
 {
-    ifstream file(m_fileName.c_str());
+    std::ifstream file(m_fileName.c_str());
 
     if (!file)
         throw IOError("Cannot open the specified ini file " + m_fileName + ".");
 
-    string line;
+    std::string line;
 
-    while ( getline(file, line) ) {
+    while ( std::getline(file, line) ) {
         size_t equal = line.find("=");
-        if (line.find("#") == 0 || equal == string::npos)
+        if (line.find("#") == 0 || equal == std::string::npos)
             continue;
 
         m_map[line.substr(0, equal)] = line.substr(equal+1, line.length());
@@ -53,28 +47,28 @@ void IniFile::readFile() throw (IOError)
 
 
 /* -------------------------------------------------------------------------- */
-string IniFile::getValue(const string &key) const
+std::string IniFile::getValue(const std::string &key) const
 {
-    map<string, string>::const_iterator result = m_map.find(key);
+    std::map<std::string, std::string>::const_iterator result = m_map.find(key);
 
     if (result == m_map.end())
-        return string();
+        return std::string();
     else
         return (*result).second;
 }
 
 
 /* -------------------------------------------------------------------------- */
-int IniFile::getIntValue(const string &key) const
+int IniFile::getIntValue(const std::string &key) const
 {
-    map<string, string>::const_iterator result = m_map.find(key);
+    std::map<std::string, std::string>::const_iterator result = m_map.find(key);
 
     if (result == m_map.end())
         return 0;
     else {
         int resultNumber;
 
-        istringstream inStream((*result).second);
+        std::istringstream inStream((*result).second);
         inStream >> resultNumber;
 
         return resultNumber;
@@ -83,7 +77,7 @@ int IniFile::getIntValue(const string &key) const
 
 
 /* -------------------------------------------------------------------------- */
-bool IniFile::isKeyAvailable(const string &key) const
+bool IniFile::isKeyAvailable(const std::string &key) const
 {
     return m_map.find(key) != m_map.end();
 }

@@ -35,15 +35,6 @@
 
 namespace po = boost::program_options;
 
-using std::string;
-using std::vector;
-using std::cerr;
-using std::cout;
-using std::endl;
-using std::flush;
-using std::exit;
-using std::runtime_error;
-
 /* HashNotifier {{{ */
 
 /* -------------------------------------------------------------------------- */
@@ -68,11 +59,11 @@ int HashNotifier::progressed(double total, double now)
     double percent = now / total;
     int bars = int(percent * m_width);
     while (bars > m_lastProgress) {
-        cout << '#';
+        std::cout << '#';
         m_lastProgress++;
     }
 
-    cout << flush;
+    std::cout << std::flush;
 
     return true;
 }
@@ -81,7 +72,7 @@ int HashNotifier::progressed(double total, double now)
 void HashNotifier::finished()
 {
     if (m_lastProgress != 0) {
-        cout << endl;
+        std::cout << std::endl;
         m_lastProgress = 0;
     }
 }
@@ -111,7 +102,7 @@ void Usbprog::initConfig()
 {
     CliConfiguration *conf = CliConfiguration::config();
 
-    string configDir = Fileutil::configDir("usbprog");
+    std::string configDir = Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
         throw ApplicationError("Could not determine configuration "
                 "directory.");
@@ -130,7 +121,7 @@ void Usbprog::parseCommandLine()
     desc.add_options()
         ("help,h", "Prints a help message")
         ("version,v", "Prints version information")
-        ("datadir,d", po::value<string>(), string("Uses the specified data "
+        ("datadir,d", po::value<std::string>(), std::string("Uses the specified data "
             "directory instead of " + conf->getDataDir()).c_str())
         ("offline,o", "Use only the local cache "
             "and don't connect to the internet")
@@ -138,7 +129,7 @@ void Usbprog::parseCommandLine()
 
     po::options_description hidden("Hidden options");
     hidden.add_options()
-        ("commands", po::value< vector<string> >(), "Commands");
+        ("commands", po::value< std::vector<std::string> >(), "Commands");
 
     po::options_description commandline_options;
     commandline_options.add(desc).add(hidden);
@@ -151,7 +142,7 @@ void Usbprog::parseCommandLine()
         po::store(po::command_line_parser(m_argc, m_argv).
                   options(commandline_options).positional(p).run(), vm);
     } catch (const po::error &err) {
-        throw ApplicationError("Parsing command line failed: " + string(err.what()));
+        throw ApplicationError("Parsing command line failed: " + std::string(err.what()));
     }
     po::notify(vm);
 
@@ -161,30 +152,30 @@ void Usbprog::parseCommandLine()
     }
 
     if (vm.count("help")) {
-        cout << desc << endl;
-        exit(EXIT_SUCCESS);
+        std::cout << desc << std::endl;
+        std::exit(EXIT_SUCCESS);
     }
 
     if (vm.count("version")) {
-        cerr << "usbprog " << USBPROG_VERSION_STRING << endl;
-        exit(EXIT_SUCCESS);
+        std::cerr << "usbprog " << USBPROG_VERSION_STRING << std::endl;
+        std::exit(EXIT_SUCCESS);
     }
 
     if (vm.count("datadir"))
-        conf->setDataDir(vm["datadir"].as<string>());
+        conf->setDataDir(vm["datadir"].as<std::string>());
     if (vm.count("offline"))
         conf->setOffline(true);
 
     if (conf->getDebug())
-        conf->dumpConfig(cerr);
+        conf->dumpConfig(std::cerr);
 
     // batch mode?
     conf->setBatchMode(vm.count("commands") != 0);
     if (conf->getBatchMode())
-        m_args = vm["commands"].as< vector<string> >();
+        m_args = vm["commands"].as< std::vector<std::string> >();
 
     if (conf->isOffline() && !conf->getBatchMode())
-        cout << "WARNING: You're using usbprog in offline mode!" << endl;
+        std::cout << "WARNING: You're using usbprog in offline mode!" << std::endl;
 
     if (!conf->getBatchMode())
         m_progressNotifier = new HashNotifier(DEFAULT_TERMINAL_WIDTH);
@@ -204,7 +195,7 @@ void Usbprog::initFirmwarePool()
         if (!conf->getDebug())
             m_firmwarepool->setProgress(m_progressNotifier);
         m_firmwarepool->readIndex();
-    } catch (const runtime_error &re) {
+    } catch (const std::runtime_error &re) {
         throw ApplicationError(re.what());
     }
 }

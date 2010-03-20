@@ -34,42 +34,36 @@
 
 #include <sys/stat.h>
 
-using std::hex;
-using std::stringstream;
-using std::strncmp;
-using std::string;
-using std::getenv;
-
 /* Fileutil {{{ */
 
 /* -------------------------------------------------------------------------- */
 #ifdef _WIN32
-string Fileutil::homeDir()
+std::string Fileutil::homeDir()
 {
     TCHAR path[MAX_PATH];
 
     if(SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PROFILE|CSIDL_FLAG_CREATE,
                     NULL, 0, path)))
-        return string(path);
+        return std::string(path);
     else
-        return string();
+        return std::string();
 }
 #else
-string Fileutil::homeDir()
+std::string Fileutil::homeDir()
 {
     struct passwd *pw;
 
     pw = getpwuid(getuid());
     if (pw)
-        return string(pw->pw_dir);
+        return std::string(pw->pw_dir);
     else
-        return string();
+        return std::string();
 }
 #endif
 
 /* -------------------------------------------------------------------------- */
 #ifdef _WIN32
-string Fileutil::configDir(const string &program)
+std::string Fileutil::configDir(const std::string &program)
 {
     TCHAR path[MAX_PATH];
 
@@ -80,7 +74,7 @@ string Fileutil::configDir(const string &program)
         return string();
 }
 #else
-string Fileutil::configDir(const string &program)
+std::string Fileutil::configDir(const std::string &program)
 {
     return homeDir() + "/." + program;
 }
@@ -88,19 +82,19 @@ string Fileutil::configDir(const string &program)
 
 /* -------------------------------------------------------------------------- */
 #ifdef _WIN32
-bool Fileutil::mkdir(const string &dir)
+bool Fileutil::mkdir(const std::string &dir)
 {
     return SUCCEEDED(CreateDirectory(dir.c_str(), NULL));
 }
 #else
-bool Fileutil::mkdir(const string &dir)
+bool Fileutil::mkdir(const std::string &dir)
 {
     return ::mkdir(dir.c_str(), 0777) == 0;
 }
 #endif
 
 /* -------------------------------------------------------------------------- */
-bool Fileutil::isDir(const string &dir)
+bool Fileutil::isDir(const std::string &dir)
 {
     int         ret;
     struct stat my_stat;
@@ -113,7 +107,7 @@ bool Fileutil::isDir(const string &dir)
 }
 
 /* -------------------------------------------------------------------------- */
-bool Fileutil::isFile(const string &file)
+bool Fileutil::isFile(const std::string &file)
 {
     int         ret;
     struct stat my_stat;
@@ -141,26 +135,26 @@ DateTime Fileutil::getMTime(const std::string &file)
 
 /* -------------------------------------------------------------------------- */
 #if _WIN32
-bool Fileutil::isPathName(const string &file)
+bool Fileutil::isPathName(const std::string &file)
 {
-    return file.find("/") != string::npos || isFile(file);
+    return file.find("/") != std::string::npos || isFile(file);
 }
 #else
-bool Fileutil::isPathName(const string &file)
+bool Fileutil::isPathName(const std::string &file)
 {
-    return file.find("/") != string::npos ||
+    return file.find("/") != std::string::npos ||
         isFile(file) || file[0] == '~';
 }
 #endif
 
 /* -------------------------------------------------------------------------- */
 #ifdef _WIN32
-string Fileutil::resolvePath(const string &path)
+std::string Fileutil::resolvePath(const std::string &path)
 {
     return path;
 }
 #else
-string Fileutil::resolvePath(const string &path)
+std::string Fileutil::resolvePath(const std::string &path)
 {
     if (path[0] != '~')
         return path;
@@ -172,10 +166,10 @@ string Fileutil::resolvePath(const string &path)
         return pathconcat(home, path.substr(1));
     } else {
         size_t end_user = path.find('/');
-        if (end_user == string::npos)
+        if (end_user == std::string::npos)
             return path;
 
-        string username = path.substr(1, end_user-1);
+        std::string username = path.substr(1, end_user-1);
         struct passwd *pw = getpwnam(username.c_str());
         if (!pw)
             return path;
@@ -190,12 +184,12 @@ string Fileutil::resolvePath(const string &path)
 
 /* -------------------------------------------------------------------------- */
 #ifdef _WIN32
-string pathconcat(const string &a, const string &b)
+std::string pathconcat(const std::string &a, const std::string &b)
 {
     return a + "\\" + b;
 }
 #else
-string pathconcat(const string &a, const string &b)
+std::string pathconcat(const std::string &a, const std::string &b)
 {
     return a + "/" + b;
 }

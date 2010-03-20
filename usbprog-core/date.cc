@@ -23,11 +23,6 @@
 #include <usbprog-core/date.h>
 #include "config.h"
 
-using std::mktime;
-using std::time;
-using std::string;
-using std::memset;
-
 static const char *formatstrings[] = {
     "%Y-%m-%d %H:%M",           /* DTF_ISO_DATETIME */
     "%Y-%m-%d",                 /* DTF_ISO_DATE */
@@ -55,7 +50,7 @@ DateTime::DateTime(struct tm *time)
 }
 
 /* -------------------------------------------------------------------------- */
-DateTime::DateTime(const string &string, DateTimeFormat format)
+DateTime::DateTime(const std::string &string, DateTimeFormat format)
     throw (ParseError)
 {
     setDateTime(string, format);
@@ -144,7 +139,7 @@ struct tm DateTime::getDateTimeTm() const
 }
 
 /* -------------------------------------------------------------------------- */
-string DateTime::getDateTimeString(DateTimeFormat format) const
+std::string DateTime::getDateTimeString(DateTimeFormat format) const
 {
     char        buffer[1024];
     struct tm   time;
@@ -153,7 +148,7 @@ string DateTime::getDateTimeString(DateTimeFormat format) const
 
     strftime(buffer, 1024, formatstrings[format], &time);
 
-    return string(buffer);
+    return std::string(buffer);
 }
 
 /* }}} */

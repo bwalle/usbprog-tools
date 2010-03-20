@@ -23,14 +23,6 @@
 #include <usbprog-core/digest.h>
 
 /* -------------------------------------------------------------------------- */
-using std::string;
-using std::ifstream;
-using std::ios;
-using std::setfill;
-using std::setw;
-using std::hex;
-using std::stringstream;
-
 #define BUFFERSIZE 2048
 
 /* -------------------------------------------------------------------------- */
@@ -53,17 +45,17 @@ void MD5Digest::process(unsigned char *buffer, size_t len)
 }
 
 /* -------------------------------------------------------------------------- */
-string MD5Digest::end()
+std::string MD5Digest::end()
 {
     char buffer[16];
 
     md5_finish(reinterpret_cast<md5_t *>(m_md5), buffer);
-    stringstream ret;
+    std::stringstream ret;
     for (int i = 0; i < 16; i++) {
-        stringstream ss;
-        ss << hex << setfill('0') << setw(2) << int(buffer[i]);
+        std::stringstream ss;
+        ss << std::hex << std::setfill('0') << std::setw(2) << int(buffer[i]);
 
-        string temp = ss.str();
+        std::string temp = ss.str();
         ret << temp[temp.size()-2] << temp[temp.size()-1];
     }
 
@@ -71,7 +63,7 @@ string MD5Digest::end()
 }
 
 /* -------------------------------------------------------------------------- */
-bool check_digest(const string &file, const string &reference,
+bool check_digest(const std::string &file, const std::string &reference,
         Digest::Algorithm da) throw(IOError)
 {
     char buffer[BUFFERSIZE];
@@ -81,7 +73,7 @@ bool check_digest(const string &file, const string &reference,
 
     MD5Digest digest;
 
-    ifstream fin(file.c_str(), ios::binary);
+    std::ifstream fin(file.c_str(), std::ios::binary);
     if (!fin)
         throw IOError("Opening " + file + " failed");
 
@@ -96,7 +88,7 @@ bool check_digest(const string &file, const string &reference,
 
     fin.close();
 
-    string result = digest.end();
+    std::string result = digest.end();
     return result == reference;
 }
 
