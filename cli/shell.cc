@@ -26,7 +26,7 @@
 
 #include "shell.h"
 #include "io.h"
-#include "configuration.h"
+#include "cliconfiguration.h"
 
 using std::ostream;
 using std::string;
@@ -216,7 +216,7 @@ Shell::Shell(const string &prompt)
 {
     m_lineReader = LineReader::defaultLineReader(prompt);
     try {
-        m_lineReader->readHistory(Configuration::config()->getHistoryFile());
+        m_lineReader->readHistory(CliConfiguration::config()->getHistoryFile());
     } catch (const IOError &ioe)
     {}
 
@@ -243,7 +243,7 @@ Shell::~Shell()
         delete *it;
 
     try {
-        m_lineReader->writeHistory(Configuration::config()->getHistoryFile());
+        m_lineReader->writeHistory(CliConfiguration::config()->getHistoryFile());
     } catch (const IOError &ioe) {
         cerr << "Error when saving history: " << ioe.what() << endl;
     }

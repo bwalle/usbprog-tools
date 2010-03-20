@@ -18,6 +18,7 @@
 #
 
 ADD_LIBRARY(libusbprog-core STATIC
+        configuration.cc
         devices.cc
         stringutil.cc
         util.cc

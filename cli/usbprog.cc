@@ -28,7 +28,7 @@
 #include <usbprog/usbprog.h>
 
 #include "usbprog.h"
-#include "configuration.h"
+#include "cliconfiguration.h"
 #include "shell.h"
 #include "commands.h"
 #include "config.h"
@@ -109,7 +109,7 @@ Usbprog::~Usbprog()
 void Usbprog::initConfig()
     throw (ApplicationError)
 {
-    Configuration *conf = Configuration::config();
+    CliConfiguration *conf = CliConfiguration::config();
 
     string configDir = Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
@@ -124,7 +124,7 @@ void Usbprog::initConfig()
 /* -------------------------------------------------------------------------- */
 void Usbprog::parseCommandLine()
 {
-    Configuration *conf = Configuration::config();
+    CliConfiguration *conf = CliConfiguration::config();
 
     po::options_description desc("Allowed options");
     desc.add_options()
@@ -153,7 +153,7 @@ void Usbprog::parseCommandLine()
     } catch (const po::error &err) {
         throw ApplicationError("Parsing command line failed: " + string(err.what()));
     }
-    po::notify(vm);    
+    po::notify(vm);
 
     if (vm.count("debug")) {
         conf->setDebug(true);
@@ -194,7 +194,7 @@ void Usbprog::parseCommandLine()
 void Usbprog::initFirmwarePool()
     throw (ApplicationError)
 {
-    Configuration *conf = Configuration::config();
+    CliConfiguration *conf = CliConfiguration::config();
 
     try {
         m_firmwarepool = new Firmwarepool(conf->getDataDir());
@@ -213,7 +213,7 @@ void Usbprog::initFirmwarePool()
 void Usbprog::initDeviceManager()
     throw (ApplicationError)
 {
-    bool debug = Configuration::config()->getDebug();
+    bool debug = CliConfiguration::config()->getDebug();
     m_devicemanager = new DeviceManager(debug ? 1 : 0);
 }
 
@@ -233,7 +233,7 @@ void Usbprog::exec()
     sh.addCommand(new DeviceCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new UploadCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new StartCommand(m_devicemanager));
-    if (Configuration::config()->getBatchMode())
+    if (CliConfiguration::config()->getBatchMode())
         sh.run(m_args);
     else
         sh.run();

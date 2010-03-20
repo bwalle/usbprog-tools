@@ -19,11 +19,11 @@
 
 ADD_EXECUTABLE(usbprog
     commands.cc
-    configuration.cc
     io.cc
     main.cc
     shell.cc
     usbprog.cc
+    cliconfiguration.cc
 )
 TARGET_LINK_LIBRARIES(usbprog ${EXTRA_LIBS} libusbprog md5)
 

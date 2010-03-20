@@ -16,55 +16,26 @@
  */
 #include "configuration.h"
 
-Configuration* Configuration::m_instance = 0;
-
-using std::string;
-using std::endl;
-
-/* -------------------------------------------------------------------------- */
-Configuration* Configuration::config()
-{
-    if (!m_instance)
-        m_instance = new Configuration();
-
-    return m_instance;
-}
-
 /* -------------------------------------------------------------------------- */
 Configuration::Configuration()
-    : m_debug(false), m_offline(false)
+    : m_debug(false)
+    , m_offline(false)
 {}
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setDataDir(const string &dir)
+Configuration::~Configuration()
+{}
+
+/* -------------------------------------------------------------------------- */
+void Configuration::setDataDir(const std::string &dir)
 {
     m_dataDir = dir;
 }
 
 /* -------------------------------------------------------------------------- */
-string Configuration::getDataDir() const
+std::string Configuration::getDataDir() const
 {
     return m_dataDir;
-}
-
-/* -------------------------------------------------------------------------- */
-void Configuration::setHistoryFile(const string &history)
-{
-    m_historyFile = history;
-}
-
-/* -------------------------------------------------------------------------- */
-string Configuration::getHistoryFile() const
-{
-    return m_historyFile;
-}
-
-/* -------------------------------------------------------------------------- */
-void Configuration::dumpConfig(std::ostream &stream)
-{
-    stream << "dataDir     = " << m_dataDir << endl;
-    stream << "offline     = " << m_offline << endl;
-    stream << "debug       = " << m_debug << endl;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -98,22 +69,17 @@ void Configuration::setIndexUrl(const std::string &url)
 }
 
 /* -------------------------------------------------------------------------- */
-string Configuration::getIndexUrl() const
+std::string Configuration::getIndexUrl() const
 {
     return m_indexUrl;
 }
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setBatchMode(bool batch)
+void Configuration::dumpConfig(std::ostream &stream)
 {
-    m_batchMode = batch;
+    stream << "dataDir     = " << m_dataDir << std::endl;
+    stream << "offline     = " << m_offline << std::endl;
+    stream << "debug       = " << m_debug << std::endl;
 }
-
-/* -------------------------------------------------------------------------- */
-bool Configuration::getBatchMode() const
-{
-    return m_batchMode;
-}
-
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

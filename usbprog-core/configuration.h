@@ -21,15 +21,11 @@
 #include <string>
 #include <ostream>
 
-class Configuration {
+class Configuration
+{
     public:
-        static Configuration* config();
-
         void setDataDir(const std::string &dir);
         std::string getDataDir() const;
-
-        void setHistoryFile(const std::string &history);
-        std::string getHistoryFile() const;
 
         void setDebug(bool debug);
         bool getDebug() const;
@@ -40,22 +36,17 @@ class Configuration {
         void setIndexUrl(const std::string &url);
         std::string getIndexUrl() const;
 
-        void setBatchMode(bool batch);
-        bool getBatchMode() const;
-
-        void dumpConfig(std::ostream &stream);
+        virtual void dumpConfig(std::ostream &stream);
 
     protected:
         Configuration();
+        virtual ~Configuration();
 
     private:
         std::string m_dataDir;
         bool m_debug;
         bool m_offline;
         std::string m_indexUrl;
-        static Configuration *m_instance;
-        bool m_batchMode;
-        std::string m_historyFile;
 };
 
 
