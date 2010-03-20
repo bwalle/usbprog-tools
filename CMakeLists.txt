@@ -90,17 +90,6 @@ ENDIF (NOT Boost_FOUND)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 SET(EXTRA_LIBS ${EXTRA_LIBS} ${Boost_LIBRARIES})
 
-# wxWidgets
-INCLUDE(FindwxWidgets)
-FIND_PACKAGE(wxWidgets COMPONENTS base core)
-IF (wxWidgets_FOUND)
-    SET(BUILD_GUI TRUE)
-    INCLUDE(${wxWidgets_USE_FILE})
-    SET(EXTRA_LIBS ${EXTRA_LIBS} ${wxWidgets_LIBRARIES})
-ELSE (wxWidgets_FOUND)
-    SET(BUILD_GUI FALSE)
-ENDIF (wxWidgets_FOUND)
-
 
 # Readline
 FIND_PATH(READLINE_INCLUDE_DIR readline/readline.h

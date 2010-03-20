@@ -18,14 +18,6 @@
 #
 
 IF (BUILD_GUI)
-    ADD_EXECUTABLE(usbprog-gui
-        viewer.cc
-        pindialog.cc
-        infodialog.cc
-        usbprogApp.cc
-        usbprogFrm.cc
-    )
-    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog md5)
 ENDIF (BUILD_GUI)
 
 IF (BUILD_MANPAGE)
@@ -47,10 +39,10 @@ IF (BUILD_MANPAGE)
             ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
     )
 
-    ADD_DEPENDENCIES(
-        usbprog-gui
-        gui-manpage
-    )
+#    ADD_DEPENDENCIES(
+#        usbprog-gui
+#        gui-manpage
+#    )
 ENDIF (BUILD_MANPAGE)
 
 # vim: set sw=4 ts=4 et:
