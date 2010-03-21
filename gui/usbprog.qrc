@@ -3,6 +3,7 @@
   <file alias="pins.xpm">graphics/pins.xpm</file>
   <file alias="usbprog.xpm">graphics/usbprog.xpm</file>
   <file alias="usbprog_icon.xpm">graphics/usbprog_icon.xpm</file>
+  <file alias="gtk-info.png">graphics/gtk-info.png</file>
 </qresource>
 </RCC>
 <!-- vim: set ft=xml: -->
