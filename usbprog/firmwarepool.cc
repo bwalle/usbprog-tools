@@ -413,7 +413,8 @@ std::string Firmware::formatDeviceId() const
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::readFromFile(const std::string &file,
-        ByteVector &bv) throw (IOError)
+                                ByteVector        &bv)
+    throw (IOError)
 {
     char buffer[BUFFERSIZE];
 
@@ -436,12 +437,13 @@ void Firmwarepool::readFromFile(const std::string &file,
 /* -------------------------------------------------------------------------- */
 Firmwarepool::Firmwarepool(const std::string &cacheDir)
       throw (IOError)
-    : m_cacheDir(cacheDir), m_progressNotifier(NULL),
-      m_indexAutoUpdatetime(0)
+    : m_cacheDir(cacheDir)
+    , m_progressNotifier(NULL)
+    , m_indexAutoUpdatetime(0)
 {
     if (!Fileutil::isDir(cacheDir))
         if (!Fileutil::mkdir(cacheDir))
-            throw IOError("Creating " + cacheDir + " failed");
+            throw IOError("Creating directory '" + cacheDir + "' failed");
 }
 
 /* -------------------------------------------------------------------------- */
