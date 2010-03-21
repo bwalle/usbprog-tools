@@ -17,8 +17,9 @@
 #ifndef USBPROG_STRINGUTIL_H
 #define USBPROG_STRINGUTIL_H
 
-#include <usbprog/usbprog.h>
 #include <string>
+
+#include <usbprog-core/types.h>
 
 /* StringTokenizer interface {{{ */
 
