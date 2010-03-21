@@ -14,32 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdexcept>
-#include <iostream>
+#ifndef USBPROG_APP_H
+#define USBPROG_APP_H
 
 #include <QApplication>
-#include <QMessageBox>
-#include <QNetworkInterface>
 
-#include "usbprog_app.h"
+#include <usbprog-core/error.h>
 
-int main(int argc, char *argv[])
+#include "usbprog_mainwindow.h"
+
+class UsbprogApplication : public QApplication
 {
-    UsbprogApplication app(argc, argv);
+    public:
+        static const QString NAME;
+        static const QString USBPROG_WEBSITE;
 
-    try {
-        int rc;
-        if (!app.parseCommandLine(argc, argv, rc))
-            return rc;
-        app.createAndSetMainWidget();
+    public:
+        UsbprogApplication(int &argc, char **argv)
+        throw (ApplicationError);
 
-    } catch (const std::runtime_error &err) {
-        QMessageBox::warning(NULL, UsbprogApplication::NAME,
-                             QObject::tr("An unknown exception has occurred:\n%1").arg(err.what()));
-        return EXIT_FAILURE;
-    }
+    public:
+        bool parseCommandLine(int argc, char *argv[], int &rc);
+        void createAndSetMainWidget();
 
-    return qApp->exec();
-}
+    protected:
+        void initConfig()
+        throw (ApplicationError);
+
+    private:
+        UsbprogMainWindow *m_mainWindow;
+};
+
+#endif // USBPROG_APP_H
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

@@ -23,6 +23,7 @@ IF (BUILD_GUI)
         main.cc
         usbprog_app.cc
         usbprog_mainwindow.cc
+        guiconfiguration.cc
     )
     SET(usbprog_gui_MOCS
         usbprog_mainwindow.h

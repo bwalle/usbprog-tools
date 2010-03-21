@@ -14,32 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdexcept>
+#ifndef GUICONFIGURATION_H
+#define GUICONFIGURATION_H
+
 #include <iostream>
+#include <string>
+#include <ostream>
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QNetworkInterface>
 
-#include "usbprog_app.h"
+#include <usbprog-core/configuration.h>
 
-int main(int argc, char *argv[])
+class GuiConfiguration : public Configuration
 {
-    UsbprogApplication app(argc, argv);
+    public:
+        static GuiConfiguration *config();
 
-    try {
-        int rc;
-        if (!app.parseCommandLine(argc, argv, rc))
-            return rc;
-        app.createAndSetMainWidget();
+        virtual void dumpConfig(std::ostream &stream);
 
-    } catch (const std::runtime_error &err) {
-        QMessageBox::warning(NULL, UsbprogApplication::NAME,
-                             QObject::tr("An unknown exception has occurred:\n%1").arg(err.what()));
-        return EXIT_FAILURE;
-    }
+    protected:
+        GuiConfiguration();
+        virtual ~GuiConfiguration();
 
-    return qApp->exec();
-}
+    private:
+        static GuiConfiguration *m_instance;
+};
 
-// vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:
+#endif /* GUICONFIGURATION_H */
+
+// vim: set sw=4 ts=4 et: :collapseFolds=1:
