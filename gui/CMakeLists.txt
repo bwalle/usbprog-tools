@@ -42,7 +42,7 @@ IF (BUILD_GUI)
         ${usbprog_gui_SRCS} ${usbprog_gui_MOC_SRCS} ${usbprog_gui_RCC_SRCS}
     )
 
-    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog md5)
+    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
 ENDIF (BUILD_GUI)
 
 IF (BUILD_MANPAGE AND BUILD_GUI)
