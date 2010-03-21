@@ -26,6 +26,8 @@
 #include <usbprog-core/date.h>
 #include <usbprog-core/inifile.h>
 #include <usbprog-core/error.h>
+#include <usbprog-core/types.h>
+#include <usbprog-core/devices.h>
 #include <usbprog/downloader.h>
 
 /* Typedefs {{{ */
@@ -37,7 +39,8 @@ typedef std::list<std::string>            StringList;
 /* }}} */
 /* Firmware {{{ */
 
-class Firmware {
+class Firmware
+{
     public:
         Firmware(const std::string &name);
 
@@ -78,24 +81,14 @@ class Firmware {
         ByteVector &getData();
         const ByteVector &getData() const;
 
-        void setVendorId(uint16_t vendorid);
-        uint16_t getVendorId() const;
-
-        void setProductId(uint16_t productid);
-        uint16_t getProductId() const;
-
-        void setBcdDevice(uint16_t bcdDevice);
-        uint16_t getBcdDevice() const;
-
-        bool hasDeviceId() const;
+        const UpdateDevice &updateDevice() const;
+        UpdateDevice &updateDevice();
 
         std::string toString() const;
         std::string formatDateVersion() const;
         std::string formatDeviceId() const;
 
     private:
-        const std::string     m_name;
-        std::string           m_label;
         std::string           m_filename;
         std::string           m_url;
         std::string           m_author;
@@ -104,10 +97,8 @@ class Firmware {
         std::string           m_description;
         StringStringMap       m_pins;
         ByteVector            m_data;
-        uint16_t              m_vendorId;
-        uint16_t              m_productId;
-        uint16_t              m_bcdDevice;
         std::string           m_md5sum;
+        UpdateDevice          m_updateDevice;
 };
 
 /* }}} */
@@ -141,6 +132,8 @@ class Firmwarepool {
         StringList getFirmwareNameList() const;
         Firmware *getFirmware(const std::string &name) const;
         std::vector<Firmware *> getFirmwareList() const;
+
+        std::vector<UpdateDevice> getUpdateDeviceList() const;
 
         void setProgress(ProgressNotifier *notifier);
         void setIndexUpdatetime(int minutes);

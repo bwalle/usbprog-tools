@@ -22,8 +22,9 @@
 #include <vector>
 #include <iostream>
 
-#include <usbprog/usbprog.h>
-#include <usbprog/firmwarepool.h>
+#include <usbprog-core/types.h>
+#include <usbprog-core/error.h>
+#include <usbprog-core/progressnotifier.h>
 
 /* Forward declarations {{{ */
 
@@ -31,9 +32,51 @@ struct usb_dev_handle;
 struct usb_device;
 
 /* }}} */
+/* UpdateDevice {{{ */
+
+class UpdateDevice
+{
+    public:
+        static uint16_t VENDOR_INVALID;
+        static uint16_t PRODUCT_INVALID;
+        static uint16_t BCDDEVICE_INVALID;
+
+    public:
+        UpdateDevice(const std::string &name = "");
+
+    public:
+        std::string getName() const;
+        void setName(const std::string &name);
+
+        std::string getLabel() const;
+        void setLabel(const std::string &label);
+
+        uint16_t getVendor() const;
+        void setVendor(uint16_t vendor);
+
+        uint16_t getProduct() const;
+        void setProduct(uint16_t product);
+
+        uint16_t getBcdDevice() const;
+        void setBcdDevice(uint16_t bcddevice);
+
+        bool isValid() const;
+
+        std::string formatDeviceId() const;
+
+    private:
+        std::string m_name;
+        std::string m_label;
+        uint16_t m_vendor;
+        uint16_t m_product;
+        uint16_t m_bcddevice;
+};
+
+/* }}} */
 /* Device {{{ */
 
-class Device {
+class Device
+{
     public:
         Device(struct usb_device *handle);
         virtual ~Device() {}
@@ -80,7 +123,7 @@ class DeviceManager {
     public:
         void init(int debuglevel = 0);
         void setUsbDebugging(int debuglevel);
-        void discoverUpdateDevices(Firmwarepool *firmwarepool = NULL);
+        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
         void printDevices(std::ostream &os) const;
         void switchUpdateMode()
             throw (IOError);

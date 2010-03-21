@@ -144,8 +144,8 @@ bool InfoCommand::execute(CommandArgVector   args,
         os << "MD5sum       : " << fw->getMD5Sum() << std::endl;
 
     // vendor ID and/or Product ID
-    if (fw->hasDeviceId())
-        os << "Device ID(s) : " << fw->formatDeviceId() << std::endl;
+    if (fw->updateDevice().isValid())
+        os << "Device ID(s) : " << fw->updateDevice().formatDeviceId() << std::endl;
 
     os << std::endl;
     os << "Description" << std::endl;
@@ -570,8 +570,9 @@ void CacheCommand::printLongHelp(std::ostream &os) const
 /* -------------------------------------------------------------------------- */
 DevicesCommand::DevicesCommand(DeviceManager *devicemanager,
         Firmwarepool *firmwarepool)
-    : AbstractCommand("devices"), m_devicemanager(devicemanager),
-      m_firmwarepool(firmwarepool)
+    : AbstractCommand("devices")
+    , m_devicemanager(devicemanager)
+    , m_firmwarepool(firmwarepool)
 {}
 
 /* -------------------------------------------------------------------------- */
@@ -580,7 +581,7 @@ bool DevicesCommand::execute(CommandArgVector   args,
                              std::ostream       &os)
     throw (ApplicationError)
 {
-    m_devicemanager->discoverUpdateDevices(m_firmwarepool);
+    m_devicemanager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
 
     if (m_devicemanager->getNumberUpdateDevices() == 0)
         os << "No devices found." << std::endl;
@@ -630,7 +631,7 @@ bool DeviceCommand::execute(CommandArgVector   args,
     std::string device = args[0]->getString();
 
     if (m_devicemanager->getNumberUpdateDevices() == 0)
-        m_devicemanager->discoverUpdateDevices(m_firmwarepool);
+        m_devicemanager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
 
     bool is_number = true;
     for (unsigned int i = 0; i < device.size(); i++) {
@@ -776,8 +777,6 @@ bool UploadCommand::execute(CommandArgVector   args,
             m_firmwarepool->fillFirmware(firmware);
         } catch (const IOError &err) {
             throw ApplicationError(std::string("I/O Error: ") + err.what());
-        } catch (const GeneralError &err) {
-            throw ApplicationError(std::string("General Error: ") + err.what());
         }
 
         data = fw->getData();

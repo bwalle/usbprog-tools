@@ -99,7 +99,7 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
     fw = new Firmware(name.toStdString());
 
     // set label
-    fw->setLabel(firmware.attribute("label").toStdString());
+    fw->updateDevice().setLabel(firmware.attribute("label").toStdString());
 
     for (QDomNode node = firmware.firstChild(); !node.isNull(); node = node.nextSibling()) {
         if (!node.isElement())
@@ -115,9 +115,9 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
             fw->setDate(DateTime(childElement.attribute("date").toStdString(), DTF_ISO_DATE));
             fw->setMD5Sum(childElement.attribute("md5sum").toStdString());
         } else if (childElement.tagName() == "description") {
-            fw->setVendorId(parse_long(childElement.attribute("vendorid").toAscii()));
-            fw->setProductId(parse_long(childElement.attribute("productid").toAscii()));
-            fw->setBcdDevice(parse_long(childElement.attribute("bcddevice").toAscii()));
+            fw->updateDevice().setVendor(parse_long(childElement.attribute("vendorid").toAscii()));
+            fw->updateDevice().setProduct(parse_long(childElement.attribute("productid").toAscii()));
+            fw->updateDevice().setBcdDevice(parse_long(childElement.attribute("bcddevice").toAscii()));
             fw->setDescription(strip(childElement.text().toStdString()));
         } else if (childElement.tagName() == "pins") {
             for (QDomNode subnode = childElement.firstChild();
@@ -139,25 +139,19 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
 
 /* -------------------------------------------------------------------------- */
 Firmware::Firmware(const std::string &name)
-    : m_name(name)
+    : m_updateDevice(name)
 {}
 
 /* -------------------------------------------------------------------------- */
 std::string Firmware::getName() const
 {
-    return m_name;
-}
-
-/* -------------------------------------------------------------------------- */
-void Firmware::setLabel(const std::string &label)
-{
-    m_label = label;
+    return m_updateDevice.getName();
 }
 
 /* -------------------------------------------------------------------------- */
 std::string Firmware::getLabel() const
 {
-    return m_label;
+    return m_updateDevice.getLabel();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -305,39 +299,15 @@ const ByteVector &Firmware::getData() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setVendorId(uint16_t vendorid)
+const UpdateDevice &Firmware::updateDevice() const
 {
-    m_vendorId = vendorid;
+    return m_updateDevice;
 }
 
 /* -------------------------------------------------------------------------- */
-uint16_t Firmware::getVendorId() const
+UpdateDevice &Firmware::updateDevice()
 {
-    return m_vendorId;
-}
-
-/* -------------------------------------------------------------------------- */
-void Firmware::setProductId(uint16_t productid)
-{
-    m_productId = productid;
-}
-
-/* -------------------------------------------------------------------------- */
-uint16_t Firmware::getProductId() const
-{
-    return m_productId;
-}
-
-/* -------------------------------------------------------------------------- */
-void Firmware::setBcdDevice(uint16_t bcdDevice)
-{
-    m_bcdDevice = bcdDevice;
-}
-
-/* -------------------------------------------------------------------------- */
-uint16_t Firmware::getBcdDevice() const
-{
-    return m_bcdDevice;
+    return m_updateDevice;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -345,8 +315,8 @@ std::string Firmware::toString() const
 {
     std::stringstream ss;
 
-    ss << "Name            : " << m_name << std::endl;
-    ss << "Label           : " << m_label << std::endl;
+    ss << "Name            : " << getName() << std::endl;
+    ss << "Label           : " << getLabel() << std::endl;
     ss << "File name       : " << m_filename << std::endl;
     ss << "URL             : " << m_url << std::endl;
     ss << "Version         : " << m_version << std::endl;
@@ -379,32 +349,6 @@ std::string Firmware::formatDateVersion() const
 
     ss << getVersion();
     ss << " [" << getDate().getDateTimeString(DTF_ISO_DATE) << "]";
-
-    return ss.str();
-}
-
-/* -------------------------------------------------------------------------- */
-bool Firmware::hasDeviceId() const
-{
-    return getVendorId() != 0 || getProductId() != 0 || getBcdDevice() != 0;
-}
-
-/* -------------------------------------------------------------------------- */
-std::string Firmware::formatDeviceId() const
-{
-    std::stringstream ss;
-
-    if (getVendorId() != 0)
-        ss << "Vendor: 0x" << std::setw(4) << std::hex << std::setfill('0') << getVendorId();
-    if (getVendorId() != 0 && getProductId() != 0)
-        ss << ", ";
-    if (getProductId() != 0)
-        ss << "Product: 0x" << std::setw(4) << std::hex << getProductId();
-    if (getBcdDevice() != 0 && (getProductId() != 0
-                || getVendorId() != 0))
-        ss << ", ";
-    if (getBcdDevice() != 0)
-        ss << "BCDDevice: 0x" << std::setw(4) << std::hex << getBcdDevice();
 
     return ss.str();
 }
@@ -641,6 +585,20 @@ std::vector<Firmware *> Firmwarepool::getFirmwareList() const
     for (StringFirmwareMap::const_iterator it = m_firmware.begin();
             it != m_firmware.end(); ++it)
         ret.push_back(it->second);
+
+    return ret;
+}
+
+/* -------------------------------------------------------------------------- */
+std::vector<UpdateDevice> Firmwarepool::getUpdateDeviceList() const
+{
+    std::vector<UpdateDevice> ret;
+
+    for (StringFirmwareMap::const_iterator it = m_firmware.begin(); it != m_firmware.end(); ++it) {
+        const Firmware *fw = it->second;
+        if (fw->updateDevice().isValid())
+            ret.push_back(fw->updateDevice());
+    }
 
     return ret;
 }

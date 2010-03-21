@@ -33,6 +33,111 @@
 #define PRODUCT_ID_USBPROG      0x0c62
 #define BCDDEVICE_UPDATE        0x0000
 
+/* UpdateDevice {{{ */
+
+// -----------------------------------------------------------------------------
+uint16_t UpdateDevice::VENDOR_INVALID      = 0xffff;
+uint16_t UpdateDevice::PRODUCT_INVALID     = 0xffff;
+uint16_t UpdateDevice::BCDDEVICE_INVALID   = 0xffff;
+
+// -----------------------------------------------------------------------------
+UpdateDevice::UpdateDevice(const std::string &name)
+    : m_name(name)
+    , m_vendor(VENDOR_INVALID)
+    , m_product(PRODUCT_INVALID)
+    , m_bcddevice(BCDDEVICE_INVALID)
+{}
+
+// -----------------------------------------------------------------------------
+uint16_t UpdateDevice::getVendor() const
+{
+    return m_vendor;
+}
+
+// -----------------------------------------------------------------------------
+void UpdateDevice::setVendor(uint16_t vendor)
+{
+    m_vendor = vendor;
+}
+
+// -----------------------------------------------------------------------------
+uint16_t UpdateDevice::getProduct() const
+{
+    return m_product;
+}
+
+// -----------------------------------------------------------------------------
+void UpdateDevice::setProduct(uint16_t product)
+{
+    m_product = product;
+}
+
+// -----------------------------------------------------------------------------
+uint16_t UpdateDevice::getBcdDevice() const
+{
+    return m_bcddevice;
+}
+
+// -----------------------------------------------------------------------------
+void UpdateDevice::setBcdDevice(uint16_t bcddevice)
+{
+    m_bcddevice = bcddevice;
+}
+
+// -----------------------------------------------------------------------------
+std::string UpdateDevice::getName() const
+{
+    return m_name;
+}
+
+// -----------------------------------------------------------------------------
+void UpdateDevice::setName(const std::string &name)
+{
+    m_name = name;
+}
+
+// -----------------------------------------------------------------------------
+std::string UpdateDevice::getLabel() const
+{
+    return m_label;
+}
+
+// -----------------------------------------------------------------------------
+void UpdateDevice::setLabel(const std::string &label)
+{
+    m_label = label;
+}
+
+// -----------------------------------------------------------------------------
+bool UpdateDevice::isValid() const
+{
+    return m_vendor != VENDOR_INVALID &&
+           m_product != PRODUCT_INVALID &&
+           m_bcddevice != BCDDEVICE_INVALID;
+}
+
+// -----------------------------------------------------------------------------
+std::string UpdateDevice::formatDeviceId() const
+{
+    std::stringstream ss;
+
+    if (m_vendor != VENDOR_INVALID)
+        ss << "Vendor: 0x" << std::setw(4) << std::hex << std::setfill('0') << m_vendor;
+    if (m_vendor != VENDOR_INVALID && m_product != PRODUCT_INVALID)
+        ss << ", ";
+    if (m_product != PRODUCT_INVALID)
+        ss << "Product: 0x" << std::setw(4) << std::hex << m_product;
+    if (m_bcddevice != BCDDEVICE_INVALID &&
+            (m_vendor != VENDOR_INVALID && m_product != PRODUCT_INVALID))
+        ss << ", ";
+    if (m_bcddevice != BCDDEVICE_INVALID)
+        ss << "BCDDevice: 0x" << std::setw(4) << std::hex << m_bcddevice;
+
+    return ss.str();
+
+}
+
+/* }}} */
 /* Device {{{ */
 
 /* -------------------------------------------------------------------------- */
@@ -193,7 +298,7 @@ void DeviceManager::setUsbDebugging(int debuglevel)
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
+void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices)
 {
     Debug::debug()->trace("usb_find_busses()");
     usb_find_busses();
@@ -202,10 +307,6 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
 
     DeviceVector oldDevices = m_updateDevices;
     m_updateDevices.clear();
-
-    std::vector<Firmware *> firmwares;
-    if (firmwarepool)
-        firmwares = firmwarepool->getFirmwareList();
 
     for (struct usb_bus *bus = usb_get_busses(); bus; bus = bus->next) {
         for (struct usb_device *dev = bus->devices; dev; dev = dev->next) {
@@ -224,18 +325,18 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
                 d->setUpdateMode(true);
                 d->setName("USBprog in update mode");
                 d->setShortName("usbprog");
-            } else if (firmwarepool)
-                for (std::vector<Firmware *>::const_iterator it = firmwares.begin();
-                        it != firmwares.end(); ++it)
+            } else {
+                for (std::vector<UpdateDevice>::const_iterator it = updateDevices.begin(); it != updateDevices.end(); ++it)
                     if (vendorid != 0 && productid != 0 &&
-                            (*it)->getVendorId() == vendorid &&
-                            (*it)->getProductId() == productid &&
-                            (*it)->getBcdDevice() == bcddevice) {
+                            it->getVendor() == vendorid &&
+                            it->getProduct() == productid &&
+                            it->getBcdDevice() == bcddevice) {
                         d = new Device(dev);
-                        d->setName("USBprog with \"" + (*it)->getLabel() +
-                                "\" firmware");
-                        d->setShortName((*it)->getName());
+                        d->setName("USBprog with \"" + it->getLabel() + "\" firmware");
+                        d->setShortName(it->getName());
+                        break;
                     }
+            }
 
             if (d)
                 m_updateDevices.push_back(d);
@@ -247,8 +348,7 @@ void DeviceManager::discoverUpdateDevices(Firmwarepool *firmwarepool)
         m_currentUpdateDevice = -1;
 
     // free memory
-    for (DeviceVector::const_iterator it = oldDevices.begin();
-            it != oldDevices.end(); ++it)
+    for (DeviceVector::const_iterator it = oldDevices.begin(); it != oldDevices.end(); ++it)
         delete *it;
 }
 
