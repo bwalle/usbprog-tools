@@ -22,6 +22,7 @@
 
 #include <QObject>
 
+#include <usbprog-core/progressnotifier.h>
 #include <usbprog/usbprog.h>
 
 /* DownloadError {{{ */
