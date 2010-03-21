@@ -42,27 +42,6 @@ typedef std::vector<Device *> DeviceVector;
 typedef std::vector<std::string> StringVector;
 
 /* }}} */
-/* Exceptions {{{1 */
-
-class IOError : public std::runtime_error {
-    public:
-        IOError(const std::string& string)
-            : std::runtime_error(string) {}
-};
-
-class ParseError : public std::runtime_error {
-    public:
-        ParseError(const std::string& string)
-            : std::runtime_error(string) {}
-};
-
-class GeneralError : public std::runtime_error {
-    public:
-        GeneralError(const std::string& string)
-            : std::runtime_error(string) {}
-};
-
-/* }}} */
 /* ProgressNotifier {{{ */
 
 class ProgressNotifier {

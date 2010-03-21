@@ -17,7 +17,7 @@
 #ifndef IO_H
 #define IO_H
 
-#include <usbprog/usbprog.h>
+#include <usbprog-core/error.h>
 
 /* Interface for completors {{{ */
 class Completor {

@@ -29,15 +29,6 @@
 #define DEFAULT_TERMINAL_WIDTH  80
 
 /* }}} */
-/* ApplicationError {{{ */
-
-class ApplicationError : public std::runtime_error {
-    public:
-        ApplicationError(const std::string& string)
-            : std::runtime_error(string) {}
-};
-
-/* }}} */
 /* HashNotifier {{{ */
 
 class HashNotifier : public ProgressNotifier {

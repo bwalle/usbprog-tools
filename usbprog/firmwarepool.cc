@@ -547,11 +547,11 @@ void Firmwarepool::setProgress(ProgressNotifier *notifier)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadFirmware(const std::string &name)
-    throw (DownloadError, GeneralError)
+    throw (DownloadError, ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
-        throw GeneralError("Firmware doesn't exist");
+        throw ApplicationError("Firmware doesn't exist");
 
     std::string url = fw->getUrl() + "/" + fw->getFilename();
     std::string file(pathconcat(m_cacheDir, fw->getVerFilename()));
@@ -596,11 +596,11 @@ void Firmwarepool::downloadFirmware(const std::string &name)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::fillFirmware(const std::string &name)
-    throw (IOError, GeneralError)
+    throw (IOError, ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
-        throw GeneralError("Firmware doesn't exist");
+        throw ApplicationError("Firmware doesn't exist");
 
     std::string file = getFirmwareFilename(fw);
     readFromFile(file, fw->getData());

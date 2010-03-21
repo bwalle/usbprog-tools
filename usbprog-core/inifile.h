@@ -20,7 +20,7 @@
 #include <string>
 #include <map>
 
-#include <usbprog/usbprog.h>
+#include <usbprog-core/error.h>
 
 class IniFile {
     public:

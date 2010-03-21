@@ -19,7 +19,7 @@
 
 #include <string>
 
-#include <usbprog/usbprog.h>
+#include <usbprog-core/error.h>
 
 /* Digest {{{ */
 

@@ -21,7 +21,7 @@
 #include <stdexcept>
 #include <string>
 
-#include <usbprog/usbprog.h>
+#include <usbprog-core/error.h>
 
 enum DateTimeFormat {
     DTF_ISO_DATETIME,           /* YYYY-MM-DD HH:MM */

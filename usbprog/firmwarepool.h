@@ -25,6 +25,7 @@
 
 #include <usbprog-core/date.h>
 #include <usbprog-core/inifile.h>
+#include <usbprog-core/error.h>
 #include <usbprog/downloader.h>
 
 /* Typedefs {{{ */
@@ -145,9 +146,9 @@ class Firmwarepool {
         void setIndexUpdatetime(int minutes);
 
         void downloadFirmware(const std::string &name)
-            throw (DownloadError, GeneralError);
+            throw (DownloadError, ApplicationError);
         void fillFirmware(const std::string &name)
-            throw (IOError, GeneralError);
+            throw (IOError, ApplicationError);
         bool isFirmwareOnDisk(const std::string &name)
             throw (IOError);
 
