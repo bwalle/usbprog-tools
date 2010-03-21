@@ -3,7 +3,6 @@
   <file alias="pins.xpm">graphics/pins.xpm</file>
   <file alias="usbprog.xpm">graphics/usbprog.xpm</file>
   <file alias="usbprog_icon.xpm">graphics/usbprog_icon.xpm</file>
-  <file alias="gtk-info.png">graphics/gtk-info.png</file>
   <file alias="gtk-quit.png">graphics/gtk-quit.png</file>
   <file alias="gtk-refresh.png">graphics/gtk-refresh.png</file>
   <file alias="gtk-go-up.png">graphics/gtk-go-up.png</file>
