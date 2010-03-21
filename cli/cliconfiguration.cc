@@ -63,6 +63,8 @@ bool CliConfiguration::getBatchMode() const
 void CliConfiguration::dumpConfig(std::ostream &stream)
 {
     Configuration::dumpConfig(stream);
+    stream << "history     = " << m_historyFile  << std::endl
+           << "batch mode  = " << m_batchMode    << std::endl;
 }
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

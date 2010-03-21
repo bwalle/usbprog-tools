@@ -77,9 +77,10 @@ std::string Configuration::getIndexUrl() const
 /* -------------------------------------------------------------------------- */
 void Configuration::dumpConfig(std::ostream &stream)
 {
-    stream << "dataDir     = " << m_dataDir << std::endl;
-    stream << "offline     = " << m_offline << std::endl;
-    stream << "debug       = " << m_debug << std::endl;
+    stream << "dataDir     = " << m_dataDir  << std::endl
+           << "debug       = " << m_debug    << std::endl
+           << "offline     = " << m_offline  << std::endl
+           << "indexURL    = " << m_indexUrl << std::endl;
 }
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:
