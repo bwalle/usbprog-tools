@@ -24,7 +24,7 @@ IF (BUILD_GUI)
         usbprog_app.cc
         usbprog_mainwindow.cc
     )
-    SET(usprog_gui_MOCS
+    SET(usbprog_gui_MOCS
         usbprog_mainwindow.h
     )
 
