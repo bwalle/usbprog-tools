@@ -21,7 +21,9 @@
 #include <string>
 #include <ostream>
 
-class Configuration
+#include <boost/utility.hpp>
+
+class Configuration : boost::noncopyable
 {
     public:
         void setDataDir(const std::string &dir);
