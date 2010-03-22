@@ -91,7 +91,7 @@ void Downloader::download() throw (DownloadError)
     Debug::debug()->dbg("Performing download");
     while (!m_finished) {
         QByteArray readData = reply->readAll();
-        m_output << readData.constData();
+        m_output.write(readData.constData(), readData.size());
         qApp->processEvents(QEventLoop::WaitForMoreEvents);
     }
 
