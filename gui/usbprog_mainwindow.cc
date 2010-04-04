@@ -36,6 +36,8 @@ UsbprogMainWindow::UsbprogMainWindow()
     : m_deviceManager(NULL)
     , m_firmwarepool(NULL)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
+
     std::memset(&m_widgets, 0, sizeof(m_widgets));
     std::memset(&m_actions, 0, sizeof(m_actions));
 
