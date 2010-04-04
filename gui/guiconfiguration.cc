@@ -27,12 +27,10 @@ GuiConfiguration::~GuiConfiguration()
 {}
 
 /* -------------------------------------------------------------------------- */
-GuiConfiguration* GuiConfiguration::config()
+GuiConfiguration &GuiConfiguration::config()
 {
-    if (!m_instance)
-        m_instance = new GuiConfiguration();
-
-    return m_instance;
+    static GuiConfiguration instance;
+    return instance;
 }
 
 /* -------------------------------------------------------------------------- */

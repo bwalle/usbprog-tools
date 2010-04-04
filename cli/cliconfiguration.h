@@ -26,7 +26,7 @@
 class CliConfiguration : public Configuration
 {
     public:
-        static CliConfiguration *config();
+        static CliConfiguration &config();
 
         void setHistoryFile(const std::string &history);
         std::string getHistoryFile() const;

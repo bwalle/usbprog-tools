@@ -100,29 +100,29 @@ Usbprog::~Usbprog()
 void Usbprog::initConfig()
     throw (ApplicationError)
 {
-    CliConfiguration *conf = CliConfiguration::config();
+    CliConfiguration &conf = CliConfiguration::config();
 
     std::string configDir = Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
         throw ApplicationError("Could not determine configuration "
                 "directory.");
 
-    conf->setDataDir(configDir);
-    conf->setHistoryFile(pathconcat(configDir, "history"));
-    conf->setIndexUrl(DEFAULT_INDEX_URL);
+    conf.setDataDir(configDir);
+    conf.setHistoryFile(pathconcat(configDir, "history"));
+    conf.setIndexUrl(DEFAULT_INDEX_URL);
 }
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::parseCommandLine()
 {
-    CliConfiguration *conf = CliConfiguration::config();
+    CliConfiguration &conf = CliConfiguration::config();
 
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "Prints a help message")
         ("version,v", "Prints version information")
         ("datadir,d", po::value<std::string>(), std::string("Uses the specified data "
-            "directory instead of " + conf->getDataDir()).c_str())
+            "directory instead of " + conf.getDataDir()).c_str())
         ("offline,o", "Use only the local cache "
             "and don't connect to the internet")
         ("debug,D", "Enables debug output");
@@ -147,7 +147,7 @@ void Usbprog::parseCommandLine()
     po::notify(vm);
 
     if (vm.count("debug")) {
-        conf->setDebug(true);
+        conf.setDebug(true);
         Debug::debug()->setLevel(Debug::DL_TRACE);
     }
 
@@ -162,22 +162,22 @@ void Usbprog::parseCommandLine()
     }
 
     if (vm.count("datadir"))
-        conf->setDataDir(vm["datadir"].as<std::string>());
+        conf.setDataDir(vm["datadir"].as<std::string>());
     if (vm.count("offline"))
-        conf->setOffline(true);
+        conf.setOffline(true);
 
-    if (conf->getDebug())
-        conf->dumpConfig(std::cerr);
+    if (conf.getDebug())
+        conf.dumpConfig(std::cerr);
 
     // batch mode?
-    conf->setBatchMode(vm.count("commands") != 0);
-    if (conf->getBatchMode())
+    conf.setBatchMode(vm.count("commands") != 0);
+    if (conf.getBatchMode())
         m_args = vm["commands"].as< std::vector<std::string> >();
 
-    if (conf->isOffline() && !conf->getBatchMode())
+    if (conf.isOffline() && !conf.getBatchMode())
         std::cout << "WARNING: You're using usbprog in offline mode!" << std::endl;
 
-    if (!conf->getBatchMode())
+    if (!conf.getBatchMode())
         m_progressNotifier = new HashNotifier(DEFAULT_TERMINAL_WIDTH);
 }
 
@@ -185,14 +185,14 @@ void Usbprog::parseCommandLine()
 void Usbprog::initFirmwarePool()
     throw (ApplicationError)
 {
-    CliConfiguration *conf = CliConfiguration::config();
+    CliConfiguration &conf = CliConfiguration::config();
 
     try {
-        m_firmwarepool = new Firmwarepool(conf->getDataDir());
+        m_firmwarepool = new Firmwarepool(conf.getDataDir());
         m_firmwarepool->setIndexUpdatetime(AUTO_NOT_UPDATE_TIME);
-        if (!conf->isOffline())
-            m_firmwarepool->downloadIndex(conf->getIndexUrl());
-        if (!conf->getDebug())
+        if (!conf.isOffline())
+            m_firmwarepool->downloadIndex(conf.getIndexUrl());
+        if (!conf.getDebug())
             m_firmwarepool->setProgress(m_progressNotifier);
         m_firmwarepool->readIndex();
     } catch (const std::runtime_error &re) {
@@ -204,7 +204,7 @@ void Usbprog::initFirmwarePool()
 void Usbprog::initDeviceManager()
     throw (ApplicationError)
 {
-    bool debug = CliConfiguration::config()->getDebug();
+    bool debug = CliConfiguration::config().getDebug();
     m_devicemanager = new DeviceManager(debug ? 1 : 0);
 }
 
@@ -224,7 +224,7 @@ void Usbprog::exec()
     sh.addCommand(new DeviceCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new UploadCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new StartCommand(m_devicemanager));
-    if (CliConfiguration::config()->getBatchMode())
+    if (CliConfiguration::config().getBatchMode())
         sh.run(m_args);
     else
         sh.run();

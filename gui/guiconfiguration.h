@@ -27,7 +27,7 @@
 class GuiConfiguration : public Configuration
 {
     public:
-        static GuiConfiguration *config();
+        static GuiConfiguration &config();
 
         virtual void dumpConfig(std::ostream &stream);
 

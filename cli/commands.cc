@@ -85,7 +85,7 @@ bool ListCommand::execute(CommandArgVector  args,
         os << fw->getLabel() << std::endl;
     }
 
-    if (!CliConfiguration::config()->getBatchMode())
+    if (!CliConfiguration::config().getBatchMode())
         os << std::endl << "*: Firmware file downloaded" << std::endl;
 
     return true;
@@ -151,7 +151,7 @@ bool InfoCommand::execute(CommandArgVector   args,
     os << "Description" << std::endl;
     os << wordwrap(fw->getDescription(), DEFAULT_TERMINAL_WIDTH) << std::endl;
 
-    if (!CliConfiguration::config()->getBatchMode()) {
+    if (!CliConfiguration::config().getBatchMode()) {
         os << std::endl;
         os << "For information about the Pin assignment, use the "
            << "\"pin " << fw->getName() << "\" command." << std::endl;
@@ -240,7 +240,7 @@ bool PinCommand::execute(CommandArgVector   args,
     if (!fw)
         throw ApplicationError(fwstr + ": Invalid firmware specified.");
 
-    if (!CliConfiguration::config()->getBatchMode()) {
+    if (!CliConfiguration::config().getBatchMode()) {
         os << "            +----------------+" << std::endl;
         os << "            |  9  7  5  3  1 |" << std::endl;
         os << "            | 10  8  6  4  2 |" << std::endl;
@@ -388,7 +388,7 @@ bool DownloadCommand::execute(CommandArgVector   args,
     throw (ApplicationError)
 {
     std::string fwstr = args[0]->getString();
-    if (CliConfiguration::config()->isOffline()) {
+    if (CliConfiguration::config().isOffline()) {
         os << "Software is in offline mode. Downloading is not possbile."
            << std::endl;
         return true;
@@ -588,7 +588,7 @@ bool DevicesCommand::execute(CommandArgVector   args,
     else
         m_devicemanager->printDevices(os);
 
-    if (!CliConfiguration::config()->getBatchMode() &&
+    if (!CliConfiguration::config().getBatchMode() &&
             m_devicemanager->getNumberUpdateDevices() > 1)
         os << std::endl
            << "       * = Currently selected update device." << std::endl;
@@ -801,7 +801,7 @@ bool UploadCommand::execute(CommandArgVector   args,
         throw ApplicationError("Unable to find update device (2).");
     UsbprogUpdater updater(dev);
 
-    if (!CliConfiguration::config()->getBatchMode() && !CliConfiguration::config()->getDebug())
+    if (!CliConfiguration::config().getBatchMode() && !CliConfiguration::config().getDebug())
         updater.setProgress(&hn);
 
     try {
@@ -922,7 +922,7 @@ bool StartCommand::execute(CommandArgVector args,
     UsbprogUpdater updater(dev);
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
 
-    if (!CliConfiguration::config()->getBatchMode() && !CliConfiguration::config()->getDebug())
+    if (!CliConfiguration::config().getBatchMode() && !CliConfiguration::config().getDebug())
         updater.setProgress(&hn);
 
     try {

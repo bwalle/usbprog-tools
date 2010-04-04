@@ -46,27 +46,27 @@ UsbprogApplication::UsbprogApplication(int &argc, char **argv)
 void UsbprogApplication::initConfig()
     throw (ApplicationError)
 {
-    GuiConfiguration *conf = GuiConfiguration::config();
+    GuiConfiguration &conf = GuiConfiguration::config();
 
     std::string configDir = Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
         throw ApplicationError("Could not determine configuration directory.");
 
-    conf->setDataDir(configDir);
-    conf->setIndexUrl(DEFAULT_INDEX_URL);
+    conf.setDataDir(configDir);
+    conf.setIndexUrl(DEFAULT_INDEX_URL);
 }
 
 // -----------------------------------------------------------------------------
 bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
 {
-    GuiConfiguration *conf = GuiConfiguration::config();
+    GuiConfiguration &conf = GuiConfiguration::config();
 
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h",      "Prints a help message")
         ("version,v",   "Prints version information")
         ("datadir,d",   po::value<std::string>(),
-                        ("Uses the specified data directory instead of " + conf->getDataDir()).c_str())
+                        ("Uses the specified data directory instead of " + conf.getDataDir()).c_str())
         ("offline,o",   "Use only the local cache and don't connect to the internet")
         ("debug,D",     "Enables debug output");
 
@@ -92,7 +92,7 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
     po::notify(vm);
 
     if (vm.count("debug")) {
-        conf->setDebug(true);
+        conf.setDebug(true);
         Debug::debug()->setLevel(Debug::DL_TRACE);
     }
 
@@ -109,14 +109,14 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
     }
 
     if (vm.count("datadir"))
-        conf->setDataDir(vm["datadir"].as<std::string>());
+        conf.setDataDir(vm["datadir"].as<std::string>());
     if (vm.count("offline"))
-        conf->setOffline(true);
+        conf.setOffline(true);
 
-    if (conf->getDebug())
-        conf->dumpConfig(std::cerr);
+    if (conf.getDebug())
+        conf.dumpConfig(std::cerr);
 
-    if (conf->isOffline())
+    if (conf.isOffline())
         std::cout << "WARNING: You're using usbprog in offline mode!" << std::endl;
 
     return true;

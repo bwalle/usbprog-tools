@@ -204,7 +204,7 @@ Shell::Shell(const std::string &prompt)
 {
     m_lineReader = LineReader::defaultLineReader(prompt);
     try {
-        m_lineReader->readHistory(CliConfiguration::config()->getHistoryFile());
+        m_lineReader->readHistory(CliConfiguration::config().getHistoryFile());
     } catch (const IOError &ioe)
     {}
 
@@ -231,7 +231,7 @@ Shell::~Shell()
         delete *it;
 
     try {
-        m_lineReader->writeHistory(CliConfiguration::config()->getHistoryFile());
+        m_lineReader->writeHistory(CliConfiguration::config().getHistoryFile());
     } catch (const IOError &ioe) {
         std::cerr << "Error when saving history: " << ioe.what() << std::endl;
     }

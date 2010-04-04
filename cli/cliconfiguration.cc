@@ -27,12 +27,10 @@ CliConfiguration::~CliConfiguration()
 {}
 
 /* -------------------------------------------------------------------------- */
-CliConfiguration* CliConfiguration::config()
+CliConfiguration &CliConfiguration::config()
 {
-    if (!m_instance)
-        m_instance = new CliConfiguration();
-
-    return m_instance;
+    static CliConfiguration instance;
+    return instance;
 }
 
 /* -------------------------------------------------------------------------- */

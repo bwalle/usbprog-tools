@@ -142,7 +142,8 @@ std::string UpdateDevice::formatDeviceId() const
 
 /* -------------------------------------------------------------------------- */
 Device::Device(struct usb_device *handle)
-    : m_handle(handle), m_updateMode(false)
+    : m_handle(handle)
+    , m_updateMode(false)
 {}
 
 /* -------------------------------------------------------------------------- */

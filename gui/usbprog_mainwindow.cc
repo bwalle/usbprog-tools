@@ -53,7 +53,7 @@ UsbprogMainWindow::UsbprogMainWindow()
     setWindowTitle(UsbprogApplication::NAME);
 
     m_deviceManager = new DeviceManager;
-    m_firmwarepool = new Firmwarepool(GuiConfiguration::config()->getDataDir());
+    m_firmwarepool = new Firmwarepool(GuiConfiguration::config().getDataDir());
 
     // intially populate the device list
     refreshDevices();
