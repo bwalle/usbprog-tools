@@ -568,10 +568,10 @@ void CacheCommand::printLongHelp(std::ostream &os) const
 /* DevicesCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-DevicesCommand::DevicesCommand(DeviceManager *devicemanager,
+DevicesCommand::DevicesCommand(DeviceManager *deviceManager,
         Firmwarepool *firmwarepool)
     : AbstractCommand("devices")
-    , m_devicemanager(devicemanager)
+    , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
 {}
 
@@ -581,15 +581,15 @@ bool DevicesCommand::execute(CommandArgVector   args,
                              std::ostream       &os)
     throw (ApplicationError)
 {
-    m_devicemanager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
 
-    if (m_devicemanager->getNumberUpdateDevices() == 0)
+    if (m_deviceManager->getNumberUpdateDevices() == 0)
         os << "No devices found." << std::endl;
     else
-        m_devicemanager->printDevices(os);
+        m_deviceManager->printDevices(os);
 
     if (!CliConfiguration::config().getBatchMode() &&
-            m_devicemanager->getNumberUpdateDevices() > 1)
+            m_deviceManager->getNumberUpdateDevices() > 1)
         os << std::endl
            << "       * = Currently selected update device." << std::endl;
 
@@ -615,10 +615,9 @@ void DevicesCommand::printLongHelp(std::ostream &os) const
 /* DeviceCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-DeviceCommand::DeviceCommand(DeviceManager *devicemanager,
-                             Firmwarepool *firmwarepool)
+DeviceCommand::DeviceCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool)
     : AbstractCommand("device")
-    , m_devicemanager(devicemanager)
+    , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
 {}
 
@@ -630,8 +629,8 @@ bool DeviceCommand::execute(CommandArgVector   args,
 {
     std::string device = args[0]->getString();
 
-    if (m_devicemanager->getNumberUpdateDevices() == 0)
-        m_devicemanager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    if (m_deviceManager->getNumberUpdateDevices() == 0)
+        m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
 
     bool is_number = true;
     for (unsigned int i = 0; i < device.size(); i++) {
@@ -648,13 +647,13 @@ bool DeviceCommand::execute(CommandArgVector   args,
         ss << device;
         ss >> updatedevice;
 
-        int number_of_devices = m_devicemanager->getNumberUpdateDevices();
+        int number_of_devices = m_deviceManager->getNumberUpdateDevices();
         if (updatedevice < 0 || updatedevice >= number_of_devices)
             throw ApplicationError("Invalid device number specified.");
     } else {
 
-        for (unsigned int i = 0; i < m_devicemanager->getNumberUpdateDevices(); i++) {
-            Device *dev = m_devicemanager->getDevice(i);
+        for (unsigned int i = 0; i < m_deviceManager->getNumberUpdateDevices(); i++) {
+            Device *dev = m_deviceManager->getDevice(i);
 
             if (dev->getShortName() == device) {
                 updatedevice = i;
@@ -666,7 +665,7 @@ bool DeviceCommand::execute(CommandArgVector   args,
             throw ApplicationError("Invalid update device name specified.");
     }
 
-    m_devicemanager->setCurrentUpdateDevice(updatedevice);
+    m_deviceManager->setCurrentUpdateDevice(updatedevice);
 
     return true;
 }
@@ -703,7 +702,7 @@ StringVector DeviceCommand::getCompletions(
         return StringVector();
 
     StringVector result;
-    for (unsigned int i = 0; i < m_devicemanager->getNumberUpdateDevices(); i++) {
+    for (unsigned int i = 0; i < m_deviceManager->getNumberUpdateDevices(); i++) {
         std::stringstream ss;
         ss << i;
         result.push_back(ss.str());
@@ -736,10 +735,9 @@ void DeviceCommand::printLongHelp(std::ostream &os) const
 /* UploadCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-UploadCommand::UploadCommand(DeviceManager *devicemanager,
-                             Firmwarepool  *firmwarepool)
+UploadCommand::UploadCommand(DeviceManager *deviceManager, Firmwarepool  *firmwarepool)
     : AbstractCommand("upload")
-    , m_devicemanager(devicemanager)
+    , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
 {}
 
@@ -752,8 +750,8 @@ bool UploadCommand::execute(CommandArgVector   args,
     std::string firmware = args[0]->getString();
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
 
-    if (m_devicemanager->getNumberUpdateDevices() == 0)
-        m_devicemanager->discoverUpdateDevices();
+    if (m_deviceManager->getNumberUpdateDevices() == 0)
+        m_deviceManager->discoverUpdateDevices();
 
     ByteVector data;
 
@@ -782,7 +780,7 @@ bool UploadCommand::execute(CommandArgVector   args,
         data = fw->getData();
     }
 
-    Device *dev = m_devicemanager->getCurrentUpdateDevice();
+    Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device.");
 
@@ -790,13 +788,13 @@ bool UploadCommand::execute(CommandArgVector   args,
     if (!dev->isUpdateMode()) {
         try {
             os << "Switching to update mode ..." << std::endl;
-            m_devicemanager->switchUpdateMode();
+            m_deviceManager->switchUpdateMode();
         } catch (const IOError &err) {
             throw ApplicationError(std::string("I/O Error: ") + err.what());
         }
     }
 
-    dev = m_devicemanager->getCurrentUpdateDevice();
+    dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device (2).");
     UsbprogUpdater updater(dev);
@@ -820,7 +818,7 @@ bool UploadCommand::execute(CommandArgVector   args,
 
     os << "Detecting new USB devices ..." << std::endl;
     usbprog_sleep(2);
-    m_devicemanager->discoverUpdateDevices();
+    m_deviceManager->discoverUpdateDevices();
 
     return true;
 }
@@ -906,8 +904,9 @@ StringVector UploadCommand::getSupportedOptions() const
 /* StartCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-StartCommand::StartCommand(DeviceManager *devicemanager)
-    : AbstractCommand("start"), m_devicemanager(devicemanager)
+StartCommand::StartCommand(DeviceManager *deviceManager)
+    : AbstractCommand("start")
+    , m_deviceManager(deviceManager)
 {}
 
 /* -------------------------------------------------------------------------- */
@@ -916,7 +915,7 @@ bool StartCommand::execute(CommandArgVector args,
                            std::ostream     &os)
     throw (ApplicationError)
 {
-    Device *dev = m_devicemanager->getCurrentUpdateDevice();
+    Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device.");
     UsbprogUpdater updater(dev);

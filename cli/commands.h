@@ -165,8 +165,7 @@ class CacheCommand : public AbstractCommand {
 
 class DevicesCommand : public AbstractCommand {
     public:
-        DevicesCommand(DeviceManager *devicemanager,
-                Firmwarepool *firmwarepool);
+        DevicesCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
     public:
         /* return false => end */
@@ -177,7 +176,7 @@ class DevicesCommand : public AbstractCommand {
         void printLongHelp(std::ostream &os) const;
 
     private:
-        DeviceManager *m_devicemanager;
+        DeviceManager *m_deviceManager;
         Firmwarepool  *m_firmwarepool;
 };
 
@@ -186,8 +185,7 @@ class DevicesCommand : public AbstractCommand {
 
 class DeviceCommand : public AbstractCommand {
     public:
-        DeviceCommand(DeviceManager *devicemanager,
-                Firmwarepool *firmwarepool);
+        DeviceCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
     public:
         bool execute(CommandArgVector args, StringVector options,
@@ -205,7 +203,7 @@ class DeviceCommand : public AbstractCommand {
             bool *filecompletion) const;
 
     private:
-        DeviceManager *m_devicemanager;
+        DeviceManager *m_deviceManager;
         Firmwarepool *m_firmwarepool;
 };
 
@@ -214,8 +212,7 @@ class DeviceCommand : public AbstractCommand {
 
 class UploadCommand : public AbstractCommand {
     public:
-        UploadCommand(DeviceManager *devicemanager,
-                      Firmwarepool  *firmwarepool);
+        UploadCommand(DeviceManager *deviceManager, Firmwarepool  *firmwarepool);
 
     public:
         bool execute(CommandArgVector args, StringVector options,
@@ -235,7 +232,7 @@ class UploadCommand : public AbstractCommand {
             bool *filecompletion) const;
 
     private:
-        DeviceManager *m_devicemanager;
+        DeviceManager *m_deviceManager;
         Firmwarepool  *m_firmwarepool;
 };
 
@@ -244,7 +241,7 @@ class UploadCommand : public AbstractCommand {
 
 class StartCommand : public AbstractCommand {
     public:
-        StartCommand(DeviceManager *devicemanager);
+        StartCommand(DeviceManager *deviceManager);
 
     public:
         bool execute(CommandArgVector args, StringVector options,
@@ -254,7 +251,7 @@ class StartCommand : public AbstractCommand {
         void printLongHelp(std::ostream &os) const;
 
     private:
-        DeviceManager *m_devicemanager;
+        DeviceManager *m_deviceManager;
 };
 
 /* }}} */
