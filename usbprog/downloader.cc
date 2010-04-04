@@ -31,6 +31,8 @@
 #include <usbprog/downloader.h>
 #include <usbprog/usbprog.h>
 
+#include "config.h"
+
 /* Members {{{ */
 
 /* -------------------------------------------------------------------------- */
