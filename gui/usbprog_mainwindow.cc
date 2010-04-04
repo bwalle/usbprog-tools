@@ -62,7 +62,11 @@ UsbprogMainWindow::~UsbprogMainWindow()
 void UsbprogMainWindow::initActions()
 {
     m_actions.quit = new QAction(QIcon(":/gtk-quit.png"), tr("&Quit"), this);
-    m_actions.quit->setShortcuts(QKeySequence::Quit);
+#if QT_VERSION < 0x040600
+    m_actions.quit->setShortcut(Qt::CTRL | Qt::Key_Q);
+#else
+    m_actions.quit->setShortcut(QKeySequence::Quit);
+#endif
     m_actions.quit->setStatusTip(tr("Quits the program"));
 }
 
