@@ -130,9 +130,10 @@ class DeviceManager {
 
         size_t getNumberUpdateDevices() const;
         Device *getDevice(size_t number) const;
+
         Device *getCurrentUpdateDevice() const;
         void setCurrentUpdateDevice(ssize_t number);
-
+        void clearCurrentUpdateDevice();
 
     private:
         DeviceVector m_updateDevices;

@@ -466,6 +466,12 @@ Device *DeviceManager::getCurrentUpdateDevice() const
         return m_updateDevices[m_currentUpdateDevice];
 }
 
+// -----------------------------------------------------------------------------
+void DeviceManager::clearCurrentUpdateDevice()
+{
+    m_currentUpdateDevice = -1;
+}
+
 /* -------------------------------------------------------------------------- */
 Device *DeviceManager::getDevice(size_t number) const
 {
