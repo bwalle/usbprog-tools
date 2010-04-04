@@ -83,6 +83,7 @@ void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
     connect(m_widgets.devicesCombo, SIGNAL(activated(int)), SLOT(deviceSelected(int)));
+    connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
 }
 
 // -----------------------------------------------------------------------------
