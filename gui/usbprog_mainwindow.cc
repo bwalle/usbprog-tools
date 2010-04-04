@@ -20,10 +20,14 @@
 #include <QVBoxLayout>
 #include <QMenu>
 #include <QMenuBar>
+#include <QStatusBar>
 
 #include "usbprog_mainwindow.h"
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
+
+// -----------------------------------------------------------------------------
+const int UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT = 2000;
 
 // -----------------------------------------------------------------------------
 UsbprogMainWindow::UsbprogMainWindow()
@@ -140,6 +144,7 @@ void UsbprogMainWindow::initWidgets()
     // devices combo box
     m_widgets.devicesCombo = new QComboBox(this);
     m_widgets.devicesLabel->setBuddy(m_widgets.devicesCombo);
+    m_widgets.devicesCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
     // refresh button
     m_widgets.refreshButton = new QPushButton(this);
@@ -199,7 +204,22 @@ void UsbprogMainWindow::initWidgets()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::refreshDevices()
 {
+    m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
 
+    m_widgets.devicesCombo->clear();
+    m_widgets.devicesCombo->addItem(tr("No device"), int(-1));
+
+
+    if (m_deviceManager->getNumberUpdateDevices() == 0) {
+        statusBar()->showMessage(tr("No devices found."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        return;
+    }
+
+    // build the device list
+    for (size_t i = 0; i < m_deviceManager->getNumberUpdateDevices(); ++i) {
+        Device *dev = m_deviceManager->getDevice(i);
+        m_widgets.devicesCombo->addItem(QString::fromStdString(dev->toShortString()), int(i));
+    }
 }
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

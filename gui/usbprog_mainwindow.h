@@ -34,6 +34,8 @@ class UsbprogMainWindow : public QMainWindow
 {
     Q_OBJECT
 
+    static const int DEFAULT_MESSAGE_TIMEOUT;
+
     public:
         UsbprogMainWindow();
         ~UsbprogMainWindow();
