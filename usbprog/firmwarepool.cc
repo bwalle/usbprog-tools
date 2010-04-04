@@ -42,7 +42,7 @@
 #define INDEX_FILE_NAME  "versions.xml"
 #define BUFFERSIZE       2048
 
-/* Class declaration: FirmwareXMLParser {{{1 */
+/* Class declaration: FirmwareXMLParser {{{ */
 
 class FirmwareXMLParser {
     public:
@@ -63,7 +63,8 @@ class FirmwareXMLParser {
         Firmwarepool *m_firmwarepool;
 };
 
-/* Implementation: FirmwareXMLParser {{{1 */
+/* }}} */
+/* Implementation: FirmwareXMLParser {{{ */
 
 #define XMLCHAR(a) \
     reinterpret_cast<const xmlChar *>(a)
@@ -135,7 +136,9 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
     m_firmwarepool->addFirmware(fw);
 }
 
-/* Firmware {{{1 */
+/* }}} */
+
+/* Firmware {{{ */
 
 /* -------------------------------------------------------------------------- */
 Firmware::Firmware(const std::string &name)
@@ -353,7 +356,8 @@ std::string Firmware::formatDateVersion() const
     return ss.str();
 }
 
-/* Firmwarepool {{{1 */
+/* }}} */
+/* Firmwarepool {{{ */
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::readFromFile(const std::string &file,
@@ -691,5 +695,7 @@ void Firmwarepool::addFirmware(Firmware *fw)
 {
     m_firmware[fw->getName()] = fw;
 }
+
+/* }}} */
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:
