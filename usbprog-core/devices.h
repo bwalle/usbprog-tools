@@ -130,7 +130,7 @@ class DeviceManager {
 
         size_t getNumberUpdateDevices() const;
         Device *getDevice(size_t number) const;
-        Device *getUpdateDevice() const;
+        Device *getCurrentUpdateDevice() const;
         void setCurrentUpdateDevice(ssize_t number);
 
 

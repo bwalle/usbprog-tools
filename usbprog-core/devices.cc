@@ -356,7 +356,7 @@ void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updat
 void DeviceManager::printDevices(std::ostream &os) const
 {
     int i = 0;
-    Device *up = getUpdateDevice();
+    Device *up = getCurrentUpdateDevice();
     for (DeviceVector::const_iterator it = m_updateDevices.begin();
             it != m_updateDevices.end(); ++it) {
 
@@ -386,7 +386,7 @@ void DeviceManager::printDevices(std::ostream &os) const
 void DeviceManager::switchUpdateMode()
     throw (IOError)
 {
-    Device *dev = getUpdateDevice();
+    Device *dev = getCurrentUpdateDevice();
     if (dev->isUpdateMode())
         return;
 
@@ -449,7 +449,7 @@ size_t DeviceManager::getNumberUpdateDevices() const
 }
 
 /* -------------------------------------------------------------------------- */
-Device *DeviceManager::getUpdateDevice() const
+Device *DeviceManager::getCurrentUpdateDevice() const
 {
     if (m_currentUpdateDevice < -1 ||
             m_currentUpdateDevice >= (ssize_t)m_updateDevices.size())

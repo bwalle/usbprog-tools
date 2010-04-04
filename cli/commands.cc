@@ -782,7 +782,7 @@ bool UploadCommand::execute(CommandArgVector   args,
         data = fw->getData();
     }
 
-    Device *dev = m_devicemanager->getUpdateDevice();
+    Device *dev = m_devicemanager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device.");
 
@@ -796,7 +796,7 @@ bool UploadCommand::execute(CommandArgVector   args,
         }
     }
 
-    dev = m_devicemanager->getUpdateDevice();
+    dev = m_devicemanager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device (2).");
     UsbprogUpdater updater(dev);
@@ -916,7 +916,7 @@ bool StartCommand::execute(CommandArgVector args,
                            std::ostream     &os)
     throw (ApplicationError)
 {
-    Device *dev = m_devicemanager->getUpdateDevice();
+    Device *dev = m_devicemanager->getCurrentUpdateDevice();
     if (!dev)
         throw ApplicationError("Unable to find update device.");
     UsbprogUpdater updater(dev);
