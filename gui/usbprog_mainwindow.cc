@@ -22,6 +22,8 @@
 #include <QMenuBar>
 #include <QStatusBar>
 
+#include <usbprog-core/debug.h>
+
 #include "usbprog_mainwindow.h"
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
@@ -78,6 +80,7 @@ void UsbprogMainWindow::initActions()
 void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
+    connect(m_widgets.devicesCombo, SIGNAL(activated(int)), SLOT(deviceSelected(int)));
 }
 
 // -----------------------------------------------------------------------------
@@ -220,6 +223,18 @@ void UsbprogMainWindow::refreshDevices()
         Device *dev = m_deviceManager->getDevice(i);
         m_widgets.devicesCombo->addItem(QString::fromStdString(dev->toShortString()), int(i));
     }
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::deviceSelected(int comboIndex)
+{
+    int deviceIndex = m_widgets.devicesCombo->itemData(comboIndex).toInt();
+    if (deviceIndex == -1)
+        m_deviceManager->clearCurrentUpdateDevice();
+    else
+        m_deviceManager->setCurrentUpdateDevice(deviceIndex);
+
+    Debug::debug()->dbg("Current update device set to %d", deviceIndex);
 }
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

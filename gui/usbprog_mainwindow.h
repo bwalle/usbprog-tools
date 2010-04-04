@@ -48,6 +48,7 @@ class UsbprogMainWindow : public QMainWindow
 
     public slots:
         void refreshDevices();
+        void deviceSelected(int comboIndex);
 
     private:
         DeviceManager  *m_deviceManager;
