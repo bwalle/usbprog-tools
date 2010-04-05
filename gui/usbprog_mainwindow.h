@@ -81,6 +81,7 @@ class UsbprogMainWindow : public QMainWindow
         void firmwareSelected(QListWidgetItem *newItem);
         void uploadFirmware();
         void showHelp();
+        void showAbout();
         void cacheClean();
         void cacheDelete();
         void cacheDownloadAll();
@@ -113,6 +114,8 @@ class UsbprogMainWindow : public QMainWindow
         struct {
             QAction      *quit;
             QAction      *help;
+            QAction      *aboutQt;
+            QAction      *about;
             QAction      *cacheDelete;
             QAction      *cacheClean;
             QAction      *cacheDownloadAll;

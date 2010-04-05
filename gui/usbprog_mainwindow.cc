@@ -132,6 +132,12 @@ void UsbprogMainWindow::initActions()
     m_actions.help->setShortcut(QKeySequence::HelpContents);
     m_actions.help->setStatusTip(tr("Opens a PDF viewer with the \"User's Manual\""));
 
+    m_actions.aboutQt = new QAction(tr("&About Qt..."), this);
+    m_actions.aboutQt->setStatusTip(tr("Shows the Qt version."));
+
+    m_actions.about = new QAction(QIcon(":/gtk-about.png"), tr("&About..."), this);
+    m_actions.about->setStatusTip(tr("Shows author and version number of that application."));
+
     m_actions.cacheClean = new QAction(QIcon(":/gtk-clear.png"), tr("&Clean unused files"), this);
     m_actions.cacheClean->setStatusTip(tr("Deletes obsolete files in firmware the cache."));
 
@@ -148,6 +154,8 @@ void UsbprogMainWindow::connectSignalsAndSlots()
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
     connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
     connect(m_actions.help, SIGNAL(activated()), SLOT(showHelp()));
+    connect(m_actions.aboutQt, SIGNAL(activated()), qApp, SLOT(aboutQt()));
+    connect(m_actions.about, SIGNAL(activated()), SLOT(showAbout()));
     connect(m_actions.cacheClean, SIGNAL(activated()), SLOT(cacheClean()));
     connect(m_actions.cacheDelete, SIGNAL(activated()), SLOT(cacheDelete()));
     connect(m_actions.cacheDownloadAll, SIGNAL(activated()), SLOT(cacheDownloadAll()));
@@ -176,6 +184,9 @@ void UsbprogMainWindow::initMenus()
     QMenu *helpMenu = new QMenu(this);
     helpMenu->setTitle(tr("&Help"));
     helpMenu->addAction(m_actions.help);
+    helpMenu->addSeparator();
+    helpMenu->addAction(m_actions.aboutQt);
+    helpMenu->addAction(m_actions.about);
 
     menuBar()->addMenu(programMenu);
     menuBar()->addMenu(cacheMenu);
@@ -505,6 +516,16 @@ void UsbprogMainWindow::showHelp()
         statusBar()->showMessage(tr("PDF viewer successfully started."), DEFAULT_MESSAGE_TIMEOUT);
     else
         statusBar()->showMessage(tr("Unable to open PDF viewer."), DEFAULT_MESSAGE_TIMEOUT);
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::showAbout()
+{
+    Debug::debug()->dbg("Open about dialog");
+
+    QMessageBox::information(this, UsbprogApplication::NAME,
+                             tr("USBprog %1\n\n(c) 2007-2010 Bernhard Walle <bernhard@bwalle.de>")
+                             .arg(USBPROG_VERSION_STRING));
 }
 
 // -----------------------------------------------------------------------------

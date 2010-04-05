@@ -7,6 +7,7 @@
 	  loop.
 	* Implement "Help" -> "Show manual".
 	* Implement cache operations.
+	* Implement "Help" -> "About Qt" and "Help" -> "About".
 
 2010-04-04  Bernhard Walle <bernhard@bwalle.de>
 
