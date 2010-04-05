@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <cstring>
+#include <cassert>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -33,14 +34,13 @@
 
 /* ProgressBarProgressNotifier {{{ */
 
-ProgressBarProgressNotifier::ProgressBarProgressNotifier(QProgressBar *progressBar)
+ProgressBarProgressNotifier::ProgressBarProgressNotifier(QProgressBar *progressBar, QStatusBar *statusBar)
     : m_progressBar(progressBar)
-    , m_statusBar(NULL)
+    , m_statusBar(statusBar)
 {}
 
-void ProgressBarProgressNotifier::setStatusMessage(QStatusBar *statusBar, const QString &statusMessage)
+void ProgressBarProgressNotifier::setStatusMessage(const QString &statusMessage)
 {
-    m_statusBar = statusBar;
     m_statusMessage = statusMessage;
 }
 
@@ -63,7 +63,6 @@ void ProgressBarProgressNotifier::finished()
 void ProgressBarProgressNotifier::resetProgressbar()
 {
     m_progressBar->reset();
-    delete this;
 }
 
 /* }}} */
@@ -76,6 +75,7 @@ const int UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT = 2000;
 UsbprogMainWindow::UsbprogMainWindow()
     : m_deviceManager(NULL)
     , m_firmwarepool(NULL)
+    , m_progressNotifier(NULL)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -87,14 +87,13 @@ UsbprogMainWindow::UsbprogMainWindow()
     initMenus();
     connectSignalsAndSlots();
 
-    // make sure that the status bar exists
-    (void)statusBar();
-
     setWindowIcon(QPixmap(":/usbprog_icon.xpm"));
     setWindowTitle(UsbprogApplication::NAME);
 
     m_deviceManager = new DeviceManager;
     m_firmwarepool = new Firmwarepool(GuiConfiguration::config().getDataDir());
+    m_progressNotifier = new ProgressBarProgressNotifier(m_widgets.mainProgress, statusBar());
+    m_firmwarepool->setProgress(m_progressNotifier);
 
     // intially populate the device and the firmware list
     refreshDevices();
@@ -126,12 +125,13 @@ void UsbprogMainWindow::initActions()
 void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
-    connect(m_widgets.devicesCombo, SIGNAL(activated(int)), SLOT(deviceSelected(int)));
     connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
 
     connect(m_widgets.firmwareList,
             SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             SLOT(firmwareSelected(QListWidgetItem *)));
+
+    connect(m_widgets.uploadButton, SIGNAL(clicked()), SLOT(uploadFirmware()));
 }
 
 // -----------------------------------------------------------------------------
@@ -191,13 +191,8 @@ void UsbprogMainWindow::initWidgets()
     m_widgets.rightButtonBox = new QWidget(this);
     QVBoxLayout *rightButtonBoxLayout = new QVBoxLayout(m_widgets.rightButtonBox);
 
-    // the devices label
-    m_widgets.devicesLabel = new QLabel(this);
-    m_widgets.devicesLabel->setText(tr("&Devices:"));
-
     // devices combo box
     m_widgets.devicesCombo = new QComboBox(this);
-    m_widgets.devicesLabel->setBuddy(m_widgets.devicesCombo);
     m_widgets.devicesCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 
     // refresh button
@@ -224,7 +219,6 @@ void UsbprogMainWindow::initWidgets()
     m_widgets.mainProgress->setMaximumHeight(10);
     m_widgets.mainProgress->setTextVisible(false);
 
-    rightTopBoxLayout->addWidget(m_widgets.devicesLabel);
     rightTopBoxLayout->addWidget(m_widgets.devicesCombo);
     rightTopBoxLayout->addStretch(1);
     rightTopBoxLayout->addWidget(m_widgets.refreshButton);
@@ -264,17 +258,15 @@ void UsbprogMainWindow::initFirmwares()
 
     // init the firmware pool and download firmwares first
     try {
-        ProgressBarProgressNotifier *notifier = new ProgressBarProgressNotifier(m_widgets.mainProgress);
-        notifier->setStatusMessage(statusBar(), tr("Downloading of firmware index finished.")); 
+        m_progressNotifier->setStatusMessage(tr("Downloading of firmware index finished."));
         m_firmwarepool->setIndexUpdatetime(AUTO_NOT_UPDATE_TIME);
-        m_firmwarepool->setProgress(notifier);
         if (!conf.isOffline())
             m_firmwarepool->downloadIndex(conf.getIndexUrl());
-        m_firmwarepool->setProgress(NULL);
         m_firmwarepool->readIndex();
     } catch (const std::runtime_error &re) {
         QMessageBox::critical(this, UsbprogApplication::NAME,
                               tr("Error while downloading firmware index:\n\n%1").arg(re.what()));
+        return;
     }
 
     StringList firmwareNames = m_firmwarepool->getFirmwareNameList();
@@ -308,22 +300,9 @@ void UsbprogMainWindow::refreshDevices()
 }
 
 // -----------------------------------------------------------------------------
-void UsbprogMainWindow::deviceSelected(int comboIndex)
-{
-    int deviceIndex = m_widgets.devicesCombo->itemData(comboIndex).toInt();
-    if (deviceIndex == -1)
-        m_deviceManager->clearCurrentUpdateDevice();
-    else
-        m_deviceManager->setCurrentUpdateDevice(deviceIndex);
-
-    Debug::debug()->dbg("Current update device set to %d", deviceIndex);
-}
-
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 {
-    Debug::debug()->dbg("Firmware selected, label = %d",
-                        static_cast<const char *>(newItem->text().toLocal8Bit()));
+    Debug::debug()->dbg("Firmware '%s' selected", static_cast<const char *>(newItem->text().toLocal8Bit()));
 
     Firmware *fw = m_firmwarepool->getFirmware(newItem->text().toStdString());
 
@@ -335,7 +314,7 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 
     // Name
     htmlStream << "<tr><td align=\"right\"><b>Name:</b></td> <td>&nbsp;</td> <td>"
-               << QString::fromStdString(fw->getName())
+               << QString::fromStdString(fw->getLabel())
                << "</td> </tr>\n";
 
     // URL
@@ -343,10 +322,12 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
                << QString::fromStdString(fw->getUrl())
                << "</td> </tr>\n";
 
+#if 0
     // file name
     htmlStream << "<tr><td align=\"right\"><b>File name:</b></td> <td>&nbsp;</td> <td>"
                << QString::fromStdString(fw->getFilename())
                << "</td> </tr>\n";
+#endif
 
     // version
     htmlStream << "<tr><td align=\"right\"><b>Version:</b></td> <td>&nbsp;</td> <td>"
@@ -356,7 +337,14 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 
     // device IDs
     htmlStream << "<tr><td align=\"right\"><b>Device IDs:</b></td> <td>&nbsp;</td> <td>"
-               << QString::fromStdString(fw->updateDevice().formatDeviceId()) 
+               << QString::fromStdString(fw->updateDevice().formatDeviceId())
+               << "</td> </tr>\n";
+
+    // offline?
+    htmlStream << "<tr><td align=\"right\"><b>Offline:</b></td> <td>&nbsp;</td> <td>"
+               << QString(m_firmwarepool->isFirmwareOnDisk(fw->getName())
+                          ? QChar(0x2713)
+                          : QChar(0x2717))
                << "</td> </tr>\n";
 
     htmlStream << "</table>";
@@ -373,6 +361,105 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
     htmlStream << "</html>";
 
     m_widgets.firmwareInfo->setHtml(html);
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::uploadFirmware()
+{
+    QList<QListWidgetItem *> selectedItems = m_widgets.firmwareList->selectedItems();
+    if (selectedItems.size() != 1) {
+        statusBar()->showMessage(tr("No firmwares selected."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        return;
+    }
+    Firmware *fw = m_firmwarepool->getFirmware(selectedItems.front()->text().toStdString());
+
+    int deviceIndex = m_widgets.devicesCombo->itemData(m_widgets.devicesCombo->currentIndex()).toInt();
+    if (deviceIndex == -1) {
+        statusBar()->showMessage(tr("No update device selected."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        return;
+    }
+
+    m_deviceManager->setCurrentUpdateDevice(deviceIndex);
+    Device *updateDevice = m_deviceManager->getCurrentUpdateDevice();
+    assert(updateDevice != NULL);
+
+    Debug::debug()->dbg("Uploading firmware '%s' to '%s'", fw->getName().c_str(), updateDevice->toShortString().c_str());
+
+    // download firmware if necessary
+    if (!downloadFirmware(fw->getName()))
+        return;
+
+    // switch in update mode
+    if (!updateDevice->isUpdateMode()) {
+        try {
+            statusBar()->showMessage(tr("Switching to update mode ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+            m_deviceManager->switchUpdateMode();
+        } catch (const IOError &err) {
+            QMessageBox::critical(this, UsbprogApplication::NAME,
+                                  tr("I/O error while switching to update mode:\n\n%1").arg(err.what()));
+            return;
+        }
+    }
+
+    updateDevice = m_deviceManager->getCurrentUpdateDevice();
+    if (!updateDevice) {
+        QMessageBox::critical(this, UsbprogApplication::NAME,
+                              tr("Unable to find the update device after switching to update mode."));
+        return;
+    }
+    UsbprogUpdater updater(updateDevice);
+
+    try {
+        m_progressNotifier->setStatusMessage(tr("Uploading firmware finished."));
+        updater.setProgress(m_progressNotifier);
+
+        statusBar()->showMessage(tr("Opening device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        updater.updateOpen();
+
+        statusBar()->showMessage(tr("Writing firmware ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        updater.writeFirmware(fw->getData());
+
+        statusBar()->showMessage(tr("Starting device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        updater.startDevice();
+
+        updater.updateClose();
+    } catch (const IOError &err) {
+        throw ApplicationError(std::string("I/O Error: ") + err.what());
+    }
+
+    statusBar()->showMessage(tr("Detecting new USB devices ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT+2000);
+    QTimer::singleShot(2000, this, SLOT(refreshDevices()));
+}
+
+// -----------------------------------------------------------------------------
+bool UsbprogMainWindow::downloadFirmware(const std::string &name)
+{
+    QString qName = QString::fromStdString(name);
+    if (!m_firmwarepool->isFirmwareOnDisk(name)) {
+        Debug::debug()->dbg("Firmware '%s' not on disk, downloading...", name.c_str());
+        statusBar()->showMessage(tr("Downloading firmware %1 ...").arg(qName), DEFAULT_MESSAGE_TIMEOUT);
+
+        try {
+            m_progressNotifier->setStatusMessage(tr("Downloading firmware %1 finished.").arg(QString::fromStdString(name)));
+            m_firmwarepool->downloadFirmware(name);
+        } catch (const DownloadError &err) {
+            QMessageBox::critical(this, UsbprogApplication::NAME,
+                                  tr("I/O error while downloading firmware \"%1\":\n\n%2")
+                                  .arg(qName).arg(err.what()) );
+            return false;
+        }
+    }
+
+    try {
+        m_firmwarepool->fillFirmware(name);
+    } catch (const IOError &err) {
+        QMessageBox::critical(this, UsbprogApplication::NAME,
+                              tr("I/O error while filling firmware \"%1\":\n\n%2")
+                              .arg(qName).arg(err.what()) );
+        return false;
+    }
+
+    return true;
 }
 
 /* }}} */

@@ -2,6 +2,7 @@
 
 	* Allow also progress display when downloading the firmware index.
 	* Implement displaying of firmware information.
+	* Implement uploading of firmware.
 
 2010-04-04  Bernhard Walle <bernhard@bwalle.de>
 

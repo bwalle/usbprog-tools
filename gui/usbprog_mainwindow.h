@@ -37,10 +37,10 @@ class ProgressBarProgressNotifier : public QObject, public ProgressNotifier
     Q_OBJECT
 
     public:
-        ProgressBarProgressNotifier(QProgressBar *mainWindow);
+        ProgressBarProgressNotifier(QProgressBar *mainWindow, QStatusBar *statusBar);
 
     public:
-        void setStatusMessage(QStatusBar *statusBar, const QString &statusMessage);
+        void setStatusMessage(const QString &statusMessage);
         int progressed(double total, double now);
         void finished();
 
@@ -73,15 +73,17 @@ class UsbprogMainWindow : public QMainWindow
         void initWidgets();
         void connectSignalsAndSlots();
         void initFirmwares();
+        bool downloadFirmware(const std::string &name);
 
     public slots:
         void refreshDevices();
-        void deviceSelected(int comboIndex);
         void firmwareSelected(QListWidgetItem *newItem);
+        void uploadFirmware();
 
     private:
-        DeviceManager  *m_deviceManager;
-        Firmwarepool   *m_firmwarepool;
+        DeviceManager *m_deviceManager;
+        Firmwarepool *m_firmwarepool;
+        ProgressBarProgressNotifier *m_progressNotifier;
 
         struct {
             // container widgets
@@ -94,7 +96,6 @@ class UsbprogMainWindow : public QMainWindow
             // the real widgets
             QLabel       *usbprogGraphicsLabel;
             QLabel       *websiteLinkLabel;
-            QLabel       *devicesLabel;
             QComboBox    *devicesCombo;
             QPushButton  *refreshButton;
             QPushButton  *uploadButton;
