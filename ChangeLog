@@ -6,6 +6,7 @@
 	* Use a custom sleep implementation in Qt that processes the event
 	  loop.
 	* Implement "Help" -> "Show manual".
+	* Implement cache operations.
 
 2010-04-04  Bernhard Walle <bernhard@bwalle.de>
 

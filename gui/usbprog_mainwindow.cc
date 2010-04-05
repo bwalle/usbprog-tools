@@ -131,6 +131,15 @@ void UsbprogMainWindow::initActions()
     m_actions.help = new QAction(QIcon(":/gtk-help.png"), tr("&Show Manual"), this);
     m_actions.help->setShortcut(QKeySequence::HelpContents);
     m_actions.help->setStatusTip(tr("Opens a PDF viewer with the \"User's Manual\""));
+
+    m_actions.cacheClean = new QAction(QIcon(":/gtk-clear.png"), tr("&Clean unused files"), this);
+    m_actions.cacheClean->setStatusTip(tr("Deletes obsolete files in firmware the cache."));
+
+    m_actions.cacheDelete = new QAction(QIcon(":/gtk-delete.png"), tr("&Delete files"), this);
+    m_actions.cacheDelete->setStatusTip(tr("Deletes all cached firmware files."));
+
+    m_actions.cacheDownloadAll = new QAction(tr("Download &all"), this);
+    m_actions.cacheDownloadAll->setStatusTip(tr("Downloads all firmware files to have them locally available."));
 }
 
 // -----------------------------------------------------------------------------
@@ -139,6 +148,9 @@ void UsbprogMainWindow::connectSignalsAndSlots()
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
     connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
     connect(m_actions.help, SIGNAL(activated()), SLOT(showHelp()));
+    connect(m_actions.cacheClean, SIGNAL(activated()), SLOT(cacheClean()));
+    connect(m_actions.cacheDelete, SIGNAL(activated()), SLOT(cacheDelete()));
+    connect(m_actions.cacheDownloadAll, SIGNAL(activated()), SLOT(cacheDownloadAll()));
 
     connect(m_widgets.firmwareList,
             SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
@@ -154,11 +166,19 @@ void UsbprogMainWindow::initMenus()
     programMenu->setTitle(tr("&Program"));
     programMenu->addAction(m_actions.quit);
 
+    QMenu *cacheMenu = new QMenu(this);
+    cacheMenu->setTitle(tr("&Cache"));
+    cacheMenu->addAction(m_actions.cacheClean);
+    cacheMenu->addAction(m_actions.cacheDelete);
+    cacheMenu->addSeparator();
+    cacheMenu->addAction(m_actions.cacheDownloadAll);
+
     QMenu *helpMenu = new QMenu(this);
     helpMenu->setTitle(tr("&Help"));
     helpMenu->addAction(m_actions.help);
 
     menuBar()->addMenu(programMenu);
+    menuBar()->addMenu(cacheMenu);
     // align the "Help" menu on the right in the Motif and CDE style
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
@@ -308,7 +328,7 @@ void UsbprogMainWindow::refreshDevices()
 
 
     if (m_deviceManager->getNumberUpdateDevices() == 0) {
-        statusBar()->showMessage(tr("No devices found."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("No devices found."), DEFAULT_MESSAGE_TIMEOUT);
         return;
     }
 
@@ -391,14 +411,14 @@ void UsbprogMainWindow::uploadFirmware()
 {
     QList<QListWidgetItem *> selectedItems = m_widgets.firmwareList->selectedItems();
     if (selectedItems.size() != 1) {
-        statusBar()->showMessage(tr("No firmwares selected."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("No firmwares selected."), DEFAULT_MESSAGE_TIMEOUT);
         return;
     }
     Firmware *fw = m_firmwarepool->getFirmware(selectedItems.front()->text().toStdString());
 
     int deviceIndex = m_widgets.devicesCombo->itemData(m_widgets.devicesCombo->currentIndex()).toInt();
     if (deviceIndex == -1) {
-        statusBar()->showMessage(tr("No update device selected."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("No update device selected."), DEFAULT_MESSAGE_TIMEOUT);
         return;
     }
 
@@ -415,7 +435,7 @@ void UsbprogMainWindow::uploadFirmware()
     // switch in update mode
     if (!updateDevice->isUpdateMode()) {
         try {
-            statusBar()->showMessage(tr("Switching to update mode ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+            statusBar()->showMessage(tr("Switching to update mode ..."), DEFAULT_MESSAGE_TIMEOUT);
             m_deviceManager->switchUpdateMode();
         } catch (const IOError &err) {
             QMessageBox::critical(this, UsbprogApplication::NAME,
@@ -437,15 +457,15 @@ void UsbprogMainWindow::uploadFirmware()
         updater.setProgress(m_progressNotifier);
 
         Debug::debug()->dbg("Opening device");
-        statusBar()->showMessage(tr("Opening device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("Opening device ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.updateOpen();
 
         Debug::debug()->dbg("Writing firmware");
-        statusBar()->showMessage(tr("Writing firmware ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("Writing firmware ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.writeFirmware(fw->getData());
 
         Debug::debug()->dbg("Starting device");
-        statusBar()->showMessage(tr("Starting device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("Starting device ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.startDevice();
 
         Debug::debug()->dbg("Closing updater");
@@ -456,7 +476,7 @@ void UsbprogMainWindow::uploadFirmware()
         return;
     }
 
-    statusBar()->showMessage(tr("Firmware uploaded sucessfully!"), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+    statusBar()->showMessage(tr("Firmware uploaded sucessfully!"), DEFAULT_MESSAGE_TIMEOUT);
     QTimer::singleShot(2000, this, SLOT(refreshDevices()));
 }
 
@@ -474,7 +494,7 @@ void UsbprogMainWindow::showHelp()
         fileName = globalPath;
 
     if (fileName.isNull()) {
-        statusBar()->showMessage(tr("\"User's Manual\" not found."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("\"User's Manual\" not found."), DEFAULT_MESSAGE_TIMEOUT);
         return;
     }
 
@@ -482,13 +502,73 @@ void UsbprogMainWindow::showHelp()
     Debug::debug()->dbg("Help found at '%s'", static_cast<const char *>(absolutePath.toLocal8Bit()) );
 
     if (QDesktopServices::openUrl( QUrl::fromLocalFile(absolutePath)) )
-        statusBar()->showMessage(tr("PDF viewer successfully started."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("PDF viewer successfully started."), DEFAULT_MESSAGE_TIMEOUT);
     else
-        statusBar()->showMessage(tr("Unable to open PDF viewer."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        statusBar()->showMessage(tr("Unable to open PDF viewer."), DEFAULT_MESSAGE_TIMEOUT);
 }
 
 // -----------------------------------------------------------------------------
-bool UsbprogMainWindow::downloadFirmware(const std::string &name)
+void UsbprogMainWindow::cacheClean()
+{
+    Debug::debug()->dbg("Cleanup cache");
+
+    try {
+        m_firmwarepool->cleanCache();
+    } catch (const IOError &ioe) {
+        QMessageBox::critical(this, UsbprogApplication::NAME,
+                              tr("Error while cleaning up the cache:\n\n%1").arg(ioe.what()));
+        return;
+    }
+
+    statusBar()->showMessage(tr("Cache successfully cleaned."), DEFAULT_MESSAGE_TIMEOUT);
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::cacheDelete()
+{
+    Debug::debug()->dbg("Delete cache");
+
+    try {
+        m_firmwarepool->deleteCache();
+    } catch (const IOError &ioe) {
+        QMessageBox::critical(this, UsbprogApplication::NAME,
+                              tr("Error while deleting the cache:\n\n%1").arg(ioe.what()));
+        return;
+    }
+
+    statusBar()->showMessage(tr("Cache successfully deleted."), DEFAULT_MESSAGE_TIMEOUT);
+
+    // update 'downloaded' status of currently selected firmware
+    firmwareSelected(NULL);
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::cacheDownloadAll()
+{
+    Debug::debug()->dbg("Download all");
+
+    bool someFail = false;
+    bool someSuccess = false;
+
+    StringList firmwares = m_firmwarepool->getFirmwareNameList();
+    for (StringList::iterator it = firmwares.begin(); it != firmwares.end(); ++it)
+        if (!downloadFirmware(*it, true))
+            someFail = true;
+        else
+            someSuccess = true;
+
+    if (someFail && someSuccess) {
+        statusBar()->showMessage(tr("Some firmware files failed to download."), DEFAULT_MESSAGE_TIMEOUT);
+    } else if (someFail && !someSuccess) {
+        QMessageBox::information(this, UsbprogApplication::NAME,
+                                 tr("Unable to download firmware files. Check network connection."));
+    } else {
+        statusBar()->showMessage(tr("Downloaded all firmwares successfully."), DEFAULT_MESSAGE_TIMEOUT);
+    }
+}
+
+// -----------------------------------------------------------------------------
+bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilent)
 {
     QString qName = QString::fromStdString(name);
     if (!m_firmwarepool->isFirmwareOnDisk(name)) {
@@ -499,9 +579,11 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name)
             m_progressNotifier->setStatusMessage(tr("Downloading firmware %1 finished.").arg(QString::fromStdString(name)));
             m_firmwarepool->downloadFirmware(name);
         } catch (const DownloadError &err) {
-            QMessageBox::critical(this, UsbprogApplication::NAME,
-                                  tr("I/O error while downloading firmware \"%1\":\n\n%2")
-                                  .arg(qName).arg(err.what()) );
+            if (!failSilent) {
+                QMessageBox::critical(this, UsbprogApplication::NAME,
+                                      tr("I/O error while downloading firmware \"%1\":\n\n%2")
+                                      .arg(qName).arg(err.what()) );
+            }
             return false;
         }
     }
@@ -509,9 +591,11 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name)
     try {
         m_firmwarepool->fillFirmware(name);
     } catch (const IOError &err) {
-        QMessageBox::critical(this, UsbprogApplication::NAME,
-                              tr("I/O error while filling firmware \"%1\":\n\n%2")
-                              .arg(qName).arg(err.what()) );
+        if (!failSilent) {
+            QMessageBox::critical(this, UsbprogApplication::NAME,
+                                  tr("I/O error while filling firmware \"%1\":\n\n%2")
+                                  .arg(qName).arg(err.what()) );
+        }
         return false;
     }
 

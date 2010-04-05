@@ -8,6 +8,8 @@
   <file alias="gtk-go-up.png">graphics/gtk-go-up.png</file>
   <file alias="chip.png">graphics/chip.png</file>
   <file alias="gtk-help.png">graphics/gtk-help.png</file>
+  <file alias="gtk-clear.png">graphics/gtk-clear.png</file>
+  <file alias="gtk-delete.png">graphics/gtk-delete.png</file>
 </qresource>
 </RCC>
 <!-- vim: set ft=xml: -->

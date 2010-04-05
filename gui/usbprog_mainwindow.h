@@ -74,13 +74,16 @@ class UsbprogMainWindow : public QMainWindow
         void initWidgets();
         void connectSignalsAndSlots();
         void initFirmwares();
-        bool downloadFirmware(const std::string &name);
+        bool downloadFirmware(const std::string &name, bool failSilent=false);
 
     public slots:
         void refreshDevices();
         void firmwareSelected(QListWidgetItem *newItem);
         void uploadFirmware();
         void showHelp();
+        void cacheClean();
+        void cacheDelete();
+        void cacheDownloadAll();
 
     private:
         DeviceManager *m_deviceManager;
@@ -110,6 +113,9 @@ class UsbprogMainWindow : public QMainWindow
         struct {
             QAction      *quit;
             QAction      *help;
+            QAction      *cacheDelete;
+            QAction      *cacheClean;
+            QAction      *cacheDownloadAll;
         } m_actions;
 };
 
