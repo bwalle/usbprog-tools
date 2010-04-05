@@ -24,6 +24,7 @@ IF (BUILD_GUI)
         usbprog_app.cc
         usbprog_mainwindow.cc
         guiconfiguration.cc
+        qtsleeper.cc
     )
     SET(usbprog_gui_MOCS
         usbprog_mainwindow.h

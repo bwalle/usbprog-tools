@@ -26,6 +26,7 @@ ADD_LIBRARY(libusbprog-core STATIC
         digest.cc
         inifile.cc
         debug.cc
+        sleeper.cc
 )
 TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5)
 

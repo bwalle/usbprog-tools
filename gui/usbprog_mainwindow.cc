@@ -31,6 +31,7 @@
 #include "usbprog_mainwindow.h"
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
+#include "qtsleeper.h"
 
 /* ProgressBarProgressNotifier {{{ */
 
@@ -56,7 +57,7 @@ void ProgressBarProgressNotifier::finished()
     m_progressBar->setMaximum(1000);
 
     QTimer::singleShot(UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT, this, SLOT(resetProgressbar()));
-    if (m_statusBar)
+    if (m_statusBar && !m_statusMessage.isNull())
         m_statusBar->showMessage(m_statusMessage, UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
 }
 
@@ -91,13 +92,14 @@ UsbprogMainWindow::UsbprogMainWindow()
     setWindowTitle(UsbprogApplication::NAME);
 
     m_deviceManager = new DeviceManager;
+    m_deviceManager->setCustomSleeper(new QtSleeper);
     m_firmwarepool = new Firmwarepool(GuiConfiguration::config().getDataDir());
     m_progressNotifier = new ProgressBarProgressNotifier(m_widgets.mainProgress, statusBar());
     m_firmwarepool->setProgress(m_progressNotifier);
 
     // intially populate the device and the firmware list
-    refreshDevices();
     initFirmwares();
+    refreshDevices();
 
     m_widgets.firmwareList->setFocus();
 }
@@ -410,24 +412,30 @@ void UsbprogMainWindow::uploadFirmware()
     UsbprogUpdater updater(updateDevice);
 
     try {
-        m_progressNotifier->setStatusMessage(tr("Uploading firmware finished."));
+        m_progressNotifier->setStatusMessage(QString());
         updater.setProgress(m_progressNotifier);
 
+        Debug::debug()->dbg("Opening device");
         statusBar()->showMessage(tr("Opening device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
         updater.updateOpen();
 
+        Debug::debug()->dbg("Writing firmware");
         statusBar()->showMessage(tr("Writing firmware ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
         updater.writeFirmware(fw->getData());
 
+        Debug::debug()->dbg("Starting device");
         statusBar()->showMessage(tr("Starting device ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
         updater.startDevice();
 
+        Debug::debug()->dbg("Closing updater");
         updater.updateClose();
     } catch (const IOError &err) {
-        throw ApplicationError(std::string("I/O Error: ") + err.what());
+        QMessageBox::critical(this, UsbprogApplication::NAME,
+                              tr("Unable to write the firmware:\n\n%1").arg(err.what()));
+        return;
     }
 
-    statusBar()->showMessage(tr("Detecting new USB devices ..."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT+2000);
+    statusBar()->showMessage(tr("Firmware uploaded sucessfully!"), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
     QTimer::singleShot(2000, this, SLOT(refreshDevices()));
 }
 

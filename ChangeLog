@@ -3,6 +3,8 @@
 	* Allow also progress display when downloading the firmware index.
 	* Implement displaying of firmware information.
 	* Implement uploading of firmware.
+	* Use a custom sleep implementation in Qt that processes the event
+	  loop.
 
 2010-04-04  Bernhard Walle <bernhard@bwalle.de>
 

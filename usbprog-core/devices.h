@@ -25,6 +25,7 @@
 #include <usbprog-core/types.h>
 #include <usbprog-core/error.h>
 #include <usbprog-core/progressnotifier.h>
+#include <usbprog-core/sleeper.h>
 
 /* Forward declarations {{{ */
 
@@ -121,6 +122,7 @@ class DeviceManager {
         virtual ~DeviceManager();
 
     public:
+        void setCustomSleeper(Sleeper *sleeper);
         void setUsbDebugging(int debuglevel);
         void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
         void printDevices(std::ostream &os) const;
@@ -140,6 +142,7 @@ class DeviceManager {
     private:
         DeviceVector m_updateDevices;
         ssize_t m_currentUpdateDevice;
+        Sleeper *m_sleeper;
 };
 
 /* }}} */

@@ -263,23 +263,25 @@ bool operator==(const DeviceVector &a, const DeviceVector &b)
 /* -------------------------------------------------------------------------- */
 DeviceManager::DeviceManager()
     : m_currentUpdateDevice(-1)
+    , m_sleeper(NULL)
 {
     init();
 }
 
 /* -------------------------------------------------------------------------- */
-DeviceManager::~DeviceManager()
+DeviceManager::DeviceManager(int debuglevel)
+    : m_currentUpdateDevice(-1)
+    , m_sleeper(NULL)
 {
-    for (DeviceVector::const_iterator it = m_updateDevices.begin();
-            it != m_updateDevices.end(); ++it)
-        delete *it;
+    init(debuglevel);
 }
 
 /* -------------------------------------------------------------------------- */
-DeviceManager::DeviceManager(int debuglevel)
-    : m_currentUpdateDevice(-1)
+DeviceManager::~DeviceManager()
 {
-    init(debuglevel);
+    for (DeviceVector::const_iterator it = m_updateDevices.begin(); it != m_updateDevices.end(); ++it)
+        delete *it;
+    delete m_sleeper;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -287,6 +289,7 @@ void DeviceManager::init(int debuglevel)
 {
     if (debuglevel != 0)
         setUsbDebugging(debuglevel);
+    m_sleeper = new BlockingSleeper;
     Debug::debug()->trace("usb_init()");
     usb_init();
 }
@@ -296,6 +299,13 @@ void DeviceManager::setUsbDebugging(int debuglevel)
 {
     Debug::debug()->trace("usb_set_debug(%d)", debuglevel);
     usb_set_debug(debuglevel);
+}
+
+// -----------------------------------------------------------------------------
+void DeviceManager::setCustomSleeper(Sleeper *sleeper)
+{
+    delete m_sleeper;
+    m_sleeper = sleeper;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -426,7 +436,7 @@ void DeviceManager::switchUpdateMode()
     while (usb_control_msg(usb_handle, 0xC0, 0x01, 0, 0, NULL, 8, 1000) < 0){
         if (--timeout == 0)
             break;
-        usbprog_sleep(1);
+        m_sleeper->sleep(1);
     }
 
     Debug::debug()->trace("usb_release_interface(%p, %d)", usb_handle, usb_interface);
@@ -434,6 +444,8 @@ void DeviceManager::switchUpdateMode()
 
     Debug::debug()->trace("usb_close(%p)", usb_handle);
     usb_close(usb_handle);
+
+    m_sleeper->sleep(2000);
 
     // set again the update device
     int updatedev = m_currentUpdateDevice;
