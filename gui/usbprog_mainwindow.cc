@@ -304,6 +304,9 @@ void UsbprogMainWindow::refreshDevices()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 {
+    if (!newItem)
+        newItem = m_widgets.firmwareList->currentItem();
+
     Debug::debug()->dbg("Firmware '%s' selected", static_cast<const char *>(newItem->text().toLocal8Bit()));
 
     Firmware *fw = m_firmwarepool->getFirmware(newItem->text().toStdString());
@@ -466,6 +469,8 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name)
                               .arg(qName).arg(err.what()) );
         return false;
     }
+
+    firmwareSelected(NULL);
 
     return true;
 }
