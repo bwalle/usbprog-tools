@@ -66,7 +66,7 @@ class UsbprogMainWindow : public QMainWindow
 
     public:
         UsbprogMainWindow();
-        ~UsbprogMainWindow();
+        virtual ~UsbprogMainWindow();
 
     protected:
         void initActions();
