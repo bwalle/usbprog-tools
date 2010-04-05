@@ -376,7 +376,7 @@ void Firmwarepool::readFromFile(const std::string &file,
         if (fin.bad())
             throw IOError("Error while reading data from " + file);
 
-        copy(buffer, buffer + fin.gcount(), back_inserter(bv));
+        std::copy(buffer, buffer + fin.gcount(), back_inserter(bv));
     }
 
     fin.close();
