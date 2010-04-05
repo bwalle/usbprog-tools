@@ -20,3 +20,4 @@
 #define DOCDIR                      "@DOCDIR@"
 #define USBPROG_VERSION_STRING      "@PACKAGE_VERSION@"
 
+// :mode=c++:
