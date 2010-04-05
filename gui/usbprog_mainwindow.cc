@@ -363,8 +363,8 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
                << QString::fromStdString(fw->updateDevice().formatDeviceId())
                << "</td> </tr>\n";
 
-    // offline?
-    htmlStream << "<tr><td align=\"right\"><b>Offline:</b></td> <td>&nbsp;</td> <td>"
+    // cached?
+    htmlStream << "<tr><td align=\"right\"><b>Cached:</b></td> <td>&nbsp;</td> <td>"
                << QString(m_firmwarepool->isFirmwareOnDisk(fw->getName())
                           ? QChar(0x2713)
                           : QChar(0x2717))
