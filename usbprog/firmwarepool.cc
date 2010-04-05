@@ -429,8 +429,9 @@ void Firmwarepool::downloadIndex(const std::string &url)
             DateTime now;
             if (now - dt < m_indexAutoUpdatetime * 60)
                 return;
-        } catch (const IOError &e)
-        {}
+        } catch (const IOError &e) {
+            Debug::debug()->dbg("IO Error: %s", e.what());
+        }
     }
 
     std::ofstream fout(file.c_str());
