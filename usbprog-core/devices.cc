@@ -517,7 +517,9 @@ bool operator!=(const Device &a, const Device &b)
 
 /* -------------------------------------------------------------------------- */
 UsbprogUpdater::UsbprogUpdater(Device *dev)
-    : m_dev(dev), m_progressNotifier(NULL), m_devHandle(NULL)
+    : m_dev(dev)
+    , m_progressNotifier(NULL)
+    , m_devHandle(NULL)
 {}
 
 /* -------------------------------------------------------------------------- */
