@@ -1,6 +1,7 @@
 2010-04-05  Bernhard Walle <bernhard@bwalle.de>
 
 	* Allow also progress display when downloading the firmware index.
+	* Implement displaying of firmware information.
 
 2010-04-04  Bernhard Walle <bernhard@bwalle.de>
 

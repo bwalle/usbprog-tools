@@ -30,11 +30,38 @@
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
+/* MainWindowProgressNotifier {{{ */
+
+class ProgressBarProgressNotifier : public QObject, public ProgressNotifier
+{
+    Q_OBJECT
+
+    public:
+        ProgressBarProgressNotifier(QProgressBar *mainWindow);
+
+    public:
+        void setStatusMessage(QStatusBar *statusBar, const QString &statusMessage);
+        int progressed(double total, double now);
+        void finished();
+
+    protected slots:
+        void resetProgressbar();
+
+    private:
+        QProgressBar *m_progressBar;
+        QString m_statusMessage;
+        QStatusBar *m_statusBar;
+};
+
+/* }}} */
+/* UsbprogMainWindow {{{ */
+
 class UsbprogMainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    static const int DEFAULT_MESSAGE_TIMEOUT;
+    public:
+        static const int DEFAULT_MESSAGE_TIMEOUT;
 
     public:
         UsbprogMainWindow();
@@ -45,10 +72,12 @@ class UsbprogMainWindow : public QMainWindow
         void initMenus();
         void initWidgets();
         void connectSignalsAndSlots();
+        void initFirmwares();
 
     public slots:
         void refreshDevices();
         void deviceSelected(int comboIndex);
+        void firmwareSelected(QListWidgetItem *newItem);
 
     private:
         DeviceManager  *m_deviceManager;
@@ -79,6 +108,8 @@ class UsbprogMainWindow : public QMainWindow
             QAction      *quit;
         } m_actions;
 };
+
+/* }}} */
 
 #endif // USBPROG_MAINWINDOW_H
 
