@@ -440,6 +440,7 @@ void Firmwarepool::downloadIndex(const std::string &url)
 
     Downloader dl(fout);
     dl.setUrl(url);
+    dl.setProgress(m_progressNotifier);
     dl.download();
     fout.close();
 
