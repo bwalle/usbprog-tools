@@ -62,6 +62,7 @@ class UsbprogMainWindow : public QMainWindow
 
     public:
         static const int DEFAULT_MESSAGE_TIMEOUT;
+        static const char *USERS_GUIDE_FILENAME;
 
     public:
         UsbprogMainWindow();
@@ -79,6 +80,7 @@ class UsbprogMainWindow : public QMainWindow
         void refreshDevices();
         void firmwareSelected(QListWidgetItem *newItem);
         void uploadFirmware();
+        void showHelp();
 
     private:
         DeviceManager *m_deviceManager;
@@ -107,6 +109,7 @@ class UsbprogMainWindow : public QMainWindow
 
         struct {
             QAction      *quit;
+            QAction      *help;
         } m_actions;
 };
 

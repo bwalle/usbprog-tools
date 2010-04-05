@@ -24,14 +24,19 @@
 #include <QStatusBar>
 #include <QMessageBox>
 #include <QTimer>
+#include <QFile>
+#include <QFileInfo>
 #include <QTextStream>
+#include <QDesktopServices>
 
 #include <usbprog-core/debug.h>
+#include <usbprog-core/util.h>
 
 #include "usbprog_mainwindow.h"
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
 #include "qtsleeper.h"
+#include "config.h"
 
 /* ProgressBarProgressNotifier {{{ */
 
@@ -71,6 +76,7 @@ void ProgressBarProgressNotifier::resetProgressbar()
 
 // -----------------------------------------------------------------------------
 const int UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT = 2000;
+const char *UsbprogMainWindow::USERS_GUIDE_FILENAME = "USBprog.pdf";
 
 // -----------------------------------------------------------------------------
 UsbprogMainWindow::UsbprogMainWindow()
@@ -121,6 +127,10 @@ void UsbprogMainWindow::initActions()
     m_actions.quit->setShortcut(QKeySequence::Quit);
 #endif
     m_actions.quit->setStatusTip(tr("Quits the program"));
+
+    m_actions.help = new QAction(QIcon(":/gtk-help.png"), tr("&Show Manual"), this);
+    m_actions.help->setShortcut(QKeySequence::HelpContents);
+    m_actions.help->setStatusTip(tr("Opens a PDF viewer with the \"User's Manual\""));
 }
 
 // -----------------------------------------------------------------------------
@@ -128,6 +138,7 @@ void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
     connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
+    connect(m_actions.help, SIGNAL(activated()), SLOT(showHelp()));
 
     connect(m_widgets.firmwareList,
             SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
@@ -143,7 +154,14 @@ void UsbprogMainWindow::initMenus()
     programMenu->setTitle(tr("&Program"));
     programMenu->addAction(m_actions.quit);
 
+    QMenu *helpMenu = new QMenu(this);
+    helpMenu->setTitle(tr("&Help"));
+    helpMenu->addAction(m_actions.help);
+
     menuBar()->addMenu(programMenu);
+    // align the "Help" menu on the right in the Motif and CDE style
+    menuBar()->addSeparator();
+    menuBar()->addMenu(helpMenu);
 }
 
 // -----------------------------------------------------------------------------
@@ -440,6 +458,33 @@ void UsbprogMainWindow::uploadFirmware()
 
     statusBar()->showMessage(tr("Firmware uploaded sucessfully!"), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
     QTimer::singleShot(2000, this, SLOT(refreshDevices()));
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::showHelp()
+{
+    Debug::debug()->dbg("Open help (docdir=%s)", DOCDIR);
+
+    QString fileName, localPath, globalPath;
+    localPath = QString::fromStdString(pathconcat("doc", USERS_GUIDE_FILENAME));
+    globalPath = QString::fromStdString(pathconcat(DOCDIR, USERS_GUIDE_FILENAME));
+    if (QFile::exists(localPath))
+        fileName = localPath;
+    else if (QFile::exists(globalPath))
+        fileName = globalPath;
+
+    if (fileName.isNull()) {
+        statusBar()->showMessage(tr("\"User's Manual\" not found."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+        return;
+    }
+
+    QString absolutePath = QFileInfo(fileName).canonicalFilePath();
+    Debug::debug()->dbg("Help found at '%s'", static_cast<const char *>(absolutePath.toLocal8Bit()) );
+
+    if (QDesktopServices::openUrl( QUrl::fromLocalFile(absolutePath)) )
+        statusBar()->showMessage(tr("PDF viewer successfully started."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
+    else
+        statusBar()->showMessage(tr("Unable to open PDF viewer."), UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT);
 }
 
 // -----------------------------------------------------------------------------
