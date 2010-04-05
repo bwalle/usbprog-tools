@@ -44,7 +44,7 @@ Downloader::Downloader(std::ostream &output) throw (DownloadError)
 /* -------------------------------------------------------------------------- */
 void Downloader::setUrl(const std::string &url) throw (DownloadError)
 {
-    Debug::debug()->dbg("Setting URL to %s", m_url.c_str());
+    Debug::debug()->dbg("Setting URL to '%s'", url.c_str());
     m_url = url;
 }
 
