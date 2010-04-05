@@ -121,7 +121,6 @@ class DeviceManager {
         virtual ~DeviceManager();
 
     public:
-        void init(int debuglevel = 0);
         void setUsbDebugging(int debuglevel);
         void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
         void printDevices(std::ostream &os) const;
@@ -134,6 +133,9 @@ class DeviceManager {
         Device *getCurrentUpdateDevice() const;
         void setCurrentUpdateDevice(ssize_t number);
         void clearCurrentUpdateDevice();
+
+    protected:
+        void init(int debuglevel = 0);
 
     private:
         DeviceVector m_updateDevices;
