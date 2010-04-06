@@ -1,6 +1,7 @@
 2010-04-06  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix build without libreadline.
+	* Fix download code on Mac OS.
 
 2010-04-05  Bernhard Walle <bernhard@bwalle.de>
 

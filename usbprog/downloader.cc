@@ -94,8 +94,11 @@ void Downloader::download() throw (DownloadError)
     while (!m_finished) {
         QByteArray readData = reply->readAll();
         m_output.write(readData.constData(), readData.size());
-        qApp->processEvents(QEventLoop::WaitForMoreEvents);
+        qApp->processEvents(QEventLoop::WaitForMoreEvents, 500);
     }
+
+    QByteArray readData = reply->readAll();
+    m_output.write(readData.constData(), readData.size());
 
     if (m_notifier)
         m_notifier->finished();
