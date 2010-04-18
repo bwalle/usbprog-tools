@@ -94,6 +94,7 @@ Usbprog::~Usbprog()
 {
     delete m_firmwarepool;
     delete m_progressNotifier;
+    delete m_devicemanager;
 }
 
 /* -------------------------------------------------------------------------- */

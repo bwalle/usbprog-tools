@@ -2,6 +2,7 @@
 
 	* Implement USB API ('usb++') for libusb v1.0.
 	* Switch debugging API from int to boolean.
+	* Fix memory leak in CLI (m_deviceManager).
 
 2010-04-06  Bernhard Walle <bernhard@bwalle.de>
 
