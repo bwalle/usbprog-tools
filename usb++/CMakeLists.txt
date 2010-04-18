@@ -17,17 +17,20 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(libusbprog-core STATIC
-        configuration.cc
-        devices.cc
-        stringutil.cc
-        util.cc
-        date.cc
-        digest.cc
-        inifile.cc
-        debug.cc
-        sleeper.cc
+ADD_LIBRARY(usb++ STATIC
+        v${LIBUSB_VERSION}/usbmanager.cc
+        v${LIBUSB_VERSION}/util.cc
+        v${LIBUSB_VERSION}/device.cc
+        v${LIBUSB_VERSION}/devicehandle.cc
+        v${LIBUSB_VERSION}/configdescriptor.cc
+        v${LIBUSB_VERSION}/interfacedescriptor.cc
+        devicedescriptor.cc
 )
-TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5 usb++)
+TARGET_LINK_LIBRARIES(usb++ ${EXTRA_LIBS} md5)
+
+ADD_EXECUTABLE(usb++_lsusb
+    lsusb.cc
+)
+TARGET_LINK_LIBRARIES(usb++_lsusb usb++)
 
 # vim: set sw=4 ts=4 et:

@@ -582,7 +582,11 @@ bool DevicesCommand::execute(CommandArgVector   args,
                              std::ostream       &os)
     throw (ApplicationError)
 {
-    m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    try {
+        m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    } catch (const IOError &err) {
+        throw ApplicationError(std::string(err.what()));
+    }
 
     if (m_deviceManager->getNumberUpdateDevices() == 0)
         os << "No devices found." << std::endl;
@@ -630,8 +634,12 @@ bool DeviceCommand::execute(CommandArgVector   args,
 {
     std::string device = args[0]->getString();
 
-    if (m_deviceManager->getNumberUpdateDevices() == 0)
-        m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    try {
+        if (m_deviceManager->getNumberUpdateDevices() == 0)
+            m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
+    } catch (const IOError &err) {
+        throw ApplicationError(std::string(err.what()));
+    }
 
     bool is_number = true;
     for (unsigned int i = 0; i < device.size(); i++) {
@@ -751,8 +759,12 @@ bool UploadCommand::execute(CommandArgVector   args,
     std::string firmware = args[0]->getString();
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
 
-    if (m_deviceManager->getNumberUpdateDevices() == 0)
-        m_deviceManager->discoverUpdateDevices();
+    try {
+        if (m_deviceManager->getNumberUpdateDevices() == 0)
+            m_deviceManager->discoverUpdateDevices();
+    } catch (const IOError &err) {
+        throw ApplicationError(std::string(err.what()));
+    }
 
     ByteVector data;
 
@@ -819,7 +831,11 @@ bool UploadCommand::execute(CommandArgVector   args,
 
     os << "Detecting new USB devices ..." << std::endl;
     usbprog_sleep(2);
-    m_deviceManager->discoverUpdateDevices();
+    try {
+        m_deviceManager->discoverUpdateDevices();
+    } catch (const IOError &err) {
+        throw ApplicationError(std::string(err.what()));
+    }
 
     return true;
 }

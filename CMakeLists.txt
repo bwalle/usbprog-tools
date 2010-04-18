@@ -32,6 +32,8 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
 
 OPTION(BUILD_GUI "Build the Qt GUI" ON)
 OPTION(BUILD_ONLY_CORE "Builds only the usbprog-core lib and a simple CLI program (has no library dependencies apart from libusb" OFF)
+OPTION(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look
+for legacy libusb 0.1" OFF)
 
 #
 # Check for functions
@@ -64,11 +66,24 @@ ENDIF (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
 # Find libraries
 #
 
-# libusb
-INCLUDE (Findlibusb)
-IF (NOT LIBUSB_FOUND)
-    MESSAGE(FATAL_ERROR "libusb not found.")
-ENDIF (NOT LIBUSB_FOUND)
+# libusb 1.0 or libusb legacy
+
+INCLUDE (FindPkgConfig)
+PKG_CHECK_MODULES(USB10 libusb-1.0)
+IF (USB10_FOUND AND NOT USE_LEGACY_LIBUSB)
+    INCLUDE_DIRECTORIES(USB10_INCLUDE_DIRS)
+    SET(EXTRA_LIBS ${EXTRA_LIBS} ${USB10_LDFLAGS})
+    MESSAGE(STATUS "libusb-1.0 found")
+    SET(LIBUSB_VERSION 1.0)
+ELSE (USB10_FOUND AND NOT USE_LEGACY_LIBUSB)
+    MESSAGE(STATUS "libusb-1.0 not found, checking for legacy libusb")
+    INCLUDE (Findlibusb)
+    IF (NOT LIBUSB_FOUND)
+        MESSAGE(FATAL_ERROR "libusb not found.")
+    ENDIF (NOT LIBUSB_FOUND)
+    SET(LIBUSB_VERSION 0.1)
+ENDIF (USB10_FOUND AND NOT USE_LEGACY_LIBUSB)
+
 
 INCLUDE_DIRECTORIES(${LIBUSB_INCLUDE_DIRS})
 SET (EXTRA_LIBS ${EXTRA_LIBS} ${LIBUSB_LIBRARIES})
@@ -145,6 +160,7 @@ CONFIGURE_FILE(
 #
 ADD_SUBDIRECTORY(md5)
 ADD_SUBDIRECTORY(usbprog-core)
+ADD_SUBDIRECTORY(usb++)
 IF (NOT BUILD_ONLY_CORE)
     ADD_SUBDIRECTORY(usbprog)
     ADD_SUBDIRECTORY(cli)

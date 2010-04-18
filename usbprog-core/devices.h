@@ -22,17 +22,13 @@
 #include <vector>
 #include <iostream>
 
+#include <usb++/usb++.h>
+
 #include <usbprog-core/types.h>
 #include <usbprog-core/error.h>
 #include <usbprog-core/progressnotifier.h>
 #include <usbprog-core/sleeper.h>
 
-/* Forward declarations {{{ */
-
-struct usb_dev_handle;
-struct usb_device;
-
-/* }}} */
 /* UpdateDevice {{{ */
 
 class UpdateDevice
@@ -79,14 +75,14 @@ class UpdateDevice
 class Device
 {
     public:
-        Device(struct usb_device *handle);
+        Device(struct USB::Device *handle);
         virtual ~Device() {}
 
     public:
         uint16_t getVendor() const;
         uint16_t getProduct() const;
-        std::string getDevice() const;
-        std::string getBus() const;
+        unsigned short getDeviceNumber() const;
+        unsigned short getBusNumber() const;
         std::string toString() const;
         std::string toShortString() const;
 
@@ -99,10 +95,10 @@ class Device
         void setShortName(const std::string &shortName);
         std::string getShortName() const;
 
-        struct usb_device *getHandle() const;
+        USB::Device *getHandle() const;
 
     private:
-        struct usb_device *m_handle;
+        USB::Device *m_handle;
         bool m_updateMode;
         std::string m_name;
         std::string m_shortName;
@@ -124,10 +120,11 @@ class DeviceManager {
     public:
         void setCustomSleeper(Sleeper *sleeper);
         void setUsbDebugging(int debuglevel);
-        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
+        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>())
+        throw (IOError);
         void printDevices(std::ostream &os) const;
         void switchUpdateMode()
-            throw (IOError);
+        throw (IOError);
 
         size_t getNumberUpdateDevices() const;
         Device *getDevice(size_t number) const;
@@ -165,9 +162,9 @@ class UsbprogUpdater {
             throw (IOError);
 
     private:
-        Device           *m_dev;
-        ProgressNotifier *m_progressNotifier;
-        usb_dev_handle   *m_devHandle;
+        Device              *m_dev;
+        ProgressNotifier    *m_progressNotifier;
+        USB::DeviceHandle   *m_devHandle;
 };
 
 /* }}} */
