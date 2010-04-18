@@ -224,6 +224,7 @@ void InfoCommand::printLongHelp(std::ostream &os) const
        << std::endl;
 }
 
+/* }}} */
 /* PinCommand {{{ */
 PinCommand::PinCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("pin"), m_firmwarepool(firmwarepool)
