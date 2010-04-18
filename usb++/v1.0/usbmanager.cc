@@ -71,9 +71,12 @@ UsbManager &UsbManager::instance()
 }
 
 /* -------------------------------------------------------------------------- */
-void UsbManager::setDebuglevel(int debuglevel)
+void UsbManager::setDebug(bool debug)
 {
-    libusb_set_debug(m_data->context, debuglevel);
+    if (debug)
+        libusb_set_debug(m_data->context, 3);
+    else
+        libusb_set_debug(m_data->context, 0);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -1,6 +1,7 @@
 2010-04-18  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implement USB API ('usb++') for libusb v1.0.
+	* Switch debugging API from int to boolean.
 
 2010-04-06  Bernhard Walle <bernhard@bwalle.de>
 

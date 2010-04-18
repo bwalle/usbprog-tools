@@ -272,11 +272,11 @@ DeviceManager::DeviceManager()
 }
 
 /* -------------------------------------------------------------------------- */
-DeviceManager::DeviceManager(int debuglevel)
+DeviceManager::DeviceManager(bool debuggingEnabled)
     : m_currentUpdateDevice(-1)
     , m_sleeper(NULL)
 {
-    init(debuglevel);
+    init(debuggingEnabled);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -288,20 +288,19 @@ DeviceManager::~DeviceManager()
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::init(int debuglevel)
+void DeviceManager::init(bool debuggingEnabled)
 {
     USB::UsbManager &usbManager = USB::UsbManager::instance();
     Debug::debug()->trace("USB::UsbManager::init()");
-    if (debuglevel != 0)
-        setUsbDebugging(debuglevel);
+    setUsbDebugging(debuggingEnabled);
     m_sleeper = new BlockingSleeper;
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::setUsbDebugging(int debuglevel)
+void DeviceManager::setUsbDebugging(bool enabled)
 {
-    Debug::debug()->trace("usb_set_debug(%d)", debuglevel);
-    USB::UsbManager::instance().setDebuglevel(debuglevel);
+    Debug::debug()->trace("usb_set_debug(%s)", enabled ? "true" : "false");
+    USB::UsbManager::instance().setDebug(enabled);
 }
 
 // -----------------------------------------------------------------------------

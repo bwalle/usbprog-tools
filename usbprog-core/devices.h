@@ -114,12 +114,12 @@ bool operator==(const DeviceVector &a, const DeviceVector &b);
 class DeviceManager {
     public:
         DeviceManager();
-        DeviceManager(int debuglevel);
+        DeviceManager(bool debuggingEnabled);
         virtual ~DeviceManager();
 
     public:
         void setCustomSleeper(Sleeper *sleeper);
-        void setUsbDebugging(int debuglevel);
+        void setUsbDebugging(bool enabled);
         void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>())
         throw (IOError);
         void printDevices(std::ostream &os) const;
@@ -134,7 +134,7 @@ class DeviceManager {
         void clearCurrentUpdateDevice();
 
     protected:
-        void init(int debuglevel = 0);
+        void init(bool debuggingEnabled = false);
 
     private:
         DeviceVector m_updateDevices;

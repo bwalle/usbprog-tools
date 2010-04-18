@@ -26,7 +26,7 @@
 int main(int argc, char *argv[])
 {
     USB::UsbManager &manager = USB::UsbManager::instance();
-    manager.setDebuglevel(3);
+    manager.setDebug(true);
     manager.detectDevices();
 
     std::cout << "Number of USB devices: " << manager.getNumberOfDevices() << std::endl;

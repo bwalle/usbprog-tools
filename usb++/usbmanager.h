@@ -30,7 +30,7 @@ class UsbManager
         static UsbManager &instance() throw (Error);
 
     public:
-        void setDebuglevel(int debuglevel);
+        void setDebug(bool debug);
 
         void detectDevices();
         size_t getNumberOfDevices() const;

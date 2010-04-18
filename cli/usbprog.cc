@@ -205,7 +205,7 @@ void Usbprog::initDeviceManager()
     throw (ApplicationError)
 {
     bool debug = CliConfiguration::config().getDebug();
-    m_devicemanager = new DeviceManager(debug ? 1 : 0);
+    m_devicemanager = new DeviceManager(debug);
 }
 
 /* -------------------------------------------------------------------------- */
