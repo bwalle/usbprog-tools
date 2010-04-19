@@ -18,7 +18,7 @@
 #include <vector>
 #include <cassert>
 
-#include <libusb-1.0/libusb.h>
+#include <libusb.h>
 
 #include <usb++/usbmanager.h>
 #include <usb++/util.h>
