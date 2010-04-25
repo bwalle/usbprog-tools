@@ -122,7 +122,7 @@ StringVector ShellStringTokenizer::tokenize()
 /* global functions {{{ */
 
 /* -------------------------------------------------------------------------- */
-std::string wordwrap(const std::string &text, ssize_t margins)
+std::string wordwrap(const std::string &text, int margins)
 {
     std::string ret, s;
     std::stringstream ss;
