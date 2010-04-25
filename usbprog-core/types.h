@@ -23,7 +23,7 @@
 
 /* Typedefs {{{ */
 
-struct Device;
+class Device;
 typedef std::vector<unsigned char> ByteVector;
 typedef std::map<std::string, std::string> StringStringMap;
 typedef std::vector<Device *> DeviceVector;

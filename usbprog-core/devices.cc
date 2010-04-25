@@ -23,8 +23,6 @@
 #include <cstring>
 #include <memory>
 
-#include <unistd.h>
-
 #include <usbpp/usbpp.h>
 
 #include <usbprog-core/devices.h>
@@ -453,7 +451,7 @@ void DeviceManager::switchUpdateMode()
         try {
             usb_handle->controlTransfer(0xC0, 0x01, 0, 0, NULL, 8, 1000);
             successfully = true;
-        } catch (const USB::Error &err) {}
+        } catch (const USB::Error &) {}
 
         m_sleeper->sleep(1);
     }
@@ -568,7 +566,6 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
 {
     unsigned char buf[USB_PAGESIZE];
     unsigned char cmd[USB_PAGESIZE];
-    int ret;
 
     Debug::debug()->dbg("UsbprogUpdater::writeFirmware, size=%d", bv.size());
 
@@ -625,7 +622,6 @@ void UsbprogUpdater::updateOpen()
 {
     USB::Device *dev = m_dev->getHandle();
 
-    int ret;
     Debug::debug()->dbg("UsbprogUpdater::updateOpen()");
 
     if (m_devHandle)

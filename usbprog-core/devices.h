@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <stdint.h>
 
 #include <usbpp/usbpp.h>
 
@@ -74,7 +75,7 @@ class UpdateDevice
 class Device
 {
     public:
-        Device(struct USB::Device *handle);
+        Device(class USB::Device *handle);
         virtual ~Device() {}
 
     public:
