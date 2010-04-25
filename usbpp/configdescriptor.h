@@ -41,11 +41,11 @@ class ConfigDescriptor
         unsigned short getConfigurationValue() const;
 
         size_t getNumberOfInterfaces() const;
-        size_t getNumberOfAltsettings(int interfaceNumber) const
+        size_t getNumberOfAltsettings(unsigned int interfaceNumber) const
         throw (Error);
 
-        InterfaceDescriptor *getInterfaceDescriptor(int interfaceNumber,
-                                                    int altsetting)
+        InterfaceDescriptor *getInterfaceDescriptor(unsigned int interfaceNumber,
+                                                    unsigned int altsetting)
         throw (Error);
 
     protected:

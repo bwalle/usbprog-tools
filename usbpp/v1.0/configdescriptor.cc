@@ -60,10 +60,10 @@ size_t ConfigDescriptor::getNumberOfInterfaces() const
 }
 
 /* -------------------------------------------------------------------------- */
-size_t ConfigDescriptor::getNumberOfAltsettings(int interfaceNumber) const
+size_t ConfigDescriptor::getNumberOfAltsettings(unsigned int interfaceNumber) const
     throw (Error)
 {
-    if (interfaceNumber < 0 || interfaceNumber >= getNumberOfInterfaces()) {
+    if (interfaceNumber >= getNumberOfInterfaces()) {
         std::stringstream ss;
         ss << "Interface number " << interfaceNumber << " does not exist.";
         throw Error(ss.str());
@@ -73,10 +73,11 @@ size_t ConfigDescriptor::getNumberOfAltsettings(int interfaceNumber) const
 }
 
 /* -------------------------------------------------------------------------- */
-InterfaceDescriptor *ConfigDescriptor::getInterfaceDescriptor(int interfaceNumber, int altsetting)
+InterfaceDescriptor *ConfigDescriptor::getInterfaceDescriptor(unsigned interfaceNumber,
+                                                              unsigned int altsetting)
     throw (Error)
 {
-    if (altsetting < 0 || altsetting >= getNumberOfAltsettings(interfaceNumber)) {
+    if (altsetting >= getNumberOfAltsettings(interfaceNumber)) {
         std::stringstream ss;
         ss << "Altsetting number " << altsetting << " does not exist.";
         throw Error(ss.str());
