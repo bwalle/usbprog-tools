@@ -28,6 +28,6 @@ ADD_LIBRARY(libusbprog-core STATIC
         debug.cc
         sleeper.cc
 )
-TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5 usb++)
+TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5 usbpp)
 
 # vim: set sw=4 ts=4 et:

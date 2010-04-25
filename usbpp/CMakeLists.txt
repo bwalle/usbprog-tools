@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(usb++ STATIC
+ADD_LIBRARY(usbpp STATIC
         v${LIBUSB_VERSION}/usbmanager.cc
         v${LIBUSB_VERSION}/util.cc
         v${LIBUSB_VERSION}/device.cc
@@ -26,11 +26,11 @@ ADD_LIBRARY(usb++ STATIC
         v${LIBUSB_VERSION}/interfacedescriptor.cc
         devicedescriptor.cc
 )
-TARGET_LINK_LIBRARIES(usb++ ${EXTRA_LIBS} md5)
+TARGET_LINK_LIBRARIES(usbpp ${EXTRA_LIBS} md5)
 
-ADD_EXECUTABLE(usb++_lsusb
+ADD_EXECUTABLE(usbpp_lsusb
     lsusb.cc
 )
-TARGET_LINK_LIBRARIES(usb++_lsusb usb++)
+TARGET_LINK_LIBRARIES(usbpp_lsusb usbpp)
 
 # vim: set sw=4 ts=4 et:
