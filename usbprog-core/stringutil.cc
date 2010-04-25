@@ -194,8 +194,11 @@ char **stringvector_to_array(const StringVector &vec)
     char **ret = (char **)malloc(sizeof(char *) * (vec.size()+1) );
 
     char **cur = ret;
-    for (StringVector::const_iterator it = vec.begin(); it != vec.end(); ++it)
-        *cur++ = strdup((*it).c_str());
+    for (StringVector::const_iterator it = vec.begin(); it != vec.end(); ++it) {
+        *cur = static_cast<char *>( std::malloc(it->size() + 1) );
+        std::strncpy(*cur, it->c_str(), it->size());
+        *cur++;
+    }
     *cur = NULL;
 
     return ret;
