@@ -205,7 +205,7 @@ Shell::Shell(const std::string &prompt)
     m_lineReader = LineReader::defaultLineReader(prompt);
     try {
         m_lineReader->readHistory(CliConfiguration::config().getHistoryFile());
-    } catch (const IOError &ioe)
+    } catch (const IOError &)
     {}
 
     if (m_lineReader->haveCompletion())
