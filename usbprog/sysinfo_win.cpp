@@ -27,7 +27,7 @@ std::string Sysinfo::osName()
 /* -------------------------------------------------------------------------- */
 std::string Sysinfo::osVersion()
 {
-    switch (QSysInfo::WinVersion) {
+    switch (QSysInfo::WinVersion()) {
         case QSysInfo::WV_32s:
             return "3.1";
         case QSysInfo::WV_95:
@@ -47,7 +47,7 @@ std::string Sysinfo::osVersion()
         case QSysInfo::WV_VISTA:
             return "Vista";
         case QSysInfo::WV_WINDOWS7:
-            return 7;
+            return "7";
         default:
             return "unknown";
     }
