@@ -1,3 +1,7 @@
+2010-04-25  Bernhard Walle <bernhard@bwalle.de>
+
+	* Fix build on Windows with Microsoft Visual C++ 2008.
+
 2010-04-18  Bernhard Walle <bernhard@bwalle.de>
 
 	* Implement USB API ('usb++') for libusb v1.0.
