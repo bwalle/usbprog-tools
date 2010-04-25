@@ -18,7 +18,7 @@
 #define USBPP_DEVICEDESCRIPTOR_H
 
 #include <iostream>
-#include <usb++/exceptions.h>
+#include <usbpp/exceptions.h>
 
 namespace USB {
 

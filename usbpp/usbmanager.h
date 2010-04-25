@@ -17,7 +17,7 @@
 #ifndef USBPP_LIBUSB_H
 #define USBPP_LIBUSB_H
 
-#include <usb++/exceptions.h>
+#include <usbpp/exceptions.h>
 
 namespace USB {
 

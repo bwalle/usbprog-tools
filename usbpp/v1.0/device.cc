@@ -16,10 +16,10 @@
  */
 #include <libusb.h>
 
-#include <usb++/device.h>
-#include <usb++/devicehandle.h>
-#include <usb++/util.h>
-#include <usb++/configdescriptor.h>
+#include <usbpp/device.h>
+#include <usbpp/devicehandle.h>
+#include <usbpp/util.h>
+#include <usbpp/configdescriptor.h>
 
 namespace USB {
 

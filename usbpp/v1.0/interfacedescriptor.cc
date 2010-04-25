@@ -18,9 +18,9 @@
 
 #include <libusb.h>
 
-#include <usb++/interfacedescriptor.h>
-#include <usb++/configdescriptor.h>
-#include <usb++/util.h>
+#include <usbpp/interfacedescriptor.h>
+#include <usbpp/configdescriptor.h>
+#include <usbpp/util.h>
 
 namespace USB {
 

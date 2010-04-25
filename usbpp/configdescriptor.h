@@ -14,62 +14,56 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef USBPP_DEVICE_H
-#define USBPP_DEVICE_H
+#ifndef USBPP_CONFIGDESCRIPTOR_H
+#define USBPP_CONFIGDESCRIPTOR_H
 
-#include <usb++/exceptions.h>
-#include <usb++/devicedescriptor.h>
+#include <usbpp/exceptions.h>
+#include <usbpp/devicedescriptor.h>
 
 namespace USB {
 
 /* Forward declarations {{{ */
 
-class DeviceHandle;
-class UsbManager;
-class ConfigDescriptor;
-struct DevicePrivate;
+struct ConfigDescriptorPrivate;
+class InterfaceDescriptor;
 
 /* }}} */
 
-/* Device {{{ */
+/* ConfigDescriptor {{{ */
 
-class Device
+class ConfigDescriptor
 {
-    friend class UsbManager;
+    friend class Device;
 
     public:
-        virtual ~Device();
+        virtual ~ConfigDescriptor();
 
-        unsigned short getDeviceNumber() const;
-        unsigned short getBusNumber() const;
+        unsigned short getConfigurationValue() const;
 
-        DeviceDescriptor getDescriptor() const
+        size_t getNumberOfInterfaces() const;
+        size_t getNumberOfAltsettings(int interfaceNumber) const
         throw (Error);
 
-        ConfigDescriptor *getConfigDescriptor(int index)
+        InterfaceDescriptor *getInterfaceDescriptor(int interfaceNumber,
+                                                    int altsetting)
         throw (Error);
-
-        DeviceHandle *open()
-        throw (Error);
-
-        // delete the DeviceHandle to close the device
 
     protected:
-        Device(void *nativeHandle);
+        ConfigDescriptor(void *nativeHandle);
 
     private:
         // noncopyable
-        Device(const Device &other);
-        Device &operator=(const Device &other);
+        ConfigDescriptor(const ConfigDescriptor &other);
+        ConfigDescriptor &operator=(const ConfigDescriptor &other);
 
     private:
-        DevicePrivate *const m_data;
+        ConfigDescriptorPrivate *const m_data;
 };
 
 /* }}} */
 
 } // end namespace USB
 
-#endif /* USBPP_DEVICE_H */
+#endif /* USBPP_CONFIGDESCRIPTOR_H */
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

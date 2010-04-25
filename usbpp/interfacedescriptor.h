@@ -17,7 +17,7 @@
 #ifndef USBPP_INTERFACEDESCRIPTOR_H
 #define USBPP_INTERFACEDESCRIPTOR_H
 
-#include <usb++/exceptions.h>
+#include <usbpp/exceptions.h>
 
 namespace USB {
 

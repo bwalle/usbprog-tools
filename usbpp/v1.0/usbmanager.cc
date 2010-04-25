@@ -20,9 +20,9 @@
 
 #include <libusb.h>
 
-#include <usb++/usbmanager.h>
-#include <usb++/util.h>
-#include <usb++/device.h>
+#include <usbpp/usbmanager.h>
+#include <usbpp/util.h>
+#include <usbpp/device.h>
 
 namespace USB {
 

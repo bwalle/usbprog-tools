@@ -22,7 +22,7 @@
 #include <vector>
 #include <iostream>
 
-#include <usb++/usb++.h>
+#include <usbpp/usbpp.h>
 
 #include <usbprog-core/types.h>
 #include <usbprog-core/error.h>

@@ -19,8 +19,8 @@
 
 #include <libusb.h>
 
-#include <usb++/devicehandle.h>
-#include <usb++/util.h>
+#include <usbpp/devicehandle.h>
+#include <usbpp/util.h>
 
 namespace USB {
 

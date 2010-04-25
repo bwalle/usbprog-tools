@@ -17,7 +17,7 @@
 #ifndef USBPP_DEVICE_HANDLE_H
 #define USBPP_DEVICE_HANDLE_H
 
-#include <usb++/exceptions.h>
+#include <usbpp/exceptions.h>
 
 namespace USB {
 

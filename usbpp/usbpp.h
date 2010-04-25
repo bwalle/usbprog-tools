@@ -17,11 +17,11 @@
 #ifndef USBPP_USBPP_H
 #define USBPP_USBPP_H
 
-#include <usb++/usbmanager.h>
-#include <usb++/device.h>
-#include <usb++/devicehandle.h>
-#include <usb++/configdescriptor.h>
-#include <usb++/interfacedescriptor.h>
+#include <usbpp/usbmanager.h>
+#include <usbpp/device.h>
+#include <usbpp/devicehandle.h>
+#include <usbpp/configdescriptor.h>
+#include <usbpp/interfacedescriptor.h>
 
 #endif /* USBPP_USBPP_H */
 

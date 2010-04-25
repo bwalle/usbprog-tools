@@ -25,7 +25,7 @@
 
 #include <unistd.h>
 
-#include <usb++/usb++.h>
+#include <usbpp/usbpp.h>
 
 #include <usbprog-core/devices.h>
 #include <usbprog-core/util.h>

@@ -16,8 +16,8 @@
  */
 #include <iomanip>
 
-#include <usb++/devicedescriptor.h>
-#include <usb++/util.h>
+#include <usbpp/devicedescriptor.h>
+#include <usbpp/util.h>
 
 namespace USB {
 
