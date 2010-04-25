@@ -1,6 +1,8 @@
 2010-04-25  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix build on Windows with Microsoft Visual C++ 2008.
+	* Make the URL in the firmware info clickable (open an external web
+	  browser).
 
 2010-04-18  Bernhard Walle <bernhard@bwalle.de>
 

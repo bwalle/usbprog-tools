@@ -261,6 +261,7 @@ void UsbprogMainWindow::initWidgets()
     m_widgets.firmwareList = new QListWidget(this);
     m_widgets.firmwareInfo = new QTextBrowser(this);
     m_widgets.firmwareInfo->setMinimumHeight(300);
+    m_widgets.firmwareInfo->setOpenExternalLinks(true);
 
     // icons for the right icon box
     m_widgets.pinButton = new QToolButton(this);
@@ -374,7 +375,8 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 
     // URL
     htmlStream << "<tr><td align=\"right\"><b>URL:</b></td> <td>&nbsp;</td> <td>"
-               << QString::fromStdString(fw->getUrl())
+               << "<a target=\"_top\" href=\"" << QString::fromStdString(fw->getUrl()) << "\">" 
+               << QString::fromStdString(fw->getUrl()) << "</a>"
                << "</td> </tr>\n";
 
 #if 0
