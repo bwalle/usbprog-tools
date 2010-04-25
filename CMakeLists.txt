@@ -151,6 +151,21 @@ IF (NOT BUILD_ONLY_CORE)
 
 ENDIF (NOT BUILD_ONLY_CORE)
 
+IF (MSVC)
+    # MSVC++ ignores all exception specifications except '()' [i.e. no exception]
+    # we can safely ignore that warning when compiling on MS Windows
+    ADD_DEFINITIONS("/w44290")
+
+    # we also don't want useless warnings that we should use some Windows specific functions
+    # instead of Standard C functions (which is quite right because the standard C functions
+    # are not safe, but we have no alternative in portable code)
+    ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS=1)
+
+    # also get rid of warnings "Function call with parameters that may be unsafe"
+    # the code is correct C++!
+    ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS=1)
+ENDIF (MSVC)
+
 #
 # Generate config.h
 #
