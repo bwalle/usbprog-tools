@@ -257,8 +257,10 @@ void Shell::addCommand(Command *cmd)
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector Shell::complete(const std::string &text, const std::string &full_text,
-        size_t start_idx, ssize_t end_idx)
+StringVector Shell::complete(const std::string      &text,
+                             const std::string      &full_text,
+                             unsigned int           start_idx,
+                             unsigned int           end_idx)
 {
     //
     // command completion

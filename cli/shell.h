@@ -144,8 +144,10 @@ class Shell : public Completor {
         bool run(StringVector input, bool multiple = true)
             throw (ApplicationError);
 
-        std::vector<std::string> complete(const std::string &text,
-                const std::string &full_text, size_t start_idx, ssize_t end_idx);
+        StringVector complete(const std::string     &text,
+                              const std::string     &full_text,
+                              unsigned int          start_idx,
+                              unsigned int          end_idx);
 
     private:
         StringCommandMap m_commands;
