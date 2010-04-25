@@ -33,6 +33,7 @@
 #endif
 
 #include <sys/stat.h>
+#include "oscompat.h"
 
 /* Fileutil {{{ */
 
