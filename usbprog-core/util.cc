@@ -69,9 +69,9 @@ std::string Fileutil::configDir(const std::string &program)
 
     if(SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA|CSIDL_FLAG_CREATE,
                     NULL, 0, path)))
-        return string(path) + "/" + program;
+        return std::string(path) + "/" + program;
     else
-        return string();
+        return std::string();
 }
 #else
 std::string Fileutil::configDir(const std::string &program)
