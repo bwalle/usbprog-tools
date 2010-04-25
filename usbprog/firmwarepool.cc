@@ -25,13 +25,12 @@
 #include <cstring>
 #include <vector>
 #include <cerrno>
-#include <unistd.h>
 
 #include <QDomDocument>
 #include <QFile>
+#include <QDir>
 
 #include <sys/types.h>
-#include <dirent.h>
 
 #include <usbprog-core/stringutil.h>
 #include <usbprog-core/util.h>
@@ -527,7 +526,7 @@ void Firmwarepool::downloadFirmware(const std::string &name)
         dl.setProgress(m_progressNotifier);
         dl.setUrl(url);
         dl.download();
-    } catch (const DownloadError &err) {
+    } catch (const DownloadError &) {
         fout.close();
         remove(file.c_str());
         throw;
@@ -613,27 +612,17 @@ std::vector<UpdateDevice> Firmwarepool::getUpdateDeviceList() const
 void Firmwarepool::deleteCache()
     throw (IOError)
 {
-    struct dirent *de;
-
-    DIR *dir = opendir(m_cacheDir.c_str());
-    if (!dir)
+    QDir cacheDir(QString::fromStdString(m_cacheDir));
+    if (!cacheDir.exists())
         throw IOError("opendir on " + m_cacheDir + " failed");
 
-    while ((de = readdir(dir)) != NULL) {
-        if (strcmp(de->d_name, INDEX_FILE_NAME) == 0 ||
-                strcmp(de->d_name, ".") == 0 ||
-                strcmp(de->d_name, "..") == 0)
+    QStringList entries = cacheDir.entryList(QDir::Files);
+    Q_FOREACH (QString entry, entries) {
+        if (entry == INDEX_FILE_NAME)
             continue;
-
-        std::string file = pathconcat(m_cacheDir, de->d_name);
-        int ret = remove(file.c_str());
-        if (ret < 0) {
-            closedir(dir);
-            throw IOError("Deletion of " +file+ " failed ");
-        }
+        if (!cacheDir.remove(entry))
+            throw IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
     }
-
-    closedir(dir);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -651,20 +640,17 @@ bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
 void Firmwarepool::cleanCache()
     throw (IOError)
 {
-    struct dirent *de;
-
-    DIR *dir = opendir(m_cacheDir.c_str());
-    if (!dir)
+    QDir cacheDir(QString::fromStdString(m_cacheDir));
+    if (!cacheDir.exists())
         throw IOError("opendir on " + m_cacheDir + " failed");
 
-    while ((de = readdir(dir)) != NULL) {
-        if (strcmp(de->d_name, INDEX_FILE_NAME) == 0 ||
-                strcmp(de->d_name, ".") == 0 ||
-                strcmp(de->d_name, "..") == 0)
+    QStringList entries = cacheDir.entryList(QDir::Files);
+    Q_FOREACH (QString entry, entries) {
+        if (entry == INDEX_FILE_NAME)
             continue;
 
-        std::string name = de->d_name;
-        size_t last_dot = name.rfind('.', name.length());
+        std::string name = entry.toStdString();
+        std::string::size_type last_dot = name.rfind('.', name.length());
         if (last_dot == std::string::npos)
             continue;
 
@@ -677,19 +663,12 @@ void Firmwarepool::cleanCache()
         if (!fw)
             continue;
 
-        if (isFirmwareOnDisk(firmware) && version != fw->getVersionString()) {
-            int ret;
 
-            std::string file(pathconcat(m_cacheDir, name).c_str());
-            ret = remove(file.c_str());
-            if (ret < 0) {
-                closedir(dir);
-                throw IOError("Deletion of file " + file + " failed.");
-            }
+        if (isFirmwareOnDisk(firmware) && version != fw->getVersionString()) {
+            if (!cacheDir.remove(entry))
+                throw IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
         }
     }
-
-    closedir(dir);
 }
 
 /* -------------------------------------------------------------------------- */
