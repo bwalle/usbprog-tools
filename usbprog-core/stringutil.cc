@@ -196,7 +196,7 @@ char **stringvector_to_array(const StringVector &vec)
     char **cur = ret;
     for (StringVector::const_iterator it = vec.begin(); it != vec.end(); ++it) {
         *cur = static_cast<char *>( std::malloc(it->size() + 1) );
-        std::strncpy(*cur, it->c_str(), it->size());
+        std::strncpy(*cur, it->c_str(), it->size()+1);
         *cur++;
     }
     *cur = NULL;
