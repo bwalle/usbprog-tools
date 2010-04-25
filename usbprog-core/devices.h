@@ -17,7 +17,6 @@
 #ifndef DEVICES_H
 #define DEVICES_H
 
-#include <stdint.h>
 #include <string>
 #include <vector>
 #include <iostream>
