@@ -54,6 +54,7 @@ int ProgressBarProgressNotifier::progressed(double total, double now)
 {
     m_progressBar->setValue(now*1000);
     m_progressBar->setMaximum(total*1000);
+    return true;
 }
 
 void ProgressBarProgressNotifier::finished()
