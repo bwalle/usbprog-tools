@@ -16,7 +16,7 @@
  */
 #include <sstream>
 
-#include <libusb.h>
+#include "libusb_1.0.h"
 
 #include <usbpp/interfacedescriptor.h>
 #include <usbpp/configdescriptor.h>

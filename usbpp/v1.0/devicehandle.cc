@@ -17,7 +17,7 @@
 #include <list>
 #include <algorithm>
 
-#include <libusb.h>
+#include "libusb_1.0.h"
 
 #include <usbpp/devicehandle.h>
 #include <usbpp/util.h>
