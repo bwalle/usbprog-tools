@@ -11,6 +11,8 @@
 #
 #  LIBUSB_ADDITIONAL_INCLUDEDIR - additional directory where CMake should look for libusb include dir
 #  LIBUSB_ADDITIONAL_LIBDIR - additional library directory where CMake should look for libusb libs
+#  USE_LEGACY_LIBUSB - don't look for libusb-1.0 even if it's installed,
+#         only look for libusb-0.1 (which includes the compat layer)
 #
 # Adapted from cmake-modules Google Code project
 #
@@ -24,62 +26,64 @@
 
 INCLUDE (FindPkgConfig)
 
-# at first: try pkg-config to find libusb 1.0
-PKG_CHECK_MODULES(USB10 libusb-1.0)
-if (USB10_FOUND)
-  set(LIBUSB_LIBRARIES ${USB10_LDFLAGS})
-  if (EXISTS "${USB10_INCLUDE_DIRS}/libusb-1.0/libusb.h")
-    set(LIBUSB_INCLUDE_DIRS "${USB10_INCLUDE_DIRS}/libusb-1.0")
-  elseif (EXISTS "${USB10_INCLUDE_DIRS}/libusb.h")
-    set(LIBUSB_INCLUDE_DIRS "${USB10_INCLUDE_DIRS}")
-  endif ()
-  set (LIBUSB_FOUND true)
-  set (LIBUSB_VERSION 1.0)
-endif (USB10_FOUND)
-
-# then look manually for libusb 1.0
-if (NOT LIBUSB_FOUND)
-  find_path(LIBUSB_INCLUDE_DIR
-    NAMES
-      libusb.h
-    PATHS
-      /usr/include
-      /usr/include/libusb-1.0
-      /usr/local/include
-      /usr/local/include/libusb-1.0
-      /opt/local/include
-      /opt/local/include/libusb-1.0
-      /sw/include
-      /sw/include/libusb-1.0
-      ${LIBUSB_ADDITIONAL_INCLUDEDIR}
-  )
-
-  message("includedir=${LIBUSB_INCLUDE_DIR}")
-
-  find_library(LIBUSB_LIBRARY
-    NAMES
-      libusb-1.0
-      usb-1.0
-    PATHS
-      /usr/lib
-      /usr/local/lib
-      /opt/local/lib
-      /sw/lib
-      ${LIBUSB_ADDITIONAL_LIBDIR}
-  )
-  message("libdir=${LIBUSB_LIBRARY}")
-
-  if (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
-    set(LIBUSB_INCLUDE_DIRS ${LIBUSB_INCLUDE_DIR})
-    if (CMAKE_HOST_WIN32)
-      set(LIBUSB_INCLUDE_DIRS ${LIBUSB_INCLUDE_DIRS} "${LIBUSB_INCLUDE_DIR}/../msvc")
-    endif (CMAKE_HOST_WIN32)
-
-    set(LIBUSB_LIBRARIES ${LIBUSB_LIBRARY})
+if (NOT USE_LEGACY_LIBUSB)
+  # at first: try pkg-config to find libusb 1.0
+  PKG_CHECK_MODULES(USB10 libusb-1.0)
+  if (USB10_FOUND)
+    set(LIBUSB_LIBRARIES ${USB10_LDFLAGS})
+    if (EXISTS "${USB10_INCLUDE_DIRS}/libusb-1.0/libusb.h")
+      set(LIBUSB_INCLUDE_DIRS "${USB10_INCLUDE_DIRS}/libusb-1.0")
+    elseif (EXISTS "${USB10_INCLUDE_DIRS}/libusb.h")
+      set(LIBUSB_INCLUDE_DIRS "${USB10_INCLUDE_DIRS}")
+    endif ()
     set (LIBUSB_FOUND true)
     set (LIBUSB_VERSION 1.0)
-  endif (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
-endif (NOT LIBUSB_FOUND)
+  endif (USB10_FOUND)
+
+  # then look manually for libusb 1.0
+  if (NOT LIBUSB_FOUND)
+    find_path(LIBUSB_INCLUDE_DIR
+      NAMES
+        libusb.h
+      PATHS
+        /usr/include
+        /usr/include/libusb-1.0
+        /usr/local/include
+        /usr/local/include/libusb-1.0
+        /opt/local/include
+        /opt/local/include/libusb-1.0
+        /sw/include
+        /sw/include/libusb-1.0
+        ${LIBUSB_ADDITIONAL_INCLUDEDIR}
+    )
+
+    message("includedir=${LIBUSB_INCLUDE_DIR}")
+
+    find_library(LIBUSB_LIBRARY
+      NAMES
+        libusb-1.0
+        usb-1.0
+      PATHS
+        /usr/lib
+        /usr/local/lib
+        /opt/local/lib
+        /sw/lib
+        ${LIBUSB_ADDITIONAL_LIBDIR}
+    )
+    message("libdir=${LIBUSB_LIBRARY}")
+
+    if (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
+      set(LIBUSB_INCLUDE_DIRS ${LIBUSB_INCLUDE_DIR})
+      if (CMAKE_HOST_WIN32)
+        set(LIBUSB_INCLUDE_DIRS ${LIBUSB_INCLUDE_DIRS} "${LIBUSB_INCLUDE_DIR}/../msvc")
+      endif (CMAKE_HOST_WIN32)
+
+      set(LIBUSB_LIBRARIES ${LIBUSB_LIBRARY})
+      set (LIBUSB_FOUND true)
+      set (LIBUSB_VERSION 1.0)
+    endif (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
+  endif (NOT LIBUSB_FOUND)
+endif (NOT USE_LEGACY_LIBUSB)
 
 # then look manually for libusb 0.1
 if (NOT LIBUSB_FOUND)
