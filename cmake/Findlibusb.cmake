@@ -117,3 +117,4 @@ endif (NOT LIBUSB_FOUND)
 # show the LIBUSB_INCLUDE_DIRS and LIBUSB_LIBRARIES variables only in the advanced view
 mark_as_advanced(LIBUSB_INCLUDE_DIRS LIBUSB_LIBRARIES)
 
+# vim: set ft=cmake sw=2 ts=2 et:
