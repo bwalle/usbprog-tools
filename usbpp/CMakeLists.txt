@@ -17,15 +17,27 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(usbpp STATIC
-        v${LIBUSB_VERSION}/usbmanager.cc
-        v${LIBUSB_VERSION}/error.cc
-        v${LIBUSB_VERSION}/device.cc
-        v${LIBUSB_VERSION}/devicehandle.cc
-        v${LIBUSB_VERSION}/configdescriptor.cc
-        v${LIBUSB_VERSION}/interfacedescriptor.cc
-        devicedescriptor.cc
-)
+if (LIBUSB_VERSION STREQUAL "0.1")
+  ADD_LIBRARY(usbpp STATIC
+          v0.1/usbmanager.cc
+          v0.1/device.cc
+          v0.1/devicehandle.cc
+          v0.1/configdescriptor.cc
+          v0.1/interfacedescriptor.cc
+          devicedescriptor.cc
+  )
+else (LIBUSB_VERSION STREQUAL "0.1")
+  ADD_LIBRARY(usbpp STATIC
+          v1.0/usbmanager.cc
+          v1.0/device.cc
+          v1.0/error.cc
+          v1.0/devicehandle.cc
+          v1.0/configdescriptor.cc
+          v1.0/interfacedescriptor.cc
+          devicedescriptor.cc
+  )
+endif (LIBUSB_VERSION STREQUAL "0.1")
+
 TARGET_LINK_LIBRARIES(usbpp ${EXTRA_LIBS} md5)
 
 ADD_EXECUTABLE(usbpp_lsusb
