@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef USBPP_UTIL_H
-#define USBPP_UTIL_H
+#ifndef USBPP_ERROR_H
+#define USBPP_ERROR_H
 
 namespace USB {
 
@@ -24,4 +24,4 @@ const char *errorcodeToString(int error);
 } // end namespace USB
 
 
-#endif // USBPP_10_UTIL_H
+#endif // USBPP_ERROR_H

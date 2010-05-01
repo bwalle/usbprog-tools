@@ -17,10 +17,10 @@
 #include <sstream>
 
 #include "libusb_1.0.h"
+#include "error.h"
 
 #include <usbpp/interfacedescriptor.h>
 #include <usbpp/configdescriptor.h>
-#include <usbpp/util.h>
 
 namespace USB {
 

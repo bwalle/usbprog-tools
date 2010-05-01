@@ -17,7 +17,6 @@
 #include <iomanip>
 
 #include <usbpp/devicedescriptor.h>
-#include <usbpp/util.h>
 
 namespace USB {
 

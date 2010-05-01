@@ -18,7 +18,6 @@
 #include <iostream>
 
 #include <usbpp/usbmanager.h>
-#include <usbpp/util.h>
 #include <usbpp/device.h>
 
 

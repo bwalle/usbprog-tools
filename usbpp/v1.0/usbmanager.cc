@@ -19,9 +19,9 @@
 #include <cassert>
 
 #include "libusb_1.0.h"
+#include "error.h"
 
 #include <usbpp/usbmanager.h>
-#include <usbpp/util.h>
 #include <usbpp/device.h>
 
 namespace USB {

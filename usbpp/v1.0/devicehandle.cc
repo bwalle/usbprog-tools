@@ -18,9 +18,9 @@
 #include <algorithm>
 
 #include "libusb_1.0.h"
+#include "error.h"
 
 #include <usbpp/devicehandle.h>
-#include <usbpp/util.h>
 
 namespace USB {
 

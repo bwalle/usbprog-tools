@@ -15,10 +15,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "libusb_1.0.h"
+#include "error.h"
 
 #include <usbpp/device.h>
 #include <usbpp/devicehandle.h>
-#include <usbpp/util.h>
 #include <usbpp/configdescriptor.h>
 
 namespace USB {

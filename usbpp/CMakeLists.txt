@@ -19,7 +19,7 @@
 
 ADD_LIBRARY(usbpp STATIC
         v${LIBUSB_VERSION}/usbmanager.cc
-        v${LIBUSB_VERSION}/util.cc
+        v${LIBUSB_VERSION}/error.cc
         v${LIBUSB_VERSION}/device.cc
         v${LIBUSB_VERSION}/devicehandle.cc
         v${LIBUSB_VERSION}/configdescriptor.cc
