@@ -18,7 +18,7 @@
 
 #include <usbpp/devicedescriptor.h>
 
-namespace USB {
+namespace usb {
 
 /* DeviceDescriptor {{{ */
 
@@ -101,6 +101,6 @@ std::ostream &operator<<(std::ostream &os, const DeviceDescriptor &desc)
     return os;
 }
 
-} // end namespace USB
+} // end namespace usb
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

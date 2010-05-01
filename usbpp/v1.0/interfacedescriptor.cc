@@ -22,7 +22,7 @@
 #include <usbpp/interfacedescriptor.h>
 #include <usbpp/configdescriptor.h>
 
-namespace USB {
+namespace usb {
 
 /* InterfaceDescriptorPrivate {{{ */
 
@@ -54,7 +54,7 @@ unsigned short InterfaceDescriptor::getInterfaceNumber() const
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

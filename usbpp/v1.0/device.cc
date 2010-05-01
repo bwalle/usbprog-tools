@@ -21,7 +21,7 @@
 #include <usbpp/devicehandle.h>
 #include <usbpp/configdescriptor.h>
 
-namespace USB {
+namespace usb {
 
 /* DevicePrivate {{{ */
 
@@ -104,7 +104,7 @@ DeviceHandle *Device::open()
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

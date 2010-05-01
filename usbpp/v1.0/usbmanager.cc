@@ -24,7 +24,7 @@
 #include <usbpp/usbmanager.h>
 #include <usbpp/device.h>
 
-namespace USB {
+namespace usb {
 
 /* UsbManagerPrivate {{{ */
 
@@ -117,7 +117,7 @@ Device *UsbManager::getDevice(size_t number)
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

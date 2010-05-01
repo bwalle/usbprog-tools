@@ -22,7 +22,7 @@
 
 #include <usbpp/devicehandle.h>
 
-namespace USB {
+namespace usb {
 
 /* DeviceHandlePrivate {{{ */
 
@@ -144,7 +144,7 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

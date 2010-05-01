@@ -20,7 +20,7 @@
 #include <iostream>
 #include <usbpp/exceptions.h>
 
-namespace USB {
+namespace usb {
 
 /* DeviceDescriptor {{{ */
 
@@ -54,7 +54,7 @@ std::ostream &operator<<(std::ostream &os, const DeviceDescriptor &desc);
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 #endif /* USBPP_DEVICEDESCRIPTOR_H */
 

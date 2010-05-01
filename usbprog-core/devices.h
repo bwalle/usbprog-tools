@@ -75,7 +75,7 @@ class UpdateDevice
 class Device
 {
     public:
-        Device(class USB::Device *handle);
+        Device(class usb::Device *handle);
         virtual ~Device() {}
 
     public:
@@ -95,10 +95,10 @@ class Device
         void setShortName(const std::string &shortName);
         std::string getShortName() const;
 
-        USB::Device *getHandle() const;
+        usb::Device *getHandle() const;
 
     private:
-        USB::Device *m_handle;
+        usb::Device *m_handle;
         bool m_updateMode;
         std::string m_name;
         std::string m_shortName;
@@ -168,7 +168,7 @@ class UsbprogUpdater {
     private:
         Device              *m_dev;
         ProgressNotifier    *m_progressNotifier;
-        USB::DeviceHandle   *m_devHandle;
+        usb::DeviceHandle   *m_devHandle;
 };
 
 /* }}} */

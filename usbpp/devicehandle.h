@@ -19,7 +19,7 @@
 
 #include <usbpp/exceptions.h>
 
-namespace USB {
+namespace usb {
 
 /* Forward declarations {{{ */
 
@@ -81,7 +81,7 @@ class DeviceHandle
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 #endif /* USBPP_DEVICE_HANDLE_H */
 

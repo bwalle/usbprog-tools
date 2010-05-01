@@ -24,13 +24,13 @@
 /* -------------------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
-    USB::UsbManager &manager = USB::UsbManager::instance();
+    usb::UsbManager &manager = usb::UsbManager::instance();
     manager.setDebug(true);
     manager.detectDevices();
 
     std::cout << "Number of USB devices: " << manager.getNumberOfDevices() << std::endl;
     for (size_t deviceNumber = 0; deviceNumber < manager.getNumberOfDevices(); ++deviceNumber) {
-        USB::Device *dev = manager.getDevice(deviceNumber);
+        usb::Device *dev = manager.getDevice(deviceNumber);
         std::cout << "------------------------------------------------" << std::endl;
         std::cout << dev->getDescriptor() << std::endl;
     }

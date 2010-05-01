@@ -20,7 +20,7 @@
 #include <usbpp/exceptions.h>
 #include <usbpp/devicedescriptor.h>
 
-namespace USB {
+namespace usb {
 
 /* Forward declarations {{{ */
 
@@ -68,7 +68,7 @@ class Device
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 #endif /* USBPP_DEVICE_H */
 

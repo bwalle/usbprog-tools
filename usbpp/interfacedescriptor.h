@@ -19,7 +19,7 @@
 
 #include <usbpp/exceptions.h>
 
-namespace USB {
+namespace usb {
 
 /* Forward declarations {{{ */
 
@@ -53,7 +53,7 @@ class InterfaceDescriptor
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 #endif /* USBPP_INTERFACEDESCRIPTOR_H */
 

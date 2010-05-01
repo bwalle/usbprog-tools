@@ -17,11 +17,11 @@
 #ifndef USBPP_ERROR_H
 #define USBPP_ERROR_H
 
-namespace USB {
+namespace usb {
 
 const char *errorcodeToString(int error);
 
-} // end namespace USB
+} // end namespace usb
 
 
 #endif // USBPP_ERROR_H

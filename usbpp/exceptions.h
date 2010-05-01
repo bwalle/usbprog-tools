@@ -19,7 +19,7 @@
 
 #include <stdexcept>
 
-namespace USB {
+namespace usb {
 
 /* Error {{{ */
 
@@ -31,7 +31,7 @@ class Error : public std::runtime_error {
 
 /* }}} */
 
-} // end namespace USB
+} // end namespace usb
 
 
 #endif // USBPP_EXCEPTIONS_H

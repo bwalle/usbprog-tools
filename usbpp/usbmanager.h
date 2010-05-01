@@ -19,10 +19,12 @@
 
 #include <usbpp/exceptions.h>
 
-namespace USB {
+namespace usb {
 
 struct UsbManagerPrivate;
 class Device;
+
+/* UsbManager {{{ */
 
 class UsbManager
 {
@@ -50,7 +52,9 @@ class UsbManager
         UsbManagerPrivate *const m_data;
 };
 
-} // end namespace USB
+/* }}} */
+
+} // end namespace usb
 
 #endif /* USBPP_LIBUSB_H */
 

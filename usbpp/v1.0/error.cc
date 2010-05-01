@@ -16,7 +16,7 @@
  */
 #include "error.h"
 
-namespace USB {
+namespace usb {
 
 /* -------------------------------------------------------------------------- */
 const char *errorcodeToString(int err)
@@ -45,4 +45,4 @@ const char *errorcodeToString(int err)
         return errortable[-err];
 }
 
-} // end namespace USB
+} // end namespace usb
