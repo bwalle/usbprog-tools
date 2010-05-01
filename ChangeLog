@@ -3,6 +3,7 @@
 	* Save the device identification (vendor id, product id, ...)
 	  in the Device (usbprog-core) object to be able to compare it
 	  against new devices after m_handle is invalid.
+	* Add libusb-0.1 port of usbpp.
 
 2010-04-25  Bernhard Walle <bernhard@bwalle.de>
 
