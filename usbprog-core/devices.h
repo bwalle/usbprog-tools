@@ -102,6 +102,10 @@ class Device
         bool m_updateMode;
         std::string m_name;
         std::string m_shortName;
+        uint16_t m_vendorId;
+        uint16_t m_productId;
+        unsigned short m_deviceNumber;
+        unsigned short m_busNumber;
 };
 
 bool operator==(const Device &a, const Device &b);

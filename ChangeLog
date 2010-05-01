@@ -1,3 +1,9 @@
+2010-05-01  Bernhard Walle <bernhard@bwalle.de>
+
+	* Save the device identification (vendor id, product id, ...)
+	  in the Device (usbprog-core) object to be able to compare it
+	  against new devices after m_handle is invalid.
+
 2010-04-25  Bernhard Walle <bernhard@bwalle.de>
 
 	* Fix build on Windows with Microsoft Visual C++ 2008.

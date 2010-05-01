@@ -145,30 +145,34 @@ std::string UpdateDevice::formatDeviceId() const
 Device::Device(USB::Device *handle)
     : m_handle(handle)
     , m_updateMode(false)
+    , m_vendorId(handle->getDescriptor().getVendorId())
+    , m_productId(handle->getDescriptor().getProductId())
+    , m_deviceNumber(handle->getDeviceNumber())
+    , m_busNumber(handle->getBusNumber())
 {}
 
 /* -------------------------------------------------------------------------- */
 uint16_t Device::getVendor() const
 {
-    return m_handle->getDescriptor().getVendorId();
+    return m_vendorId;
 }
 
 /* -------------------------------------------------------------------------- */
 uint16_t Device::getProduct() const
 {
-    return m_handle->getDescriptor().getProductId();
+    return m_productId;
 }
 
 /* -------------------------------------------------------------------------- */
 unsigned short Device::getDeviceNumber() const
 {
-    return m_handle->getDeviceNumber();
+    return m_deviceNumber;
 }
 
 /* -------------------------------------------------------------------------- */
 unsigned short Device::getBusNumber() const
 {
-    return m_handle->getBusNumber();
+    return m_busNumber;
 }
 
 /* -------------------------------------------------------------------------- */
