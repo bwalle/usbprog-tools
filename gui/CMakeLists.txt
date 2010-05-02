@@ -26,6 +26,9 @@ if (BUILD_GUI)
         guiconfiguration.cc
         qtsleeper.cc
     )
+    if (WIN32)
+        set(usbprog_gui_SRCS ${usbprog_gui_SRCS} usbprog_gui.rc)
+    endif (WIN32)
     set(usbprog_gui_MOCS
         usbprog_mainwindow.h
     )

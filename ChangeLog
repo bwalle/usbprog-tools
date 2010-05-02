@@ -10,6 +10,7 @@
 	  Firmwarepool::readFromFile().
 	* Add first version of usbprog-basic.
 	* Add install target (cmake).
+	* Compile RC files on Windows to give the executable an icon.
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 

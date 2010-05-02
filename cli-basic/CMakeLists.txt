@@ -17,10 +17,16 @@
 # 02110-1301, USA.
 #
 
-add_executable(usbprog-basic
+set(usbprog_basic_SRC
     main.cc
     usbprog_basic.cc
 )
+
+if (WIN32)
+    set(usbprog_basic_SRC ${usbprog_basic_SRC} usbprog_basic.rc)
+endif (WIN32)
+
+add_executable(usbprog-basic ${usbprog_basic_SRC})
 target_link_libraries(usbprog-basic ${EXTRA_LIBS} libusbprog-core)
 
 if (BUILD_ONLY_CORE)

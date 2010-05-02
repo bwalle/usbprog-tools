@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-add_executable(usbprog
+set(usbprog_SRC
     commands.cc
     io.cc
     main.cc
@@ -25,6 +25,12 @@ add_executable(usbprog
     usbprog.cc
     cliconfiguration.cc
 )
+
+if (WIN32)
+    set(usbprog_SRC ${usbprog_SRC} usbprog.rc)
+endif (WIN32)
+
+add_executable(usbprog ${usbprog_SRC})
 target_link_libraries(usbprog ${EXTRA_LIBS} libusbprog md5)
 
 install(
