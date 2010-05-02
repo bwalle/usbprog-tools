@@ -18,6 +18,7 @@
 #define USBPROG_UTIL_H
 
 #include <usbprog-core/date.h>
+#include <usbprog-core/types.h>
 
 namespace usbprog {
 namespace core {
@@ -34,6 +35,8 @@ class Fileutil {
         static bool isPathName(const std::string &dir);
         static std::string resolvePath(const std::string &path);
         static DateTime getMTime(const std::string &file)
+            throw (IOError);
+        static ByteVector readBytesFromFile(const std::string &file)
             throw (IOError);
 };
 

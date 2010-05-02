@@ -39,7 +39,6 @@
 #include <usbprog/firmwarepool.h>
 
 #define INDEX_FILE_NAME  "versions.xml"
-#define BUFFERSIZE       2048
 
 namespace usbprog {
 
@@ -361,29 +360,6 @@ std::string Firmware::formatDateVersion() const
 /* Firmwarepool {{{ */
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::readFromFile(const std::string &file,
-                                core::ByteVector  &bv)
-    throw (core::IOError)
-{
-    char buffer[BUFFERSIZE];
-
-    std::ifstream fin(file.c_str(), std::ios::binary);
-    if (!fin)
-        throw core::IOError("Opening " + file + " failed");
-
-    bv.clear();
-    while (!fin.eof()) {
-        fin.read(buffer, BUFFERSIZE);
-        if (fin.bad())
-            throw core::IOError("Error while reading data from " + file);
-
-        std::copy(buffer, buffer + fin.gcount(), back_inserter(bv));
-    }
-
-    fin.close();
-}
-
-/* -------------------------------------------------------------------------- */
 Firmwarepool::Firmwarepool(const std::string &cacheDir)
       throw (core::IOError)
     : m_cacheDir(cacheDir)
@@ -553,7 +529,7 @@ void Firmwarepool::fillFirmware(const std::string &name)
         throw core::ApplicationError("Firmware doesn't exist");
 
     std::string file = getFirmwareFilename(fw);
-    readFromFile(file, fw->getData());
+    fw->getData() = core::Fileutil::readBytesFromFile(file);
 }
 
 /* -------------------------------------------------------------------------- */

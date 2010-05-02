@@ -6,6 +6,8 @@
 	* Remove boost dependency in usbprog-core.
 	* Introduce 'showActive' parameter in DeviceManager::printDevices().
 	* Fix crash when downloading the firmware file from the server fails.
+	* Add function Fileutil::readBytesFromFile() and remove
+	  Firmwarepool::readFromFile().
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 

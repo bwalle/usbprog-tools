@@ -18,6 +18,7 @@
 #include <cstring>
 #include <sstream>
 #include <cstdlib>
+#include <fstream>
 
 #include <usbprog-core/util.h>
 #include <usbprog-core/date.h>
@@ -34,6 +35,12 @@
 
 #include <sys/stat.h>
 #include "oscompat.h"
+
+/* Defines {{{ */
+
+#define BUFFERSIZE       2048
+
+/* }}} */
 
 namespace usbprog {
 namespace core {
@@ -182,6 +189,29 @@ std::string Fileutil::resolvePath(const std::string &path)
     }
 }
 #endif
+
+/* -------------------------------------------------------------------------- */
+ByteVector Fileutil::readBytesFromFile(const std::string &file)
+    throw (IOError)
+{
+    ByteVector bv;
+    char buffer[BUFFERSIZE];
+
+    std::ifstream fin(file.c_str(), std::ios::binary);
+    if (!fin)
+        throw core::IOError("Opening " + file + " failed");
+
+    bv.clear();
+    while (!fin.eof()) {
+        fin.read(buffer, BUFFERSIZE);
+        if (fin.bad())
+            throw core::IOError("Error while reading data from " + file);
+
+        std::copy(buffer, buffer + fin.gcount(), back_inserter(bv));
+    }
+
+    fin.close();
+}
 
 /* }}} */
 /* global {{{ */

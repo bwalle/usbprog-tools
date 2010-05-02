@@ -112,11 +112,6 @@ class Firmwarepool {
     friend class FirmwareXMLParser;
 
     public:
-        static void readFromFile(const std::string  &filename,
-                                 core::ByteVector   &bv)
-            throw (core::IOError);
-
-    public:
         Firmwarepool(const std::string &cacheDir)
             throw (core::IOError);
         virtual ~Firmwarepool();

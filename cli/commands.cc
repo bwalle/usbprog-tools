@@ -781,7 +781,7 @@ bool UploadCommand::execute(CommandArgVector   args,
 
         firmware = core::Fileutil::resolvePath(firmware);
         try {
-            Firmwarepool::readFromFile(firmware, data);
+            data = core::Fileutil::readBytesFromFile(firmware);
         } catch (const core::IOError &ioe) {
             throw core::ApplicationError(std::string("Error while reading data from file: ")+ioe.what());
         }
