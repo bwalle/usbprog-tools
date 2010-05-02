@@ -23,8 +23,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QUrl>
-#include <QApplication>
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <usbprog-core/debug.h>
 #include <usbprog/sysinfo.h>
