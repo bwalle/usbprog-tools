@@ -23,12 +23,17 @@
 
 #include <usbprog-core/error.h>
 
+/* DateTimeFormat {{{ */
+
 enum DateTimeFormat {
     DTF_ISO_DATETIME,           /* YYYY-MM-DD HH:MM */
     DTF_ISO_DATE,               /* YYYY-MM-DD */
     DTF_ISO_SHORT_DATETIME,     /* YY-MM-DD HH:MM */
     DTF_ISO_SHORT_DATE          /* YY-MM-DD */
 };
+
+/* }}} */
+/* DateTime {{{ */
 
 class DateTime {
 
@@ -62,6 +67,7 @@ bool operator>=(const DateTime &a, const DateTime &b);
 long long operator-(const DateTime &a, const DateTime &b);
 long long operator+(const DateTime &a, const DateTime &b);
 
+/* }}} */
 
 #endif /* USBPROG_DATE_H */
 

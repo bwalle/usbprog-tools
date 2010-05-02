@@ -19,6 +19,8 @@
 
 #include <usbprog-core/date.h>
 
+/* Fileutil {{{ */
+
 class Fileutil {
     public:
         static std::string homeDir();
@@ -32,9 +34,14 @@ class Fileutil {
             throw (IOError);
 };
 
+/* }}} */
+/* Free functions {{{ */
+
 std::string pathconcat(const std::string &a, const std::string &b);
 void usbprog_sleep(unsigned int seconds);
 void usbprog_msleep(unsigned int msec);
+
+/* }}} */
 
 #endif /* USBPROG_UTIL_H */
 

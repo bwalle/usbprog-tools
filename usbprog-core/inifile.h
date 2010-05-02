@@ -22,6 +22,8 @@
 
 #include <usbprog-core/error.h>
 
+/* IniFile {{{ */
+
 class IniFile {
     public:
         IniFile(const std::string &fileName);
@@ -38,6 +40,7 @@ class IniFile {
         std::map<std::string, std::string> m_map;
 };
 
+/* }}} */
 
 #endif /* USBPROG_INIFILE_H */
 

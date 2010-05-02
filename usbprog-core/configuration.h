@@ -23,6 +23,8 @@
 
 #include <boost/utility.hpp>
 
+/* Configuration {{{ */
+
 class Configuration : boost::noncopyable
 {
     public:
@@ -51,6 +53,7 @@ class Configuration : boost::noncopyable
         std::string m_indexUrl;
 };
 
+/* }}} */
 
 #endif /* CONFIGURATION_H */
 
