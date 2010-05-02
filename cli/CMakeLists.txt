@@ -27,6 +27,11 @@ add_executable(usbprog
 )
 target_link_libraries(usbprog ${EXTRA_LIBS} libusbprog md5)
 
+install(
+    TARGETS         usbprog
+    DESTINATION     bin
+)
+
 if (BUILD_MANPAGE)
     add_custom_command(
         OUTPUT
@@ -49,6 +54,11 @@ if (BUILD_MANPAGE)
     add_dependencies(
         usbprog
         manpages
+    )
+
+    install(
+        FILES           ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
+        DESTINATION     share/man/man1
     )
 endif (BUILD_MANPAGE)
 

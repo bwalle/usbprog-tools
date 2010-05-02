@@ -46,6 +46,11 @@ if (BUILD_GUI)
 
     target_link_libraries(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
 
+    install(
+        TARGETS         usbprog-gui
+        DESTINATION     bin
+    )
+
     if (BUILD_MANPAGE)
         add_custom_command(
             OUTPUT
@@ -69,7 +74,15 @@ if (BUILD_GUI)
             usbprog-gui
             gui-manpage
         )
+
+
+        install(
+            FILES           ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+            DESTINATION     share/man/man1
+        )
+
     endif (BUILD_MANPAGE)
+
 endif (BUILD_GUI)
 
 
