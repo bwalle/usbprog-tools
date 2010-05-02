@@ -36,6 +36,14 @@ option(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look
 for legacy libusb 0.1" OFF)
 
 #
+# Check if the configuration is sane
+#
+
+if (BUILD_GUI AND BUILD_ONLY_CORE)
+    message(SEND_ERROR "It doesn't make sense to specify 'BUILD_GUI=ON' and 'BUILD_ONLY_CORE=ON'")
+endif (BUILD_GUI AND BUILD_ONLY_CORE)
+
+#
 # Check for functions
 #
 include (CheckFunctionExists)
