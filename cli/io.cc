@@ -257,11 +257,11 @@ void ReadlineLineReader::setCompletor(Completor *comp)
         rl_attempted_completion_function = NULL;
 }
 
+#endif
+
 /* }}} */
 
 } // end namespace cli
 } // end namespace usbprog
-
-#endif
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:
