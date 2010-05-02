@@ -21,14 +21,12 @@
 #include <string>
 #include <ostream>
 
-#include <boost/utility.hpp>
-
 namespace usbprog {
 namespace core {
 
 /* Configuration {{{ */
 
-class Configuration : boost::noncopyable
+class Configuration
 {
     public:
         void setDataDir(const std::string &dir);
