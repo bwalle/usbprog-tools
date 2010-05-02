@@ -4,6 +4,7 @@
 	* Introduce macros for logging: USBPROG_DEBUG, USBPROG_DEBUG_TRACE,
 	  USBPROG_DEBUG_DBG and USBPROG_DEBUG_INFO.
 	* Remove boost dependency in usbprog-core.
+	* Introduce 'showActive' parameter in DeviceManager::printDevices().
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 

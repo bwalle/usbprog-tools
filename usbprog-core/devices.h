@@ -129,7 +129,7 @@ class DeviceManager {
         void setUsbDebugging(bool enabled);
         void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>())
         throw (IOError);
-        void printDevices(std::ostream &os) const;
+        void printDevices(std::ostream &os, bool showActive=true) const;
         void switchUpdateMode()
         throw (IOError);
 

@@ -374,7 +374,7 @@ void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updat
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::printDevices(std::ostream &os) const
+void DeviceManager::printDevices(std::ostream &os, bool showActive) const
 {
     int i = 0;
     Device *up = getCurrentUpdateDevice();
@@ -383,10 +383,12 @@ void DeviceManager::printDevices(std::ostream &os) const
 
         Device *dev = *it;
         os << " [" << std::setw(2) << std::right << i++ << "] " << std::left;
-        if (up != NULL && *up == *dev)
-            os << " *  ";
-        else
-            os << "    ";
+        if (showActive) {
+            if (up != NULL && *up == *dev)
+                os << " *  ";
+            else
+                os << "    ";
+        }
         os << "Bus "    << std::setw(3) << std::setfill('0') << dev->getBusNumber() << " "
            << "Device " << std::setw(3) << std::setfill('0') << dev->getDeviceNumber() << ": "
            << std::setw(4) << std::hex << std::setfill('0') << dev->getVendor()
@@ -394,9 +396,13 @@ void DeviceManager::printDevices(std::ostream &os) const
            << std::setw(4) << std::hex << std::setfill('0') << dev->getProduct()
            << std::endl;
 
-        if (dev->getName().size() > 0)
-            os << "          " + dev->getShortName() << ": "
+        if (dev->getName().size() > 0) {
+            os << "      ";
+            if (showActive)
+                os << "    ";
+            os << dev->getShortName() << ": "
                << dev->getName() << std::endl;
+        }
 
         // reset fill character
         os << std::setfill(' ');
