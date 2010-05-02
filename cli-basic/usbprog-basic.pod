@@ -1,0 +1,64 @@
+
+=head1 NAME
+
+usbprog-basic - Programmer for the USBprog hardware (basic version)
+
+
+=head1 SYNOPSIS
+
+usbprog [-h] I<command> [I<arg1> [I<arg2>]]
+
+
+=head1 DESCRIPTION
+
+This is a simple version of the usbprog(1) command to upload a firmware file
+to the USBprog device. Unlike the usbprog(1) program, this program has almost
+no library dependencies, doesn't use a firmware pool (so you have to download
+the firmware manually) and doesn't support the programmatic switch of the
+device to update mode.
+
+=head1 OPTIONS
+
+Following options can be specified:
+
+=over 7
+
+=item B<-h> | B<--help>
+
+Prints a short help.
+
+=back
+
+=head1 COMMANDS
+
+This section describes all commands.
+
+=over 7
+
+=item B<list>
+
+Prints a list of all available devices. The device number is used in the
+I<upload> command.
+
+=item B<upload> I<firmwarefile> [I<devicenumber>]
+
+Uploads the specified firmware in I<firmwarefile> to the device
+I<devicenumber>. If no device number is specified, the first device (device 0)
+is used.
+
+=back
+
+
+=head1 AUTHOR
+
+The USBprog program and documentation has been written by Bernhard Walle
+E<lt>bernhard@bwalle.deE<gt>.
+
+=head1 SEE ALSO
+
+usbprog(1), usbprog-gui(1), I<http://www.embedded-projects.net/index.php?page_id=135>
+
+
+=cut
+
+# vim: set spelllang=en_gb spell fdm=marker tw=78:

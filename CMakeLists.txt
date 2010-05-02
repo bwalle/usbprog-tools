@@ -180,6 +180,7 @@ configure_file(
 add_subdirectory(md5)
 add_subdirectory(usbprog-core)
 add_subdirectory(usbpp)
+add_subdirectory(cli-basic)
 if (NOT BUILD_ONLY_CORE)
     add_subdirectory(usbprog)
     add_subdirectory(cli)

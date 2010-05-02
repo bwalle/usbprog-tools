@@ -8,6 +8,7 @@
 	* Fix crash when downloading the firmware file from the server fails.
 	* Add function Fileutil::readBytesFromFile() and remove
 	  Firmwarepool::readFromFile().
+	* Add first version of usbprog-basic.
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 
