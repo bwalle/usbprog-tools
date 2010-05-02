@@ -16,50 +16,50 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 #
-PROJECT(usbprog CXX C)
+project(usbprog CXX C)
 
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 #
 # Configuration
 #
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-SET (PACKAGE_STRING "usbprog")
-SET (PACKAGE_VERSION "0.3.0")
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR})
+cmake_minimum_required(VERSION 2.6)
+set (PACKAGE_STRING "usbprog")
+set (PACKAGE_VERSION "0.3.0")
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_BINARY_DIR})
 
-OPTION(BUILD_GUI "Build the Qt GUI" ON)
-OPTION(BUILD_ONLY_CORE "Builds only the usbprog-core lib and a simple CLI program (has no library dependencies apart from libusb" OFF)
-OPTION(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look
+option(BUILD_GUI "Build the Qt GUI" ON)
+option(BUILD_ONLY_CORE "Builds only the usbprog-core lib and a simple CLI program (has no library dependencies apart from libusb" OFF)
+option(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look
 for legacy libusb 0.1" OFF)
 
 #
 # Check for functions
 #
-INCLUDE (CheckFunctionExists)
-CHECK_FUNCTION_EXISTS(strptime HAVE_STRPTIME)
-IF (HAVE_STRPTIME)
-    SET (CONFIG_HAVE_STRPTIME 1)
-ELSE (HAVE_STRPTIME)
-    SET (CONFIG_HAVE_STRPTIME 0)
-ENDIF (HAVE_STRPTIME)
+include (CheckFunctionExists)
+check_function_exists(strptime HAVE_STRPTIME)
+if (HAVE_STRPTIME)
+    set (CONFIG_HAVE_STRPTIME 1)
+else (HAVE_STRPTIME)
+    set (CONFIG_HAVE_STRPTIME 0)
+endif (HAVE_STRPTIME)
 
 #
 # Find binaries
 #
 
-FIND_PROGRAM(POD2MAN_EXECUTABLE pod2man
+find_program(POD2MAN_EXECUTABLE pod2man
     DOC "Pod2Man binary"
 )
 
-IF (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
-    MESSAGE("'pod2man' not found. Not building manpage.")
-    SET(BUILD_MANPAGE FALSE)
-ELSE (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
-    SET(BUILD_MANPAGE TRUE)
-ENDIF (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
+if (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
+    message("'pod2man' not found. Not building manpage.")
+    set(BUILD_MANPAGE FALSE)
+else (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
+    set(BUILD_MANPAGE TRUE)
+endif (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
 
 
 #
@@ -68,100 +68,100 @@ ENDIF (${POD2MAN_EXECUTABLE} STREQUAL "POD2MAN_EXECUTABLE-NOTFOUND")
 
 # libusb 1.0 or libusb legacy
 
-INCLUDE (Findlibusb)
-IF (NOT LIBUSB_FOUND)
-    MESSAGE(FATAL_ERROR "libusb not found.")
-ENDIF (NOT LIBUSB_FOUND)
+include (Findlibusb)
+if (NOT LIBUSB_FOUND)
+    message(FATAL_ERROR "libusb not found.")
+endif (NOT LIBUSB_FOUND)
 
 
-INCLUDE_DIRECTORIES(${LIBUSB_INCLUDE_DIRS})
-SET (EXTRA_LIBS ${EXTRA_LIBS} ${LIBUSB_LIBRARIES})
+include_directories(${LIBUSB_INCLUDE_DIRS})
+set (EXTRA_LIBS ${EXTRA_LIBS} ${LIBUSB_LIBRARIES})
 
-IF (NOT BUILD_ONLY_CORE)
+if (NOT BUILD_ONLY_CORE)
 
     # Qt4
-    INCLUDE(FindQt4)
-    IF (BUILD_GUI)
-        SET(Qt_Components QtCore QtGui QtXml QtNetwork QtMain)
-    ELSE (BUILD_GUI)
-        SET(Qt_Components QtCore QtXml QtNetwork QtMain)
-    ENDIF (BUILD_GUI)
+    include(FindQt4)
+    if (BUILD_GUI)
+        set(Qt_Components QtCore QtGui QtXml QtNetwork QtMain)
+    else (BUILD_GUI)
+        set(Qt_Components QtCore QtXml QtNetwork QtMain)
+    endif (BUILD_GUI)
 
-    FIND_PACKAGE(Qt4 4.4.3 COMPONENTS ${Qt_Components} REQUIRED)
-    INCLUDE(${QT_USE_FILE})
-    SET(EXTRA_LIBS ${EXTRA_LIBS} ${QT_LIBRARIES})
-    IF (NOT QT4_FOUND)
-        MESSAGE(FATAL_ERROR "Qt4 not found.")
-    ENDIF (NOT QT4_FOUND)
+    find_package(Qt4 4.4.3 COMPONENTS ${Qt_Components} REQUIRED)
+    include(${QT_USE_FILE})
+    set(EXTRA_LIBS ${EXTRA_LIBS} ${QT_LIBRARIES})
+    if (NOT QT4_FOUND)
+        message(FATAL_ERROR "Qt4 not found.")
+    endif (NOT QT4_FOUND)
 
     # Boost
-    SET(Boost_ADDITIONAL_VERSIONS "1.42")
-    INCLUDE(FindBoost)
-    IF (MSVC)
-        SET(Boost_USE_STATIC_LIBS   ON)
-    ELSE (MSVC)
-        SET(Boost_USE_STATIC_LIBS   OFF)
-    ENDIF (MSVC)
-    SET(Boost_USE_MULTITHREADED ON)
-    FIND_PACKAGE( Boost COMPONENTS program_options )
-    IF (NOT Boost_FOUND)
-        MESSAGE(FATAL_ERROR "Boost not found.")
-    ENDIF (NOT Boost_FOUND)
-    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-    SET(EXTRA_LIBS ${EXTRA_LIBS} ${Boost_LIBRARIES})
+    set(Boost_ADDITIONAL_VERSIONS "1.42")
+    include(FindBoost)
+    if (MSVC)
+        set(Boost_USE_STATIC_LIBS   ON)
+    else (MSVC)
+        set(Boost_USE_STATIC_LIBS   OFF)
+    endif (MSVC)
+    set(Boost_USE_MULTITHREADED ON)
+    find_package( Boost COMPONENTS program_options )
+    if (NOT Boost_FOUND)
+        message(FATAL_ERROR "Boost not found.")
+    endif (NOT Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    set(EXTRA_LIBS ${EXTRA_LIBS} ${Boost_LIBRARIES})
 
     # Readline
-    FIND_PATH(READLINE_INCLUDE_DIR readline/readline.h
+    find_path(READLINE_INCLUDE_DIR readline/readline.h
         /usr/local/include /usr/include)
-    MARK_AS_ADVANCED(READLINE_INCLUDE_DIR)
+    mark_as_advanced(READLINE_INCLUDE_DIR)
 
-    FIND_LIBRARY(READLINE_LIBRARY readline
+    find_library(READLINE_LIBRARY readline
         /usr/lib64 /usr/lib)
-    MARK_AS_ADVANCED(READLINE_LIBRARY)
+    mark_as_advanced(READLINE_LIBRARY)
 
-    IF (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-        INCLUDE_DIRECTORIES( ${READLINE_INCLUDE_DIR} )
-        SET (EXTRA_LIBS ${EXTRA_LIBS} ${READLINE_LIBRARY})
-        SET (CONFIG_HAVE_LIBREADLINE 1)
-        SET (BUILD_READLINE TRUE)
-    ELSE (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-        SET (CONFIG_HAVE_LIBREADLINE 0)
-        SET (BUILD_READLINE FALSE)
-    ENDIF (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
+    if (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
+        include_directories( ${READLINE_INCLUDE_DIR} )
+        set (EXTRA_LIBS ${EXTRA_LIBS} ${READLINE_LIBRARY})
+        set (CONFIG_HAVE_LIBREADLINE 1)
+        set (BUILD_READLINE TRUE)
+    else (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
+        set (CONFIG_HAVE_LIBREADLINE 0)
+        set (BUILD_READLINE FALSE)
+    endif (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
 
-    IF (BUILD_READLINE)
-        IF (NOT CURSES_LIBRARIES)
-            FIND_PACKAGE(Curses REQUIRED)
-        ENDIF (NOT CURSES_LIBRARIES)
-    ENDIF (BUILD_READLINE)
+    if (BUILD_READLINE)
+        if (NOT CURSES_LIBRARIES)
+            find_package(Curses REQUIRED)
+        endif (NOT CURSES_LIBRARIES)
+    endif (BUILD_READLINE)
 
-    SET (EXTRA_LIBS ${EXTRA_LIBS} ${CURSES_LIBRARIES})
-    INCLUDE_DIRECTORIES(${CURSES_INCLUDE_DIR})
+    set (EXTRA_LIBS ${EXTRA_LIBS} ${CURSES_LIBRARIES})
+    include_directories(${CURSES_INCLUDE_DIR})
 
-ENDIF (NOT BUILD_ONLY_CORE)
+endif (NOT BUILD_ONLY_CORE)
 
-IF (MSVC)
+if (MSVC)
     # MSVC++ ignores all exception specifications except '()' [i.e. no exception]
     # we can safely ignore that warning when compiling on MS Windows
-    ADD_DEFINITIONS("/w44290")
+    add_definitions("/w44290")
 
     # we also don't want useless warnings that we should use some Windows specific functions
     # instead of Standard C functions (which is quite right because the standard C functions
     # are not safe, but we have no alternative in portable code)
-    ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS=1)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
 
     # also get rid of warnings "Function call with parameters that may be unsafe"
     # the code is correct C++!
-    ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS=1)
-ENDIF (MSVC)
+    add_definitions(-D_SCL_SECURE_NO_WARNINGS=1)
+endif (MSVC)
 
 #
 # Generate config.h
 #
 
-SET (DOCDIR "${CMAKE_INSTALL_PREFIX}/share/doc/usbprog")
+set (DOCDIR "${CMAKE_INSTALL_PREFIX}/share/doc/usbprog")
 
-CONFIGURE_FILE(
+configure_file(
     "${PROJECT_SOURCE_DIR}/config.h.in"
     "${PROJECT_BINARY_DIR}/config.h"
 )
@@ -169,22 +169,22 @@ CONFIGURE_FILE(
 #
 # Include the subdirs
 #
-ADD_SUBDIRECTORY(md5)
-ADD_SUBDIRECTORY(usbprog-core)
-ADD_SUBDIRECTORY(usbpp)
-IF (NOT BUILD_ONLY_CORE)
-    ADD_SUBDIRECTORY(usbprog)
-    ADD_SUBDIRECTORY(cli)
-    ADD_SUBDIRECTORY(gui)
-ENDIF (NOT BUILD_ONLY_CORE)
+add_subdirectory(md5)
+add_subdirectory(usbprog-core)
+add_subdirectory(usbpp)
+if (NOT BUILD_ONLY_CORE)
+    add_subdirectory(usbprog)
+    add_subdirectory(cli)
+    add_subdirectory(gui)
+endif (NOT BUILD_ONLY_CORE)
 
 #
 # Print status
 #
 
-MESSAGE(STATUS "Build only the core parts   : ${BUILD_GUI}")
-MESSAGE(STATUS "Building with GUI           : ${BUILD_GUI}")
-MESSAGE(STATUS "Building with readline      : ${BUILD_READLINE}")
-MESSAGE(STATUS "Building manpages           : ${BUILD_MANPAGE}")
+message(STATUS "Build only the core parts   : ${BUILD_GUI}")
+message(STATUS "Building with GUI           : ${BUILD_GUI}")
+message(STATUS "Building with readline      : ${BUILD_READLINE}")
+message(STATUS "Building manpages           : ${BUILD_MANPAGE}")
 
 # vim: set sw=4 ts=4 et:

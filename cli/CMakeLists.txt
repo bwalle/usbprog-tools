@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-ADD_EXECUTABLE(usbprog
+add_executable(usbprog
     commands.cc
     io.cc
     main.cc
@@ -25,10 +25,10 @@ ADD_EXECUTABLE(usbprog
     usbprog.cc
     cliconfiguration.cc
 )
-TARGET_LINK_LIBRARIES(usbprog ${EXTRA_LIBS} libusbprog md5)
+target_link_libraries(usbprog ${EXTRA_LIBS} libusbprog md5)
 
-IF (BUILD_MANPAGE)
-    ADD_CUSTOM_COMMAND(
+if (BUILD_MANPAGE)
+    add_custom_command(
         OUTPUT
             ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
         COMMAND
@@ -40,16 +40,16 @@ IF (BUILD_MANPAGE)
             ${CMAKE_CURRENT_BINARY_DIR}
     )
 
-    ADD_CUSTOM_TARGET(
+    add_custom_target(
         manpages
         DEPENDS
             ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
     )
 
-    ADD_DEPENDENCIES(
+    add_dependencies(
         usbprog
         manpages
     )
-ENDIF (BUILD_MANPAGE)
+endif (BUILD_MANPAGE)
 
 # vim: set sw=4 ts=4 et:

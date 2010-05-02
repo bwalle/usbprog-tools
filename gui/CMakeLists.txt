@@ -17,38 +17,38 @@
 # 02110-1301, USA.
 #
 
-IF (BUILD_GUI)
+if (BUILD_GUI)
 
-    SET(usbprog_gui_SRCS
+    set(usbprog_gui_SRCS
         main.cc
         usbprog_app.cc
         usbprog_mainwindow.cc
         guiconfiguration.cc
         qtsleeper.cc
     )
-    SET(usbprog_gui_MOCS
+    set(usbprog_gui_MOCS
         usbprog_mainwindow.h
     )
 
     # Compiled-in pixmaps
-    SET(QtApp_RCCS usbprog.qrc)
+    set(QtApp_RCCS usbprog.qrc)
 
     # generate rules for building source files from the resources
-    QT4_ADD_RESOURCES(usbprog_gui_RCC_SRCS usbprog.qrc)
+    qt4_add_resources(usbprog_gui_RCC_SRCS usbprog.qrc)
 
     # generate rules for building source files that moc generates
-    QT4_WRAP_CPP(usbprog_gui_MOC_SRCS ${usbprog_gui_MOCS})
+    qt4_wrap_cpp(usbprog_gui_MOC_SRCS ${usbprog_gui_MOCS})
 
     # build sources, moc'd sources, and rcc'd sources
-    ADD_EXECUTABLE(usbprog-gui WIN32
+    add_executable(usbprog-gui WIN32
         ${usbprog_gui_SRCS} ${usbprog_gui_MOC_SRCS} ${usbprog_gui_RCC_SRCS}
     )
 
-    TARGET_LINK_LIBRARIES(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
-ENDIF (BUILD_GUI)
+    target_link_libraries(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
+endif (BUILD_GUI)
 
-IF (BUILD_MANPAGE AND BUILD_GUI)
-    ADD_CUSTOM_COMMAND(
+if (BUILD_MANPAGE AND BUILD_GUI)
+    add_custom_command(
         OUTPUT
             ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
         COMMAND
@@ -60,16 +60,16 @@ IF (BUILD_MANPAGE AND BUILD_GUI)
             ${CMAKE_CURRENT_BINARY_DIR}
     )
 
-    ADD_CUSTOM_TARGET(
+    add_custom_target(
         gui-manpage
         DEPENDS
             ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
     )
 
-    ADD_DEPENDENCIES(
+    add_dependencies(
         usbprog-gui
         gui-manpage
     )
-ENDIF (BUILD_MANPAGE AND BUILD_GUI)
+endif (BUILD_MANPAGE AND BUILD_GUI)
 
 # vim: set sw=4 ts=4 et:

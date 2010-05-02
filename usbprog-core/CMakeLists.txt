@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(libusbprog-core STATIC
+add_library(libusbprog-core STATIC
         configuration.cc
         devices.cc
         stringutil.cc
@@ -28,6 +28,6 @@ ADD_LIBRARY(libusbprog-core STATIC
         debug.cc
         sleeper.cc
 )
-TARGET_LINK_LIBRARIES(libusbprog-core ${EXTRA_LIBS} md5 usbpp)
+target_link_libraries(libusbprog-core ${EXTRA_LIBS} md5 usbpp)
 
 # vim: set sw=4 ts=4 et:

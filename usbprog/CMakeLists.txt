@@ -17,25 +17,25 @@
 # 02110-1301, USA.
 #
 
-SET(libusbprog_MOCS
+set(libusbprog_MOCS
     downloader.h
 )
 
-SET(libusbprog_SRCS
+set(libusbprog_SRCS
     firmwarepool.cc
     downloader.cc
 )
 
-IF (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
-    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_mac.cpp)
-ELSEIF (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_win.cpp)
-ELSE ()
-    SET(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_posix.cpp)
-ENDIF ()
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    set(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_mac.cpp)
+elseif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    set(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_win.cpp)
+else ()
+    set(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_posix.cpp)
+endif ()
 
-QT4_WRAP_CPP(libusbprog_MOC_SRCS ${libusbprog_MOCS})
-ADD_LIBRARY(libusbprog STATIC ${libusbprog_SRCS} ${libusbprog_MOC_SRCS})
-TARGET_LINK_LIBRARIES(libusbprog libusbprog-core ${EXTRA_LIBS})
+qt4_wrap_cpp(libusbprog_MOC_SRCS ${libusbprog_MOCS})
+add_library(libusbprog STATIC ${libusbprog_SRCS} ${libusbprog_MOC_SRCS})
+target_link_libraries(libusbprog libusbprog-core ${EXTRA_LIBS})
 
 # vim: set sw=4 ts=4 et:

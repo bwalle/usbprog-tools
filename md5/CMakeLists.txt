@@ -17,9 +17,9 @@
 # 02110-1301, USA.
 #
 
-ADD_LIBRARY(md5 STATIC
+add_library(md5 STATIC
         md5.c
 )
-TARGET_LINK_LIBRARIES(md5 ${EXTRA_LIBS})
+target_link_libraries(md5 ${EXTRA_LIBS})
 
 # vim: set sw=4 ts=4 et:
