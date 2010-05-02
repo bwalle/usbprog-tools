@@ -5,6 +5,7 @@
 	  USBPROG_DEBUG_DBG and USBPROG_DEBUG_INFO.
 	* Remove boost dependency in usbprog-core.
 	* Introduce 'showActive' parameter in DeviceManager::printDevices().
+	* Fix crash when downloading the firmware file from the server fails.
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 
