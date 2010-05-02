@@ -19,16 +19,19 @@
 
 #include <usbprog-core/error.h>
 
+namespace usbprog {
+namespace cli {
+
 /* Interface for completors {{{ */
 class Completor {
     public:
         virtual ~Completor() {}
 
     public:
-        virtual StringVector complete(const std::string     &text,
-                                      const std::string     &full_text,
-                                      unsigned int          start_idx,
-                                      unsigned int          end_idx) = 0;
+        virtual core::StringVector complete(const std::string     &text,
+                                            const std::string     &full_text,
+                                            unsigned int          start_idx,
+                                            unsigned int          end_idx) = 0;
 };
 
 /* }}} */
@@ -46,9 +49,9 @@ class LineReader {
         virtual bool eof() const = 0;
 
         virtual void readHistory(const std::string &file)
-            throw (IOError) = 0;
+            throw (core::IOError) = 0;
         virtual void writeHistory(const std::string &file)
-            throw (IOError) = 0;
+            throw (core::IOError) = 0;
         virtual bool haveHistory() const = 0;
 
         virtual bool haveCompletion() const = 0;
@@ -66,9 +69,9 @@ class AbstractLineReader : public LineReader {
         std::string getPrompt() const;
         bool eof() const;
         void readHistory(const std::string &file)
-            throw (IOError);
+            throw (core::IOError);
         void writeHistory(const std::string &file)
-            throw (IOError);
+            throw (core::IOError);
         bool haveHistory() const;
 
         bool haveCompletion() const;
@@ -83,6 +86,9 @@ class AbstractLineReader : public LineReader {
 };
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 #endif /* IO_H */
 

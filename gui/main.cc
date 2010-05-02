@@ -25,7 +25,7 @@
 
 int main(int argc, char *argv[])
 {
-    UsbprogApplication app(argc, argv);
+    usbprog::gui::UsbprogApplication app(argc, argv);
 
     try {
         int rc;
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         app.createAndSetMainWidget();
 
     } catch (const std::runtime_error &err) {
-        QMessageBox::warning(NULL, UsbprogApplication::NAME,
+        QMessageBox::warning(NULL, usbprog::gui::UsbprogApplication::NAME,
                              QObject::tr("An unknown exception has occurred:\n%1").arg(err.what()));
         return EXIT_FAILURE;
     }

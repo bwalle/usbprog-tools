@@ -22,6 +22,8 @@
 #include <stdexcept>
 #include <cstdarg>
 
+namespace usbprog {
+
 /* Preprocessor definitions {{{ */
 
 #define DEFAULT_INDEX_URL       "http://www.ixbat.de/usbprog/versions.xml"
@@ -43,6 +45,8 @@ class OutputHandler {
 };
 
 /* }}} */
+
+} // end namespace usbprog
 
 #endif /* USBPROG_USBPROG_H */
 

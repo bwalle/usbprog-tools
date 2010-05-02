@@ -22,6 +22,9 @@
 
 #include <usbprog-core/error.h>
 
+namespace usbprog {
+namespace core {
+
 /* IniFile {{{ */
 
 class IniFile {
@@ -41,6 +44,9 @@ class IniFile {
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_INIFILE_H */
 

@@ -22,8 +22,16 @@
 #include <md5/md5.h>
 #include <usbprog-core/digest.h>
 
+namespace usbprog {
+namespace core {
+
+/* Constants {{{ */
+
 /* -------------------------------------------------------------------------- */
 #define BUFFERSIZE 2048
+
+/* }}} */
+/* MD5Digest {{{ */
 
 /* -------------------------------------------------------------------------- */
 MD5Digest::MD5Digest()
@@ -62,6 +70,9 @@ std::string MD5Digest::end()
     return ret.str();
 }
 
+/* }}} */
+/* Free functions {{{ */
+
 /* -------------------------------------------------------------------------- */
 bool check_digest(const std::string &file, const std::string &reference,
         Digest::Algorithm da) throw(IOError)
@@ -91,5 +102,10 @@ bool check_digest(const std::string &file, const std::string &reference,
     std::string result = digest.end();
     return result == reference;
 }
+
+/* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

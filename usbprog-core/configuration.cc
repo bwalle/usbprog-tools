@@ -16,6 +16,11 @@
  */
 #include "configuration.h"
 
+namespace usbprog {
+namespace core {
+
+/* Configuration {{{ */
+
 /* -------------------------------------------------------------------------- */
 Configuration::Configuration()
     : m_debug(false)
@@ -82,5 +87,11 @@ void Configuration::dumpConfig(std::ostream &stream)
            << "offline     = " << m_offline  << std::endl
            << "indexURL    = " << m_indexUrl << std::endl;
 }
+
+/* }}} */
+
+} // end namespace core
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

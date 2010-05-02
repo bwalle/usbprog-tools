@@ -19,6 +19,9 @@
 
 #include <usbprog-core/date.h>
 
+namespace usbprog {
+namespace core {
+
 /* Fileutil {{{ */
 
 class Fileutil {
@@ -42,6 +45,9 @@ void usbprog_sleep(unsigned int seconds);
 void usbprog_msleep(unsigned int msec);
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_UTIL_H */
 

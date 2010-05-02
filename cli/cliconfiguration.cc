@@ -16,6 +16,11 @@
  */
 #include "cliconfiguration.h"
 
+namespace usbprog {
+namespace cli {
+
+/* CliConfiguration {{{ */
+
 CliConfiguration *CliConfiguration::m_instance = NULL;
 
 /* -------------------------------------------------------------------------- */
@@ -64,5 +69,10 @@ void CliConfiguration::dumpConfig(std::ostream &stream)
     stream << "history     = " << m_historyFile  << std::endl
            << "batch mode  = " << m_batchMode    << std::endl;
 }
+
+/* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

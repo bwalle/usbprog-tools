@@ -19,6 +19,9 @@
 
 #include <stdexcept>
 
+namespace usbprog {
+namespace core {
+
 /* IOError {{{ */
 
 class IOError : public std::runtime_error {
@@ -46,6 +49,9 @@ class ApplicationError : public std::runtime_error {
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_CORE_ERROR_H */
 

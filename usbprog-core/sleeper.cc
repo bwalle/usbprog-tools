@@ -18,6 +18,9 @@
 
 #include "sleeper.h"
 
+namespace usbprog {
+namespace core {
+
 /* BlockingSleeper {{{ */
 
 void BlockingSleeper::sleep(int ms)
@@ -26,5 +29,9 @@ void BlockingSleeper::sleep(int ms)
 }
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

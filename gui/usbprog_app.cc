@@ -25,6 +25,9 @@
 #include "guiconfiguration.h"
 #include "config.h"
 
+namespace usbprog {
+namespace gui {
+
 namespace po = boost::program_options;
 
 /* UsbprogApplication {{{ */
@@ -35,7 +38,7 @@ const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.embedded-project
 
 // -----------------------------------------------------------------------------
 UsbprogApplication::UsbprogApplication(int &argc, char **argv)
-        throw (ApplicationError)
+        throw (core::ApplicationError)
     : QApplication(argc, argv)
     , m_mainWindow(NULL)
 {
@@ -44,13 +47,13 @@ UsbprogApplication::UsbprogApplication(int &argc, char **argv)
 
 // -----------------------------------------------------------------------------
 void UsbprogApplication::initConfig()
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     GuiConfiguration &conf = GuiConfiguration::config();
 
-    std::string configDir = Fileutil::configDir("usbprog");
+    std::string configDir = core::Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
-        throw ApplicationError("Could not determine configuration directory.");
+        throw core::ApplicationError("Could not determine configuration directory.");
 
     conf.setDataDir(configDir);
     conf.setIndexUrl(DEFAULT_INDEX_URL);
@@ -93,7 +96,7 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
 
     if (vm.count("debug")) {
         conf.setDebug(true);
-        Debug::debug()->setLevel(Debug::DL_TRACE);
+        core::Debug::debug()->setLevel(core::Debug::DL_TRACE);
     }
 
     if (vm.count("help")) {
@@ -131,5 +134,9 @@ void UsbprogApplication::createAndSetMainWidget()
 
 
 /* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

@@ -21,10 +21,14 @@
 #include <string>
 #include <ostream>
 
-
 #include <usbprog-core/configuration.h>
 
-class GuiConfiguration : public Configuration
+namespace usbprog {
+namespace gui {
+
+/* GuiConfiguration {{{ */
+
+class GuiConfiguration : public core::Configuration
 {
     public:
         static GuiConfiguration &config();
@@ -38,6 +42,12 @@ class GuiConfiguration : public Configuration
     private:
         static GuiConfiguration *m_instance;
 };
+
+/* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
+
 
 #endif /* GUICONFIGURATION_H */
 

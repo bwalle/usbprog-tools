@@ -23,6 +23,9 @@
 
 #include <usbprog-core/error.h>
 
+namespace usbprog {
+namespace core {
+
 /* DateTimeFormat {{{ */
 
 enum DateTimeFormat {
@@ -68,6 +71,9 @@ long long operator-(const DateTime &a, const DateTime &b);
 long long operator+(const DateTime &a, const DateTime &b);
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_DATE_H */
 

@@ -23,6 +23,9 @@
 
 #include "shell.h"
 
+namespace usbprog {
+namespace cli {
+
 /* ListCommand {{{ */
 
 class ListCommand : public AbstractCommand {
@@ -31,10 +34,12 @@ class ListCommand : public AbstractCommand {
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream       &os)
+            throw (core::ApplicationError);
 
-        StringVector aliases() const;
+        core::StringVector aliases() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -52,17 +57,20 @@ class InfoCommand : public AbstractCommand {
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream &os)
+            throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
 
-        StringVector aliases() const;
-        std::vector<std::string> getCompletions(
-            const std::string &start, size_t pos, bool option,
-            bool *filecompletion) const;
+        core::StringVector aliases() const;
+        std::vector<std::string> getCompletions(const std::string   &start,
+                                                size_t              pos,
+                                                bool                option,
+                                                bool                *filecompletion) const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -80,14 +88,16 @@ class PinCommand : public AbstractCommand {
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector       args,
+                     core::StringVector     options,
+                     std::ostream           &os)
+            throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
 
-        StringVector aliases() const;
+        core::StringVector aliases() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -109,14 +119,16 @@ class DownloadCommand : public AbstractCommand {
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector       args,
+                     core::StringVector     options,
+                     std::ostream           &os)
+            throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
 
-        StringVector aliases() const;
+        core::StringVector aliases() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -127,7 +139,7 @@ class DownloadCommand : public AbstractCommand {
 
     protected:
         bool downloadAll(std::ostream &os)
-            throw (IOError);
+            throw (core::IOError);
 
     private:
         Firmwarepool *m_firmwarepool;
@@ -142,8 +154,10 @@ class CacheCommand : public AbstractCommand {
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector       args,
+                     core::StringVector     options,
+                     std::ostream           &os)
+            throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
@@ -165,19 +179,21 @@ class CacheCommand : public AbstractCommand {
 
 class DevicesCommand : public AbstractCommand {
     public:
-        DevicesCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool);
+        DevicesCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
     public:
         /* return false => end */
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector       args,
+                     core::StringVector     options,
+                     std::ostream           &os)
+            throw (core::ApplicationError);
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
 
     private:
-        DeviceManager *m_deviceManager;
-        Firmwarepool  *m_firmwarepool;
+        core::DeviceManager *m_deviceManager;
+        Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -185,11 +201,13 @@ class DevicesCommand : public AbstractCommand {
 
 class DeviceCommand : public AbstractCommand {
     public:
-        DeviceCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool);
+        DeviceCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
     public:
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream &os)
+            throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
@@ -203,8 +221,8 @@ class DeviceCommand : public AbstractCommand {
             bool *filecompletion) const;
 
     private:
-        DeviceManager *m_deviceManager;
-        Firmwarepool *m_firmwarepool;
+        core::DeviceManager *m_deviceManager;
+        Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -212,17 +230,18 @@ class DeviceCommand : public AbstractCommand {
 
 class UploadCommand : public AbstractCommand {
     public:
-        UploadCommand(DeviceManager *deviceManager, Firmwarepool  *firmwarepool);
+        UploadCommand(core::DeviceManager *deviceManager, Firmwarepool  *firmwarepool);
 
     public:
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream       &os) throw (core::ApplicationError);
 
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
 
-        StringVector getSupportedOptions() const;
+        core::StringVector getSupportedOptions() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -232,8 +251,8 @@ class UploadCommand : public AbstractCommand {
             bool *filecompletion) const;
 
     private:
-        DeviceManager *m_deviceManager;
-        Firmwarepool  *m_firmwarepool;
+        core::DeviceManager *m_deviceManager;
+        Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -241,17 +260,19 @@ class UploadCommand : public AbstractCommand {
 
 class StartCommand : public AbstractCommand {
     public:
-        StartCommand(DeviceManager *deviceManager);
+        StartCommand(core::DeviceManager *deviceManager);
 
     public:
-        bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream &os)
+            throw (core::ApplicationError);
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
 
     private:
-        DeviceManager *m_deviceManager;
+        core::DeviceManager *m_deviceManager;
 };
 
 /* }}} */
@@ -262,15 +283,20 @@ class CopyingCommand : public AbstractCommand {
         CopyingCommand();
 
     public:
-        bool execute(CommandArgVector args, StringVector,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream &os)
+            throw (core::ApplicationError);
 
-        StringVector aliases() const;
+        core::StringVector aliases() const;
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
 };
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 #endif /* COMMANDS_H */
 

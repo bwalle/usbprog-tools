@@ -29,6 +29,9 @@
 #include <usbprog-core/progressnotifier.h>
 #include <usbprog-core/sleeper.h>
 
+namespace usbprog {
+namespace core {
+
 /* UpdateDevice {{{ */
 
 class UpdateDevice
@@ -172,6 +175,9 @@ class UsbprogUpdater {
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* DEVICES_H */
 

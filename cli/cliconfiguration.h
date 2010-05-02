@@ -23,7 +23,12 @@
 
 #include <usbprog-core/configuration.h>
 
-class CliConfiguration : public Configuration
+namespace usbprog {
+namespace cli {
+
+/* CliConfiguration {{{ */
+
+class CliConfiguration : public core::Configuration
 {
     public:
         static CliConfiguration &config();
@@ -45,6 +50,11 @@ class CliConfiguration : public Configuration
         bool m_batchMode;
         std::string m_historyFile;
 };
+
+/* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 #endif /* CLICONFIGURATION_H */
 

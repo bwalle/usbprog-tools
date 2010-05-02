@@ -25,6 +25,8 @@
 #include <usbprog-core/progressnotifier.h>
 #include <usbprog/usbprog.h>
 
+namespace usbprog {
+
 /* DownloadError {{{ */
 
 class DownloadError : public std::runtime_error {
@@ -48,7 +50,7 @@ class Downloader : public QObject
         void setUrl(const std::string &url) throw (DownloadError);
         std::string getUrl() const;
 
-        void setProgress(ProgressNotifier *notifier);
+        void setProgress(core::ProgressNotifier *notifier);
         void download() throw (DownloadError);
 
     public slots:
@@ -56,13 +58,15 @@ class Downloader : public QObject
         void downloadFinished();
 
     private:
-        ProgressNotifier        *m_notifier;
+        core::ProgressNotifier  *m_notifier;
         std::string             m_url;
         std::ostream            &m_output;
         bool                    m_finished;
 };
 
 /* }}} */
+
+} // end namespace usbprog
 
 #endif /* USBPROG_DOWNLOADER_H */
 

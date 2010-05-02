@@ -18,6 +18,10 @@
 
 #include <usbprog/sysinfo.h>
 
+namespace usbprog {
+
+/* Sysinfo {{{ */
+
 /* -------------------------------------------------------------------------- */
 std::string Sysinfo::osName()
 {
@@ -52,5 +56,10 @@ std::string Sysinfo::osVersion()
             return "unknown";
     }
 }
+
+/* }}} */
+
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

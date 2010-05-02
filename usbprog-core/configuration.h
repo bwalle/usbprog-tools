@@ -23,6 +23,9 @@
 
 #include <boost/utility.hpp>
 
+namespace usbprog {
+namespace core {
+
 /* Configuration {{{ */
 
 class Configuration : boost::noncopyable
@@ -54,6 +57,9 @@ class Configuration : boost::noncopyable
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* CONFIGURATION_H */
 

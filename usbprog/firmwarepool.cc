@@ -41,6 +41,8 @@
 #define INDEX_FILE_NAME  "versions.xml"
 #define BUFFERSIZE       2048
 
+namespace usbprog {
+
 /* Class declaration: FirmwareXMLParser {{{ */
 
 class FirmwareXMLParser {
@@ -49,14 +51,14 @@ class FirmwareXMLParser {
 
     public:
         void parsePool(const QDomDocument &doc, const QDomElement &pool)
-        throw (ParseError);
+        throw (core::ParseError);
 
     protected:
         void parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
-        throw (ParseError);
+        throw (core::ParseError);
 
         Firmware *newFirmwareFromXml(const QDomDocument &doc, const QDomElement &cur)
-        throw (ParseError);
+        throw (core::ParseError);
 
     private:
         Firmwarepool *m_firmwarepool;
@@ -75,7 +77,7 @@ FirmwareXMLParser::FirmwareXMLParser(Firmwarepool *pool)
 
 /* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &pool)
-    throw (ParseError)
+    throw (core::ParseError)
 {
     for (QDomNode node = pool.firstChild(); !node.isNull(); node = node.nextSibling()) {
         if (!node.isElement())
@@ -88,14 +90,14 @@ void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &po
 
 /* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
-    throw (ParseError)
+    throw (core::ParseError)
 {
     Firmware *fw;
 
     // set name
     QString name = firmware.attribute("name");
     if (name.isEmpty())
-        throw ParseError("Firmware has no name");
+        throw core::ParseError("Firmware has no name");
     fw = new Firmware(name.toStdString());
 
     // set label
@@ -112,13 +114,13 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
         } else if (childElement.tagName() == "info") {
             fw->setVersion(childElement.attribute("version").toInt());
             fw->setAuthor(childElement.attribute("author").toStdString());
-            fw->setDate(DateTime(childElement.attribute("date").toStdString(), DTF_ISO_DATE));
+            fw->setDate(core::DateTime(childElement.attribute("date").toStdString(), core::DTF_ISO_DATE));
             fw->setMD5Sum(childElement.attribute("md5sum").toStdString());
         } else if (childElement.tagName() == "description") {
-            fw->updateDevice().setVendor(parse_long(childElement.attribute("vendorid").toAscii()));
-            fw->updateDevice().setProduct(parse_long(childElement.attribute("productid").toAscii()));
-            fw->updateDevice().setBcdDevice(parse_long(childElement.attribute("bcddevice").toAscii()));
-            fw->setDescription(strip(childElement.text().toStdString()));
+            fw->updateDevice().setVendor(core::parse_long(childElement.attribute("vendorid").toAscii()));
+            fw->updateDevice().setProduct(core::parse_long(childElement.attribute("productid").toAscii()));
+            fw->updateDevice().setBcdDevice(core::parse_long(childElement.attribute("bcddevice").toAscii()));
+            fw->setDescription(core::strip(childElement.text().toStdString()));
         } else if (childElement.tagName() == "pins") {
             for (QDomNode subnode = childElement.firstChild();
                     !subnode.isNull();
@@ -205,13 +207,13 @@ void Firmware::setVersion(int version)
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setDate(const DateTime &date)
+void Firmware::setDate(const core::DateTime &date)
 {
     m_date = date;
 }
 
 /* -------------------------------------------------------------------------- */
-const DateTime Firmware::getDate() const
+const core::DateTime Firmware::getDate() const
 {
     return m_date;
 }
@@ -263,7 +265,7 @@ void Firmware::setPin(const std::string &name, const std::string &value)
 /* -------------------------------------------------------------------------- */
 std::string Firmware::getPin(const std::string &name) const
 {
-    StringStringMap::const_iterator it = m_pins.find(name);
+    core::StringStringMap::const_iterator it = m_pins.find(name);
     if (it != m_pins.end())
         return (*it).second;
     else
@@ -271,11 +273,11 @@ std::string Firmware::getPin(const std::string &name) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector Firmware::getPins() const
+core::StringVector Firmware::getPins() const
 {
-    StringVector ret;
+    core::StringVector ret;
 
-    for (StringStringMap::const_iterator it = m_pins.begin();
+    for (core::StringStringMap::const_iterator it = m_pins.begin();
             it != m_pins.end(); ++it)
         ret.push_back(it->first);
 
@@ -283,31 +285,31 @@ StringVector Firmware::getPins() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmware::setData(const ByteVector &data)
+void Firmware::setData(const core::ByteVector &data)
 {
     m_data = data;
 }
 
 /* -------------------------------------------------------------------------- */
-ByteVector &Firmware::getData()
+core::ByteVector &Firmware::getData()
 {
     return m_data;
 }
 
 /* -------------------------------------------------------------------------- */
-const ByteVector &Firmware::getData() const
+const core::ByteVector &Firmware::getData() const
 {
     return m_data;
 }
 
 /* -------------------------------------------------------------------------- */
-const UpdateDevice &Firmware::updateDevice() const
+const core::UpdateDevice &Firmware::updateDevice() const
 {
     return m_updateDevice;
 }
 
 /* -------------------------------------------------------------------------- */
-UpdateDevice &Firmware::updateDevice()
+core::UpdateDevice &Firmware::updateDevice()
 {
     return m_updateDevice;
 }
@@ -323,7 +325,7 @@ std::string Firmware::toString() const
     ss << "URL             : " << m_url << std::endl;
     ss << "Version         : " << m_version << std::endl;
     ss << "Author          : " << m_author << std::endl;
-    ss << "Date            : " << m_date.getDateTimeString(DTF_ISO_DATETIME) << std::endl;
+    ss << "Date            : " << m_date.getDateTimeString(core::DTF_ISO_DATETIME) << std::endl;
     ss << "MD5sum          : " << m_md5sum << std::endl;
     ss << "Description     : " << m_description << std::endl;
     ss << "Pins      P1    : " << getPin("P1") << std::endl;
@@ -350,7 +352,7 @@ std::string Firmware::formatDateVersion() const
     std::stringstream ss;
 
     ss << getVersion();
-    ss << " [" << getDate().getDateTimeString(DTF_ISO_DATE) << "]";
+    ss << " [" << getDate().getDateTimeString(core::DTF_ISO_DATE) << "]";
 
     return ss.str();
 }
@@ -360,20 +362,20 @@ std::string Firmware::formatDateVersion() const
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::readFromFile(const std::string &file,
-                                ByteVector        &bv)
-    throw (IOError)
+                                core::ByteVector  &bv)
+    throw (core::IOError)
 {
     char buffer[BUFFERSIZE];
 
     std::ifstream fin(file.c_str(), std::ios::binary);
     if (!fin)
-        throw IOError("Opening " + file + " failed");
+        throw core::IOError("Opening " + file + " failed");
 
     bv.clear();
     while (!fin.eof()) {
         fin.read(buffer, BUFFERSIZE);
         if (fin.bad())
-            throw IOError("Error while reading data from " + file);
+            throw core::IOError("Error while reading data from " + file);
 
         std::copy(buffer, buffer + fin.gcount(), back_inserter(bv));
     }
@@ -383,14 +385,14 @@ void Firmwarepool::readFromFile(const std::string &file,
 
 /* -------------------------------------------------------------------------- */
 Firmwarepool::Firmwarepool(const std::string &cacheDir)
-      throw (IOError)
+      throw (core::IOError)
     : m_cacheDir(cacheDir)
     , m_progressNotifier(NULL)
     , m_indexAutoUpdatetime(0)
 {
-    if (!Fileutil::isDir(cacheDir))
-        if (!Fileutil::mkdir(cacheDir))
-            throw IOError("Creating directory '" + cacheDir + "' failed");
+    if (!core::Fileutil::isDir(cacheDir))
+        if (!core::Fileutil::mkdir(cacheDir))
+            throw core::IOError("Creating directory '" + cacheDir + "' failed");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -417,19 +419,19 @@ void Firmwarepool::setIndexUpdatetime(int minutes)
 void Firmwarepool::downloadIndex(const std::string &url)
     throw (DownloadError)
 {
-    std::string newPath(pathconcat(m_cacheDir, std::string(INDEX_FILE_NAME) + ".new"));
-    std::string oldPath(pathconcat(m_cacheDir, INDEX_FILE_NAME));
+    std::string newPath(core::pathconcat(m_cacheDir, std::string(INDEX_FILE_NAME) + ".new"));
+    std::string oldPath(core::pathconcat(m_cacheDir, INDEX_FILE_NAME));
     std::string file(newPath);
 
     // don't download index if the modification time is less than 10 min
     if (m_indexAutoUpdatetime != 0) {
         try {
-            DateTime dt = Fileutil::getMTime(oldPath);
-            DateTime now;
+            core::DateTime dt = core::Fileutil::getMTime(oldPath);
+            core::DateTime now;
             if (now - dt < m_indexAutoUpdatetime * 60)
                 return;
-        } catch (const IOError &e) {
-            Debug::debug()->dbg("IO Error: %s", e.what());
+        } catch (const core::IOError &e) {
+            core::Debug::debug()->dbg("IO Error: %s", e.what());
         }
     }
 
@@ -444,26 +446,26 @@ void Firmwarepool::downloadIndex(const std::string &url)
     fout.close();
 
     // after the download is successful, rename new file to old file
-    Debug::debug()->dbg("Renaming '%s' to '%s'\n",
+    core::Debug::debug()->dbg("Renaming '%s' to '%s'\n",
             newPath.c_str(), oldPath.c_str());
     rename(newPath.c_str(), oldPath.c_str());
 }
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::readIndex()
-    throw (IOError, ParseError)
+    throw (core::IOError, core::ParseError)
 {
     QDomDocument doc("usbprog");
 
-    std::string filename = pathconcat(m_cacheDir, INDEX_FILE_NAME);
+    std::string filename = core::pathconcat(m_cacheDir, INDEX_FILE_NAME);
     QFile file(filename.c_str());
     if (!file.open(QIODevice::ReadOnly))
-        throw ParseError("Couldn't open " + filename);
+        throw core::ParseError("Couldn't open " + filename);
 
     bool success = doc.setContent(&file);
     file.close();
     if (!success)
-        throw ParseError("Unable to parse '" + filename + "'");
+        throw core::ParseError("Unable to parse '" + filename + "'");
 
 
     QDomElement docElem = doc.documentElement();
@@ -480,36 +482,36 @@ void Firmwarepool::readIndex()
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteIndex()
-    throw (IOError)
+    throw (core::IOError)
 {
-    std::string file = pathconcat(m_cacheDir, INDEX_FILE_NAME);
+    std::string file = core::pathconcat(m_cacheDir, INDEX_FILE_NAME);
     int ret = remove(file.c_str());
     if (ret < 0)
-        throw IOError("Deleting index file failed: " + std::string(std::strerror(errno)));
+        throw core::IOError("Deleting index file failed: " + std::string(std::strerror(errno)));
 }
 
 /* -------------------------------------------------------------------------- */
-void Firmwarepool::setProgress(ProgressNotifier *notifier)
+void Firmwarepool::setProgress(core::ProgressNotifier *notifier)
 {
     m_progressNotifier = notifier;
 }
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadFirmware(const std::string &name)
-    throw (DownloadError, ApplicationError)
+    throw (DownloadError, core::ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
-        throw ApplicationError("Firmware doesn't exist");
+        throw core::ApplicationError("Firmware doesn't exist");
 
     std::string url = fw->getUrl() + "/" + fw->getFilename();
-    std::string file(pathconcat(m_cacheDir, fw->getVerFilename()));
-    if (Fileutil::isFile(file)) {
+    std::string file(core::pathconcat(m_cacheDir, fw->getVerFilename()));
+    if (core::Fileutil::isFile(file)) {
         // check md5 if available, if the checksum is wrong, then delete
         // the file and download again. Check the checksum after that
         // download again to verify that it's now correct.
         if (fw->getMD5Sum().size() > 0) {
-            if (check_digest(file, fw->getMD5Sum(), Digest::DA_MD5))
+            if (core::check_digest(file, fw->getMD5Sum(), core::Digest::DA_MD5))
                 return;
             else
                 remove(file.c_str());
@@ -519,7 +521,7 @@ void Firmwarepool::downloadFirmware(const std::string &name)
 
     std::ofstream fout(file.c_str(), std::ios::binary);
     if (!fout)
-        throw IOError("Opening " + file + " failed");
+        throw core::IOError("Opening " + file + " failed");
 
     try {
         Downloader dl(fout);
@@ -536,7 +538,7 @@ void Firmwarepool::downloadFirmware(const std::string &name)
 
     // check md5 if available
     if (fw->getMD5Sum().size() > 0) {
-        if (!check_digest(file, fw->getMD5Sum(), Digest::DA_MD5)) {
+        if (!core::check_digest(file, fw->getMD5Sum(), core::Digest::DA_MD5)) {
             remove(file.c_str());
             throw DownloadError("Bad checksum");
         }
@@ -545,11 +547,11 @@ void Firmwarepool::downloadFirmware(const std::string &name)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::fillFirmware(const std::string &name)
-    throw (IOError, ApplicationError)
+    throw (core::IOError, core::ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
-        throw ApplicationError("Firmware doesn't exist");
+        throw core::ApplicationError("Firmware doesn't exist");
 
     std::string file = getFirmwareFilename(fw);
     readFromFile(file, fw->getData());
@@ -558,7 +560,7 @@ void Firmwarepool::fillFirmware(const std::string &name)
 /* -------------------------------------------------------------------------- */
 std::string Firmwarepool::getFirmwareFilename(Firmware *fw) const
 {
-    return pathconcat(m_cacheDir, fw->getVerFilename());
+    return core::pathconcat(m_cacheDir, fw->getVerFilename());
 }
 
 /* -------------------------------------------------------------------------- */
@@ -595,9 +597,9 @@ std::vector<Firmware *> Firmwarepool::getFirmwareList() const
 }
 
 /* -------------------------------------------------------------------------- */
-std::vector<UpdateDevice> Firmwarepool::getUpdateDeviceList() const
+std::vector<core::UpdateDevice> Firmwarepool::getUpdateDeviceList() const
 {
-    std::vector<UpdateDevice> ret;
+    std::vector<core::UpdateDevice> ret;
 
     for (StringFirmwareMap::const_iterator it = m_firmware.begin(); it != m_firmware.end(); ++it) {
         const Firmware *fw = it->second;
@@ -610,39 +612,39 @@ std::vector<UpdateDevice> Firmwarepool::getUpdateDeviceList() const
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteCache()
-    throw (IOError)
+    throw (core::IOError)
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
     if (!cacheDir.exists())
-        throw IOError("opendir on " + m_cacheDir + " failed");
+        throw core::IOError("opendir on " + m_cacheDir + " failed");
 
     QStringList entries = cacheDir.entryList(QDir::Files);
     Q_FOREACH (QString entry, entries) {
         if (entry == INDEX_FILE_NAME)
             continue;
         if (!cacheDir.remove(entry))
-            throw IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
+            throw core::IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
     }
 }
 
 /* -------------------------------------------------------------------------- */
 bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
-    throw (IOError)
+    throw (core::IOError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
         return false;
 
-    return Fileutil::isFile(getFirmwareFilename(fw));
+    return core::Fileutil::isFile(getFirmwareFilename(fw));
 }
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::cleanCache()
-    throw (IOError)
+    throw (core::IOError)
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
     if (!cacheDir.exists())
-        throw IOError("opendir on " + m_cacheDir + " failed");
+        throw core::IOError("opendir on " + m_cacheDir + " failed");
 
     QStringList entries = cacheDir.entryList(QDir::Files);
     Q_FOREACH (QString entry, entries) {
@@ -666,7 +668,7 @@ void Firmwarepool::cleanCache()
 
         if (isFirmwareOnDisk(firmware) && version != fw->getVersionString()) {
             if (!cacheDir.remove(entry))
-                throw IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
+                throw core::IOError("Deletion of " +entry.toStdString()+" in directory " + m_cacheDir + " failed ");
         }
     }
 }
@@ -678,5 +680,7 @@ void Firmwarepool::addFirmware(Firmware *fw)
 }
 
 /* }}} */
+
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

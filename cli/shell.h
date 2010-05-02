@@ -27,6 +27,9 @@
 #include "io.h"
 #include "usbprog.h"
 
+namespace usbprog {
+namespace cli {
+
 /* Typedefs {{{ */
 
 class Command;
@@ -87,17 +90,19 @@ class Command {
 
     public:
         /* return false => end */
-        virtual bool execute(CommandArgVector args, StringVector options,
-                std::ostream &os) throw (ApplicationError) = 0;
+        virtual bool execute(CommandArgVector   args,
+                             core::StringVector options,
+                             std::ostream       &os)
+            throw (core::ApplicationError) = 0;
 
         virtual size_t getArgNumber() const = 0;
         virtual CommandArg::Type getArgType(size_t pos) const = 0;
         virtual std::string getArgTitle(size_t pos) const = 0;
 
-        virtual StringVector getSupportedOptions() const = 0;
+        virtual core::StringVector getSupportedOptions() const = 0;
 
         virtual std::string name() const = 0;
-        virtual StringVector aliases() const = 0;
+        virtual core::StringVector aliases() const = 0;
 
         virtual std::string help() const = 0;
         virtual void printLongHelp(std::ostream &os) const = 0;
@@ -118,10 +123,12 @@ class AbstractCommand : public Command {
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
         std::string name() const;
-        StringVector aliases() const;
-        StringVector getSupportedOptions() const;
+        core::StringVector aliases() const;
+        core::StringVector getSupportedOptions() const;
         std::vector<std::string> getCompletions(const std::string &start,
-                size_t pos, bool option, bool *filecompletion) const;
+                                                size_t            pos,
+                                                bool              option,
+                                                bool              *filecompletion) const;
 
     private:
         std::string m_name;
@@ -141,13 +148,13 @@ class Shell : public Completor {
     public:
         void addCommand(Command *cmd);
         void run();
-        bool run(StringVector input, bool multiple = true)
-            throw (ApplicationError);
+        bool run(core::StringVector input, bool multiple = true)
+            throw (core::ApplicationError);
 
-        StringVector complete(const std::string     &text,
-                              const std::string     &full_text,
-                              unsigned int          start_idx,
-                              unsigned int          end_idx);
+        core::StringVector complete(const std::string     &text,
+                                    const std::string     &full_text,
+                                    unsigned int          start_idx,
+                                    unsigned int          end_idx);
 
     private:
         StringCommandMap m_commands;
@@ -162,10 +169,12 @@ class ExitCommand : public AbstractCommand {
         ExitCommand();
 
     public:
-        bool execute(CommandArgVector args, StringVector vector,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector vector,
+                     std::ostream       &os)
+            throw (core::ApplicationError);
 
-        StringVector aliases() const;
+        core::StringVector aliases() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -179,8 +188,10 @@ class HelpCommand : public AbstractCommand {
         HelpCommand(Shell *sh);
 
     public:
-        bool execute(CommandArgVector args, StringVector sv,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector sv,
+                     std::ostream       &os)
+            throw (core::ApplicationError);
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -197,13 +208,15 @@ class HelpCmdCommand : public AbstractCommand {
         HelpCmdCommand(Shell *sh);
 
     public:
-        bool execute(CommandArgVector args, StringVector sv,
-                std::ostream &os) throw (ApplicationError);
+        bool execute(CommandArgVector   args,
+                     core::StringVector sv,
+                     std::ostream &os)
+            throw (core::ApplicationError);
         size_t getArgNumber() const;
         CommandArg::Type getArgType(size_t pos) const;
         std::string getArgTitle(size_t pos) const;
 
-        virtual StringVector aliases() const;
+        virtual core::StringVector aliases() const;
 
         std::string help() const;
         void printLongHelp(std::ostream &os) const;
@@ -216,6 +229,9 @@ class HelpCmdCommand : public AbstractCommand {
 };
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 #endif /* SHELL_H */
 

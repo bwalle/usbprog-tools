@@ -21,6 +21,11 @@
 
 #include <usbprog-core/inifile.h>
 
+namespace usbprog {
+namespace core {
+
+/* IniFile {{{ */
+
 /* -------------------------------------------------------------------------- */
 IniFile::IniFile(const std::string &fileName)
     : m_fileName(fileName)
@@ -81,6 +86,11 @@ bool IniFile::isKeyAvailable(const std::string &key) const
 {
     return m_map.find(key) != m_map.end();
 }
+
+/* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 
 // vim: set sw=4 ts=4 et:

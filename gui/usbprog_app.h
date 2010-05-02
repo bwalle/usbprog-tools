@@ -23,6 +23,11 @@
 
 #include "usbprog_mainwindow.h"
 
+namespace usbprog {
+namespace gui {
+
+/* UsbprogApplication {{{ */
+
 class UsbprogApplication : public QApplication
 {
     public:
@@ -31,7 +36,7 @@ class UsbprogApplication : public QApplication
 
     public:
         UsbprogApplication(int &argc, char **argv)
-        throw (ApplicationError);
+        throw (core::ApplicationError);
 
     public:
         bool parseCommandLine(int argc, char *argv[], int &rc);
@@ -39,11 +44,16 @@ class UsbprogApplication : public QApplication
 
     protected:
         void initConfig()
-        throw (ApplicationError);
+        throw (core::ApplicationError);
 
     private:
         UsbprogMainWindow *m_mainWindow;
 };
+
+/* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
 
 #endif // USBPROG_APP_H
 

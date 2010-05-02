@@ -20,6 +20,11 @@
 
 #include <usbprog-core/debug.h>
 
+namespace usbprog {
+namespace core {
+
+/* Debug {{{ */
+
 /* -------------------------------------------------------------------------- */
 Debug *Debug::m_instance = NULL;
 
@@ -155,5 +160,9 @@ bool Debug::isDebugEnabled() const
     return m_debuglevel < DL_NONE;
 }
 
+/* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

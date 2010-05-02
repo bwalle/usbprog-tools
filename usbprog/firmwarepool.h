@@ -30,6 +30,8 @@
 #include <usbprog-core/devices.h>
 #include <usbprog/downloader.h>
 
+namespace usbprog {
+
 /* Typedefs {{{ */
 
 class Firmware;
@@ -67,22 +69,22 @@ class Firmware
         void setMD5Sum(const std::string &md5);
         std::string getMD5Sum() const;
 
-        void setDate(const DateTime &date);
-        const DateTime getDate() const;
+        void setDate(const core::DateTime &date);
+        const core::DateTime getDate() const;
 
         void setDescription(const std::string &description);
         std::string getDescription() const;
 
         void setPin(const std::string &name, const std::string &value);
         std::string getPin(const std::string &name) const;
-        StringVector getPins() const;
+        core::StringVector getPins() const;
 
-        void setData(const ByteVector &data);
-        ByteVector &getData();
-        const ByteVector &getData() const;
+        void setData(const core::ByteVector &data);
+        core::ByteVector &getData();
+        const core::ByteVector &getData() const;
 
-        const UpdateDevice &updateDevice() const;
-        UpdateDevice &updateDevice();
+        const core::UpdateDevice &updateDevice() const;
+        core::UpdateDevice &updateDevice();
 
         std::string toString() const;
         std::string formatDateVersion() const;
@@ -93,12 +95,12 @@ class Firmware
         std::string           m_url;
         std::string           m_author;
         int                   m_version;
-        DateTime              m_date;
+        core::DateTime        m_date;
         std::string           m_description;
-        StringStringMap       m_pins;
-        ByteVector            m_data;
+        core::StringStringMap m_pins;
+        core::ByteVector      m_data;
         std::string           m_md5sum;
-        UpdateDevice          m_updateDevice;
+        core::UpdateDevice    m_updateDevice;
 };
 
 /* }}} */
@@ -110,12 +112,13 @@ class Firmwarepool {
     friend class FirmwareXMLParser;
 
     public:
-        static void readFromFile(const std::string &filename,
-                ByteVector &bv) throw (IOError);
+        static void readFromFile(const std::string  &filename,
+                                 core::ByteVector   &bv)
+            throw (core::IOError);
 
     public:
         Firmwarepool(const std::string &cacheDir)
-            throw (IOError);
+            throw (core::IOError);
         virtual ~Firmwarepool();
 
     public:
@@ -125,43 +128,45 @@ class Firmwarepool {
         void downloadIndex(const std::string &url)
             throw (DownloadError);
         void readIndex()
-            throw (IOError, ParseError);
+            throw (core::IOError, core::ParseError);
         void deleteIndex()
-            throw (IOError);
+            throw (core::IOError);
 
         StringList getFirmwareNameList() const;
         Firmware *getFirmware(const std::string &name) const;
         std::vector<Firmware *> getFirmwareList() const;
 
-        std::vector<UpdateDevice> getUpdateDeviceList() const;
+        std::vector<core::UpdateDevice> getUpdateDeviceList() const;
 
-        void setProgress(ProgressNotifier *notifier);
+        void setProgress(core::ProgressNotifier *notifier);
         void setIndexUpdatetime(int minutes);
 
         void downloadFirmware(const std::string &name)
-            throw (DownloadError, ApplicationError);
+            throw (DownloadError, core::ApplicationError);
         void fillFirmware(const std::string &name)
-            throw (IOError, ApplicationError);
+            throw (core::IOError, core::ApplicationError);
         bool isFirmwareOnDisk(const std::string &name)
-            throw (IOError);
+            throw (core::IOError);
 
         void deleteCache()
-            throw (IOError);
+            throw (core::IOError);
         void cleanCache()
-            throw (IOError);
+            throw (core::IOError);
 
     protected:
         std::string getFirmwareFilename(Firmware *fw) const;
         void addFirmware(Firmware *fw);
 
     private:
-        const std::string m_cacheDir;
-        StringFirmwareMap m_firmware;
-        ProgressNotifier *m_progressNotifier;
-        int m_indexAutoUpdatetime;
+        const std::string       m_cacheDir;
+        StringFirmwareMap       m_firmware;
+        core::ProgressNotifier  *m_progressNotifier;
+        int                     m_indexAutoUpdatetime;
 };
 
 /* }}} */
+
+} // end namespace usbprog
 
 #endif /* FIRMWAREPOOL_H */
 

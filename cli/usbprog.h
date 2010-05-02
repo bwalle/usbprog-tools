@@ -24,6 +24,9 @@
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
+namespace usbprog {
+namespace cli {
+
 /* constants {{{ */
 
 #define DEFAULT_TERMINAL_WIDTH  80
@@ -31,7 +34,7 @@
 /* }}} */
 /* HashNotifier {{{ */
 
-class HashNotifier : public ProgressNotifier {
+class HashNotifier : public core::ProgressNotifier {
     public:
         HashNotifier(int width);
         ~HashNotifier();
@@ -55,14 +58,14 @@ class Usbprog {
 
     public:
         void initConfig()
-            throw (ApplicationError);
+            throw (core::ApplicationError);
         void parseCommandLine();
         void initFirmwarePool()
-            throw (ApplicationError);
+            throw (core::ApplicationError);
         void initDeviceManager()
-            throw (ApplicationError);
+            throw (core::ApplicationError);
         void exec()
-            throw (ApplicationError);
+            throw (core::ApplicationError);
 
     protected:
         void printHelp();
@@ -71,13 +74,17 @@ class Usbprog {
         QCoreApplication m_coreApp;
         Firmwarepool *m_firmwarepool;
         std::vector<std::string> m_args;
-        DeviceManager *m_devicemanager;
-        ProgressNotifier *m_progressNotifier;
+        core::DeviceManager *m_devicemanager;
+        core::ProgressNotifier *m_progressNotifier;
         int m_argc;
         char **m_argv;
 };
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
+
 
 #endif /* USBPROG_H */
 

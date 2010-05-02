@@ -27,7 +27,7 @@
 
 int main(int argc, char *argv[])
 {
-    Usbprog usbprog(argc, argv);
+    usbprog::cli::Usbprog usbprog(argc, argv);
 
     try {
         usbprog.initConfig();

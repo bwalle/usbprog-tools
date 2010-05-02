@@ -17,6 +17,9 @@
 #ifndef SLEEPER_H
 #define SLEEPER_H
 
+namespace usbprog {
+namespace core {
+
 /* Sleeper {{{ */
 
 class Sleeper
@@ -38,6 +41,9 @@ class BlockingSleeper : public Sleeper
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* SLEEPER_H */
 

@@ -16,6 +16,11 @@
  */
 #include "guiconfiguration.h"
 
+namespace usbprog {
+namespace gui {
+
+/* GuiConfiguration {{{ */
+
 GuiConfiguration *GuiConfiguration::m_instance = NULL;
 
 /* -------------------------------------------------------------------------- */
@@ -38,5 +43,11 @@ void GuiConfiguration::dumpConfig(std::ostream &stream)
 {
     Configuration::dumpConfig(stream);
 }
+
+/* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 et: :collapseFolds=1:

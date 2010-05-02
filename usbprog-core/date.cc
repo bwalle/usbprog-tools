@@ -30,6 +30,9 @@ static const char *formatstrings[] = {
     "%y-%m-%d"                  /* DTF_ISO_SHORT_DATE */
 };
 
+namespace usbprog {
+namespace core {
+
 /* DateTime {{{ */
 
 /* -------------------------------------------------------------------------- */
@@ -203,5 +206,8 @@ long long operator+(const DateTime &a, const DateTime &b)
 }
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

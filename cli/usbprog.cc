@@ -33,6 +33,9 @@
 #include "commands.h"
 #include "config.h"
 
+namespace usbprog {
+namespace cli {
+
 namespace po = boost::program_options;
 
 /* HashNotifier {{{ */
@@ -99,17 +102,17 @@ Usbprog::~Usbprog()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initConfig()
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     CliConfiguration &conf = CliConfiguration::config();
 
-    std::string configDir = Fileutil::configDir("usbprog");
+    std::string configDir = core::Fileutil::configDir("usbprog");
     if (configDir.size() == 0)
-        throw ApplicationError("Could not determine configuration "
+        throw core::ApplicationError("Could not determine configuration "
                 "directory.");
 
     conf.setDataDir(configDir);
-    conf.setHistoryFile(pathconcat(configDir, "history"));
+    conf.setHistoryFile(core::pathconcat(configDir, "history"));
     conf.setIndexUrl(DEFAULT_INDEX_URL);
 }
 
@@ -143,13 +146,13 @@ void Usbprog::parseCommandLine()
         po::store(po::command_line_parser(m_argc, m_argv).
                   options(commandline_options).positional(p).run(), vm);
     } catch (const po::error &err) {
-        throw ApplicationError("Parsing command line failed: " + std::string(err.what()));
+        throw core::ApplicationError("Parsing command line failed: " + std::string(err.what()));
     }
     po::notify(vm);
 
     if (vm.count("debug")) {
         conf.setDebug(true);
-        Debug::debug()->setLevel(Debug::DL_TRACE);
+        core::Debug::debug()->setLevel(core::Debug::DL_TRACE);
     }
 
     if (vm.count("help")) {
@@ -184,7 +187,7 @@ void Usbprog::parseCommandLine()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initFirmwarePool()
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     CliConfiguration &conf = CliConfiguration::config();
 
@@ -197,21 +200,21 @@ void Usbprog::initFirmwarePool()
             m_firmwarepool->setProgress(m_progressNotifier);
         m_firmwarepool->readIndex();
     } catch (const std::runtime_error &re) {
-        throw ApplicationError(re.what());
+        throw core::ApplicationError(re.what());
     }
 }
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initDeviceManager()
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     bool debug = CliConfiguration::config().getDebug();
-    m_devicemanager = new DeviceManager(debug);
+    m_devicemanager = new core::DeviceManager(debug);
 }
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::exec()
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     Shell sh("(usbprog) ");
 
@@ -232,5 +235,8 @@ void Usbprog::exec()
 }
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

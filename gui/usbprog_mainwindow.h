@@ -30,9 +30,12 @@
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
+namespace usbprog {
+namespace gui {
+
 /* MainWindowProgressNotifier {{{ */
 
-class ProgressBarProgressNotifier : public QObject, public ProgressNotifier
+class ProgressBarProgressNotifier : public QObject, public core::ProgressNotifier
 {
     Q_OBJECT
 
@@ -87,7 +90,7 @@ class UsbprogMainWindow : public QMainWindow
         void cacheDownloadAll();
 
     private:
-        DeviceManager *m_deviceManager;
+        core::DeviceManager *m_deviceManager;
         Firmwarepool *m_firmwarepool;
         ProgressBarProgressNotifier *m_progressNotifier;
 
@@ -123,6 +126,9 @@ class UsbprogMainWindow : public QMainWindow
 };
 
 /* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
 
 #endif // USBPROG_MAINWINDOW_H
 

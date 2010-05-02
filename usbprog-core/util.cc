@@ -35,6 +35,9 @@
 #include <sys/stat.h>
 #include "oscompat.h"
 
+namespace usbprog {
+namespace core {
+
 /* Fileutil {{{ */
 
 /* -------------------------------------------------------------------------- */
@@ -220,5 +223,8 @@ void usbprog_msleep(unsigned int msec)
 #endif
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

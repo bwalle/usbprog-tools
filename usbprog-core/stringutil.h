@@ -21,6 +21,9 @@
 
 #include <usbprog-core/types.h>
 
+namespace usbprog {
+namespace core {
+
 /* StringTokenizer interface {{{ */
 
 class StringTokenizer {
@@ -63,6 +66,9 @@ bool str_starts_with(const std::string &string, const std::string &start);
 std::vector<std::string> empty_element_sv();
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_STRINGUTIL_H */
 

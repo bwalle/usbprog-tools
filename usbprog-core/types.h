@@ -21,6 +21,9 @@
 #include <map>
 #include <string>
 
+namespace usbprog {
+namespace core {
+
 /* Typedefs {{{ */
 
 class Device;
@@ -30,6 +33,9 @@ typedef std::vector<Device *> DeviceVector;
 typedef std::vector<std::string> StringVector;
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_CORE_TYPES_H */
 

@@ -17,6 +17,9 @@
 #ifndef PROGRESSNOTIFIER_H
 #define PROGRESSNOTIFIER_H
 
+namespace usbprog {
+namespace core {
+
 /* ProgressNotifier {{{ */
 
 class ProgressNotifier {
@@ -29,6 +32,9 @@ class ProgressNotifier {
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* PROGRESSNOTIFIER_H */
 

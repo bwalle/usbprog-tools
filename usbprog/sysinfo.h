@@ -19,11 +19,20 @@
 
 #include <string>
 
+namespace usbprog {
+
+/* Sysinfo {{{ */
+
 class Sysinfo {
     public:
         static std::string osName();
         static std::string osVersion();
 };
+
+/* }}} */
+
+} // end namespace usbprog
+
 
 #endif /* SYSINFO_H */
 

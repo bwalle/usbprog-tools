@@ -19,15 +19,21 @@
 
 #include <usbprog-core/sleeper.h>
 
+namespace usbprog {
+namespace gui {
+
 /* QtSleeper {{{ */
 
-class QtSleeper : public Sleeper
+class QtSleeper : public core::Sleeper
 {
     public:
         virtual void sleep(int ms);
 };
 
 /* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
 
 #endif // QTSLEEPER_H
 

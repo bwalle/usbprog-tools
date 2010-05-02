@@ -32,6 +32,8 @@
 #include <usbprog/usbprog.h>
 #include "io.h"
 
+namespace usbprog {
+namespace cli {
 
 /* class definitions {{{ */
 
@@ -43,9 +45,9 @@ class ReadlineLineReader : public AbstractLineReader {
     public:
         std::string readLine(const char *prompt = NULL);
         void readHistory(const std::string &file)
-            throw (IOError);
+            throw (core::IOError);
         void writeHistory(const std::string &file)
-            throw (IOError);
+            throw (core::IOError);
         bool haveHistory() const;
 
         bool haveCompletion() const;
@@ -105,12 +107,12 @@ bool AbstractLineReader::eof() const
 
 /* -------------------------------------------------------------------------- */
 void AbstractLineReader::readHistory(const std::string &file)
-    throw (IOError)
+    throw (core::IOError)
 {}
 
 /* -------------------------------------------------------------------------- */
 void AbstractLineReader::writeHistory(const std::string &file)
-    throw (IOError)
+    throw (core::IOError)
 {}
 
 /* -------------------------------------------------------------------------- */
@@ -164,7 +166,7 @@ Completor *g_current_completor;
 /* -------------------------------------------------------------------------- */
 char **readline_line_reader_complete(const char *text, int start, int end)
 {
-    StringVector completions = g_current_completor->complete(
+    core::StringVector completions = g_current_completor->complete(
             text, std::string(rl_line_buffer), start, end);
 
     if (completions.size() == 0)
@@ -173,7 +175,7 @@ char **readline_line_reader_complete(const char *text, int start, int end)
     // the first entry is the string which replaces text, so it must be
     // the largest string which is common to each entry in completions
     std::string replacement = completions[0];
-    for (StringVector::const_iterator it = completions.begin();
+    for (core::StringVector::const_iterator it = completions.begin();
             it != completions.end(); ++it) {
         size_t len = std::min(it->size(), replacement.size());
         for (unsigned int mismatch = 0; mismatch < len; ++mismatch) {
@@ -184,7 +186,7 @@ char **readline_line_reader_complete(const char *text, int start, int end)
         }
     }
 
-    return stringvector_to_array(completions);
+    return core::stringvector_to_array(completions);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -213,21 +215,21 @@ std::string ReadlineLineReader::readLine(const char *prompt)
 
 /* -------------------------------------------------------------------------- */
 void ReadlineLineReader::readHistory(const std::string &file)
-    throw (IOError)
+    throw (core::IOError)
 {
     int ret = read_history(file.c_str());
     if (ret < 0)
-        throw IOError(std::string("Reading readline history failed: ")
+        throw core::IOError(std::string("Reading readline history failed: ")
                 + std::strerror(errno));
 }
 
 /* -------------------------------------------------------------------------- */
 void ReadlineLineReader::writeHistory(const std::string &file)
-    throw (IOError)
+    throw (core::IOError)
 {
     int ret = write_history(file.c_str());
     if (ret < 0)
-        throw IOError(std::string("Writing readline history failed: ")
+        throw core::IOError(std::string("Writing readline history failed: ")
                 + std::strerror(errno));
 }
 
@@ -256,6 +258,9 @@ void ReadlineLineReader::setCompletor(Completor *comp)
 }
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 #endif
 

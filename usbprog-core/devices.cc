@@ -34,6 +34,9 @@
 #define PRODUCT_ID_USBPROG      0x0c62
 #define BCDDEVICE_UPDATE        0x0000
 
+namespace usbprog {
+namespace core {
+
 /* UpdateDevice {{{ */
 
 // -----------------------------------------------------------------------------
@@ -695,5 +698,8 @@ void UsbprogUpdater::startDevice()
 }
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

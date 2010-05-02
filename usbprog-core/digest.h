@@ -21,6 +21,9 @@
 
 #include <usbprog-core/error.h>
 
+namespace usbprog {
+namespace core {
+
 /* Digest {{{ */
 
 class Digest {
@@ -65,6 +68,9 @@ bool check_digest(const std::string &file,
 
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* USBPROG_DIGEST_H */
 

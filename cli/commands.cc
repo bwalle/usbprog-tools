@@ -31,19 +31,21 @@
 #include "usbprog.h"
 #include "config.h"
 
+namespace usbprog {
+namespace cli {
 
 /* functions {{{ */
 
 /* -------------------------------------------------------------------------- */
-StringVector complete_firmware(const std::string &start, Firmwarepool *pool)
+core::StringVector complete_firmware(const std::string &start, Firmwarepool *pool)
 {
-    StringVector result;
+    core::StringVector result;
     StringList firmwarelist = pool->getFirmwareNameList();
 
     for (StringList::const_iterator it = firmwarelist.begin();
             it != firmwarelist.end(); ++it) {
         std::string fwname = *it;
-        if (str_starts_with(fwname, start))
+        if (core::str_starts_with(fwname, start))
             result.push_back(fwname);
     }
 
@@ -60,10 +62,10 @@ ListCommand::ListCommand(Firmwarepool *firmwarepool)
 {}
 
 /* -------------------------------------------------------------------------- */
-bool ListCommand::execute(CommandArgVector  args,
-                          StringVector      options,
-                          std::ostream           &os)
-    throw (ApplicationError)
+bool ListCommand::execute(CommandArgVector   args,
+                          core::StringVector options,
+                          std::ostream       &os)
+    throw (core::ApplicationError)
 {
     StringList firmwarelist = m_firmwarepool->getFirmwareNameList();
 
@@ -92,9 +94,9 @@ bool ListCommand::execute(CommandArgVector  args,
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector ListCommand::aliases() const
+core::StringVector ListCommand::aliases() const
 {
-    StringVector ret;
+    core::StringVector ret;
     ret.push_back("firmwares");
     return ret;
 }
@@ -125,14 +127,14 @@ InfoCommand::InfoCommand(Firmwarepool *firmwarepool)
 
 /* -------------------------------------------------------------------------- */
 bool InfoCommand::execute(CommandArgVector   args,
-                          StringVector       options,
+                          core::StringVector options,
                           std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
     if (!fw)
-        throw ApplicationError(fwstr + ": Invalid firmware specified.");
+        throw core::ApplicationError(fwstr + ": Invalid firmware specified.");
 
     os << "Identifier   : " << fw->getName() << std::endl;
     os << "Name         : " << fw->getLabel() << std::endl;
@@ -149,7 +151,7 @@ bool InfoCommand::execute(CommandArgVector   args,
 
     os << std::endl;
     os << "Description" << std::endl;
-    os << wordwrap(fw->getDescription(), DEFAULT_TERMINAL_WIDTH) << std::endl;
+    os << core::wordwrap(fw->getDescription(), DEFAULT_TERMINAL_WIDTH) << std::endl;
 
     if (!CliConfiguration::config().getBatchMode()) {
         os << std::endl;
@@ -188,20 +190,21 @@ std::string InfoCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector InfoCommand::aliases() const
+core::StringVector InfoCommand::aliases() const
 {
-    StringVector ret;
+    core::StringVector ret;
     ret.push_back("firmware");
     return ret;
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector InfoCommand::getCompletions(
-        const std::string &start, size_t pos, bool option,
-        bool *filecompletion) const
+core::StringVector InfoCommand::getCompletions(const std::string &start,
+                                               size_t            pos,
+                                               bool              option,
+                                               bool              *filecompletion) const
 {
     if (pos != 0 || option)
-        return StringVector();
+        return core::StringVector();
 
     return complete_firmware(start, m_firmwarepool);
 }
@@ -232,14 +235,14 @@ PinCommand::PinCommand(Firmwarepool *firmwarepool)
 
 /* -------------------------------------------------------------------------- */
 bool PinCommand::execute(CommandArgVector   args,
-                         StringVector       options,
+                         core::StringVector options,
                          std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
     if (!fw)
-        throw ApplicationError(fwstr + ": Invalid firmware specified.");
+        throw core::ApplicationError(fwstr + ": Invalid firmware specified.");
 
     if (!CliConfiguration::config().getBatchMode()) {
         os << "            +----------------+" << std::endl;
@@ -251,8 +254,8 @@ bool PinCommand::execute(CommandArgVector   args,
 
     // calc max length
     size_t maxlen = 0;
-    StringVector pins = fw->getPins();
-    for (StringVector::const_iterator it = pins.begin();
+    core::StringVector pins = fw->getPins();
+    for (core::StringVector::const_iterator it = pins.begin();
             it != pins.end(); ++it)
         maxlen = std::max(maxlen, fw->getPin(*it).size());
     maxlen += 5;
@@ -267,7 +270,7 @@ bool PinCommand::execute(CommandArgVector   args,
         os << "[" << std::right << std::setw(5) << name2.str() << "] "
              << std::left << fw->getPin(name2.str()) << std::endl;
 
-        StringVector::iterator delit = find(pins.begin(), pins.end(), name1.str());
+        core::StringVector::iterator delit = find(pins.begin(), pins.end(), name1.str());
         if (delit != pins.end())
             pins.erase(delit);
         delit = find(pins.begin(), pins.end(), name2.str());
@@ -313,20 +316,21 @@ std::string PinCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector PinCommand::aliases() const
+core::StringVector PinCommand::aliases() const
 {
-    StringVector ret;
+    core::StringVector ret;
     ret.push_back("pins");
     return ret;
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector PinCommand::getCompletions(
-        const std::string &start, size_t pos, bool option,
-        bool *filecompletion) const
+core::StringVector PinCommand::getCompletions(const std::string &start,
+                                              size_t            pos,
+                                              bool              option,
+                                              bool              *filecompletion) const
 {
     if (pos != 0 || option)
-        return StringVector();
+        return core::StringVector();
 
     return complete_firmware(start, m_firmwarepool);
 }
@@ -359,7 +363,7 @@ DownloadCommand::DownloadCommand(Firmwarepool *firmwarepool)
 
 /* -------------------------------------------------------------------------- */
 bool DownloadCommand::downloadAll(std::ostream &os)
-    throw (IOError)
+    throw (core::IOError)
 {
     std::vector<Firmware *> firmwares = m_firmwarepool->getFirmwareList();
 
@@ -384,9 +388,9 @@ bool DownloadCommand::downloadAll(std::ostream &os)
 
 /* -------------------------------------------------------------------------- */
 bool DownloadCommand::execute(CommandArgVector   args,
-                              StringVector       options,
+                              core::StringVector options,
                               std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     if (CliConfiguration::config().isOffline()) {
@@ -400,7 +404,7 @@ bool DownloadCommand::execute(CommandArgVector   args,
 
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
     if (!fw)
-        throw ApplicationError(fwstr + ": Invalid firmware specified.");
+        throw core::ApplicationError(fwstr + ": Invalid firmware specified.");
 
     try {
         m_firmwarepool->downloadFirmware(fwstr);
@@ -438,22 +442,22 @@ std::string DownloadCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector DownloadCommand::aliases() const
+core::StringVector DownloadCommand::aliases() const
 {
-    StringVector ret;
+    core::StringVector ret;
     ret.push_back("get");
     return ret;
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector DownloadCommand::getCompletions(
+core::StringVector DownloadCommand::getCompletions(
         const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0 || option)
-        return StringVector();
+        return core::StringVector();
 
-    StringVector comp =  complete_firmware(start, m_firmwarepool);
-    if (str_starts_with("all", start))
+    core::StringVector comp =  complete_firmware(start, m_firmwarepool);
+    if (core::str_starts_with("all", start))
         comp.push_back("all");
     return comp;
 }
@@ -486,9 +490,9 @@ CacheCommand::CacheCommand(Firmwarepool *firmwarepool)
 
 /* -------------------------------------------------------------------------- */
 bool CacheCommand::execute(CommandArgVector   args,
-                           StringVector       options,
+                           core::StringVector options,
                            std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string cmd = args[0]->getString();
 
@@ -498,9 +502,9 @@ bool CacheCommand::execute(CommandArgVector   args,
         else if (cmd == "delete")
             m_firmwarepool->deleteCache();
         else
-            throw ApplicationError(cmd + ": Invalid command for \"cache\".");
-    } catch (const IOError &ioe) {
-        throw ApplicationError(std::string("I/O error: ") + ioe.what());
+            throw core::ApplicationError(cmd + ": Invalid command for \"cache\".");
+    } catch (const core::IOError &ioe) {
+        throw core::ApplicationError(std::string("I/O error: ") + ioe.what());
     }
 
     return true;
@@ -531,16 +535,16 @@ std::string CacheCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector CacheCommand::getCompletions(
+core::StringVector CacheCommand::getCompletions(
         const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
     if (pos != 0 || option)
-        return StringVector();
+        return core::StringVector();
 
-    StringVector result;
-    if (str_starts_with("clean", start))
+    core::StringVector result;
+    if (core::str_starts_with("clean", start))
         result.push_back("clean");
-    if (str_starts_with("delete", start))
+    if (core::str_starts_with("delete", start))
         result.push_back("delete");
 
     return result;
@@ -569,8 +573,8 @@ void CacheCommand::printLongHelp(std::ostream &os) const
 /* DevicesCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-DevicesCommand::DevicesCommand(DeviceManager *deviceManager,
-        Firmwarepool *firmwarepool)
+DevicesCommand::DevicesCommand(core::DeviceManager *deviceManager,
+                               Firmwarepool        *firmwarepool)
     : AbstractCommand("devices")
     , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
@@ -578,14 +582,14 @@ DevicesCommand::DevicesCommand(DeviceManager *deviceManager,
 
 /* -------------------------------------------------------------------------- */
 bool DevicesCommand::execute(CommandArgVector   args,
-                             StringVector       options,
+                             core::StringVector options,
                              std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     try {
         m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string(err.what()));
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string(err.what()));
     }
 
     if (m_deviceManager->getNumberUpdateDevices() == 0)
@@ -620,7 +624,8 @@ void DevicesCommand::printLongHelp(std::ostream &os) const
 /* DeviceCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-DeviceCommand::DeviceCommand(DeviceManager *deviceManager, Firmwarepool *firmwarepool)
+DeviceCommand::DeviceCommand(core::DeviceManager *deviceManager,
+                             Firmwarepool        *firmwarepool)
     : AbstractCommand("device")
     , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
@@ -628,17 +633,17 @@ DeviceCommand::DeviceCommand(DeviceManager *deviceManager, Firmwarepool *firmwar
 
 /* -------------------------------------------------------------------------- */
 bool DeviceCommand::execute(CommandArgVector   args,
-                            StringVector       options,
+                            core::StringVector options,
                             std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string device = args[0]->getString();
 
     try {
         if (m_deviceManager->getNumberUpdateDevices() == 0)
             m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string(err.what()));
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string(err.what()));
     }
 
     bool is_number = true;
@@ -658,11 +663,11 @@ bool DeviceCommand::execute(CommandArgVector   args,
 
         int number_of_devices = m_deviceManager->getNumberUpdateDevices();
         if (updatedevice < 0 || updatedevice >= number_of_devices)
-            throw ApplicationError("Invalid device number specified.");
+            throw core::ApplicationError("Invalid device number specified.");
     } else {
 
         for (unsigned int i = 0; i < m_deviceManager->getNumberUpdateDevices(); i++) {
-            Device *dev = m_deviceManager->getDevice(i);
+            core::Device *dev = m_deviceManager->getDevice(i);
 
             if (dev->getShortName() == device) {
                 updatedevice = i;
@@ -671,7 +676,7 @@ bool DeviceCommand::execute(CommandArgVector   args,
         }
 
         if (updatedevice == -1)
-            throw ApplicationError("Invalid update device name specified.");
+            throw core::ApplicationError("Invalid update device name specified.");
     }
 
     m_deviceManager->setCurrentUpdateDevice(updatedevice);
@@ -704,13 +709,15 @@ std::string DeviceCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector DeviceCommand::getCompletions(
-        const std::string &start, size_t pos, bool option, bool *filecompletion) const
+core::StringVector DeviceCommand::getCompletions(const std::string &start,
+                                                 size_t            pos,
+                                                 bool              option,
+                                                 bool              *filecompletion) const
 {
     if (pos != 0 || option)
-        return StringVector();
+        return core::StringVector();
 
-    StringVector result;
+    core::StringVector result;
     for (unsigned int i = 0; i < m_deviceManager->getNumberUpdateDevices(); i++) {
         std::stringstream ss;
         ss << i;
@@ -744,7 +751,8 @@ void DeviceCommand::printLongHelp(std::ostream &os) const
 /* UploadCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-UploadCommand::UploadCommand(DeviceManager *deviceManager, Firmwarepool  *firmwarepool)
+UploadCommand::UploadCommand(core::DeviceManager *deviceManager,
+                             Firmwarepool        *firmwarepool)
     : AbstractCommand("upload")
     , m_deviceManager(deviceManager)
     , m_firmwarepool(firmwarepool)
@@ -752,9 +760,9 @@ UploadCommand::UploadCommand(DeviceManager *deviceManager, Firmwarepool  *firmwa
 
 /* -------------------------------------------------------------------------- */
 bool UploadCommand::execute(CommandArgVector   args,
-                            StringVector       options,
+                            core::StringVector options,
                             std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     std::string firmware = args[0]->getString();
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
@@ -762,55 +770,55 @@ bool UploadCommand::execute(CommandArgVector   args,
     try {
         if (m_deviceManager->getNumberUpdateDevices() == 0)
             m_deviceManager->discoverUpdateDevices();
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string(err.what()));
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string(err.what()));
     }
 
-    ByteVector data;
+    core::ByteVector data;
 
-    if (Fileutil::isPathName(firmware)) {
+    if (core::Fileutil::isPathName(firmware)) {
         /* read from file */
 
-        firmware = Fileutil::resolvePath(firmware);
+        firmware = core::Fileutil::resolvePath(firmware);
         try {
             Firmwarepool::readFromFile(firmware, data);
-        } catch (const IOError &ioe) {
-            throw ApplicationError(std::string("Error while reading data from file: ")+ioe.what());
+        } catch (const core::IOError &ioe) {
+            throw core::ApplicationError(std::string("Error while reading data from file: ")+ioe.what());
         }
     } else {
         /* use pool */
 
         Firmware *fw = m_firmwarepool->getFirmware(firmware);
         if (!fw)
-            throw ApplicationError(firmware+": Invalid firmware specified.");
+            throw core::ApplicationError(firmware+": Invalid firmware specified.");
 
         try {
             m_firmwarepool->fillFirmware(firmware);
-        } catch (const IOError &err) {
-            throw ApplicationError(std::string("I/O Error: ") + err.what());
+        } catch (const core::IOError &err) {
+            throw core::ApplicationError(std::string("I/O Error: ") + err.what());
         }
 
         data = fw->getData();
     }
 
-    Device *dev = m_deviceManager->getCurrentUpdateDevice();
+    core::Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
-        throw ApplicationError("Unable to find update device.");
+        throw core::ApplicationError("Unable to find update device.");
 
     // switch in update mode
     if (!dev->isUpdateMode()) {
         try {
             os << "Switching to update mode ..." << std::endl;
             m_deviceManager->switchUpdateMode();
-        } catch (const IOError &err) {
-            throw ApplicationError(std::string("I/O Error: ") + err.what());
+        } catch (const core::IOError &err) {
+            throw core::ApplicationError(std::string("I/O Error: ") + err.what());
         }
     }
 
     dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
-        throw ApplicationError("Unable to find update device (2).");
-    UsbprogUpdater updater(dev);
+        throw core::ApplicationError("Unable to find update device (2).");
+    core::UsbprogUpdater updater(dev);
 
     if (!CliConfiguration::config().getBatchMode() && !CliConfiguration::config().getDebug())
         updater.setProgress(&hn);
@@ -825,16 +833,16 @@ bool UploadCommand::execute(CommandArgVector   args,
             updater.startDevice();
         }
         updater.updateClose();
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string("I/O Error: ") + err.what());
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string("I/O Error: ") + err.what());
     }
 
     os << "Detecting new USB devices ..." << std::endl;
-    usbprog_sleep(2);
+    core::usbprog_sleep(2);
     try {
         m_deviceManager->discoverUpdateDevices();
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string(err.what()));
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string(err.what()));
     }
 
     return true;
@@ -865,23 +873,24 @@ std::string UploadCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector UploadCommand::getCompletions(
-        const std::string &start, size_t pos, bool option,
-        bool *filecompletion) const
+core::StringVector UploadCommand::getCompletions(const std::string &start,
+                                                 size_t            pos,
+                                                 bool              option,
+                                                 bool              *filecompletion) const
 {
     if (pos != 0)
-        return StringVector();
+        return core::StringVector();
 
     if (option) {
-        StringVector ret;
-        if (str_starts_with("-nostart", start))
+        core::StringVector ret;
+        if (core::str_starts_with("-nostart", start))
             ret.push_back("-nostart");
         return ret;
     } else {
-        if (start.size() > 0 && Fileutil::isPathName(start)) {
+        if (start.size() > 0 && core::Fileutil::isPathName(start)) {
             if (filecompletion)
                 *filecompletion = true;
-            return StringVector();
+            return core::StringVector();
         } else
             return complete_firmware(start, m_firmwarepool);
     }
@@ -910,9 +919,9 @@ void UploadCommand::printLongHelp(std::ostream &os) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector UploadCommand::getSupportedOptions() const
+core::StringVector UploadCommand::getSupportedOptions() const
 {
-    StringVector sv;
+    core::StringVector sv;
     sv.push_back("-nostart");
     return sv;
 }
@@ -921,21 +930,21 @@ StringVector UploadCommand::getSupportedOptions() const
 /* StartCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
-StartCommand::StartCommand(DeviceManager *deviceManager)
+StartCommand::StartCommand(core::DeviceManager *deviceManager)
     : AbstractCommand("start")
     , m_deviceManager(deviceManager)
 {}
 
 /* -------------------------------------------------------------------------- */
-bool StartCommand::execute(CommandArgVector args,
-                           StringVector     options,
-                           std::ostream     &os)
-    throw (ApplicationError)
+bool StartCommand::execute(CommandArgVector     args,
+                           core::StringVector   options,
+                           std::ostream         &os)
+    throw (core::ApplicationError)
 {
-    Device *dev = m_deviceManager->getCurrentUpdateDevice();
+    core::Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
-        throw ApplicationError("Unable to find update device.");
-    UsbprogUpdater updater(dev);
+        throw core::ApplicationError("Unable to find update device.");
+    core::UsbprogUpdater updater(dev);
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
 
     if (!CliConfiguration::config().getBatchMode() && !CliConfiguration::config().getDebug())
@@ -945,8 +954,8 @@ bool StartCommand::execute(CommandArgVector args,
         updater.updateOpen();
         updater.startDevice();
         os << "Device successfully started." << std::endl;
-    } catch (const IOError &err) {
-        throw ApplicationError(std::string("I/O Error: ") + err.what());
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string("I/O Error: ") + err.what());
     }
 
     return true;
@@ -977,9 +986,9 @@ CopyingCommand::CopyingCommand()
 
 /* -------------------------------------------------------------------------- */
 bool CopyingCommand::execute(CommandArgVector   args,
-                             StringVector       options,
+                             core::StringVector options,
                              std::ostream       &os)
-    throw (ApplicationError)
+    throw (core::ApplicationError)
 {
     os << "USBprog " << USBPROG_VERSION_STRING << std::endl;
     os << "Copyright (c) 2007, 2008 Bernhard Walle <bernhard@bwalle.de>\n\n";
@@ -1004,9 +1013,9 @@ std::string CopyingCommand::help() const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector CopyingCommand::aliases() const
+core::StringVector CopyingCommand::aliases() const
 {
-    StringVector ret;
+    core::StringVector ret;
     ret.push_back("license");
     return ret;
 }
@@ -1022,5 +1031,8 @@ void CopyingCommand::printLongHelp(std::ostream &os) const
 }
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et:

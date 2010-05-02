@@ -38,6 +38,9 @@
 #include "qtsleeper.h"
 #include "config.h"
 
+namespace usbprog {
+namespace gui {
+
 /* ProgressBarProgressNotifier {{{ */
 
 ProgressBarProgressNotifier::ProgressBarProgressNotifier(QProgressBar *progressBar, QStatusBar *statusBar)
@@ -98,7 +101,7 @@ UsbprogMainWindow::UsbprogMainWindow()
     setWindowIcon(QPixmap(":/usbprog_icon.xpm"));
     setWindowTitle(UsbprogApplication::NAME);
 
-    m_deviceManager = new DeviceManager;
+    m_deviceManager = new core::DeviceManager;
     m_deviceManager->setCustomSleeper(new QtSleeper);
     m_firmwarepool = new Firmwarepool(GuiConfiguration::config().getDataDir());
     m_progressNotifier = new ProgressBarProgressNotifier(m_widgets.mainProgress, statusBar());
@@ -347,7 +350,7 @@ void UsbprogMainWindow::refreshDevices()
 
     // build the device list
     for (size_t i = 0; i < m_deviceManager->getNumberUpdateDevices(); ++i) {
-        Device *dev = m_deviceManager->getDevice(i);
+        core::Device *dev = m_deviceManager->getDevice(i);
         m_widgets.devicesCombo->addItem(QString::fromStdString(dev->toShortString()), int(i));
     }
 }
@@ -358,7 +361,7 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
     if (!newItem)
         newItem = m_widgets.firmwareList->currentItem();
 
-    Debug::debug()->dbg("Firmware '%s' selected", static_cast<const char *>(newItem->text().toLocal8Bit()));
+    core::Debug::debug()->dbg("Firmware '%s' selected", static_cast<const char *>(newItem->text().toLocal8Bit()));
 
     Firmware *fw = m_firmwarepool->getFirmware(newItem->text().toStdString());
 
@@ -389,7 +392,7 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
     // version
     htmlStream << "<tr><td align=\"right\"><b>Version:</b></td> <td>&nbsp;</td> <td>"
                << QString::fromStdString(fw->getVersionString()) << " "
-               << "[" << QString::fromStdString(fw->getDate().getDateTimeString(DTF_ISO_DATE)) << "]"
+               << "[" << QString::fromStdString(fw->getDate().getDateTimeString(core::DTF_ISO_DATE)) << "]"
                << "</td> </tr>\n";
 
     // device IDs
@@ -437,10 +440,10 @@ void UsbprogMainWindow::uploadFirmware()
     }
 
     m_deviceManager->setCurrentUpdateDevice(deviceIndex);
-    Device *updateDevice = m_deviceManager->getCurrentUpdateDevice();
+    core::Device *updateDevice = m_deviceManager->getCurrentUpdateDevice();
     assert(updateDevice != NULL);
 
-    Debug::debug()->dbg("Uploading firmware '%s' to '%s'", fw->getName().c_str(), updateDevice->toShortString().c_str());
+    core::Debug::debug()->dbg("Uploading firmware '%s' to '%s'", fw->getName().c_str(), updateDevice->toShortString().c_str());
 
     // download firmware if necessary
     if (!downloadFirmware(fw->getName()))
@@ -451,7 +454,7 @@ void UsbprogMainWindow::uploadFirmware()
         try {
             statusBar()->showMessage(tr("Switching to update mode ..."), DEFAULT_MESSAGE_TIMEOUT);
             m_deviceManager->switchUpdateMode();
-        } catch (const IOError &err) {
+        } catch (const core::IOError &err) {
             QMessageBox::critical(this, UsbprogApplication::NAME,
                                   tr("I/O error while switching to update mode:\n\n%1").arg(err.what()));
             return;
@@ -464,27 +467,27 @@ void UsbprogMainWindow::uploadFirmware()
                               tr("Unable to find the update device after switching to update mode."));
         return;
     }
-    UsbprogUpdater updater(updateDevice);
+    core::UsbprogUpdater updater(updateDevice);
 
     try {
         m_progressNotifier->setStatusMessage(QString());
         updater.setProgress(m_progressNotifier);
 
-        Debug::debug()->dbg("Opening device");
+        core::Debug::debug()->dbg("Opening device");
         statusBar()->showMessage(tr("Opening device ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.updateOpen();
 
-        Debug::debug()->dbg("Writing firmware");
+        core::Debug::debug()->dbg("Writing firmware");
         statusBar()->showMessage(tr("Writing firmware ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.writeFirmware(fw->getData());
 
-        Debug::debug()->dbg("Starting device");
+        core::Debug::debug()->dbg("Starting device");
         statusBar()->showMessage(tr("Starting device ..."), DEFAULT_MESSAGE_TIMEOUT);
         updater.startDevice();
 
-        Debug::debug()->dbg("Closing updater");
+        core::Debug::debug()->dbg("Closing updater");
         updater.updateClose();
-    } catch (const IOError &err) {
+    } catch (const core::IOError &err) {
         QMessageBox::critical(this, UsbprogApplication::NAME,
                               tr("Unable to write the firmware:\n\n%1").arg(err.what()));
         return;
@@ -497,11 +500,11 @@ void UsbprogMainWindow::uploadFirmware()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::showHelp()
 {
-    Debug::debug()->dbg("Open help (docdir=%s)", DOCDIR);
+    core::Debug::debug()->dbg("Open help (docdir=%s)", DOCDIR);
 
     QString fileName, localPath, globalPath;
-    localPath = QString::fromStdString(pathconcat("doc", USERS_GUIDE_FILENAME));
-    globalPath = QString::fromStdString(pathconcat(DOCDIR, USERS_GUIDE_FILENAME));
+    localPath = QString::fromStdString(core::pathconcat("doc", USERS_GUIDE_FILENAME));
+    globalPath = QString::fromStdString(core::pathconcat(DOCDIR, USERS_GUIDE_FILENAME));
     if (QFile::exists(localPath))
         fileName = localPath;
     else if (QFile::exists(globalPath))
@@ -513,7 +516,7 @@ void UsbprogMainWindow::showHelp()
     }
 
     QString absolutePath = QFileInfo(fileName).canonicalFilePath();
-    Debug::debug()->dbg("Help found at '%s'", static_cast<const char *>(absolutePath.toLocal8Bit()) );
+    core::Debug::debug()->dbg("Help found at '%s'", static_cast<const char *>(absolutePath.toLocal8Bit()) );
 
     if (QDesktopServices::openUrl( QUrl::fromLocalFile(absolutePath)) )
         statusBar()->showMessage(tr("PDF viewer successfully started."), DEFAULT_MESSAGE_TIMEOUT);
@@ -524,7 +527,7 @@ void UsbprogMainWindow::showHelp()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::showAbout()
 {
-    Debug::debug()->dbg("Open about dialog");
+    core::Debug::debug()->dbg("Open about dialog");
 
     QMessageBox::information(this, UsbprogApplication::NAME,
                              tr("USBprog %1\n\n(c) 2007-2010 Bernhard Walle <bernhard@bwalle.de>")
@@ -534,11 +537,11 @@ void UsbprogMainWindow::showAbout()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheClean()
 {
-    Debug::debug()->dbg("Cleanup cache");
+    core::Debug::debug()->dbg("Cleanup cache");
 
     try {
         m_firmwarepool->cleanCache();
-    } catch (const IOError &ioe) {
+    } catch (const core::IOError &ioe) {
         QMessageBox::critical(this, UsbprogApplication::NAME,
                               tr("Error while cleaning up the cache:\n\n%1").arg(ioe.what()));
         return;
@@ -550,11 +553,11 @@ void UsbprogMainWindow::cacheClean()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheDelete()
 {
-    Debug::debug()->dbg("Delete cache");
+    core::Debug::debug()->dbg("Delete cache");
 
     try {
         m_firmwarepool->deleteCache();
-    } catch (const IOError &ioe) {
+    } catch (const core::IOError &ioe) {
         QMessageBox::critical(this, UsbprogApplication::NAME,
                               tr("Error while deleting the cache:\n\n%1").arg(ioe.what()));
         return;
@@ -569,7 +572,7 @@ void UsbprogMainWindow::cacheDelete()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheDownloadAll()
 {
-    Debug::debug()->dbg("Download all");
+    core::Debug::debug()->dbg("Download all");
 
     bool someFail = false;
     bool someSuccess = false;
@@ -596,7 +599,7 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilen
 {
     QString qName = QString::fromStdString(name);
     if (!m_firmwarepool->isFirmwareOnDisk(name)) {
-        Debug::debug()->dbg("Firmware '%s' not on disk, downloading...", name.c_str());
+        core::Debug::debug()->dbg("Firmware '%s' not on disk, downloading...", name.c_str());
         statusBar()->showMessage(tr("Downloading firmware %1 ...").arg(qName), DEFAULT_MESSAGE_TIMEOUT);
 
         try {
@@ -614,7 +617,7 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilen
 
     try {
         m_firmwarepool->fillFirmware(name);
-    } catch (const IOError &err) {
+    } catch (const core::IOError &err) {
         if (!failSilent) {
             QMessageBox::critical(this, UsbprogApplication::NAME,
                                   tr("I/O error while filling firmware \"%1\":\n\n%2")
@@ -629,5 +632,9 @@ bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilen
 }
 
 /* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

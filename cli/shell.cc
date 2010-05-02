@@ -28,6 +28,9 @@
 #include "io.h"
 #include "cliconfiguration.h"
 
+namespace usbprog {
+namespace cli {
+
 /* AbstractCommand {{{ */
 
 /* -------------------------------------------------------------------------- */
@@ -60,22 +63,24 @@ std::string AbstractCommand::name() const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector AbstractCommand::aliases() const
+core::StringVector AbstractCommand::aliases() const
 {
-    return StringVector();
+    return core::StringVector();
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector AbstractCommand::getSupportedOptions() const
+core::StringVector AbstractCommand::getSupportedOptions() const
 {
-    return StringVector();
+    return core::StringVector();
 }
 
 /* -------------------------------------------------------------------------- */
-std::vector<std::string> AbstractCommand::getCompletions(
-        const std::string &start, size_t pos, bool option, bool *filecompletion) const
+core::StringVector AbstractCommand::getCompletions(const std::string &start,
+                                                   size_t            pos,
+                                                   bool              option,
+                                                   bool              *filecompletion) const
 {
-    return empty_element_sv();
+    return core::empty_element_sv();
 }
 
 /* }}} */
@@ -205,7 +210,7 @@ Shell::Shell(const std::string &prompt)
     m_lineReader = LineReader::defaultLineReader(prompt);
     try {
         m_lineReader->readHistory(CliConfiguration::config().getHistoryFile());
-    } catch (const IOError &)
+    } catch (const core::IOError &)
     {}
 
     if (m_lineReader->haveCompletion())
@@ -232,7 +237,7 @@ Shell::~Shell()
 
     try {
         m_lineReader->writeHistory(CliConfiguration::config().getHistoryFile());
-    } catch (const IOError &ioe) {
+    } catch (const core::IOError &ioe) {
         std::cerr << "Error when saving history: " << ioe.what() << std::endl;
     }
     delete m_lineReader;
@@ -250,27 +255,27 @@ void Shell::addCommand(Command *cmd)
 
     m_commands[cmd->name()] = cmd;
 
-    StringVector aliases = cmd->aliases();
-    for (StringVector::const_iterator it = aliases.begin();
+    core::StringVector aliases = cmd->aliases();
+    for (core::StringVector::const_iterator it = aliases.begin();
             it != aliases.end(); ++it)
         m_commands[*it] = cmd;
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector Shell::complete(const std::string      &text,
-                             const std::string      &full_text,
-                             unsigned int           start_idx,
-                             unsigned int           end_idx)
+core::StringVector Shell::complete(const std::string      &text,
+                                   const std::string      &full_text,
+                                   unsigned int           start_idx,
+                                   unsigned int           end_idx)
 {
     //
     // command completion
     //
     if (start_idx == 0) {
-        StringVector result;
+        core::StringVector result;
         for (StringCommandMap::const_iterator it = m_commands.begin();
-                it != m_commands.end(); ++it) {
+             it != m_commands.end(); ++it) {
             std::string cmd = it->first;
-            if (str_starts_with(cmd, text))
+            if (core::str_starts_with(cmd, text))
                 result.push_back(cmd);
         }
         return result;
@@ -279,39 +284,39 @@ StringVector Shell::complete(const std::string      &text,
     //
     // argument completion
     //
-    ShellStringTokenizer tok(full_text);
-    StringVector vec = tok.tokenize();
+    core::ShellStringTokenizer tok(full_text);
+    core::StringVector vec = tok.tokenize();
 
     if (vec.size() <= 0)
-        return empty_element_sv();
+        return core::empty_element_sv();
 
     // get command for now
     Command *cmd = m_commands[vec[0]];
     if (!cmd)
-        return empty_element_sv();
+        return core::empty_element_sv();
 
     // options
     if (text.size() > 0 && text[0] == '-') {
         if (cmd->getSupportedOptions().size() == 0)
-            return empty_element_sv();
+            return core::empty_element_sv();
         else
             return cmd->getCompletions(text, 0, true, NULL);
     } else {
         size_t pos = vec.size() - 1;
         if (text.size() > 0)
             pos--;
-        for (StringVector::const_iterator it = vec.begin(); it != vec.end(); ++it)
+        for (core::StringVector::const_iterator it = vec.begin(); it != vec.end(); ++it)
             // don't count a position for an option
             if ((*it).size() > 0 && (*it)[0] == '-')
                 pos--;
         if (cmd->getArgNumber() <= pos)
-            return empty_element_sv();
+            return core::empty_element_sv();
         else {
             bool filecompletion = false;
-            StringVector completions = cmd->getCompletions(
+            core::StringVector completions = cmd->getCompletions(
                     text, pos, false, &filecompletion);
             if (completions.size() == 0 && !filecompletion)
-                return empty_element_sv();
+                return core::empty_element_sv();
             else
                 return completions;
         }
@@ -324,15 +329,15 @@ void Shell::run()
     bool result = true;
 
     while (!m_lineReader->eof() && result) {
-        ShellStringTokenizer tok(m_lineReader->readLine());
-        StringVector vec = tok.tokenize();
+        core::ShellStringTokenizer tok(m_lineReader->readLine());
+        core::StringVector vec = tok.tokenize();
 
         if (vec.size() == 0)
             continue;
 
         try {
             result = run(vec, false);
-        } catch (const ApplicationError &err) {
+        } catch (const core::ApplicationError &err) {
             std::cout << err.what() << std::endl;
         }
     }
@@ -344,14 +349,14 @@ void Shell::run()
 }
 
 /* -------------------------------------------------------------------------- */
-bool Shell::run(StringVector input, bool multiple)
-    throw (ApplicationError)
+bool Shell::run(core::StringVector input, bool multiple)
+    throw (core::ApplicationError)
 {
     bool result = true;
     int loop = 0;
 
     if (input.size() == 0)
-        throw ApplicationError("Input size == 0");
+        throw core::ApplicationError("Input size == 0");
 
     do {
         std::string cmdstr = input[0];
@@ -359,12 +364,12 @@ bool Shell::run(StringVector input, bool multiple)
         input.erase(input.begin());
         StringCommandMap::const_iterator it = m_commands.find(cmdstr);
         if (it == m_commands.end())
-            throw ApplicationError("Invalid command");
+            throw core::ApplicationError("Invalid command");
         Command *cmd = it->second;
 
         // separate options from arguments
-        StringVector options;
-        for (StringVector::iterator it = input.begin(); it != input.end(); ++it) {
+        core::StringVector options;
+        for (core::StringVector::iterator it = input.begin(); it != input.end(); ++it) {
             std::string option = *it;
 
             if (option == "--") {
@@ -378,9 +383,9 @@ bool Shell::run(StringVector input, bool multiple)
                 options.push_back(option);
                 execstr += " " + option;
 
-                StringVector supported = cmd->getSupportedOptions();
+                core::StringVector supported = cmd->getSupportedOptions();
                 if (find(supported.begin(), supported.end(), option) == supported.end())
-                    throw ApplicationError("Option '" + option + "' not supported.");
+                    throw core::ApplicationError("Option '" + option + "' not supported.");
 
                 input.erase(it);
             }
@@ -388,9 +393,9 @@ bool Shell::run(StringVector input, bool multiple)
 
         // check number of arguments
         if (multiple && cmd->getArgNumber() > input.size())
-            throw ApplicationError(cmdstr + ": Not enough arguments provided");
+            throw core::ApplicationError(cmdstr + ": Not enough arguments provided");
         if (!multiple && cmd->getArgNumber() < input.size())
-            throw ApplicationError(cmdstr + ": Too much arguments provided.");
+            throw core::ApplicationError(cmdstr + ": Too much arguments provided.");
 
         CommandArgVector vec;
         for (unsigned int argNo = 0; argNo < cmd->getArgNumber(); argNo++) {
@@ -417,7 +422,7 @@ bool Shell::run(StringVector input, bool multiple)
             if (multiple && result && input.size() > 0)
                 std::cout << std::endl;
 
-        } catch (const ApplicationError &ex) {
+        } catch (const core::ApplicationError &ex) {
             std::cout << ex.what() << std::endl;
         }
 
@@ -440,18 +445,18 @@ ExitCommand::ExitCommand()
 {}
 
 /* -------------------------------------------------------------------------- */
-bool ExitCommand::execute(CommandArgVector  args,
-                          StringVector      options,
-                          std::ostream      &os)
-    throw (ApplicationError)
+bool ExitCommand::execute(CommandArgVector   args,
+                          core::StringVector options,
+                          std::ostream       &os)
+    throw (core::ApplicationError)
 {
     return false;
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector ExitCommand::aliases() const
+core::StringVector ExitCommand::aliases() const
 {
-    StringVector sv;
+    core::StringVector sv;
     sv.push_back("quit");
     sv.push_back("q");
     sv.push_back("x");
@@ -485,10 +490,10 @@ HelpCommand::HelpCommand(Shell *sh)
 }
 
 /* -------------------------------------------------------------------------- */
-bool HelpCommand::execute(CommandArgVector args,
-                          StringVector     options,
-                          std::ostream     &os)
-    throw (ApplicationError)
+bool HelpCommand::execute(CommandArgVector   args,
+                          core::StringVector options,
+                          std::ostream       &os)
+    throw (core::ApplicationError)
 {
     for (StringCommandMap::const_iterator it = m_sh->m_commands.begin();
             it != m_sh->m_commands.end(); ++it) {
@@ -532,10 +537,10 @@ HelpCmdCommand::HelpCmdCommand(Shell *sh)
 }
 
 /* -------------------------------------------------------------------------- */
-bool HelpCmdCommand::execute(CommandArgVector args,
-                             StringVector     options,
-                             std::ostream     &os)
-    throw (ApplicationError)
+bool HelpCmdCommand::execute(CommandArgVector    args,
+                             core::StringVector  options,
+                             std::ostream        &os)
+    throw (core::ApplicationError)
 {
     std::string cmd = args[0]->getString();
 
@@ -574,25 +579,27 @@ std::string HelpCmdCommand::getArgTitle(size_t pos) const
 }
 
 /* -------------------------------------------------------------------------- */
-StringVector HelpCmdCommand::aliases() const
+core::StringVector HelpCmdCommand::aliases() const
 {
-    StringVector sv;
+    core::StringVector sv;
     sv.push_back("?");
     return sv;
 }
 
 /* -------------------------------------------------------------------------- */
-std::vector<std::string> HelpCmdCommand::getCompletions(
-        const std::string &start, size_t pos, bool option, bool *filecompletion) const
+std::vector<std::string> HelpCmdCommand::getCompletions(const std::string &start,
+                                                        size_t            pos,
+                                                        bool              option,
+                                                        bool              *filecompletion) const
 {
     if (pos != 0)
-        return StringVector();
+        return core::StringVector();
 
-    StringVector result;
+    core::StringVector result;
     for (StringCommandMap::const_iterator it = m_sh->m_commands.begin();
             it != m_sh->m_commands.end(); ++it) {
         std::string cmd = it->first;
-        if (str_starts_with(cmd, start))
+        if (core::str_starts_with(cmd, start))
             result.push_back(cmd);
     }
     return result;
@@ -618,5 +625,8 @@ void HelpCmdCommand::printLongHelp(std::ostream &os) const
 }
 
 /* }}} */
+
+} // end namespace cli
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

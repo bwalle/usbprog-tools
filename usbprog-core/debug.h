@@ -22,6 +22,9 @@
 #include <stdexcept>
 #include <cstdarg>
 
+namespace usbprog {
+namespace core {
+
 /* Debugging {{{ */
 
 class Debug {
@@ -60,6 +63,9 @@ class Debug {
 };
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 #endif /* DEBUG_H */
 

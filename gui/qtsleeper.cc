@@ -21,11 +21,14 @@
 
 #include "qtsleeper.h"
 
+namespace usbprog {
+namespace gui {
+
 /* QtSleeper {{{ */
 
 void QtSleeper::sleep(int ms)
 {
-    Debug::debug()->dbg("Qtsleeper: sleep %d ms", ms);
+    core::Debug::debug()->dbg("Qtsleeper: sleep %d ms", ms);
     QTime t;
     t.start();
 
@@ -34,5 +37,9 @@ void QtSleeper::sleep(int ms)
 }
 
 /* }}} */
+
+} // end namespace gui
+} // end namespace usbprog
+
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:

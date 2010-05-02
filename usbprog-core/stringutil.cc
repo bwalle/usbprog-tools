@@ -23,6 +23,9 @@
 
 #include <usbprog-core/stringutil.h>
 
+namespace usbprog {
+namespace core {
+
 /* ShellStringTokenizer {{{ */
 
 enum ShellStringTokenizerState {
@@ -211,7 +214,7 @@ bool str_starts_with(const std::string &string, const std::string &start)
 }
 
 /* -------------------------------------------------------------------------- */
-std::vector<std::string> empty_element_sv()
+StringVector empty_element_sv()
 {
     StringVector sv;
     sv.push_back("");
@@ -219,5 +222,8 @@ std::vector<std::string> empty_element_sv()
 }
 
 /* }}} */
+
+} // end namespace core
+} // end namespace usbprog
 
 // vim: set sw=4 ts=4 fdm=marker et: :collapseFolds=1:
