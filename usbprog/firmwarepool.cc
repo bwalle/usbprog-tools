@@ -431,7 +431,7 @@ void Firmwarepool::downloadIndex(const std::string &url)
             if (now - dt < m_indexAutoUpdatetime * 60)
                 return;
         } catch (const core::IOError &e) {
-            core::Debug::debug()->dbg("IO Error: %s", e.what());
+            USBPROG_DEBUG_DBG("IO Error: %s", e.what());
         }
     }
 
@@ -446,8 +446,7 @@ void Firmwarepool::downloadIndex(const std::string &url)
     fout.close();
 
     // after the download is successful, rename new file to old file
-    core::Debug::debug()->dbg("Renaming '%s' to '%s'\n",
-            newPath.c_str(), oldPath.c_str());
+    USBPROG_DEBUG_DBG("Renaming '%s' to '%s'\n", newPath.c_str(), oldPath.c_str());
     rename(newPath.c_str(), oldPath.c_str());
 }
 

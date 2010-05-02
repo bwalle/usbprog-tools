@@ -22,6 +22,22 @@
 #include <stdexcept>
 #include <cstdarg>
 
+/* Macros {{{ */
+
+#define USBPROG_DEBUG(level, ...) \
+    usbprog::core::Debug::debug()->msg(level, __VA_ARGS__)
+
+#define USBPROG_DEBUG_DBG(...) \
+    usbprog::core::Debug::debug()->dbg(__VA_ARGS__)
+
+#define USBPROG_DEBUG_INFO(...) \
+    usbprog::core::Debug::debug()->info(__VA_ARGS__)
+
+#define USBPROG_DEBUG_TRACE(...) \
+    usbprog::core::Debug::debug()->trace(__VA_ARGS__)
+
+/* }}} */
+
 namespace usbprog {
 namespace core {
 

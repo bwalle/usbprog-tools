@@ -28,7 +28,7 @@ namespace gui {
 
 void QtSleeper::sleep(int ms)
 {
-    core::Debug::debug()->dbg("Qtsleeper: sleep %d ms", ms);
+    USBPROG_DEBUG_DBG("Qtsleeper: sleep %d ms", ms);
     QTime t;
     t.start();
 

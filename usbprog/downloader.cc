@@ -46,7 +46,7 @@ Downloader::Downloader(std::ostream &output) throw (DownloadError)
 /* -------------------------------------------------------------------------- */
 void Downloader::setUrl(const std::string &url) throw (DownloadError)
 {
-    core::Debug::debug()->dbg("Setting URL to '%s'", url.c_str());
+    USBPROG_DEBUG_DBG("Setting URL to '%s'", url.c_str());
     m_url = url;
 }
 
@@ -84,7 +84,7 @@ void Downloader::download() throw (DownloadError)
 
     QNetworkRequest request(QUrl(m_url.c_str()));
     request.setRawHeader("User-Agent", userAgent.c_str());
-    core::Debug::debug()->dbg("Setting 'User-Agent' header to '%s'", userAgent.c_str());
+    USBPROG_DEBUG_DBG("Setting 'User-Agent' header to '%s'", userAgent.c_str());
     m_finished = false;
 
     QNetworkReply *reply(manager->get(request));
@@ -92,7 +92,7 @@ void Downloader::download() throw (DownloadError)
             SLOT(downloadProgress(qint64, qint64)));
     connect(reply, SIGNAL(finished()), SLOT(downloadFinished()));
 
-    core::Debug::debug()->dbg("Performing download");
+    USBPROG_DEBUG_DBG("Performing download");
     while (!m_finished) {
         QByteArray readData = reply->readAll();
         m_output.write(readData.constData(), readData.size());

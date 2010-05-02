@@ -1,6 +1,8 @@
 2010-05-02  Bernhard Walle <bernhard@bwalle.de>
 
 	* Introduce namespaces.
+	* Introduce macros for logging: USBPROG_DEBUG, USBPROG_DEBUG_TRACE,
+	  USBPROG_DEBUG_DBG and USBPROG_DEBUG_INFO.
 
 2010-05-01  Bernhard Walle <bernhard@bwalle.de>
 
