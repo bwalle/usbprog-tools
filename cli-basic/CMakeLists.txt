@@ -17,11 +17,24 @@
 # 02110-1301, USA.
 #
 
-add_executable(usbprog-basic
+set(usbprog_basic_SRC
     main.cc
     usbprog_basic.cc
 )
+
+if (WIN32)
+    set(usbprog_basic_SRC ${usbprog_basic_SRC} usbprog_basic.rc)
+endif (WIN32)
+
+add_executable(usbprog-basic ${usbprog_basic_SRC})
 target_link_libraries(usbprog-basic ${EXTRA_LIBS} libusbprog-core)
+
+if (BUILD_ONLY_CORE)
+    install(
+        TARGETS         usbprog-basic
+        DESTINATION     bin
+    )
+endif (BUILD_ONLY_CORE)
 
 if (BUILD_MANPAGE)
     add_custom_command(
@@ -46,6 +59,13 @@ if (BUILD_MANPAGE)
         usbprog-basic
         basic_manpage
     )
+
+    if (BUILD_ONLY_CORE)
+        install(
+            FILES           ${CMAKE_CURRENT_BINARY_DIR}/usbprog-basic.1
+            DESTINATION     share/man/man1
+        )
+endif (BUILD_ONLY_CORE)
 endif (BUILD_MANPAGE)
 
 # vim: set sw=4 ts=4 et:

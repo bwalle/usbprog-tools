@@ -26,6 +26,9 @@ if (BUILD_GUI)
         guiconfiguration.cc
         qtsleeper.cc
     )
+    if (WIN32)
+        set(usbprog_gui_SRCS ${usbprog_gui_SRCS} usbprog_gui.rc)
+    endif (WIN32)
     set(usbprog_gui_MOCS
         usbprog_mainwindow.h
     )
@@ -45,31 +48,45 @@ if (BUILD_GUI)
     )
 
     target_link_libraries(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
+
+    install(
+        TARGETS         usbprog-gui
+        DESTINATION     bin
+    )
+
+    if (BUILD_MANPAGE)
+        add_custom_command(
+            OUTPUT
+                ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+            COMMAND
+                ${POD2MAN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
+                --center="USBprog" --release=${PACKAGE_VERSION} > usbprog-gui.1
+            DEPENDS
+                ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
+            WORKING_DIRECTORY
+                ${CMAKE_CURRENT_BINARY_DIR}
+        )
+
+        add_custom_target(
+            gui-manpage
+            DEPENDS
+                ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+        )
+
+        add_dependencies(
+            usbprog-gui
+            gui-manpage
+        )
+
+
+        install(
+            FILES           ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
+            DESTINATION     share/man/man1
+        )
+
+    endif (BUILD_MANPAGE)
+
 endif (BUILD_GUI)
 
-if (BUILD_MANPAGE AND BUILD_GUI)
-    add_custom_command(
-        OUTPUT
-            ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
-        COMMAND
-            ${POD2MAN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
-            --center="USBprog" --release=${PACKAGE_VERSION} > usbprog-gui.1
-        DEPENDS
-            ${CMAKE_CURRENT_SOURCE_DIR}/usbprog-gui.pod
-        WORKING_DIRECTORY
-            ${CMAKE_CURRENT_BINARY_DIR}
-    )
-
-    add_custom_target(
-        gui-manpage
-        DEPENDS
-            ${CMAKE_CURRENT_BINARY_DIR}/usbprog-gui.1
-    )
-
-    add_dependencies(
-        usbprog-gui
-        gui-manpage
-    )
-endif (BUILD_MANPAGE AND BUILD_GUI)
 
 # vim: set sw=4 ts=4 et:

@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-add_executable(usbprog
+set(usbprog_SRC
     commands.cc
     io.cc
     main.cc
@@ -25,7 +25,18 @@ add_executable(usbprog
     usbprog.cc
     cliconfiguration.cc
 )
+
+if (WIN32)
+    set(usbprog_SRC ${usbprog_SRC} usbprog.rc)
+endif (WIN32)
+
+add_executable(usbprog ${usbprog_SRC})
 target_link_libraries(usbprog ${EXTRA_LIBS} libusbprog md5)
+
+install(
+    TARGETS         usbprog
+    DESTINATION     bin
+)
 
 if (BUILD_MANPAGE)
     add_custom_command(
@@ -49,6 +60,11 @@ if (BUILD_MANPAGE)
     add_dependencies(
         usbprog
         manpages
+    )
+
+    install(
+        FILES           ${CMAKE_CURRENT_BINARY_DIR}/usbprog.1
+        DESTINATION     share/man/man1
     )
 endif (BUILD_MANPAGE)
 
