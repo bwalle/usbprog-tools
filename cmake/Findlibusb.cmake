@@ -57,8 +57,6 @@ if (NOT USE_LEGACY_LIBUSB)
         ${LIBUSB_ADDITIONAL_INCLUDEDIR}
     )
 
-    message("includedir=${LIBUSB_INCLUDE_DIR}")
-
     find_library(LIBUSB_LIBRARY
       NAMES
         libusb-1.0
@@ -70,7 +68,6 @@ if (NOT USE_LEGACY_LIBUSB)
         /sw/lib
         ${LIBUSB_ADDITIONAL_LIBDIR}
     )
-    message("libdir=${LIBUSB_LIBRARY}")
 
     if (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
       set(LIBUSB_INCLUDE_DIRS ${LIBUSB_INCLUDE_DIR})

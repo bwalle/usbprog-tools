@@ -1,3 +1,7 @@
+2010-05-08  Bernhard Walle <bernhard@bwalle.de>
+
+	* Remove debugging output in cmake script.
+
 2010-05-02  Bernhard Walle <bernhard@bwalle.de>
 
 	* Introduce namespaces.
