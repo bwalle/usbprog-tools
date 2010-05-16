@@ -2,6 +2,8 @@
 
 	* Remove the source of the LaTeX documentation. The documentation is
 	  now maintained outside the usbprog-tools tree in the usbprog-doc tree.
+	* Fix crash when uploading firmware: Missing return value of
+	  Fileutil::readBytesFromFile().
 
 2010-05-08  Bernhard Walle <bernhard@bwalle.de>
 

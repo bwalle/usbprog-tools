@@ -201,7 +201,6 @@ ByteVector Fileutil::readBytesFromFile(const std::string &file)
     if (!fin)
         throw core::IOError("Opening " + file + " failed");
 
-    bv.clear();
     while (!fin.eof()) {
         fin.read(buffer, BUFFERSIZE);
         if (fin.bad())
@@ -211,6 +210,7 @@ ByteVector Fileutil::readBytesFromFile(const std::string &file)
     }
 
     fin.close();
+    return bv;
 }
 
 /* }}} */

@@ -529,7 +529,7 @@ void Firmwarepool::fillFirmware(const std::string &name)
         throw core::ApplicationError("Firmware doesn't exist");
 
     std::string file = getFirmwareFilename(fw);
-    fw->getData() = core::Fileutil::readBytesFromFile(file);
+    fw->setData(core::Fileutil::readBytesFromFile(file));
 }
 
 /* -------------------------------------------------------------------------- */
