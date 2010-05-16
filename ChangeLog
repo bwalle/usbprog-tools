@@ -1,3 +1,8 @@
+2010-05-16  Bernhard Walle <bernhard@bwalle.de>
+
+	* Remove the source of the LaTeX documentation. The documentation is
+	  now maintained outside the usbprog-tools tree in the usbprog-doc tree.
+
 2010-05-08  Bernhard Walle <bernhard@bwalle.de>
 
 	* Remove debugging output in cmake script.
