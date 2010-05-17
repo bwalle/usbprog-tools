@@ -125,6 +125,12 @@ Uploads a new firmware. The firmware identifier can be found with the
 B<list> command. Alternatively, you can also specify a file name on the disk.
 The extension doesn't matter.
 
+=item B<start>
+
+Starts the firmware, i.e. switches from update mode to firmware mode if a
+firmware has been uploaded previously. It's necessary that an update device
+has been selected with B<device> before.
+
 =back
 
 =head1 FILES

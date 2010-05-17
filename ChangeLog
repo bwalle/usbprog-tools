@@ -1,3 +1,7 @@
+2010-05-17  Bernhard Walle <bernhard@bwalle.de>
+
+	* Document the 'start' command in the manpage.
+
 2010-05-16  Bernhard Walle <bernhard@bwalle.de>
 
 	* Remove the source of the LaTeX documentation. The documentation is
