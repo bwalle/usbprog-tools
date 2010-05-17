@@ -131,6 +131,13 @@ Starts the firmware, i.e. switches from update mode to firmware mode if a
 firmware has been uploaded previously. It's necessary that an update device
 has been selected with B<device> before.
 
+=item B<reset>
+
+Resets the device that has been chosen as update device with the B<device>
+command. The idea is that this should be the same as unplugging and
+re-plugging the device. However, due to firmware bugs that command doesn't do
+anything useful yet.
+
 =back
 
 =head1 FILES

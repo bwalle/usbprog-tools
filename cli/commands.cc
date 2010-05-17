@@ -977,6 +977,57 @@ void StartCommand::printLongHelp(std::ostream &os) const
 }
 
 /* }}} */
+/* ResetCommand {{{ */
+
+/* -------------------------------------------------------------------------- */
+ResetCommand::ResetCommand(core::DeviceManager *deviceManager)
+    : AbstractCommand("reset")
+    , m_deviceManager(deviceManager)
+{}
+
+/* -------------------------------------------------------------------------- */
+bool ResetCommand::execute(CommandArgVector     args,
+                           core::StringVector   options,
+                           std::ostream         &os)
+    throw (core::ApplicationError)
+{
+    core::Device *dev = m_deviceManager->getCurrentUpdateDevice();
+    if (!dev)
+        throw core::ApplicationError("Unable to find update device.");
+    core::UsbprogUpdater updater(dev);
+    HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
+
+    if (!CliConfiguration::config().getBatchMode() && !CliConfiguration::config().getDebug())
+        updater.setProgress(&hn);
+
+    try {
+        updater.updateOpen();
+        updater.resetDevice();
+        os << "Device successfully reset." << std::endl;
+    } catch (const core::IOError &err) {
+        throw core::ApplicationError(std::string("I/O Error: ") + err.what());
+    }
+
+    return true;
+}
+
+/* -------------------------------------------------------------------------- */
+std::string ResetCommand::help() const
+{
+    return "Resets the firmware.";
+}
+
+/* -------------------------------------------------------------------------- */
+void ResetCommand::printLongHelp(std::ostream &os) const
+{
+    os << "Name:            reset\n\n"
+       << "Description:\n"
+       << "Resets the given device. This is almost the same as unplugging and re-plugging\n"
+       << "the device. However, it doesn't have any effect with USBprog devices currently."
+       << std::endl;
+}
+
+/* }}} */
 /* CopyingCommand {{{ */
 
 /* -------------------------------------------------------------------------- */

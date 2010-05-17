@@ -229,6 +229,7 @@ void Usbprog::exec()
     sh.addCommand(new DeviceCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new UploadCommand(m_devicemanager, m_firmwarepool));
     sh.addCommand(new StartCommand(m_devicemanager));
+    sh.addCommand(new ResetCommand(m_devicemanager));
     if (CliConfiguration::config().getBatchMode())
         sh.run(m_args);
     else

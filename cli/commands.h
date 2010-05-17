@@ -276,6 +276,26 @@ class StartCommand : public AbstractCommand {
 };
 
 /* }}} */
+/* ResetCommand {{{ */
+
+class ResetCommand : public AbstractCommand {
+    public:
+        ResetCommand(core::DeviceManager *deviceManager);
+
+    public:
+        bool execute(CommandArgVector   args,
+                     core::StringVector options,
+                     std::ostream &os)
+            throw (core::ApplicationError);
+
+        std::string help() const;
+        void printLongHelp(std::ostream &os) const;
+
+    private:
+        core::DeviceManager *m_deviceManager;
+};
+
+/* }}} */
 /* CopyingCommand {{{ */
 
 class CopyingCommand : public AbstractCommand {

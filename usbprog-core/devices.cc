@@ -703,6 +703,23 @@ void UsbprogUpdater::startDevice()
     }
 }
 
+/* -------------------------------------------------------------------------- */
+void UsbprogUpdater::resetDevice()
+    throw (IOError)
+{
+    if (!m_devHandle)
+        throw IOError("Device not opened");
+
+    USBPROG_DEBUG_DBG("Resetting device");
+
+    USBPROG_DEBUG_TRACE("usb::DeviceHandle::resetDevice()");
+    try {
+        m_devHandle->resetDevice();
+    } catch (const usb::Error &err) {
+        throw IOError("Error in device reset: " + std::string(err.what()));
+    }
+}
+
 /* }}} */
 
 } // end namespace core

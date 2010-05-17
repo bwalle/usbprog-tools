@@ -1,6 +1,7 @@
 2010-05-17  Bernhard Walle <bernhard@bwalle.de>
 
 	* Document the 'start' command in the manpage.
+	* Implement a 'reset' command.
 
 2010-05-16  Bernhard Walle <bernhard@bwalle.de>
 

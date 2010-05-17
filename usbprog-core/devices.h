@@ -165,6 +165,8 @@ class UsbprogUpdater {
             throw (IOError);
         void startDevice()
             throw (IOError);
+        void resetDevice()
+            throw (IOError);
         void updateClose()
             throw (IOError);
 
