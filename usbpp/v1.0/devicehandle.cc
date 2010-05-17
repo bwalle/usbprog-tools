@@ -130,7 +130,7 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
                                 int               length,
                                 int               *transferred,
                                 unsigned int      timeout)
-        throw (Error)
+    throw (Error)
 {
     int dummy;
     if (transferred == NULL)
