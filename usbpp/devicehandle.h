@@ -67,6 +67,9 @@ class DeviceHandle
                           unsigned int      timeout)
         throw (Error);
 
+        void resetDevice()
+        throw (Error);
+
     protected:
         DeviceHandle(void *nativeHandle);
 

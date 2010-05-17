@@ -142,6 +142,15 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
         throw Error(errorcodeToString(err));
 }
 
+/* -------------------------------------------------------------------------- */
+void DeviceHandle::resetDevice()
+    throw (Error)
+{
+    int err = libusb_reset_device(m_data->device_handle);
+    if (err != 0)
+        throw Error(errorcodeToString(err));
+}
+
 /* }}} */
 
 } // end namespace usb

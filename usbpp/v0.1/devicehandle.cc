@@ -135,6 +135,15 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
         *transferred = ret;
 }
 
+/* -------------------------------------------------------------------------- */
+void DeviceHandle::resetDevice()
+    throw (Error)
+{
+    int err = usb_reset(m_data->device_handle);
+    if (err != 0)
+        throw Error(usb_strerror());
+}
+
 /* }}} */
 
 } // end namespace usb
