@@ -29,17 +29,17 @@ namespace core {
 class Configuration
 {
     public:
-        void setDataDir(const std::string &dir);
         std::string getDataDir() const;
+        void setDataDir(const std::string &dir);
 
-        void setDebug(bool debug);
         bool getDebug() const;
+        void setDebug(bool debug);
 
-        void setOffline(bool offline);
         bool isOffline() const;
+        void setOffline(bool offline);
 
-        void setIndexUrl(const std::string &url);
         std::string getIndexUrl() const;
+        void setIndexUrl(const std::string &url);
 
         virtual void dumpConfig(std::ostream &stream);
 

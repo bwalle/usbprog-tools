@@ -32,21 +32,15 @@ Configuration::~Configuration()
 {}
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setDataDir(const std::string &dir)
-{
-    m_dataDir = dir;
-}
-
-/* -------------------------------------------------------------------------- */
 std::string Configuration::getDataDir() const
 {
     return m_dataDir;
 }
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setDebug(bool debug)
+void Configuration::setDataDir(const std::string &dir)
 {
-    m_debug = debug;
+    m_dataDir = dir;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -56,9 +50,9 @@ bool Configuration::getDebug() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setOffline(bool offline)
+void Configuration::setDebug(bool debug)
 {
-    m_offline = offline;
+    m_debug = debug;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -68,15 +62,21 @@ bool Configuration::isOffline() const
 }
 
 /* -------------------------------------------------------------------------- */
-void Configuration::setIndexUrl(const std::string &url)
+void Configuration::setOffline(bool offline)
 {
-    m_indexUrl = url;
+    m_offline = offline;
 }
 
 /* -------------------------------------------------------------------------- */
 std::string Configuration::getIndexUrl() const
 {
     return m_indexUrl;
+}
+
+/* -------------------------------------------------------------------------- */
+void Configuration::setIndexUrl(const std::string &url)
+{
+    m_indexUrl = url;
 }
 
 /* -------------------------------------------------------------------------- */
