@@ -40,11 +40,6 @@ namespace core {
 /* UpdateDevice {{{ */
 
 // -----------------------------------------------------------------------------
-uint16_t UpdateDevice::VENDOR_INVALID      = 0xffff;
-uint16_t UpdateDevice::PRODUCT_INVALID     = 0xffff;
-uint16_t UpdateDevice::BCDDEVICE_INVALID   = 0xffff;
-
-// -----------------------------------------------------------------------------
 UpdateDevice::UpdateDevice(const std::string &name)
     : m_name(name)
     , m_vendor(VENDOR_INVALID)

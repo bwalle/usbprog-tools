@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <memory>
 
 #include <md5/md5.h>
 #include <usbprog-core/digest.h>
@@ -29,6 +30,20 @@ namespace core {
 
 /* -------------------------------------------------------------------------- */
 #define BUFFERSIZE 2048
+
+/* }}} */
+/* Digest {{{ */
+
+/* -------------------------------------------------------------------------- */
+Digest *Digest::create(enum Algorithm algorithm)
+{
+    switch (algorithm) {
+        case DA_MD5:
+            return new MD5Digest();
+        default:
+            return NULL;
+    }
+}
 
 /* }}} */
 /* MD5Digest {{{ */
@@ -79,10 +94,9 @@ bool check_digest(const std::string &file, const std::string &reference,
 {
     char buffer[BUFFERSIZE];
 
-    if (da != Digest::DA_MD5)
+    std::auto_ptr<Digest> digest(Digest::create(da));
+    if (digest.get() == NULL)
         return false;
-
-    MD5Digest digest;
 
     std::ifstream fin(file.c_str(), std::ios::binary);
     if (!fin)
@@ -93,13 +107,13 @@ bool check_digest(const std::string &file, const std::string &reference,
         if (fin.bad())
             throw("Error while reading data from " + file);
 
-        digest.process(reinterpret_cast<unsigned char *>(buffer),
+        digest->process(reinterpret_cast<unsigned char *>(buffer),
                 fin.gcount());
     }
 
     fin.close();
 
-    std::string result = digest.end();
+    std::string result = digest->end();
     return result == reference;
 }
 

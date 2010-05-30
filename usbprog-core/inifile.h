@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file inifile.h
+ * @brief Simple ini parser
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup core
+ */
+
 #ifndef USBPROG_INIFILE_H
 #define USBPROG_INIFILE_H
 
@@ -27,15 +36,60 @@ namespace core {
 
 /* IniFile {{{ */
 
+/**
+ * @brief Simple configuration file parser
+ *
+ * Simple key-value configuration file parser without sections.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup core
+ */
 class IniFile {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new ini parser. The constructor doesn't check whether @p fileName exists.
+         * The user must call readFile() before using any getter methods like getValue(),
+         * getIntValue() or isKeyAvailable().
+         *
+         * @param[in] fileName the name of the file to parse
+         */
         IniFile(const std::string &fileName);
-        virtual ~IniFile() {}
 
+        /**
+         * @brief Reads the file whose file name has been set in the constructor.
+         *
+         * @exception IOError if reading the file failed.
+         */
         void readFile() throw (IOError);
 
+        /**
+         * @brief Returns the string value of @p key
+         *
+         * Don't forget to call readFile() before!
+         *
+         * @param[in] key the name of the key
+         * @return the value or the empty string (<tt>""</tt>) if the key doesn't exist
+         */
         std::string getValue(const std::string &key) const;
+
+        /**
+         * @brief Returns the integer value of @p key
+         *
+         * Don't forget to call readFile() before!
+         *
+         * @param[in] key the name of the key
+         * @return the integer value or 0 if the key doesn't exist
+         */
         int getIntValue(const std::string &key) const;
+
+        /**
+         * @brief Checks if @p key exists
+         *
+         * @param[in] key the name of the key
+         * @return @c true if the key exists, @c false otherwise.
+         */
         bool isKeyAvailable(const std::string &key) const;
 
     private:

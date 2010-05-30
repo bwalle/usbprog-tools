@@ -1,3 +1,7 @@
+2010-05-30  Bernhard Walle <bernhard@bwalle.de>
+
+	* Add doxygen documentation for usbprog-core.
+
 2010-05-17  Bernhard Walle <bernhard@bwalle.de>
 
 	* Document the 'start' command in the manpage.

@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file configuration.h
+ * @brief Contains the core configuration
+ *
+ * This file just contains a container class with getters and setters.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup core
+ */
+
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
@@ -26,21 +37,83 @@ namespace core {
 
 /* Configuration {{{ */
 
+/**
+ * @brief The application configuration
+ *
+ * Usually, this configuration is used as base class where the concrete implementation adds
+ * some properties.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup core
+ */
 class Configuration
 {
     public:
+        /**
+         * @brief Returns the data directory of USBprog
+         *
+         * @return the data directory
+         */
         std::string getDataDir() const;
+
+        /**
+         * @brief Sets the data directory of USBprog
+         *
+         * @param[in] dir the new data directory
+         */
         void setDataDir(const std::string &dir);
 
+        /**
+         * @brief Checks if debugging is enabled
+         *
+         * @return @c true if debugging is enabled, @c false otherwise
+         */
         bool getDebug() const;
+
+        /**
+         * @brief Enables/disables debugging
+         *
+         * @param[in] debug @c true if debugging messagtes should be enabled, @c false otherwise.
+         */
         void setDebug(bool debug);
 
+        /**
+         * @brief Checks if we're in offline mode
+         *
+         * @return @c true if offline mode is enabled, @c false otherwise.
+         */
         bool isOffline() const;
+
+        /**
+         * @brief Enables/disables offline mode
+         *
+         * @param[in] offline @c true if the offline mode should be enabled, @c false otherwise.
+         */
         void setOffline(bool offline);
 
+        /**
+         * @brief Returns the index URL
+         *
+         * This is the URL where the <tt>versions.xml</tt> file is located.
+         *
+         * @return the index URL
+         */
         std::string getIndexUrl() const;
+
+        /**
+         * @brief Sets the index URL.
+         *
+         * @param[in] url the new index URL
+         */
         void setIndexUrl(const std::string &url);
 
+        /**
+         * @brief Dumps the configuration to @p stream
+         *
+         * This function is for debugging.
+         *
+         * @param[in,out] stream the stream where the configuration should be written to.
+         */
         virtual void dumpConfig(std::ostream &stream);
 
     protected:

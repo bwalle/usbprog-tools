@@ -2,3 +2,4 @@ build
 tags
 *.marks
 *.swp
+doc/api/html

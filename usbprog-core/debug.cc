@@ -105,7 +105,7 @@ void Debug::msg(Debug::Level level, const char *msg, ...)
 }
 
 /* -------------------------------------------------------------------------- */
-void Debug::vmsg(Debug::Level level, const char *msg, va_list list)
+void Debug::vmsg(Debug::Level level, const char *msg, std::va_list list)
 {
     // if the global debug level is too small, then just do nothing
     if (level < m_debuglevel)
