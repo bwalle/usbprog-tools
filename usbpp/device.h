@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file device.h
+ * @brief USB device
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
+
 #ifndef USBPP_DEVICE_H
 #define USBPP_DEVICE_H
 
@@ -33,28 +42,77 @@ struct DevicePrivate;
 
 /* Device {{{ */
 
+/**
+ * @class Device usbpp/usbpp.h
+ * @brief A USB device
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
 class Device
 {
     friend class UsbManager;
 
     public:
+        /**
+         * @brief Destructor
+         */
         virtual ~Device();
 
+        /**
+         * @brief Returns the device number
+         *
+         * @return the device number (on the bus)
+         * @see getBusNumber()
+         */
         unsigned short getDeviceNumber() const;
+
+        /**
+         * @brief Returns the bus number
+         *
+         * @return the bus number
+         * @see getDeviceNumber()
+         */
         unsigned short getBusNumber() const;
 
+        /**
+         * @brief Returns the device descriptor
+         *
+         * @return the device descriptor of the device
+         * @exception Error on any error
+         */
         DeviceDescriptor getDescriptor() const
         throw (Error);
 
+        /**
+         * @brief Returns the config descriptor for a specific configuration
+         *
+         * @param[in] index the configuration number (see the DeviceDescriptor for the number of configurations)
+         * @return the config descriptor for configuration @p index
+         * @exception Error on any error
+         */
         ConfigDescriptor *getConfigDescriptor(int index)
         throw (Error);
 
+        /**
+         * @brief Opens the device and returns a DeviceHandle
+         *
+         * @return the DeviceHandle object that must be deleted by the caller
+         * @exception Error on any error
+         */
         DeviceHandle *open()
         throw (Error);
 
         // delete the DeviceHandle to close the device
 
     protected:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new device.
+         *
+         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+         */
         Device(void *nativeHandle);
 
     private:

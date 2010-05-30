@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file devicehandle.h
+ * @brief Contains the DeviceHandle
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
+
 #ifndef USBPP_DEVICE_HANDLE_H
 #define USBPP_DEVICE_HANDLE_H
 
@@ -28,7 +37,13 @@ struct DeviceHandlePrivate;
 /* }}} */
 
 /* Device {{{ */
-
+/**
+ * @class DeviceHandle usbpp/usbpp.h
+ * @brief Handle to an opened USB device
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
 class DeviceHandle
 {
     friend class Device;
@@ -36,21 +51,67 @@ class DeviceHandle
     public:
         virtual ~DeviceHandle();
 
+        /**
+         * @brief Returns the configuration
+         *
+         * @return the current configuration number
+         * @exception Error on any error
+         */
         int getConfiguration() const
         throw (Error);
 
+        /**
+         * @brief Sets the configuration
+         *
+         * @param[in] newConfiguration the number of the new configuration
+         * @exception Error on any error
+         */
         void setConfiguration(int newConfiguration)
         throw (Error);
 
+        /**
+         * @brief Claims an interface
+         *
+         * @param[in] interfaceNumber the interface to claim
+         * @exception Error on any error
+         */
         void claimInterface(int interfaceNumber)
         throw (Error);
 
+        /**
+         * @brief Releases an interface
+         *
+         * The class also keeps track of claimed interfaces and releases them in the destructor. So
+         * the class is exception-safe.
+         *
+         * @param[in] interfaceNumber the interface number to release
+         * @exception Error on any error
+         */
         void releaseInterface(int interfaceNumber)
         throw (Error);
 
+        /**
+         * @brief Sets the alternate setting
+         *
+         * @param[in] interfaceNumber the number of the interface
+         * @param[in] alternateSetting the alternate setting number
+         * @exception Error on any error
+         */
         void setInterfaceAltSetting(int interfaceNumber, int alternateSetting)
         throw (Error);
 
+        /**
+         * @brief Starts a control transfer
+         *
+         * @param[in] bmRequestType the request type
+         * @param[in] bRequest the request
+         * @param[in] wValue the value
+         * @param[in] wIndex the index
+         * @param[in] data the data that should be transferred (with length @p wLength)
+         * @param[in] wLength the length of the data
+         * @param[in] timeout the timeout
+         * @exception Error on any error
+         */
         void controlTransfer(unsigned char      bmRequestType,
                              unsigned char      bRequest,
                              unsigned short     wValue,
@@ -60,6 +121,16 @@ class DeviceHandle
                              unsigned int       timeout)
         throw (Error);
 
+        /**
+         * @brief Starts a bulk transfer
+         *
+         * @param[in] endpoint the endpoint number
+         * @param[in] data the data of length @p length
+         * @param[in] length the length of @p data
+         * @param[out] transferred the number of transferred bytes (can be NULL)
+         * @param[in] timeout the timeout
+         * @exception Error on any error
+         */
         void bulkTransfer(unsigned char     endpoint,
                           unsigned char     *data,
                           int               length,
@@ -67,10 +138,25 @@ class DeviceHandle
                           unsigned int      timeout)
         throw (Error);
 
+        /**
+         * @brief Resets the device
+         *
+         * After resetting, this DeviceHandle is invalid. The only valid operation is to delete
+         * the object and retrieve a new one.
+         *
+         * @exception Error on any error
+         */
         void resetDevice()
         throw (Error);
 
     protected:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new DeviceHandle object.
+         *
+         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+         */
         DeviceHandle(void *nativeHandle);
 
     private:

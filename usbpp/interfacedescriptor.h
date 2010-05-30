@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file interfacedescriptor.h
+ * @brief Contains the USB InterfaceDescriptor declaration
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
+
 #ifndef USBPP_INTERFACEDESCRIPTOR_H
 #define USBPP_INTERFACEDESCRIPTOR_H
 
@@ -29,17 +38,39 @@ struct InterfaceDescriptorPrivate;
 
 /* InterfaceDescriptor {{{ */
 
+/**
+ * @class InterfaceDescriptor usbpp/usbpp.h
+ * @brief USB interface descriptor
+ *
+ * C++ abstraction of the USB interface descriptor.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
 class InterfaceDescriptor
 {
     friend class ConfigDescriptor;
 
     public:
+        /**
+         * @brief Destructor
+         */
         virtual ~InterfaceDescriptor();
 
     public:
+        /**
+         * @brief Returns the USB interface number
+         *
+         * @return the interface number
+         */
         unsigned short getInterfaceNumber() const;
 
     protected:
+        /**
+         * @brief Constructor
+         *
+         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+         */
         InterfaceDescriptor(const void *nativeHandle);
 
     private:

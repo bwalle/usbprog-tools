@@ -17,14 +17,36 @@
 #ifndef USBPP_EXCEPTIONS_H
 #define USBPP_EXCEPTIONS_H
 
+/**
+ * @file exceptions.h
+ * @brief Exception classes used in usbpp.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
+
 #include <stdexcept>
 
 namespace usb {
 
 /* Error {{{ */
 
+/**
+ * @class Error usbpp/usbpp.h
+ * @brief USB error
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
 class Error : public std::runtime_error {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new instance of Error.
+         *
+         * @param[in] string the error string
+         */
         Error(const std::string& string)
             : std::runtime_error(string) {}
 };

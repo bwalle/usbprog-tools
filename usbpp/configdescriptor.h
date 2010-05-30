@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file configdescriptor.h
+ * @brief USB config descriptor
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
+
 #ifndef USBPP_CONFIGDESCRIPTOR_H
 #define USBPP_CONFIGDESCRIPTOR_H
 
@@ -31,24 +40,65 @@ class InterfaceDescriptor;
 
 /* ConfigDescriptor {{{ */
 
+/**
+ * @brief USB configuration descriptor
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbpp
+ */
 class ConfigDescriptor
 {
     friend class Device;
 
     public:
+        /**
+         * @brief Destructor
+         */
         virtual ~ConfigDescriptor();
 
+        /**
+         * @brief Returns the configuration value
+         *
+         * @return the USB configuration
+         */
         unsigned short getConfigurationValue() const;
 
+        /**
+         * @brief Returns the number of interfaces
+         *
+         * @return the number of interfaces
+         */
         size_t getNumberOfInterfaces() const;
+
+        /**
+         * @brief Returns the number of alternate settings for interface @p interfaceNumber
+         *
+         * @param[in] interfaceNumber the interface number for which the number of alternate settings should
+         *            be returned
+         * @return the number of alternate settings
+         * @exception Error on any error
+         */
         size_t getNumberOfAltsettings(unsigned int interfaceNumber) const
         throw (Error);
 
+        /**
+         * @brief Returns the interface descriptor for a specific interface and altsetting
+         *
+         * @param[in] interfaceNumber the interface number for which the interface descriptor should be returned
+         * @param[in] altsetting the alternate setting for which  the interface descriptor should be returned
+         * @return the InterfaceDescriptor. The pointer is still owned by the ConfigDescriptor.
+         * @exception Error on any error
+         */
         InterfaceDescriptor *getInterfaceDescriptor(unsigned int interfaceNumber,
                                                     unsigned int altsetting)
         throw (Error);
 
     protected:
+        /**
+         * @brief Constructor
+         *
+         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+         */
         ConfigDescriptor(void *nativeHandle);
 
     private:
