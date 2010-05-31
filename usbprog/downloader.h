@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file downloader.h
+ * @brief Download files from the web
+ *
+ * This file contains the Downloader class and DownloadError.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbprog
+ */
+
 #ifndef USBPROG_DOWNLOADER_H
 #define USBPROG_DOWNLOADER_H
 
@@ -29,8 +40,22 @@ namespace usbprog {
 
 /* DownloadError {{{ */
 
+/**
+ * @class DownloadError usbprog/downloader.h
+ * @brief Exception for download errors
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbprog
+ */
 class DownloadError : public std::runtime_error {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new DownloadError instance.
+         *
+         * @param[in] string the error as string
+         */
         DownloadError(const std::string& string)
             : std::runtime_error(string) {}
 };
@@ -38,23 +63,85 @@ class DownloadError : public std::runtime_error {
 /* }}} */
 /* Downloader {{{ */
 
+/**
+ * @class Downloader usbprog/downloader.h
+ * @brief HTTP downloader
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbprog
+ */
 class Downloader : public QObject
 {
     Q_OBJECT
 
     public:
-        Downloader(std::ostream &output) throw (DownloadError);
+        /**
+         * @brief Constructor
+         *
+         * Creates a new Downloader object.
+         *
+         * @param[in] output the output stream where the result will be stored.
+         * @exception DownloadError
+         */
+        Downloader(std::ostream &output);
+
+        /**
+         * @brief Destructor
+         */
         virtual ~Downloader() {}
 
     public:
-        void setUrl(const std::string &url) throw (DownloadError);
+        /**
+         * @brief Sets the URL of the file that should be downloaded.
+         *
+         * @param[in] url the URL
+         */
+        void setUrl(const std::string &url);
+
+        /**
+         * @brief Returns the URL of the file that should be downloaded.
+         *
+         * @return the URL
+         */
         std::string getUrl() const;
 
+        /**
+         * @brief Sets the progress notifier that gets notified during download()
+         *
+         * @param[in] notifier a pointer to the ProgressNotifier object. The object must be
+         *            valid during the whole life time of the Downloader object -- at least
+         *            until download() is running. It can be reset with @c NULL. It must be freed by
+         *            the caller.
+         */
         void setProgress(core::ProgressNotifier *notifier);
+
+        /**
+         * @brief Performs the download operation
+         *
+         * @exception DownloadError if downloading the file failed
+         */
         void download() throw (DownloadError);
 
     public slots:
+
+        /**
+         * @brief Progress function
+         *
+         * That's a slot that gets called by Qt during the download operation. It calls the progress
+         * notifier that has been registered with setProgress().
+         *
+         * @param[in] bytesReceived the number of bytes that have been received so far
+         * @param[in] bytesTotal the total size of the file
+         */
         void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+
+        /**
+         * @brief Finish function
+         *
+         * That's a slot that gets called by Qt when the downloading has been finished. Since we
+         * implement downloading with a "busy loop" (which is not really busy since it is blocking)
+         * in the download() function, that function also has to signal the end in the loop.
+         */
         void downloadFinished();
 
     private:

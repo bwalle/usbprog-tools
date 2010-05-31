@@ -1,6 +1,7 @@
 2010-05-31  Bernhard Walle <bernhard@bwalle.de>
 
 	* Remove unused OutputHandler interface.
+	* Add doxygen documentation for usbprog.
 
 2010-05-30  Bernhard Walle <bernhard@bwalle.de>
 

@@ -44,19 +44,48 @@ namespace usbprog {
 
 /* Class declaration: FirmwareXMLParser {{{ */
 
+/**
+ * @brief Parser for the firmware XML files
+ *
+ * This is a internal class, thus declared in an implementation file.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup usbprog
+ */
 class FirmwareXMLParser {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new FirmwareXMLParser object.
+         *
+         * @param[in] pool a pointer to the firmware pool (that must be valid during the whole
+         * lifetime of the FirmwareXMLParser object).
+         */
         FirmwareXMLParser(Firmwarepool *pool);
 
     public:
+        /**
+         * @brief Parses the whole firmware pool
+         *
+         * Adds the result to the firmware pool (that has been passed in the constructor) directly.
+         *
+         * @param[in] doc the XML document
+         * @param[in] pool the root XML element
+         * @exception core::ParseError if parsing failed
+         */
         void parsePool(const QDomDocument &doc, const QDomElement &pool)
         throw (core::ParseError);
 
     protected:
+        /**
+         * @brief Parses a firmware element
+         *
+         * @param[in] doc the XML document
+         * @param[in] firmware the firmware XML element
+         * @exception core::ParseError if parsing failed
+         */
         void parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
-        throw (core::ParseError);
-
-        Firmware *newFirmwareFromXml(const QDomDocument &doc, const QDomElement &cur)
         throw (core::ParseError);
 
     private:
@@ -604,7 +633,6 @@ void Firmwarepool::deleteCache()
 
 /* -------------------------------------------------------------------------- */
 bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
-    throw (core::IOError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)

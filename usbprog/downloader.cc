@@ -37,13 +37,13 @@ namespace usbprog {
 /* Members {{{ */
 
 /* -------------------------------------------------------------------------- */
-Downloader::Downloader(std::ostream &output) throw (DownloadError)
+Downloader::Downloader(std::ostream &output)
     : m_notifier(NULL)
     , m_output(output)
 {}
 
 /* -------------------------------------------------------------------------- */
-void Downloader::setUrl(const std::string &url) throw (DownloadError)
+void Downloader::setUrl(const std::string &url)
 {
     USBPROG_DEBUG_DBG("Setting URL to '%s'", url.c_str());
     m_url = url;
