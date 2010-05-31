@@ -30,21 +30,6 @@ namespace usbprog {
 #define AUTO_NOT_UPDATE_TIME    10
 
 /* }}} */
-/* interface for handling messages {{{ */
-
-enum MessageType {
-    MT_STATUS
-};
-
-class OutputHandler {
-    public:
-        virtual ~OutputHandler() {}
-
-    public:
-        virtual void message(MessageType type, const std::string &message) = 0;
-};
-
-/* }}} */
 
 } // end namespace usbprog
 
