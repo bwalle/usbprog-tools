@@ -16,6 +16,7 @@
  */
 #include <cstring>
 #include <cassert>
+#include <memory>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -37,6 +38,7 @@
 #include "guiconfiguration.h"
 #include "qtsleeper.h"
 #include "config.h"
+#include "pindialog.h"
 
 namespace usbprog {
 namespace gui {
@@ -169,6 +171,7 @@ void UsbprogMainWindow::connectSignalsAndSlots()
             SLOT(firmwareSelected(QListWidgetItem *)));
 
     connect(m_widgets.uploadButton, SIGNAL(clicked()), SLOT(uploadFirmware()));
+    connect(m_widgets.pinButton, SIGNAL(clicked()), SLOT(showPinDialog()));
 }
 
 // -----------------------------------------------------------------------------
@@ -592,6 +595,21 @@ void UsbprogMainWindow::cacheDownloadAll()
     } else {
         statusBar()->showMessage(tr("Downloaded all firmwares successfully."), DEFAULT_MESSAGE_TIMEOUT);
     }
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::showPinDialog()
+{
+    // get the selected firmware
+    QList<QListWidgetItem *> selectedItems = m_widgets.firmwareList->selectedItems();
+    if (selectedItems.size() != 1) {
+        statusBar()->showMessage(tr("No firmwares selected."), DEFAULT_MESSAGE_TIMEOUT);
+        return;
+    }
+    Firmware *fw = m_firmwarepool->getFirmware(selectedItems.front()->text().toStdString());
+
+    std::auto_ptr<PinDialog> pinDialog(new PinDialog(fw, this));
+    pinDialog->exec();
 }
 
 // -----------------------------------------------------------------------------

@@ -25,12 +25,14 @@ if (BUILD_GUI)
         usbprog_mainwindow.cc
         guiconfiguration.cc
         qtsleeper.cc
+        pindialog.cc
     )
     if (WIN32)
         set(usbprog_gui_SRCS ${usbprog_gui_SRCS} usbprog_gui.rc)
     endif (WIN32)
     set(usbprog_gui_MOCS
         usbprog_mainwindow.h
+        pindialog.h
     )
 
     # Compiled-in pixmaps

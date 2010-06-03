@@ -199,6 +199,11 @@ class UsbprogMainWindow : public QMainWindow
          */
         void cacheDownloadAll();
 
+        /**
+         * @brief Displays the pin assignment dialog.
+         */
+        void showPinDialog();
+
     private:
         core::DeviceManager *m_deviceManager;
         Firmwarepool *m_firmwarepool;

@@ -2,6 +2,7 @@
 
 	* Don't generate include graphs for the documentation.
 	* Add doxygen documentation for cli and gui.
+	* Implement the pin information dialog.
 
 2010-05-31  Bernhard Walle <bernhard@bwalle.de>
 
