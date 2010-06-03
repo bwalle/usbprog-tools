@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file qtsleeper.h
+ * @brief Sleeper implementation that keeps the Qt event loop busy
+ *
+ * This file contains the QtSleeper.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
+
 #ifndef QTSLEEPER_H
 #define QTSLEEPER_H
 
@@ -24,9 +35,17 @@ namespace gui {
 
 /* QtSleeper {{{ */
 
+/**
+ * @class QtSleeper gui/qtsleeper.h
+ * @brief Sleeper that keeps the event loop busy
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
 class QtSleeper : public core::Sleeper
 {
     public:
+        /// @copydoc core::Sleeper::sleep(int)
         virtual void sleep(int ms);
 };
 

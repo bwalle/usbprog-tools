@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file guiconfiguration.h
+ * @brief Configuration for the GUI program.
+ *
+ * This file contains the class GuiConfiguration.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
+
 #ifndef GUICONFIGURATION_H
 #define GUICONFIGURATION_H
 
@@ -28,11 +39,28 @@ namespace gui {
 
 /* GuiConfiguration {{{ */
 
+/**
+ * @class GuiConfiguration gui/guiconfiguration.h
+ * @brief Configuration properties for the GUI.
+ *
+ * This class extends the core::Configuration with CLI-specific configuration properties.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
 class GuiConfiguration : public core::Configuration
 {
     public:
+        /**
+         * @brief Singleton accessor
+         *
+         * @return a reference to the only CliConfiguration object
+         */
         static GuiConfiguration &config();
 
+        /**
+         * @copydoc core::Configuration::dumpConfig()
+         */
         virtual void dumpConfig(std::ostream &stream);
 
     protected:

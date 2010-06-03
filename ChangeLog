@@ -1,6 +1,7 @@
 2010-06-03  Bernhard Walle <bernhard@bwalle.de>
 
 	* Don't generate include graphs for the documentation.
+	* Add doxygen documentation for cli and gui.
 
 2010-05-31  Bernhard Walle <bernhard@bwalle.de>
 

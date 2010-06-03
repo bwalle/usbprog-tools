@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file usbprog_app.h
+ * @brief Main GUI application for USBprog
+ *
+ * This file contains UsbprogApplication.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
+
 #ifndef USBPROG_APP_H
 #define USBPROG_APP_H
 
@@ -28,21 +39,60 @@ namespace gui {
 
 /* UsbprogApplication {{{ */
 
+/**
+ * @class UsbprogApplication gui/usbprog_app.h
+ * @brief Main application for the GUI
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup gui
+ */
 class UsbprogApplication : public QApplication
 {
     public:
+        /// Name of the application.
         static const QString NAME;
+
+        /// Website URL for the application.
         static const QString USBPROG_WEBSITE;
 
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new instance of UsbprogApplication. The arguments of main() are just passed to
+         * that constructor.
+         *
+         * @param[in] argc the argument count (passed to QApplication)
+         * @param[in] argv the argument vector (passed to QApplication)
+         * @exception core::ApplicationError if it's not possible to determine the configuration
+         *            directory because of some system error
+         */
         UsbprogApplication(int &argc, char **argv)
         throw (core::ApplicationError);
 
     public:
-        bool parseCommandLine(int argc, char *argv[], int &rc);
+        /**
+         * @brief Parses the command line
+         *
+         * @param[in] argc the argument cound
+         * @param[in] argv the argument vector
+         * @param[out] rc the return value that should be used to exit the program if that function
+         *             returns @c false
+         * @return @c true on success, @c false otherwise.
+         */
+        bool parseCommandLine(int argc, char **argv, int &rc);
+
+        /**
+         * @brief Creates and set the main widget
+         */
         void createAndSetMainWidget();
 
     protected:
+        /**
+         * @brief Inits the configuration
+         *
+         * @exception core::ApplicationError if something failed
+         */
         void initConfig()
         throw (core::ApplicationError);
 
