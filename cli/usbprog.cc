@@ -84,7 +84,7 @@ void HashNotifier::finished()
 /* Usbprog {{{ */
 
 /* -------------------------------------------------------------------------- */
-Usbprog::Usbprog(int argc, char **argv)
+Usbprog::Usbprog(int argc, char *argv[])
     : m_coreApp(argc, argv)
     , m_firmwarepool(NULL)
     , m_devicemanager(NULL)

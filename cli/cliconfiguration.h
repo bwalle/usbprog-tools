@@ -14,6 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file cliconfiguration.h
+ * @brief Configuration for the CLI program
+ *
+ * This file contains the class CliConfiguration.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
+
 #ifndef CLICONFIGURATION_H
 #define CLICONFIGURATION_H
 
@@ -28,17 +39,59 @@ namespace cli {
 
 /* CliConfiguration {{{ */
 
+/**
+ * @class CliConfiguration cli/cliconfiguration.h
+ * @brief Configuration properties for the CLI
+ *
+ * This class extends the core::Configuration with CLI-specific configuration properties.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
 class CliConfiguration : public core::Configuration
 {
     public:
+        /**
+         * @brief Singleton accessor
+         *
+         * @return a reference to the only CliConfiguration object
+         */
         static CliConfiguration &config();
 
+        /**
+         * @brief Sets the history file
+         *
+         * @param[in] history the file name of the history file (which is managed by libreadline)
+         */
         void setHistoryFile(const std::string &history);
+
+        /**
+         * @brief Returns the history file
+         *
+         * @return the history file
+         */
         std::string getHistoryFile() const;
 
+        /**
+         * @brief Set whether we are using batch mode
+         *
+         * If the program is running in batch mode, it just executes the command passed by the
+         * command line. It doesn't accept interactive input.
+         *
+         * @param[in] batch @c true if the program is operating in batch mode, @c false otherwise.
+         */
         void setBatchMode(bool batch);
+
+        /**
+         * @brief Checks if the program is using batch mode
+         *
+         * @return @c true if the program is operating in batch mode, @c false otherwise.
+         */
         bool getBatchMode() const;
 
+        /**
+         * @copydoc core::Configuration::dumpConfig()
+         */
         virtual void dumpConfig(std::ostream &stream);
 
     protected:

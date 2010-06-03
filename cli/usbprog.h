@@ -14,6 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * @file cli/usbprog.h
+ * @brief The main application classes
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
+
 #ifndef USBPROG_H
 #define USBPROG_H
 
@@ -29,18 +38,40 @@ namespace cli {
 
 /* constants {{{ */
 
+/// Used when the width of the terminal cannot be retrieved using the ioctl() call.
 #define DEFAULT_TERMINAL_WIDTH  80
 
 /* }}} */
 /* HashNotifier {{{ */
 
+/**
+ * @class HashNotifier cli/usbprog.h
+ * @brief ProgressNotifier implementation that displays hashes on the console
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
 class HashNotifier : public core::ProgressNotifier {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new HashNotifier object with the given terminal width.
+         *
+         * @param[in] width the width of the terminal (i.e. the width of the progress bar).
+         */
         HashNotifier(int width);
+
+        /**
+         * @brief Destructor
+         */
         ~HashNotifier();
 
     public:
+        /// @copydoc core::ProgressNotifier::progressed()
         int progressed(double total, double now);
+
+        /// @copydoc core::ProgressNotifier::finished()
         void finished();
 
     private:
@@ -51,23 +82,77 @@ class HashNotifier : public core::ProgressNotifier {
 /* }}} */
 /* Usbprog {{{ */
 
+/**
+ * @class Usbprog cli/usbprog.h
+ * @brief Main class
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
 class Usbprog {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new Usbprog instance. The arguments are the command line parameters passed from
+         * main().
+         *
+         * @param[in] argc the argument count
+         * @param[in] argv the argument vector
+         */
         Usbprog(int argc, char *argv[]);
+
+        /**
+         * @brief Virtual Destructor
+         */
         virtual ~Usbprog();
 
     public:
+        /**
+         * @brief Reads the configuration file
+         *
+         * @exception core::ApplicationError if initializing of the configuration failed
+         */
         void initConfig()
-            throw (core::ApplicationError);
+        throw (core::ApplicationError);
+
+        /**
+         * @brief Parses the command line given in the constructor
+         *
+         * @exception core::ApplicationError if initializing of the configuration failed
+         */
         void parseCommandLine();
+
+        /**
+         * @brief Initializes the firmware pool
+         *
+         * @exception core::ApplicationError if initializing of the firmware pool failed
+         */
         void initFirmwarePool()
-            throw (core::ApplicationError);
+        throw (core::ApplicationError);
+
+        /**
+         * @brief Initializes the device manager
+         *
+         * @exception core::ApplicationError if initializing of the device manager failed
+         */
         void initDeviceManager()
-            throw (core::ApplicationError);
+        throw (core::ApplicationError);
+
+        /**
+         * @brief Executes the application
+         *
+         * This function blocks.
+         *
+         * @exception core::ApplicationError if something went wrong
+         */
         void exec()
-            throw (core::ApplicationError);
+        throw (core::ApplicationError);
 
     protected:
+        /**
+         * @brief Prints the help
+         */
         void printHelp();
 
     private:

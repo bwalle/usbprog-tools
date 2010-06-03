@@ -38,19 +38,49 @@ namespace cli {
 /* class definitions {{{ */
 
 #if HAVE_LIBREADLINE
+/**
+ * @class ReadlineLineReader cli/io.cc
+ * @brief Line reader implementation that uses libreadline
+ *
+ * This implementation is only available when compiled with readline support, i.e. when @c
+ * HAVE_LIBREADLINE is set to 1.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
 class ReadlineLineReader : public AbstractLineReader {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new ReadlineLineReader with prompt @p prompt.
+         *
+         * Normally, you don't use the constructor directly. Instead, use the factory function
+         * LineReader::defaultLineReader().
+         *
+         * @param[in] prompt the prompt for the line reader
+         */
         ReadlineLineReader(const std::string &prompt);
 
     public:
+        /// @copydoc LineReader::readLine()
         std::string readLine(const char *prompt = NULL);
+
+        /// @copydoc LineReader::readHistory()
         void readHistory(const std::string &file)
-            throw (core::IOError);
+        throw (core::IOError);
+
+        /// @copydoc LineReader::writeHistory()
         void writeHistory(const std::string &file)
-            throw (core::IOError);
+        throw (core::IOError);
+
+        /// @copydoc LineReader::haveHistory()
         bool haveHistory() const;
 
+        /// @copydoc LineReader::haveCompletion()
         bool haveCompletion() const;
+
+        /// @copydoc LineReader::setCompletor()
         void setCompletor(Completor *comp);
 
     private:
@@ -58,8 +88,28 @@ class ReadlineLineReader : public AbstractLineReader {
 };
 #endif
 
+/**
+ * @class SimpleLineReader cli/io.cc
+ * @brief Simple line reader implementation that only uses standard input/output
+ *
+ * This implementation is always available, even when compiled without readline support. It lacks
+ * completion, history and line editing features.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ * @ingroup cli
+ */
 class SimpleLineReader : public AbstractLineReader {
     public:
+        /**
+         * @brief Constructor
+         *
+         * Creates a new SimpleLineReader with prompt @p prompt.
+         *
+         * Normally, you don't use the constructor directly. Instead, use the factory function
+         * LineReader::defaultLineReader().
+         *
+         * @param[in] prompt the prompt for the line reader
+         */
         SimpleLineReader(const std::string &prompt);
 
     public:
