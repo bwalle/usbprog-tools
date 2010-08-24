@@ -186,6 +186,7 @@ if (NOT BUILD_ONLY_CORE)
     add_subdirectory(cli)
     add_subdirectory(gui)
 endif (NOT BUILD_ONLY_CORE)
+add_subdirectory(udev)
 
 #
 # Print status

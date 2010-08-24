@@ -1,3 +1,9 @@
+2010-08-24  Bernhard Walle <bernhard@bwalle.de>
+
+	* Detect the udev version and replace the 'SYSFS' keyword by the new
+	  'ATTR' keyword. The generated file is $BUILD/udev/usbprog.rules.in.
+	  Closes Debian #586569.
+
 2010-06-03  Bernhard Walle <bernhard@bwalle.de>
 
 	* Don't generate include graphs for the documentation.
