@@ -1,5 +1,5 @@
 /*
- * (c) 2007-2010, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2007-2011, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 #include <stdexcept>
 #include <vector>
 
-#include <boost/program_options.hpp>
-
 #include <usbprog-core/devices.h>
 #include <usbprog-core/util.h>
 #include <usbprog-core/debug.h>
 #include <usbprog/firmwarepool.h>
 #include <usbprog/usbprog.h>
+
+#include <libbw/optionparser.h>
 
 #include "usbprog.h"
 #include "cliconfiguration.h"
@@ -35,8 +35,6 @@
 
 namespace usbprog {
 namespace cli {
-
-namespace po = boost::program_options;
 
 /* HashNotifier {{{ */
 
@@ -122,62 +120,44 @@ void Usbprog::parseCommandLine()
 {
     CliConfiguration &conf = CliConfiguration::config();
 
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "Prints a help message")
-        ("version,v", "Prints version information")
-        ("datadir,d", po::value<std::string>(), std::string("Uses the specified data "
-            "directory instead of " + conf.getDataDir()).c_str())
-        ("offline,o", "Use only the local cache "
-            "and don't connect to the internet")
-        ("debug,D", "Enables debug output");
+    bw::OptionParser op;
+    op.addOption("debug",   'D', bw::OT_FLAG,
+                 "Enables debugging output");
+    op.addOption("help",    'h', bw::OT_FLAG,
+                 "Prints a help message");
+    op.addOption("datadir", 'd', bw::OT_STRING,
+                 "Uses the specified data " "directory instead of " + conf.getDataDir());
+    op.addOption("offline", 'o', bw::OT_FLAG,
+                 "Use only the local cache and don't connect to the internet");
+    op.addOption("debug",   'D', bw::OT_FLAG,
+                 "Enables debug output");
 
-    po::options_description hidden("Hidden options");
-    hidden.add_options()
-        ("commands", po::value< std::vector<std::string> >(), "Commands");
+    if (!op.parse(m_argc, m_argv))
+        throw core::ApplicationError("Parsing command line failed.");
 
-    po::options_description commandline_options;
-    commandline_options.add(desc).add(hidden);
-
-    po::positional_options_description p;
-    p.add("commands", -1);
-
-    po::variables_map vm;
-    try {
-        po::store(po::command_line_parser(m_argc, m_argv).
-                  options(commandline_options).positional(p).run(), vm);
-    } catch (const po::error &err) {
-        throw core::ApplicationError("Parsing command line failed: " + std::string(err.what()));
-    }
-    po::notify(vm);
-
-    if (vm.count("debug")) {
+    if (op.getValue("debug").getFlag()) {
         conf.setDebug(true);
         core::Debug::debug()->setLevel(core::Debug::DL_TRACE);
     }
 
-    if (vm.count("help")) {
-        std::cout << desc << std::endl;
-        std::exit(EXIT_SUCCESS);
-    }
-
-    if (vm.count("version")) {
+    if (op.getValue("version").getFlag()) {
         std::cerr << "usbprog " << USBPROG_VERSION_STRING << std::endl;
         std::exit(EXIT_SUCCESS);
     }
 
-    if (vm.count("datadir"))
-        conf.setDataDir(vm["datadir"].as<std::string>());
-    if (vm.count("offline"))
+    if (op.getValue("datadir").getType() != bw::OT_INVALID)
+        conf.setDataDir(op.getValue("datadir").getString());
+    if (op.getValue("offline").getFlag())
         conf.setOffline(true);
 
     if (conf.getDebug())
         conf.dumpConfig(std::cerr);
 
     // batch mode?
-    conf.setBatchMode(vm.count("commands") != 0);
+    std::vector<std::string> args = op.getArgs();
+    conf.setBatchMode(args.size() > 0);
     if (conf.getBatchMode())
-        m_args = vm["commands"].as< std::vector<std::string> >();
+        m_args = args;
 
     if (conf.isOffline() && !conf.getBatchMode())
         std::cout << "WARNING: You're using usbprog in offline mode!" << std::endl;

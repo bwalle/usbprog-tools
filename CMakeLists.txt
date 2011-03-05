@@ -102,21 +102,11 @@ if (NOT BUILD_ONLY_CORE)
         message(FATAL_ERROR "Qt4 not found.")
     endif (NOT QT4_FOUND)
 
-    # Boost
-    set(Boost_ADDITIONAL_VERSIONS "1.42")
-    include(FindBoost)
-    if (MSVC)
-        set(Boost_USE_STATIC_LIBS   ON)
-    else (MSVC)
-        set(Boost_USE_STATIC_LIBS   OFF)
-    endif (MSVC)
-    set(Boost_USE_MULTITHREADED ON)
-    find_package( Boost COMPONENTS program_options )
-    if (NOT Boost_FOUND)
-        message(FATAL_ERROR "Boost not found.")
-    endif (NOT Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    set(EXTRA_LIBS ${EXTRA_LIBS} ${Boost_LIBRARIES})
+    # libbw
+
+    add_subdirectory(libbw)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbw)
+    set (EXTRA_LIBS ${EXTRA_LIBS} bw)
 
     # Readline
     find_path(READLINE_INCLUDE_DIR readline/readline.h

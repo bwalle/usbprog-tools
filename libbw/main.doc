@@ -1,0 +1,103 @@
+/* {{{
+ * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the <organization> nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
+ */
+
+/**
+
+\mainpage LibBW
+
+\section intro Introduction
+
+Why yet another utility library? Well, I have several C++ projects. All that projects
+are rather small. However, some classes are the same, for example
+
+ - log messages,
+ - parsing the command line,
+ - string utility functions,
+ - talking to the serial port
+
+and so on. Sure, there are huge libraries like Boost, Qt, etc. However, even
+they don't contain everything needed, and sometimes I don't want to depend on them.
+So I copied some code from one project to another.
+
+With that library (which is only for my personal use in my own applications
+that I share with the community, it's not designed to be used by everyone's
+project), I use another approach:
+
+The library is maintained in an extra Mercurial repository. If I add some function,
+I do that in this repository and I increase the version number. However, the code
+also lives in the repository of the projects. I don't use features like
+<tt>svn:externals</tt> because only Subversion offers that feature, and because
+even then, it makes things complicated for people. However: I just execute a script called
+<tt>update_target.sh</tt> and commit it then in the target project with a single commit.
+
+That's not an approach for thousands of programs with huge functionality in the
+library, but it works for five project. At least it's better than code
+duplication and it adds absolutely no further pain for people using my project:
+The source is in the repository of the target projects, it's in the tarball.
+It's just shared!
+
+\section usage Using LibBW in a Project
+
+Assume you have a project structure like following:
+
+@verbatim
+.
+|-- README
+|-- doc
+|-- ext
+|   `-- libbw
+`-- src
+@endverbatim
+
+then you can copy <i>LibBW</i> to the project directory by using a simple
+
+@verbatim
+ % ./update_target.sh /path/to/project/ext/libbw
+@endverbatim
+
+\subsection step1 CMake-based projects
+
+To finally use the library in the application, you need to add following code
+into the to-level <i>CMakeLists.txt</i> build file:
+
+@code
+# libbw
+
+ADD_SUBDIRECTORY(ext/libbw)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/ext)
+SET (EXTRA_LIBS ${EXTRA_LIBS} bw)
+@endcode
+
+Then you can include the header files for example with
+
+@code
+#include <libbw/error.h>
+@endcode
+
+*/
+
+// vim: set ft=doxygen:

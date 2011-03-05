@@ -1,5 +1,5 @@
 /*
- * (c) 2010, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,10 @@
  */
 #include <cstdlib>
 
-#include <boost/program_options.hpp>
-
 #include <usbprog-core/debug.h>
 #include <usbprog-core/util.h>
+
+#include <libbw/optionparser.h>
 
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
@@ -27,8 +27,6 @@
 
 namespace usbprog {
 namespace gui {
-
-namespace po = boost::program_options;
 
 /* UsbprogApplication {{{ */
 
@@ -64,56 +62,34 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
 {
     GuiConfiguration &conf = GuiConfiguration::config();
 
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h",      "Prints a help message")
-        ("version,v",   "Prints version information")
-        ("datadir,d",   po::value<std::string>(),
-                        ("Uses the specified data directory instead of " + conf.getDataDir()).c_str())
-        ("offline,o",   "Use only the local cache and don't connect to the internet")
-        ("debug,D",     "Enables debug output");
+    bw::OptionParser op;
+    op.addOption("debug",   'D', bw::OT_FLAG,
+                 "Enables debugging output");
+    op.addOption("help",    'h', bw::OT_FLAG,
+                 "Prints a help message");
+    op.addOption("datadir", 'd', bw::OT_STRING,
+                 "Uses the specified data " "directory instead of " + conf.getDataDir());
+    op.addOption("offline", 'o', bw::OT_FLAG,
+                 "Use only the local cache and don't connect to the internet");
+    op.addOption("debug",   'D', bw::OT_FLAG,
+                 "Enables debug output");
 
-    po::options_description hidden("Hidden options");
-    hidden.add_options()
-        ("commands", po::value< std::vector<std::string> >(), "Commands");
+    if (!op.parse(argc, argv))
+        throw core::ApplicationError("Parsing command line failed.");
 
-    po::options_description commandline_options;
-    commandline_options.add(desc).add(hidden);
-
-    po::positional_options_description p;
-    p.add("commands", -1);
-
-    po::variables_map vm;
-    try {
-        po::store(po::command_line_parser(argc, argv).
-                  options(commandline_options).positional(p).run(), vm);
-    } catch (const po::error &err) {
-        std::cerr << "Parsing command line failed: " << err.what() << std::endl;
-        exitCode = EXIT_FAILURE;
-        return false;
-    }
-    po::notify(vm);
-
-    if (vm.count("debug")) {
+    if (op.getValue("debug").getFlag()) {
         conf.setDebug(true);
         core::Debug::debug()->setLevel(core::Debug::DL_TRACE);
     }
 
-    if (vm.count("help")) {
-        std::cout << desc << std::endl;
-        exitCode = EXIT_SUCCESS;
-        return false;
-    }
-
-    if (vm.count("version")) {
+    if (op.getValue("version").getFlag()) {
         std::cerr << "usbprog " << USBPROG_VERSION_STRING << std::endl;
-        exitCode = EXIT_SUCCESS;
-        return false;
+        std::exit(EXIT_SUCCESS);
     }
 
-    if (vm.count("datadir"))
-        conf.setDataDir(vm["datadir"].as<std::string>());
-    if (vm.count("offline"))
+    if (op.getValue("datadir").getType() != bw::OT_INVALID)
+        conf.setDataDir(op.getValue("datadir").getString());
+    if (op.getValue("offline").getFlag())
         conf.setOffline(true);
 
     if (conf.getDebug())
