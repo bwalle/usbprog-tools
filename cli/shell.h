@@ -35,7 +35,8 @@
 #include <stdexcept>
 #include <usbprog/usbprog.h>
 
-#include "io.h"
+#include <libbw/completion.h>
+
 #include "usbprog.h"
 
 namespace usbprog {
@@ -400,7 +401,7 @@ class AbstractCommand : public Command {
  * @author Bernhard Walle <bernhard@bwalle.de>
  * @ingroup cli
  */
-class Shell : public Completor {
+class Shell : public bw::Completor {
     friend class HelpCommand;
     friend class HelpCmdCommand;
 
@@ -449,14 +450,14 @@ class Shell : public Completor {
         throw (core::ApplicationError);
 
         /// @copydoc Completor::complete()
-        core::StringVector complete(const std::string     &text,
+        std::vector<std::string> complete(const std::string     &text,
                                     const std::string     &full_text,
-                                    unsigned int          start_idx,
-                                    unsigned int          end_idx);
+                                    size_t                start_idx,
+                                    ssize_t               end_idx);
 
     private:
         StringCommandMap m_commands;
-        LineReader *m_lineReader;
+        bw::LineReader *m_lineReader;
 };
 
 /* }}} */

@@ -21,11 +21,12 @@
 #include <vector>
 #include <algorithm>
 
+#include <libbw/completion.h>
+
 #include <usbprog-core/stringutil.h>
 #include <usbprog/usbprog.h>
 
 #include "shell.h"
-#include "io.h"
 #include "cliconfiguration.h"
 
 namespace usbprog {
@@ -207,7 +208,7 @@ CommandArg *CommandArg::fromString(const std::string &str, CommandArg::Type type
 /* -------------------------------------------------------------------------- */
 Shell::Shell(const std::string &prompt)
 {
-    m_lineReader = LineReader::defaultLineReader(prompt);
+    m_lineReader = bw::LineReader::defaultLineReader(prompt);
     try {
         m_lineReader->readHistory(CliConfiguration::config().getHistoryFile());
     } catch (const core::IOError &)
@@ -262,10 +263,10 @@ void Shell::addCommand(Command *cmd)
 }
 
 /* -------------------------------------------------------------------------- */
-core::StringVector Shell::complete(const std::string      &text,
-                                   const std::string      &full_text,
-                                   unsigned int           start_idx,
-                                   unsigned int           end_idx)
+std::vector<std::string> Shell::complete(const std::string     &text,
+                                         const std::string     &full_text,
+                                         size_t                start_idx,
+                                         ssize_t               end_idx)
 {
     //
     // command completion

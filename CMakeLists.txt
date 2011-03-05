@@ -108,31 +108,6 @@ if (NOT BUILD_ONLY_CORE)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbw)
     set (EXTRA_LIBS ${EXTRA_LIBS} bw)
 
-    # Readline
-    find_path(READLINE_INCLUDE_DIR readline/readline.h
-        /usr/local/include /usr/include)
-    mark_as_advanced(READLINE_INCLUDE_DIR)
-
-    find_library(READLINE_LIBRARY readline
-        /usr/lib64 /usr/lib)
-    mark_as_advanced(READLINE_LIBRARY)
-
-    if (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-        include_directories( ${READLINE_INCLUDE_DIR} )
-        set (EXTRA_LIBS ${EXTRA_LIBS} ${READLINE_LIBRARY})
-        set (CONFIG_HAVE_LIBREADLINE 1)
-        set (BUILD_READLINE TRUE)
-    else (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-        set (CONFIG_HAVE_LIBREADLINE 0)
-        set (BUILD_READLINE FALSE)
-    endif (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-
-    if (BUILD_READLINE)
-        if (NOT CURSES_LIBRARIES)
-            find_package(Curses REQUIRED)
-        endif (NOT CURSES_LIBRARIES)
-    endif (BUILD_READLINE)
-
     set (EXTRA_LIBS ${EXTRA_LIBS} ${CURSES_LIBRARIES})
     include_directories(${CURSES_INCLUDE_DIR})
 

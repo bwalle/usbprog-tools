@@ -23,7 +23,6 @@
 #include <usbprog/usbprog.h>
 
 #include "usbprog.h"
-#include "io.h"
 
 int main(int argc, char *argv[])
 {

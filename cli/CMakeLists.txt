@@ -19,7 +19,6 @@
 
 set(usbprog_SRC
     commands.cc
-    io.cc
     main.cc
     shell.cc
     usbprog.cc
