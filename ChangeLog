@@ -2,6 +2,7 @@
 
 	* Drop boost dependency, add libbw.
 	* Use Ctrl-q as quit shortcut when Qt has no default quit shotcut.
+	* Don't try to find the udev module on Mac OS.
 
 2010-08-24  Bernhard Walle <bernhard@bwalle.de>
 
