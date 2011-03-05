@@ -34,7 +34,7 @@ find_path(READLINE_INCLUDE_DIR readline/readline.h
 mark_as_advanced(READLINE_INCLUDE_DIR)
 
 find_library(READLINE_LIBRARY readline
-    /opt/local/lib /usr/lib64 /usr/lib)
+    HINTS /opt/local/lib /usr/lib64 /usr/lib)
 mark_as_advanced(READLINE_LIBRARY)
 
 if (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
@@ -80,6 +80,8 @@ if (CMAKE_HOST_UNIX)
         ${LIBBW_SRCS}
         serialfile.h
         serialfile_posix.cc
+        os.h
+        os_posix.cc
     )
 endif (CMAKE_HOST_UNIX)
 
