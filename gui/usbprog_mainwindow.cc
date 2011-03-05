@@ -1,5 +1,5 @@
 /*
- * (c) 2010, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -533,7 +533,7 @@ void UsbprogMainWindow::showAbout()
     USBPROG_DEBUG_DBG("Open about dialog");
 
     QMessageBox::information(this, UsbprogApplication::NAME,
-                             tr("USBprog %1\n\n(c) 2007-2010 Bernhard Walle <bernhard@bwalle.de>")
+                             tr("USBprog %1\n\n(c) 2007-2011 Bernhard Walle <bernhard@bwalle.de>")
                              .arg(USBPROG_VERSION_STRING));
 }
 
