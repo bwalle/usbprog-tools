@@ -161,7 +161,7 @@ class Debug {
         /**
          * @brief Singleton getter
          *
-         * This function returns the only instance of Debug.
+         * @return the only instance of Debug.
          */
         static Debug *debug();
 
