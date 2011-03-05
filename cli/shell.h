@@ -449,7 +449,18 @@ class Shell : public bw::Completor {
         bool run(core::StringVector input, bool multiple = true)
         throw (core::ApplicationError);
 
-        /// @copydoc Completor::complete()
+        /**
+         * @brief Complete function
+         *
+         * This function must supply the completions that are available for
+         * the specified text..
+         *
+         * @param[in] text the currently entered text
+         * @param[in] full_text the full line
+         * @param[in] start_idx the start index
+         * @param[in] end_idx the end index
+         * @return the completed values
+         */
         std::vector<std::string> complete(const std::string     &text,
                                     const std::string     &full_text,
                                     size_t                start_idx,
