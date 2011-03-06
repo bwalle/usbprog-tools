@@ -15,7 +15,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define HAVE_LIBREADLINE            @CONFIG_HAVE_LIBREADLINE@
 #define HAVE_STRPTIME               @CONFIG_HAVE_STRPTIME@
 #define DOCDIR                      "@DOCDIR@"
 #define USBPROG_VERSION_STRING      "@PACKAGE_VERSION@"

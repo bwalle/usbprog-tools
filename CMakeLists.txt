@@ -159,7 +159,6 @@ add_subdirectory(udev)
 
 message(STATUS "Build only the core parts   : ${BUILD_GUI}")
 message(STATUS "Building with GUI           : ${BUILD_GUI}")
-message(STATUS "Building with readline      : ${BUILD_READLINE}")
 message(STATUS "Building manpages           : ${BUILD_MANPAGE}")
 
 # vim: set sw=4 ts=4 et:
