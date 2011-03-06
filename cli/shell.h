@@ -464,7 +464,7 @@ class Shell : public bw::Completor {
         std::vector<std::string> complete(const std::string     &text,
                                     const std::string     &full_text,
                                     size_t                start_idx,
-                                    ssize_t               end_idx);
+                                    int                   end_idx);
 
     private:
         StringCommandMap m_commands;

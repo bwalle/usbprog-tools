@@ -266,7 +266,7 @@ void Shell::addCommand(Command *cmd)
 std::vector<std::string> Shell::complete(const std::string     &text,
                                          const std::string     &full_text,
                                          size_t                start_idx,
-                                         ssize_t               end_idx)
+                                         int                   end_idx)
 {
     //
     // command completion
