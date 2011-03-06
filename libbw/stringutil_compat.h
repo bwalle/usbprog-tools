@@ -24,7 +24,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#ifndef STRINGUTIL_COMPAT_H
+#define STRINGUTIL_COMPAT_H
 
-#define HAVE_LIBREADLINE        @HAVE_LIBREADLINE@
-#define HAVE_STRCASECMP         @HAVE_STRCASECMP@
+/**
+ * @file stringutil_compat.h
+ * @brief Compatibility functions for operating systems that lack some functions
+ *
+ * This file currently contains compatibility functions for Win32.
+ *
+ * @author Bernhard Walle <bernhard@bwalle.de>
+ */
 
+#include <string.h>
+
+#include "bwconfig.h"
+
+namespace bw {
+
+#if !HAVE_STRCASECMP
+
+/**
+ * @brief Compares two strings case-insensitive
+ *
+ * The strcasecmp() function compares the two strings s1 and s2, ignoring
+ * the case of the characters. It returns an integer less than, equal to,
+ * or greater than zero if s1 is found, respectively, to be less than, to
+ * match, or be greater than s2.
+ *
+ * @param[in] s1 the first string to compare
+ * @param[in] s2 the second string to compare
+ * @return see above
+ */
+int strcasecmp(const char *s1, const char *s2)
+{
+     return _stricmp(s1, s2);
+}
+
+#endif /* HAVE_STRCASECMP */
+
+} // end namespace bw
+
+#endif /* STRINGUTIL_H */

@@ -78,7 +78,7 @@ class Completor {
         virtual std::vector<std::string> complete(const std::string &text,
                                                   const std::string &full_text,
                                                   size_t            start_idx,
-                                                  ssize_t           end_idx) = 0;
+                                                  int               end_idx) = 0;
 };
 
 /* }}} */

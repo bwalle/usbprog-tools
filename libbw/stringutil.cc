@@ -30,6 +30,8 @@
 #include <cstring>
 #include <string.h>
 
+#include "stringutil_compat.h"
+
 namespace bw {
 
 /* ---------------------------------------------------------------------------------------------- */

@@ -41,14 +41,14 @@ if (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
     include_directories( ${READLINE_INCLUDE_DIR} )
     set (EXTRA_LIBS ${EXTRA_LIBS} ${READLINE_LIBRARY})
     set (HAVE_LIBREADLINE 1)
+
+    if (NOT CURSES_LIBRARIES)
+        find_package(Curses REQUIRED)
+    endif (NOT CURSES_LIBRARIES)
+
+    set (EXTRA_LIBS ${EXTRA_LIBS} ${CURSES_LIBRARIES})
+    include_directories( ${CURSES_INCLUDE_DIR} )
 endif (READLINE_LIBRARY AND READLINE_INCLUDE_DIR)
-
-if (NOT CURSES_LIBRARIES)
-    find_package(Curses REQUIRED)
-endif (NOT CURSES_LIBRARIES)
-
-set (EXTRA_LIBS ${EXTRA_LIBS} ${CURSES_LIBRARIES})
-include_directories( ${CURSES_INCLUDE_DIR} )
 
 # do we have a proper getopt_long() implementation
 
@@ -59,6 +59,13 @@ set(CMAKE_REQUIRED_INCLUDES "getopt.h")
 check_function_exists("getopt_long" HAVE_GETOPT_LONG)
 unset(CMAKE_REQUIRED_DEFINITIONS)
 unset(CMAKE_REQUIRED_INCLUDES)
+
+# check for strcasecmp() -> WIN32
+SET(HAVE_STRCASECMP 0)
+check_function_exists("strcasecmp" HAVE_STRCASECMP_RET)
+if (HAVE_STRCASECMP_RET)
+    SET(HAVE_STRCASECMP 1)
+endif (HAVE_STRCASECMP_RET)
 
 # for bwconfig.h
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
