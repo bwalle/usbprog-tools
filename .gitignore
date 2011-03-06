@@ -3,3 +3,4 @@ tags
 *.marks
 *.swp
 doc/api/html
+*.un~
