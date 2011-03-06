@@ -61,11 +61,19 @@ unset(CMAKE_REQUIRED_DEFINITIONS)
 unset(CMAKE_REQUIRED_INCLUDES)
 
 # check for strcasecmp() -> WIN32
-SET(HAVE_STRCASECMP 0)
+set(HAVE_STRCASECMP 0)
 check_function_exists("strcasecmp" HAVE_STRCASECMP_RET)
 if (HAVE_STRCASECMP_RET)
     SET(HAVE_STRCASECMP 1)
 endif (HAVE_STRCASECMP_RET)
+
+# check for unistd.h
+include(CheckIncludeFile)
+set(HAVE_UNISTD_H 0)
+check_include_file("unistd.h" HAVE_UNISTD_H_RET)
+if (HAVE_UNISTD_H_RET)
+    set(HAVE_UNISTD_H 1)
+endif (HAVE_UNISTD_H_RET)
 
 # for bwconfig.h
 include_directories( ${CMAKE_CURRENT_BINARY_DIR} )

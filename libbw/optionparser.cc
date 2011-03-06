@@ -28,9 +28,13 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "bwconfig.h"
+
 #define _GNU_SOURCE 1
 #include <getopt.h>
-#include <unistd.h>
+#if HAVE_UNISTD_H
+#  include <unistd.h>
+#endif
 #include <string.h>
 
 #include "optionparser.h"
