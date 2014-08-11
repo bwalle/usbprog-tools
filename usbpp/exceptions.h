@@ -26,6 +26,7 @@
  */
 
 #include <stdexcept>
+#include <string>
 
 namespace usb {
 
