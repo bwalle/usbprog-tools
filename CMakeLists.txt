@@ -25,12 +25,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 #
 
 cmake_minimum_required(VERSION 2.6)
+cmake_policy(SET CMP0028 NEW)
 set (PACKAGE_STRING "usbprog")
 set (PACKAGE_VERSION "0.3.0")
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_BINARY_DIR})
 
 option(BUILD_GUI "Build the Qt GUI" ON)
+option(USE_QT5 "Use Qt5 instead of Qt4" ON)
 option(BUILD_ONLY_CORE "Builds only the usbprog-core lib and a simple CLI program (has no library dependencies apart from libusb" OFF)
 option(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look
 for legacy libusb 0.1" OFF)
@@ -87,20 +89,33 @@ set (EXTRA_LIBS ${EXTRA_LIBS} ${LIBUSB_LIBRARIES})
 
 if (NOT BUILD_ONLY_CORE)
 
-    # Qt4
-    include(FindQt4)
-    if (BUILD_GUI)
-        set(Qt_Components QtCore QtGui QtXml QtNetwork QtMain)
-    else (BUILD_GUI)
-        set(Qt_Components QtCore QtXml QtNetwork QtMain)
-    endif (BUILD_GUI)
+    if (USE_QT5)
 
-    find_package(Qt4 4.4.3 COMPONENTS ${Qt_Components} REQUIRED)
-    include(${QT_USE_FILE})
-    set(EXTRA_LIBS ${EXTRA_LIBS} ${QT_LIBRARIES})
-    if (NOT QT4_FOUND)
-        message(FATAL_ERROR "Qt4 not found.")
-    endif (NOT QT4_FOUND)
+        if (BUILD_GUI)
+            find_package(Qt5Widgets)
+            set(EXTRA_LIBS ${EXTRA_LIBS} Qt5::Widgets)
+        else (BUILD_GUI)
+            find_package(Qt5Core)
+        endif (BUILD_GUI)
+
+    else (USE_QT5)
+
+        # Qt4
+        include(FindQt4)
+        if (BUILD_GUI)
+            set(Qt_Components QtCore QtGui QtXml QtNetwork QtMain)
+        else (BUILD_GUI)
+            set(Qt_Components QtCore QtXml QtNetwork QtMain)
+        endif (BUILD_GUI)
+
+        find_package(Qt4 4.4.3 COMPONENTS ${Qt_Components} REQUIRED)
+        include(${QT_USE_FILE})
+        set(EXTRA_LIBS ${EXTRA_LIBS} ${QT_LIBRARIES})
+        if (NOT QT4_FOUND)
+            message(FATAL_ERROR "Qt4 not found. You can set the USE_QT5 option to try to find Qt5")
+        endif (NOT QT4_FOUND)
+
+    endif (USE_QT5)
 
     # libbw
 

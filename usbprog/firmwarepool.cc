@@ -145,9 +145,9 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
             fw->setDate(core::DateTime(childElement.attribute("date").toStdString(), core::DTF_ISO_DATE));
             fw->setMD5Sum(childElement.attribute("md5sum").toStdString());
         } else if (childElement.tagName() == "description") {
-            fw->updateDevice().setVendor(core::parse_long(childElement.attribute("vendorid").toAscii()));
-            fw->updateDevice().setProduct(core::parse_long(childElement.attribute("productid").toAscii()));
-            fw->updateDevice().setBcdDevice(core::parse_long(childElement.attribute("bcddevice").toAscii()));
+            fw->updateDevice().setVendor(core::parse_long(childElement.attribute("vendorid").toLocal8Bit()));
+            fw->updateDevice().setProduct(core::parse_long(childElement.attribute("productid").toLocal8Bit()));
+            fw->updateDevice().setBcdDevice(core::parse_long(childElement.attribute("bcddevice").toLocal8Bit()));
             fw->setDescription(core::strip(childElement.text().toStdString()));
         } else if (childElement.tagName() == "pins") {
             for (QDomNode subnode = childElement.firstChild();

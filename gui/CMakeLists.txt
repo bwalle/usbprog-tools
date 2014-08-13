@@ -39,10 +39,18 @@ if (BUILD_GUI)
     set(QtApp_RCCS usbprog.qrc)
 
     # generate rules for building source files from the resources
-    qt4_add_resources(usbprog_gui_RCC_SRCS usbprog.qrc)
+    if (USE_QT5)
+        qt5_add_resources(usbprog_gui_RCC_SRCS usbprog.qrc)
+    else (USE_QT5)
+        qt4_add_resources(usbprog_gui_RCC_SRCS usbprog.qrc)
+    endif (USE_QT5)
 
     # generate rules for building source files that moc generates
-    qt4_wrap_cpp(usbprog_gui_MOC_SRCS ${usbprog_gui_MOCS})
+    if (USE_QT5)
+        qt5_wrap_cpp(usbprog_gui_MOC_SRCS ${usbprog_gui_MOCS})
+    else (USE_QT5)
+        qt4_wrap_cpp(usbprog_gui_MOC_SRCS ${usbprog_gui_MOCS})
+    endif (USE_QT5)
 
     # build sources, moc'd sources, and rcc'd sources
     add_executable(usbprog-gui WIN32
@@ -50,6 +58,9 @@ if (BUILD_GUI)
     )
 
     target_link_libraries(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
+    if (USE_QT5)
+        qt5_use_modules(usbprog-gui Xml Network)
+    endif (USE_QT5)
 
     install(
         TARGETS         usbprog-gui

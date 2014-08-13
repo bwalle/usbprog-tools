@@ -34,8 +34,16 @@ else ()
     set(libusbprog_SRCS ${libusbprog_SRCS} sysinfo_posix.cpp)
 endif ()
 
-qt4_wrap_cpp(libusbprog_MOC_SRCS ${libusbprog_MOCS})
+if (USE_QT5)
+    qt5_wrap_cpp(libusbprog_MOC_SRCS ${libusbprog_MOCS})
+else (USE_QT5)
+    qt4_wrap_cpp(libusbprog_MOC_SRCS ${libusbprog_MOCS})
+endif (USE_QT5)
 add_library(libusbprog STATIC ${libusbprog_SRCS} ${libusbprog_MOC_SRCS})
 target_link_libraries(libusbprog libusbprog-core ${EXTRA_LIBS})
+
+if (USE_QT5)
+    qt5_use_modules(libusbprog Xml Network)
+endif (USE_QT5)
 
 # vim: set sw=4 ts=4 et:
