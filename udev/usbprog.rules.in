@@ -7,16 +7,16 @@
 BUS!="usb", ACTION!="add", SUBSYSTEM!=="usb_device", GOTO="usbprog_rules_end"
 
 # USBprog, in programmable state (or with simpleport firmware)
-SYSFS{idVendor}=="1781", SYSFS{idProduct}=="0c62", MODE="664", GROUP="@@USBPROG_GROUP@@"
+ATTR{idVendor}=="1781", ATTR{idProduct}=="0c62", MODE="664", GROUP="@@USBPROG_GROUP@@"
 
 # USBprog with OpenOCD firmware
-SYSFS{idVendor}=="1781", SYSFS{idProduct}=="0c63", MODE="664", GROUP="@@USBPROG_GROUP@@"
+ATTR{idVendor}=="1781", ATTR{idProduct}=="0c63", MODE="664", GROUP="@@USBPROG_GROUP@@"
 
 # USBprog with at89prog or usbprogrs232 firmware
-SYSFS{idVendor}=="1781", SYSFS{idProduct}=="0c64", MODE="664", GROUP="@@USBPROG_GROUP@@"
+ATTR{idVendor}=="1781", ATTR{idProduct}=="0c64", MODE="664", GROUP="@@USBPROG_GROUP@@"
 
 # USBprog with Atmel AVR ISP mkII firmware
-SYSFS{idVendor}=="03eb", SYSFS{idProduct}=="2104", MODE="664", GROUP="@@USBPROG_GROUP@@"
+ATTR{idVendor}=="03eb", ATTR{idProduct}=="2104", MODE="664", GROUP="@@USBPROG_GROUP@@"
 
 LABEL="usbprog_rules_end"
 
