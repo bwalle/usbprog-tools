@@ -59,7 +59,6 @@ Device::Device(void *nativeHandle)
 
 /* -------------------------------------------------------------------------- */
 DeviceDescriptor Device::getDescriptor() const
-    throw (Error)
 {
     DeviceDescriptor ret;
 
@@ -79,7 +78,6 @@ DeviceDescriptor Device::getDescriptor() const
 
 /* -------------------------------------------------------------------------- */
 ConfigDescriptor *Device::getConfigDescriptor(int index)
-    throw (Error)
 {
     struct libusb_config_descriptor *usb_config_descriptor;
     int err = libusb_get_config_descriptor(m_data->device, index, &usb_config_descriptor);
@@ -91,7 +89,6 @@ ConfigDescriptor *Device::getConfigDescriptor(int index)
 
 /* -------------------------------------------------------------------------- */
 DeviceHandle *Device::open()
-    throw (Error)
 {
     libusb_device_handle *handle;
     int err = libusb_open(m_data->device, &handle);

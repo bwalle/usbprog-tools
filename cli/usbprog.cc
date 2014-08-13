@@ -101,7 +101,6 @@ Usbprog::~Usbprog()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initConfig()
-    throw (core::ApplicationError)
 {
     CliConfiguration &conf = CliConfiguration::config();
 
@@ -168,7 +167,6 @@ void Usbprog::parseCommandLine()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initFirmwarePool()
-    throw (core::ApplicationError)
 {
     CliConfiguration &conf = CliConfiguration::config();
 
@@ -187,7 +185,6 @@ void Usbprog::initFirmwarePool()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::initDeviceManager()
-    throw (core::ApplicationError)
 {
     bool debug = CliConfiguration::config().getDebug();
     m_devicemanager = new core::DeviceManager(debug);
@@ -195,7 +192,6 @@ void Usbprog::initDeviceManager()
 
 /* -------------------------------------------------------------------------- */
 void Usbprog::exec()
-    throw (core::ApplicationError)
 {
     Shell sh("(usbprog) ");
 

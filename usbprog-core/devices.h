@@ -417,8 +417,7 @@ class DeviceManager {
          *            (that is not in the core) and the DeviceManager (that is in the core).
          * @throw IOError on any I/O error when communicating with USB device(s)
          */
-        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>())
-        throw (IOError);
+        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
 
         /**
          * @brief Prints the list of devices
@@ -436,8 +435,7 @@ class DeviceManager {
          * @throw IOError on any I/O error when communicating with USB device(s)
          * @see setCurrentUpdateDevice()
          */
-        void switchUpdateMode()
-        throw (IOError);
+        void switchUpdateMode();
 
         /**
          * @brief Returns the number of update devices
@@ -542,8 +540,7 @@ class UsbprogUpdater {
          *
          * @exception IOError on any error when communicating with the USBprog device.
          */
-        void updateOpen()
-        throw (IOError);
+        void updateOpen();
 
         /**
          * @brief Writes the firmware to the device.
@@ -553,8 +550,7 @@ class UsbprogUpdater {
          * @param[in] bv the firmware bytes
          * @exception IOError on any error when communicating with the USBprog device.
          */
-        void writeFirmware(const ByteVector &bv)
-        throw (IOError);
+        void writeFirmware(const ByteVector &bv);
 
         /**
          * @brief Starts the firmware of the device.
@@ -563,16 +559,14 @@ class UsbprogUpdater {
          *
          * @exception IOError on any error when communicating with the USBprog device.
          */
-        void startDevice()
-        throw (IOError);
+        void startDevice();
 
         /**
          * @brief Resets the device.
          *
          * @exception IOError on any error when communicating with the USBprog device.
          */
-        void resetDevice()
-        throw (IOError);
+        void resetDevice();
 
         /**
          * @brief Closes the update device.
@@ -581,8 +575,7 @@ class UsbprogUpdater {
          *
          * @exception IOError if the device is already closed
          */
-        void updateClose()
-        throw (IOError);
+        void updateClose();
 
     private:
         Device              *m_dev;

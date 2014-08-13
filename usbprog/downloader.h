@@ -120,7 +120,7 @@ class Downloader : public QObject
          *
          * @exception DownloadError if downloading the file failed
          */
-        void download() throw (DownloadError);
+        void download();
 
     public slots:
 

@@ -131,8 +131,7 @@ class Fileutil {
          * @return the modification time of @p file as DateTime object
          * @exception IOError if @p file doesn't exist or cannot be opened to read the meta-data.
          */
-        static DateTime getMTime(const std::string &file)
-        throw (IOError);
+        static DateTime getMTime(const std::string &file);
 
         /**
          * @brief Reads the bytes from @p file
@@ -141,8 +140,7 @@ class Fileutil {
          * @return the contents of @p file as ByteVector
          * @exception IOError if the file cannot be read, i.e. if it doesn't exist.
          */
-        static ByteVector readBytesFromFile(const std::string &file)
-        throw (IOError);
+        static ByteVector readBytesFromFile(const std::string &file);
 };
 
 /* }}} */

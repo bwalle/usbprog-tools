@@ -54,7 +54,6 @@ DateTime::DateTime(struct tm *time)
 
 /* -------------------------------------------------------------------------- */
 DateTime::DateTime(const std::string &string, DateTimeFormat format)
-    throw (ParseError)
 {
     setDateTime(string, format);
 }
@@ -74,7 +73,6 @@ void DateTime::setDateTime(struct tm *time)
 /* -------------------------------------------------------------------------- */
 #if HAVE_STRPTIME
 void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
-    throw (ParseError)
 {
     struct tm time;
     char      *ret;
@@ -89,7 +87,6 @@ void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
 }
 #else
 void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
-    throw (ParseError)
 {
     int day, month, year, hour = 0, minute = 0;
     int ret;

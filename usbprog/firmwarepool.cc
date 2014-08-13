@@ -74,8 +74,7 @@ class FirmwareXMLParser {
          * @param[in] pool the root XML element
          * @exception core::ParseError if parsing failed
          */
-        void parsePool(const QDomDocument &doc, const QDomElement &pool)
-        throw (core::ParseError);
+        void parsePool(const QDomDocument &doc, const QDomElement &pool);
 
     protected:
         /**
@@ -85,8 +84,7 @@ class FirmwareXMLParser {
          * @param[in] firmware the firmware XML element
          * @exception core::ParseError if parsing failed
          */
-        void parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
-        throw (core::ParseError);
+        void parseFirmware(const QDomDocument &doc, const QDomElement &firmware);
 
     private:
         Firmwarepool *m_firmwarepool;
@@ -105,7 +103,6 @@ FirmwareXMLParser::FirmwareXMLParser(Firmwarepool *pool)
 
 /* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &pool)
-    throw (core::ParseError)
 {
     for (QDomNode node = pool.firstChild(); !node.isNull(); node = node.nextSibling()) {
         if (!node.isElement())
@@ -118,7 +115,6 @@ void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &po
 
 /* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
-    throw (core::ParseError)
 {
     Firmware *fw;
 
@@ -390,7 +386,6 @@ std::string Firmware::formatDateVersion() const
 
 /* -------------------------------------------------------------------------- */
 Firmwarepool::Firmwarepool(const std::string &cacheDir)
-      throw (core::IOError)
     : m_cacheDir(cacheDir)
     , m_progressNotifier(NULL)
     , m_indexAutoUpdatetime(0)
@@ -422,7 +417,6 @@ void Firmwarepool::setIndexUpdatetime(int minutes)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadIndex(const std::string &url)
-    throw (DownloadError)
 {
     std::string newPath(core::pathconcat(m_cacheDir, std::string(INDEX_FILE_NAME) + ".new"));
     std::string oldPath(core::pathconcat(m_cacheDir, INDEX_FILE_NAME));
@@ -457,7 +451,6 @@ void Firmwarepool::downloadIndex(const std::string &url)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::readIndex()
-    throw (core::IOError, core::ParseError)
 {
     QDomDocument doc("usbprog");
 
@@ -486,7 +479,6 @@ void Firmwarepool::readIndex()
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteIndex()
-    throw (core::IOError)
 {
     std::string file = core::pathconcat(m_cacheDir, INDEX_FILE_NAME);
     int ret = remove(file.c_str());
@@ -502,7 +494,6 @@ void Firmwarepool::setProgress(core::ProgressNotifier *notifier)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadFirmware(const std::string &name)
-    throw (DownloadError, core::ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
@@ -551,7 +542,6 @@ void Firmwarepool::downloadFirmware(const std::string &name)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::fillFirmware(const std::string &name)
-    throw (core::IOError, core::ApplicationError)
 {
     Firmware *fw = getFirmware(name);
     if (!fw)
@@ -616,7 +606,6 @@ std::vector<core::UpdateDevice> Firmwarepool::getUpdateDeviceList() const
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteCache()
-    throw (core::IOError)
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
     if (!cacheDir.exists())
@@ -643,7 +632,6 @@ bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
 
 /* -------------------------------------------------------------------------- */
 void Firmwarepool::cleanCache()
-    throw (core::IOError)
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
     if (!cacheDir.exists())

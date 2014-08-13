@@ -81,8 +81,7 @@ class Device
          * @return the device descriptor of the device
          * @exception Error on any error
          */
-        DeviceDescriptor getDescriptor() const
-        throw (Error);
+        DeviceDescriptor getDescriptor() const;
 
         /**
          * @brief Returns the config descriptor for a specific configuration
@@ -91,8 +90,7 @@ class Device
          * @return the config descriptor for configuration @p index
          * @exception Error on any error
          */
-        ConfigDescriptor *getConfigDescriptor(int index)
-        throw (Error);
+        ConfigDescriptor *getConfigDescriptor(int index);
 
         /**
          * @brief Opens the device and returns a DeviceHandle
@@ -100,8 +98,7 @@ class Device
          * @return the DeviceHandle object that must be deleted by the caller
          * @exception Error on any error
          */
-        DeviceHandle *open()
-        throw (Error);
+        DeviceHandle *open();
 
         // delete the DeviceHandle to close the device
 

@@ -40,7 +40,6 @@ struct UsbManagerPrivate {
 
 /* -------------------------------------------------------------------------- */
 UsbManager::UsbManager()
-    throw (Error)
   : m_data(new UsbManagerPrivate)
 {
     int err = libusb_init(&m_data->context);
@@ -64,7 +63,6 @@ UsbManager::~UsbManager()
 
 /* -------------------------------------------------------------------------- */
 UsbManager &UsbManager::instance()
-    throw (Error)
 {
     static UsbManager instance;
     return instance;
@@ -104,7 +102,6 @@ size_t UsbManager::getNumberOfDevices() const
 
 /* -------------------------------------------------------------------------- */
 Device *UsbManager::getDevice(size_t number)
-    throw (std::out_of_range)
 {
     if (number >= m_data->device_number) {
         std::stringstream ss;

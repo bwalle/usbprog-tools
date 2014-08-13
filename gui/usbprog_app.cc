@@ -36,7 +36,6 @@ const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.embedded-project
 
 // -----------------------------------------------------------------------------
 UsbprogApplication::UsbprogApplication(int &argc, char **argv)
-        throw (core::ApplicationError)
     : QApplication(argc, argv)
     , m_mainWindow(NULL)
 {
@@ -45,7 +44,6 @@ UsbprogApplication::UsbprogApplication(int &argc, char **argv)
 
 // -----------------------------------------------------------------------------
 void UsbprogApplication::initConfig()
-    throw (core::ApplicationError)
 {
     GuiConfiguration &conf = GuiConfiguration::config();
 

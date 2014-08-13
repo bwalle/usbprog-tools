@@ -57,8 +57,7 @@ class DeviceHandle
          * @return the current configuration number
          * @exception Error on any error
          */
-        int getConfiguration() const
-        throw (Error);
+        int getConfiguration() const;
 
         /**
          * @brief Sets the configuration
@@ -66,8 +65,7 @@ class DeviceHandle
          * @param[in] newConfiguration the number of the new configuration
          * @exception Error on any error
          */
-        void setConfiguration(int newConfiguration)
-        throw (Error);
+        void setConfiguration(int newConfiguration);
 
         /**
          * @brief Claims an interface
@@ -75,8 +73,7 @@ class DeviceHandle
          * @param[in] interfaceNumber the interface to claim
          * @exception Error on any error
          */
-        void claimInterface(int interfaceNumber)
-        throw (Error);
+        void claimInterface(int interfaceNumber);
 
         /**
          * @brief Releases an interface
@@ -87,8 +84,7 @@ class DeviceHandle
          * @param[in] interfaceNumber the interface number to release
          * @exception Error on any error
          */
-        void releaseInterface(int interfaceNumber)
-        throw (Error);
+        void releaseInterface(int interfaceNumber);
 
         /**
          * @brief Sets the alternate setting
@@ -97,8 +93,7 @@ class DeviceHandle
          * @param[in] alternateSetting the alternate setting number
          * @exception Error on any error
          */
-        void setInterfaceAltSetting(int interfaceNumber, int alternateSetting)
-        throw (Error);
+        void setInterfaceAltSetting(int interfaceNumber, int alternateSetting);
 
         /**
          * @brief Starts a control transfer
@@ -118,8 +113,7 @@ class DeviceHandle
                              unsigned short     wIndex,
                              unsigned char      *data,
                              unsigned short     wLength,
-                             unsigned int       timeout)
-        throw (Error);
+                             unsigned int       timeout);
 
         /**
          * @brief Starts a bulk transfer
@@ -135,8 +129,7 @@ class DeviceHandle
                           unsigned char     *data,
                           int               length,
                           int               *transferred,
-                          unsigned int      timeout)
-        throw (Error);
+                          unsigned int      timeout);
 
         /**
          * @brief Resets the device
@@ -146,8 +139,7 @@ class DeviceHandle
          *
          * @exception Error on any error
          */
-        void resetDevice()
-        throw (Error);
+        void resetDevice();
 
     protected:
         /**

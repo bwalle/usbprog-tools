@@ -103,8 +103,7 @@ class DateTime {
          *            which would be a correct format for the example string of @p string above
          * @exception ParseError if parsing @p string with @p format failed
          */
-        DateTime(const std::string &string, DateTimeFormat format)
-        throw (ParseError);
+        DateTime(const std::string &string, DateTimeFormat format);
 
     public:
         /**
@@ -139,8 +138,7 @@ class DateTime {
          *            which would be a correct format for the example string of @p string above
          * @exception ParseError if parsing @p string with @p format failed
          */
-        void setDateTime(const std::string &string, DateTimeFormat format)
-        throw (ParseError);
+        void setDateTime(const std::string &string, DateTimeFormat format);
 
         /**
          * @brief Returns the @c time_t representation of the time value

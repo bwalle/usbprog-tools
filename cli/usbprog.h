@@ -113,8 +113,7 @@ class Usbprog {
          *
          * @exception core::ApplicationError if initializing of the configuration failed
          */
-        void initConfig()
-        throw (core::ApplicationError);
+        void initConfig();
 
         /**
          * @brief Parses the command line given in the constructor
@@ -128,16 +127,14 @@ class Usbprog {
          *
          * @exception core::ApplicationError if initializing of the firmware pool failed
          */
-        void initFirmwarePool()
-        throw (core::ApplicationError);
+        void initFirmwarePool();
 
         /**
          * @brief Initializes the device manager
          *
          * @exception core::ApplicationError if initializing of the device manager failed
          */
-        void initDeviceManager()
-        throw (core::ApplicationError);
+        void initDeviceManager();
 
         /**
          * @brief Executes the application
@@ -146,8 +143,7 @@ class Usbprog {
          *
          * @exception core::ApplicationError if something went wrong
          */
-        void exec()
-        throw (core::ApplicationError);
+        void exec();
 
     protected:
         /**

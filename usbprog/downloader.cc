@@ -75,7 +75,7 @@ void Downloader::downloadFinished()
 }
 
 /* -------------------------------------------------------------------------- */
-void Downloader::download() throw (DownloadError)
+void Downloader::download()
 {
     std::string userAgent("USBprog/" USBPROG_VERSION_STRING);
     userAgent += " on " + Sysinfo::osName() + " " + Sysinfo::osVersion();

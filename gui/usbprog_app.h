@@ -67,8 +67,7 @@ class UsbprogApplication : public QApplication
          * @exception core::ApplicationError if it's not possible to determine the configuration
          *            directory because of some system error
          */
-        UsbprogApplication(int &argc, char **argv)
-        throw (core::ApplicationError);
+        UsbprogApplication(int &argc, char **argv);
 
     public:
         /**
@@ -93,8 +92,7 @@ class UsbprogApplication : public QApplication
          *
          * @exception core::ApplicationError if something failed
          */
-        void initConfig()
-        throw (core::ApplicationError);
+        void initConfig();
 
     private:
         UsbprogMainWindow *m_mainWindow;

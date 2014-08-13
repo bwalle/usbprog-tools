@@ -65,7 +65,6 @@ ListCommand::ListCommand(Firmwarepool *firmwarepool)
 bool ListCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
-    throw (core::ApplicationError)
 {
     StringList firmwarelist = m_firmwarepool->getFirmwareNameList();
 
@@ -129,7 +128,6 @@ InfoCommand::InfoCommand(Firmwarepool *firmwarepool)
 bool InfoCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
@@ -237,7 +235,6 @@ PinCommand::PinCommand(Firmwarepool *firmwarepool)
 bool PinCommand::execute(CommandArgVector   args,
                          core::StringVector options,
                          std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     Firmware *fw = m_firmwarepool->getFirmware(fwstr);
@@ -363,7 +360,6 @@ DownloadCommand::DownloadCommand(Firmwarepool *firmwarepool)
 
 /* -------------------------------------------------------------------------- */
 bool DownloadCommand::downloadAll(std::ostream &os)
-    throw (core::IOError)
 {
     std::vector<Firmware *> firmwares = m_firmwarepool->getFirmwareList();
 
@@ -390,7 +386,6 @@ bool DownloadCommand::downloadAll(std::ostream &os)
 bool DownloadCommand::execute(CommandArgVector   args,
                               core::StringVector options,
                               std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string fwstr = args[0]->getString();
     if (CliConfiguration::config().isOffline()) {
@@ -492,7 +487,6 @@ CacheCommand::CacheCommand(Firmwarepool *firmwarepool)
 bool CacheCommand::execute(CommandArgVector   args,
                            core::StringVector options,
                            std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string cmd = args[0]->getString();
 
@@ -584,7 +578,6 @@ DevicesCommand::DevicesCommand(core::DeviceManager *deviceManager,
 bool DevicesCommand::execute(CommandArgVector   args,
                              core::StringVector options,
                              std::ostream       &os)
-    throw (core::ApplicationError)
 {
     try {
         m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
@@ -635,7 +628,6 @@ DeviceCommand::DeviceCommand(core::DeviceManager *deviceManager,
 bool DeviceCommand::execute(CommandArgVector   args,
                             core::StringVector options,
                             std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string device = args[0]->getString();
 
@@ -762,7 +754,6 @@ UploadCommand::UploadCommand(core::DeviceManager *deviceManager,
 bool UploadCommand::execute(CommandArgVector   args,
                             core::StringVector options,
                             std::ostream       &os)
-    throw (core::ApplicationError)
 {
     std::string firmware = args[0]->getString();
     HashNotifier hn(DEFAULT_TERMINAL_WIDTH);
@@ -939,7 +930,6 @@ StartCommand::StartCommand(core::DeviceManager *deviceManager)
 bool StartCommand::execute(CommandArgVector     args,
                            core::StringVector   options,
                            std::ostream         &os)
-    throw (core::ApplicationError)
 {
     core::Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
@@ -989,7 +979,6 @@ ResetCommand::ResetCommand(core::DeviceManager *deviceManager)
 bool ResetCommand::execute(CommandArgVector     args,
                            core::StringVector   options,
                            std::ostream         &os)
-    throw (core::ApplicationError)
 {
     core::Device *dev = m_deviceManager->getCurrentUpdateDevice();
     if (!dev)
@@ -1039,7 +1028,6 @@ CopyingCommand::CopyingCommand()
 bool CopyingCommand::execute(CommandArgVector   args,
                              core::StringVector options,
                              std::ostream       &os)
-    throw (core::ApplicationError)
 {
     os << "USBprog " << USBPROG_VERSION_STRING << std::endl;
     os << "Copyright (c) 2007, 2008 Bernhard Walle <bernhard@bwalle.de>\n\n";

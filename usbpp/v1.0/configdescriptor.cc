@@ -61,7 +61,6 @@ size_t ConfigDescriptor::getNumberOfInterfaces() const
 
 /* -------------------------------------------------------------------------- */
 size_t ConfigDescriptor::getNumberOfAltsettings(unsigned int interfaceNumber) const
-    throw (Error)
 {
     if (interfaceNumber >= getNumberOfInterfaces()) {
         std::stringstream ss;
@@ -75,7 +74,6 @@ size_t ConfigDescriptor::getNumberOfAltsettings(unsigned int interfaceNumber) co
 /* -------------------------------------------------------------------------- */
 InterfaceDescriptor *ConfigDescriptor::getInterfaceDescriptor(unsigned interfaceNumber,
                                                               unsigned int altsetting)
-    throw (Error)
 {
     if (altsetting >= getNumberOfAltsettings(interfaceNumber)) {
         std::stringstream ss;

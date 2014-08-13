@@ -132,7 +132,6 @@ bool Fileutil::isFile(const std::string &file)
 
 /* -------------------------------------------------------------------------- */
 DateTime Fileutil::getMTime(const std::string &file)
-    throw (IOError)
 {
     int         ret;
     struct stat my_stat;
@@ -192,7 +191,6 @@ std::string Fileutil::resolvePath(const std::string &path)
 
 /* -------------------------------------------------------------------------- */
 ByteVector Fileutil::readBytesFromFile(const std::string &file)
-    throw (IOError)
 {
     ByteVector bv;
     char buffer[BUFFERSIZE];

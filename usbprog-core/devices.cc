@@ -312,7 +312,6 @@ void DeviceManager::setCustomSleeper(Sleeper *sleeper)
 
 /* -------------------------------------------------------------------------- */
 void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices)
-    throw (IOError)
 {
     try {
         usb::UsbManager &usbManager = usb::UsbManager::instance();
@@ -406,7 +405,6 @@ void DeviceManager::printDevices(std::ostream &os, bool showActive) const
 
 /* -------------------------------------------------------------------------- */
 void DeviceManager::switchUpdateMode()
-    throw (IOError)
 {
     Device *dev = getCurrentUpdateDevice();
     if (dev->isUpdateMode())
@@ -570,7 +568,6 @@ void UsbprogUpdater::setProgress(ProgressNotifier *progress)
 
 /* -------------------------------------------------------------------------- */
 void UsbprogUpdater::writeFirmware(const ByteVector &bv)
-    throw (IOError)
 {
     unsigned char buf[USB_PAGESIZE];
     unsigned char cmd[USB_PAGESIZE];
@@ -626,7 +623,6 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
 
 /* -------------------------------------------------------------------------- */
 void UsbprogUpdater::updateOpen()
-    throw (IOError)
 {
     usb::Device *dev = m_dev->getHandle();
 
@@ -664,7 +660,6 @@ void UsbprogUpdater::updateOpen()
 
 /* -------------------------------------------------------------------------- */
 void UsbprogUpdater::updateClose()
-    throw (IOError)
 {
     USBPROG_DEBUG_DBG("UsbprogUpdater::updateClose()");
 
@@ -678,7 +673,6 @@ void UsbprogUpdater::updateClose()
 
 /* -------------------------------------------------------------------------- */
 void UsbprogUpdater::startDevice()
-    throw (IOError)
 {
     if (!m_devHandle)
         throw IOError("Device not opened");
@@ -700,7 +694,6 @@ void UsbprogUpdater::startDevice()
 
 /* -------------------------------------------------------------------------- */
 void UsbprogUpdater::resetDevice()
-    throw (IOError)
 {
     if (!m_devHandle)
         throw IOError("Device not opened");

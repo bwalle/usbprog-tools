@@ -62,7 +62,7 @@ class IniFile {
          *
          * @exception IOError if reading the file failed.
          */
-        void readFile() throw (IOError);
+        void readFile();
 
         /**
          * @brief Returns the string value of @p key

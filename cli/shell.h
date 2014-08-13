@@ -95,8 +95,7 @@ class CommandArg {
          * @return the argument as string
          * @exception std::runtime_error if the argument type is not CommandArg::STRING
          */
-        std::string getString() const
-        throw (std::runtime_error);
+        std::string getString() const;
 
         /**
          * @brief Returns the argument as signed number
@@ -106,8 +105,7 @@ class CommandArg {
          * @return the argument as number
          * @exception std::runtime_error if the argument type is not CommandArg::INTEGER.
          */
-        long long getInteger() const
-        throw (std::runtime_error);
+        long long getInteger() const;
 
         /**
          * @brief Returns the argument as unsigned number
@@ -117,8 +115,7 @@ class CommandArg {
          * @return the argument as unsigned number
          * @exception std::runtime_error if the argument type is not CommandArg::UINTEGER.
          */
-        unsigned long long getUInteger() const
-        throw (std::runtime_error);
+        unsigned long long getUInteger() const;
 
         /**
          * @brief Returns the argument as floating-point number
@@ -128,8 +125,7 @@ class CommandArg {
          * @return the argument as floating-point number
          * @exception std::runtime_error if the argument type is not CommandArg::FLOAT.
          */
-        double getFloat() const
-        throw (std::runtime_error);
+        double getFloat() const;
 
         /**
          * @brief Sets the argument as string
@@ -227,8 +223,7 @@ class Command {
          */
         virtual bool execute(CommandArgVector   args,
                              core::StringVector options,
-                             std::ostream       &os)
-        throw (core::ApplicationError) = 0;
+                             std::ostream       &os) = 0;
 
         /**
          * @brief Returns the number of arguments the command takes
@@ -446,8 +441,7 @@ class Shell : public bw::Completor {
          * @return @c true if the shell should be continued to run, @c false otherwise.
          * @throw core::ApplicationError on any error
          */
-        bool run(core::StringVector input, bool multiple = true)
-        throw (core::ApplicationError);
+        bool run(core::StringVector input, bool multiple = true);
 
         /**
          * @brief Complete function
@@ -490,8 +484,7 @@ class ExitCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         core::StringVector aliases() const;
 
@@ -529,8 +522,7 @@ class HelpCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::help()
         std::string help() const;
@@ -570,8 +562,7 @@ class HelpCmdCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;

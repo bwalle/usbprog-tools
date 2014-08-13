@@ -65,8 +65,7 @@ class ListCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::aliases()
         core::StringVector aliases() const;
@@ -108,8 +107,7 @@ class InfoCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream &os)
-        throw (core::ApplicationError);
+                     std::ostream &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -167,8 +165,7 @@ class PinCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector       args,
                      core::StringVector     options,
-                     std::ostream           &os)
-        throw (core::ApplicationError);
+                     std::ostream           &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -225,8 +222,7 @@ class DownloadCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector       args,
                      core::StringVector     options,
-                     std::ostream           &os)
-        throw (core::ApplicationError);
+                     std::ostream           &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -260,8 +256,7 @@ class DownloadCommand : public AbstractCommand {
          * @return always @c true
          * @exception core::IOError whenever downloading fails
          */
-        bool downloadAll(std::ostream &os)
-        throw (core::IOError);
+        bool downloadAll(std::ostream &os);
 
     private:
         Firmwarepool *m_firmwarepool;
@@ -294,8 +289,7 @@ class CacheCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector       args,
                      core::StringVector     options,
-                     std::ostream           &os)
-            throw (core::ApplicationError);
+                     std::ostream           &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -348,8 +342,7 @@ class DevicesCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector       args,
                      core::StringVector     options,
-                     std::ostream           &os)
-            throw (core::ApplicationError);
+                     std::ostream           &os);
 
         /// @copydoc Command::help()
         std::string help() const;
@@ -390,8 +383,7 @@ class DeviceCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -447,7 +439,7 @@ class UploadCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os) throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::getArgNumber()
         size_t getArgNumber() const;
@@ -506,8 +498,7 @@ class StartCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::help()
         std::string help() const;
@@ -546,8 +537,7 @@ class ResetCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::help()
         std::string help() const;
@@ -579,8 +569,7 @@ class CopyingCommand : public AbstractCommand {
         /// @copydoc Command::execute()
         bool execute(CommandArgVector   args,
                      core::StringVector options,
-                     std::ostream       &os)
-        throw (core::ApplicationError);
+                     std::ostream       &os);
 
         /// @copydoc Command::aliases()
         core::StringVector aliases() const;

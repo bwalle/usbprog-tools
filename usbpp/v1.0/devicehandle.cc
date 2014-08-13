@@ -54,7 +54,6 @@ DeviceHandle::DeviceHandle(void *nativeHandle)
 
 /* -------------------------------------------------------------------------- */
 int DeviceHandle::getConfiguration() const
-    throw (Error)
 {
     int configuration;
     int err = libusb_get_configuration(m_data->device_handle, &configuration);
@@ -66,7 +65,6 @@ int DeviceHandle::getConfiguration() const
 
 /* -------------------------------------------------------------------------- */
 void DeviceHandle::setConfiguration(int newConfiguration)
-    throw (Error)
 {
     int err = libusb_set_configuration(m_data->device_handle, newConfiguration);
     if (err != 0)
@@ -75,7 +73,6 @@ void DeviceHandle::setConfiguration(int newConfiguration)
 
 /* -------------------------------------------------------------------------- */
 void DeviceHandle::claimInterface(int interfaceNumber)
-    throw (Error)
 {
     int err = libusb_claim_interface(m_data->device_handle, interfaceNumber);
     if (err != 0)
@@ -86,7 +83,6 @@ void DeviceHandle::claimInterface(int interfaceNumber)
 
 /* -------------------------------------------------------------------------- */
 void DeviceHandle::releaseInterface(int interfaceNumber)
-    throw (Error)
 {
     int err = libusb_release_interface(m_data->device_handle, interfaceNumber);
     if (err != 0)
@@ -101,7 +97,6 @@ void DeviceHandle::releaseInterface(int interfaceNumber)
 
 /* -------------------------------------------------------------------------- */
 void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSetting)
-    throw (Error)
 {
     int err =libusb_set_interface_alt_setting(m_data->device_handle, interfaceNumber, alternateSetting);
     if (err != 0)
@@ -116,7 +111,6 @@ void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
                                    unsigned char      *data,
                                    unsigned short     wLength,
                                    unsigned int       timeout)
-    throw (Error)
 {
     int err = libusb_control_transfer(m_data->device_handle, bmRequestType, bRequest,
                                       wValue, wIndex, data, wLength, timeout);
@@ -130,7 +124,6 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
                                 int               length,
                                 int               *transferred,
                                 unsigned int      timeout)
-    throw (Error)
 {
     int dummy;
     if (transferred == NULL)
@@ -144,7 +137,6 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
 
 /* -------------------------------------------------------------------------- */
 void DeviceHandle::resetDevice()
-    throw (Error)
 {
     int err = libusb_reset_device(m_data->device_handle);
     if (err != 0)

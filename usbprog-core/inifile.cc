@@ -32,7 +32,7 @@ IniFile::IniFile(const std::string &fileName)
 {}
 
 /* -------------------------------------------------------------------------- */
-void IniFile::readFile() throw (IOError)
+void IniFile::readFile()
 {
     std::ifstream file(m_fileName.c_str());
 

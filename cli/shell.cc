@@ -95,7 +95,6 @@ CommandArg::Type CommandArg::getType() const
 
 /* -------------------------------------------------------------------------- */
 std::string CommandArg::getString() const
-    throw (std::runtime_error)
 {
     if (m_type != STRING)
         throw std::runtime_error("Not a string");
@@ -105,7 +104,6 @@ std::string CommandArg::getString() const
 
 /* -------------------------------------------------------------------------- */
 long long CommandArg::getInteger() const
-    throw (std::runtime_error)
 {
     if (m_type != INTEGER)
         throw std::runtime_error("Not an integer");
@@ -115,7 +113,6 @@ long long CommandArg::getInteger() const
 
 /* -------------------------------------------------------------------------- */
 unsigned long long CommandArg::getUInteger() const
-    throw (std::runtime_error)
 {
     if (m_type != UINTEGER)
         throw std::runtime_error("Not an unsigned integer");
@@ -125,7 +122,6 @@ unsigned long long CommandArg::getUInteger() const
 
 /* -------------------------------------------------------------------------- */
 double CommandArg::getFloat() const
-    throw (std::runtime_error)
 {
     if (m_type != FLOAT)
         throw std::runtime_error("Not a float");
@@ -351,7 +347,6 @@ void Shell::run()
 
 /* -------------------------------------------------------------------------- */
 bool Shell::run(core::StringVector input, bool multiple)
-    throw (core::ApplicationError)
 {
     bool result = true;
     int loop = 0;
@@ -449,7 +444,6 @@ ExitCommand::ExitCommand()
 bool ExitCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
-    throw (core::ApplicationError)
 {
     return false;
 }
@@ -494,7 +488,6 @@ HelpCommand::HelpCommand(Shell *sh)
 bool HelpCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
-    throw (core::ApplicationError)
 {
     for (StringCommandMap::const_iterator it = m_sh->m_commands.begin();
             it != m_sh->m_commands.end(); ++it) {
@@ -541,7 +534,6 @@ HelpCmdCommand::HelpCmdCommand(Shell *sh)
 bool HelpCmdCommand::execute(CommandArgVector    args,
                              core::StringVector  options,
                              std::ostream        &os)
-    throw (core::ApplicationError)
 {
     std::string cmd = args[0]->getString();
 

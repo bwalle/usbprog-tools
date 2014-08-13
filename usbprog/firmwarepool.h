@@ -328,8 +328,7 @@ class Firmwarepool {
          * @param[in] cacheDir the directory that contains the firmware as cached files on disk.
          *            The cache directory is immutable and cannot be changed afterwards.
          */
-        Firmwarepool(const std::string &cacheDir)
-        throw (core::IOError);
+        Firmwarepool(const std::string &cacheDir);
 
         /**
          * @brief Destructor
@@ -351,8 +350,7 @@ class Firmwarepool {
          * @exception DownloadError if downloading the firmware file failed
          * @see setIndexUpdatetime()
          */
-        void downloadIndex(const std::string &url)
-        throw (DownloadError);
+        void downloadIndex(const std::string &url);
 
         /**
          * @brief Parses the index file
@@ -362,16 +360,14 @@ class Firmwarepool {
          * @exception core::IOError if reading the firmware file failed
          * @exception core::ParseError if parsing the firmware file failed
          */
-        void readIndex()
-        throw (core::IOError, core::ParseError);
+        void readIndex();
 
         /**
          * @brief Deletes the index from disk
          *
          * @exception core::IOError if deleting the file failed
          */
-        void deleteIndex()
-        throw (core::IOError);
+        void deleteIndex();
 
         /**
          * @brief Returns a list of firmware names
@@ -441,8 +437,7 @@ class Firmwarepool {
          * @exception DownloadError if downloading failed
          * @exception ApplicationError if @p name is invalid
          */
-        void downloadFirmware(const std::string &name)
-        throw (DownloadError, core::ApplicationError);
+        void downloadFirmware(const std::string &name);
 
         /**
          * @brief Fills the content bytes of firmware @p name
@@ -455,8 +450,7 @@ class Firmwarepool {
          * @exception core::IOError if it's not possible to read the data bytes for the firmware
          * @exception ApplicationError if @p name is invalid
          */
-        void fillFirmware(const std::string &name)
-        throw (core::IOError, core::ApplicationError);
+        void fillFirmware(const std::string &name);
 
         /**
          * @brief Checks if the firmware @p name is on disk
@@ -474,8 +468,7 @@ class Firmwarepool {
          * @exception core::IOError if deletion of files failed
          * @see cleanCache()
          */
-        void deleteCache()
-        throw (core::IOError);
+        void deleteCache();
 
         /**
          * @brief Cleans up the firmware cache
@@ -486,8 +479,7 @@ class Firmwarepool {
          * @exception core::IOError if deletion of files failed
          * @see deleteCache()
          */
-        void cleanCache()
-        throw (core::IOError);
+        void cleanCache();
 
     protected:
         /**
