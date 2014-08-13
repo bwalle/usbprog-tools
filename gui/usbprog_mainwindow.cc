@@ -161,13 +161,13 @@ void UsbprogMainWindow::initActions()
 void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
-    connect(m_actions.quit, SIGNAL(activated()), SLOT(close()));
-    connect(m_actions.help, SIGNAL(activated()), SLOT(showHelp()));
-    connect(m_actions.aboutQt, SIGNAL(activated()), qApp, SLOT(aboutQt()));
-    connect(m_actions.about, SIGNAL(activated()), SLOT(showAbout()));
-    connect(m_actions.cacheClean, SIGNAL(activated()), SLOT(cacheClean()));
-    connect(m_actions.cacheDelete, SIGNAL(activated()), SLOT(cacheDelete()));
-    connect(m_actions.cacheDownloadAll, SIGNAL(activated()), SLOT(cacheDownloadAll()));
+    connect(m_actions.quit, SIGNAL(triggered()), SLOT(close()));
+    connect(m_actions.help, SIGNAL(triggered()), SLOT(showHelp()));
+    connect(m_actions.aboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(m_actions.about, SIGNAL(triggered()), SLOT(showAbout()));
+    connect(m_actions.cacheClean, SIGNAL(triggered()), SLOT(cacheClean()));
+    connect(m_actions.cacheDelete, SIGNAL(triggered()), SLOT(cacheDelete()));
+    connect(m_actions.cacheDownloadAll, SIGNAL(triggered()), SLOT(cacheDownloadAll()));
 
     connect(m_widgets.firmwareList,
             SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
