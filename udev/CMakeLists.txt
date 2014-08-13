@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 #
 
-if (CMAKE_SYSTEM_NAME EQUAL "Linux")
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     # find the udev version
     pkg_check_modules(UDEV udev)
 
@@ -31,6 +31,6 @@ if (CMAKE_SYSTEM_NAME EQUAL "Linux")
         "${CMAKE_CURRENT_SOURCE_DIR}/usbprog.rules.in"
         "${CMAKE_CURRENT_BINARY_DIR}/usbprog.rules"
     )
-endif (CMAKE_SYSTEM_NAME EQUAL "Linux")
+endif (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 
 # vim: set sw=4 ts=4 et:
