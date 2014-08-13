@@ -25,25 +25,69 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include <cerrno>
+#include <cstdlib>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include <libbw/log/errorlog.h>
+#include "tempfile.h"
 
-#endif // LIBBW_BWCONFIG_H_
+namespace bw {
+namespace io {
+
+struct TempFilePrivate {
+    TempFilePrivate()
+        : fd(-1)
+    {}
+
+    int fd;
+};
+
+std::string TempFile::_create(const std::string &namepart)
+{
+    d = new TempFilePrivate;
+
+    std::string nametemplate("/tmp");
+    if (getenv("TMPDIR") && std::strlen("TMPDIR") > 0) {
+        std::string dir(getenv("TMPDIR"));
+        struct stat statresult;
+        int ret = stat(dir.c_str(), &statresult);
+        if (ret < 0)
+            BW_ERROR_ERR("Invalid value of TMPDIR ('%s'): Directory does not exist", dir.c_str());
+        else if (!S_ISDIR(statresult.st_mode))
+            BW_ERROR_ERR("Invalid value of TMPDIR ('%s'): Not a directory", dir.c_str());
+        else
+            nametemplate = dir;
+    }
+
+    if (nametemplate[nametemplate.size()-1] != '/')
+        nametemplate += "/" + namepart;
+    nametemplate += ".XXXXXX";
+
+    char *nametemplateMod = strdup(nametemplate.c_str());
+    int ret = mkstemp(nametemplateMod);
+    nametemplate = nametemplateMod;
+    std::free(nametemplateMod);
+
+    if (ret < 0)
+        throw SystemIOError("Unable to create temporary file '" + nametemplate + " '", errno);
+
+    d->fd = ret;
+    return nametemplate;
+}
+
+uint64_t TempFile::nativeHandle() const
+{
+    return d ? d->fd : -1;
+}
+
+void TempFile::_close()
+{
+    ::close(d->fd);
+    delete d;
+}
+
+} // end namespace io
+} // end namespace bw

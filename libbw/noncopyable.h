@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2007-2010, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#ifndef LIBBW_NONCOPYABLE_H_
+#define LIBBW_NONCOPYABLE_H_
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+namespace bw {
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+/**
+ * \brief Mark a class as noncopyable
+ *
+ * Simple helper class. Inherit from that class (private) to mark to avoid
+ * that the class can be copied.
+ *
+ * Example:
+ *
+ * \code
+ * class DontCopyMe : private bw::Noncopyable {
+ *    // ...
+ * };
+ * \endcode
+ *
+ * The traditional method is to make the copy constructor and the assignment
+ * operator private. This solution is more elegant, and it has been "stolen"
+ * from Boost.
+ *
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup misc
+ */
+class Noncopyable
+{
+    protected:
+        Noncopyable() {}
+        ~Noncopyable() {}
 
-#endif // LIBBW_BWCONFIG_H_
+    private:
+        Noncopyable(const Noncopyable &nc);
+        const Noncopyable &operator=(const Noncopyable &nc);
+};
+
+
+} // end namespace bw
+
+#endif /* LIBBW_NONCOPYABLE_H_ */
+
+// vim: set sw=4 ts=4 et fdm=marker:

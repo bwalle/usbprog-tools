@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,25 +25,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#ifndef SERIALFILE_PRIVATE_POSIX_H
+#define SERIALFILE_PRIVATE_POSIX_H
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include <string>
 
-#endif // LIBBW_BWCONFIG_H_
+#include "exithandler.h"
+
+namespace bw {
+namespace io {
+
+/* SerialFilePrivate {{{ */
+
+/**
+ * \brief Data object for SerialFile.
+ *
+ * The reason why that data objects are not members of SerialFile is just that we can provide
+ * the same interface for different platforms and have the concrete (typed) members as private
+ * data of the platform implementation.
+ *
+ * The lock file name and exit handlers are only used on Linux.
+ */
+struct SerialFilePrivate
+{
+    SerialFilePrivate(const std::string &portName)
+        : fileName(portName)
+        , fd(-1)
+        , exithandler(NULL)
+    {}
+
+    std::string fileName;
+    std::string lastError;
+    int         fd;
+    std::string lockfile;
+    ExitHandler *exithandler;
+};
+
+/* }}} */
+
+} // end namespace io
+} // end namespace bw
+
+#endif /* SERIALFILE_PRIVATE_POSIX_H */

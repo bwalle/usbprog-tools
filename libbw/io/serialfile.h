@@ -31,11 +31,11 @@
 #include <vector>
 #include <iostream>
 
-#include "bwerror.h"
+#include <libbw/bwerror.h>
 
 /**
- * @file serialfile.h libbw/serialfile.h
- * @brief Simplify communication with serial ports
+ * \file serialfile.h libbw/io/serialfile.h
+ * \brief Simplify communication with serial ports
  *
  * This file provides functionality to communicate with serial ports.
  * The abstraction is platform-independent, but the implementation is currently
@@ -43,21 +43,23 @@
  */
 
 namespace bw {
+namespace io {
 
 struct SerialFilePrivate;
 
 /* SerialFile {{{ */
 
 /**
- * @class SerialFile serialfile.h bwutil/serialfile.h
+ * \class SerialFile serialfile.h bwutil/serialfile.h
  *
- * @brief Communicate with serial ports
+ * \brief Communicate with serial ports
  *
  * This class provides some abstraction above the historic APIs of some operating systems
  * when it comes to communicate with serial port. We only want to send and receive data and
  * set the communication parameters. No control terminal etc. etc.
  *
- * @author Bernhard Walle <bernhard@bwalle.de>
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup io
  */
 class SerialFile {
 
@@ -75,11 +77,11 @@ class SerialFile {
         };
 
         /**
-         * @brief Creates a new SerialFile object
+         * \brief Creates a new SerialFile object
          *
          * Creates a new object but does not open the port. Use openPort() to open the port.
          *
-         * @param[in] portName the name of the port. On POSIX this is the name of the
+         * \param[in] portName the name of the port. On POSIX this is the name of the
          *            device file that represents the port, for example <tt>/dev/ttyS0</tt>
          *            for the first "native" serial port or <tt>/dev/ttyUSB0</tt> for the first
          *            USB port in the system.
@@ -87,7 +89,7 @@ class SerialFile {
         SerialFile(const std::string &portName);
 
         /**
-         * @brief Destroys the object.
+         * \brief Destroys the object.
          *
          * Closes the port if necessary.
          */
@@ -96,133 +98,163 @@ class SerialFile {
         /**
          * Opens the port.
          *
-         * @return @c true on success, @c false on failure. Use getLastError() to get a
+         * \return \c true on success, \c false on failure. Use getLastError() to get a
          *         human-readable description of the error cause.
          */
         bool openPort();
 
         /**
-         * @brief Closes the port.
+         * \brief Closes the port.
          *
          * It's valid to call this function multiple times.
          */
         void closePort();
 
         /**
-         * @brief Outputs the string
+         * \brief Outputs the string
          *
          * Example:
          *
-         * @code
+         * \code
          * serialPort << std::string("bla");
-         * @endcode
+         * \endcode
          *
-         * @param[in] string the string that should be written to the serial port.
-         * @return a reference to the serial port object
+         * \param[in] string the string that should be written to the serial port.
+         * \return a reference to the serial port object
          */
-        SerialFile &operator<<(const std::string& string)
-        throw (IOError);
+        SerialFile &operator<<(const std::string& string);
 
         /**
-         * @brief Outputs a character.
+         * \brief Outputs a character.
          *
          * Example:
          *
-         * @code
+         * \code
          * serialPort << 'x';
-         * @endcode
+         * \endcode
          *
-         * @param[in] c the character to write to the serial port.
-         * @return a reference to the serial port.
+         * \param[in] c the character to write to the serial port.
+         * \return a reference to the serial port.
          */
-        SerialFile &operator<<(char c)
-        throw (IOError);
+        SerialFile &operator<<(char c);
 
         /**
-         * @brief Outputs a integer in hexadecimal.
+         * \brief Outputs a integer in hexadecimal.
          *
          * Example:
          *
-         * @code
+         * \code
          * serialPort << 0x25000;
-         * @endcode
+         * \endcode
          *
-         * @param[in] number the number to write to the serial port (as hexadecimal value).
-         * @return a reference to the serial port.
+         * \param[in] number the number to write to the serial port (as hexadecimal value).
+         * \return a reference to the serial port.
          */
-        SerialFile &operator<<(unsigned long number)
-        throw (IOError);
+        SerialFile &operator<<(unsigned long number);
 
         /**
-         * @brief Reads string
+         * \brief Reads string
          *
          * Example:
          *
-         * @code
+         * \code
          * std::string line;
          * serialPort >> line;
-         * @endcode
+         * \endcode
          *
-         * @param[in] string the string in which the data is stored.
-         * @return a reference to the serial port.
+         * \param[in] string the string in which the data is stored.
+         * \return a reference to the serial port.
          */
-        SerialFile &operator>>(std::string &string)
-        throw (IOError);
+        SerialFile &operator>>(std::string &string);
 
         /**
-         * @brief Returns the last error as string.
+         * \brief Reads a line
          *
-         * @return the last error as string
+         * This function is not as efficient as operator>>, but it guarantees that a single line is
+         * read. Both <tt>'\\r'</tt> and <tt>'\\r\\n'</tt> are understood as line separators and the
+         * result is returned without any line termination characters.
+         *
+         * \return the line that has been read without line terminators
+         */
+        std::string readLine();
+
+        /**
+         * \brief Returns the last error as string.
+         *
+         * \return the last error as string
          */
         std::string getLastError() const;
 
         /**
-         * @brief Reconfigures the serial port.
+         * \brief Reconfigures the serial port.
          *
-         * @param[in] baudrate the new baudrate
-         * @param[in] flowControl the flow control setting
-         * @param[in] rawMode @c true if the raw mode should be used (that is what you normally
+         * \param[in] baudrate the new baudrate
+         * \param[in] flowControl the flow control setting
+         * \param[in] rawMode \c true if the raw mode should be used (that is what you normally
          *            want if you're using the serial port just as communication interface),
-         *            @c false if not.
-         * @todo make the number of data bits configurable
-         * @todo make the number of stop bits configurable
+         *            \c false if not.
+         * \todo make the number of data bits configurable
+         * \todo make the number of stop bits configurable
          *
-         * @return @c true on success, @c false on failure. Use getLastError() to get a
+         * \return \c true on success, \c false on failure. Use getLastError() to get a
          *         human-readable description of the error cause.
          */
         bool reconfigure(int            baudrate,
                          FlowControl    flowControl,
                          bool           rawMode = true);
 
+    protected:
+        /**
+         * \brief Creates a lock for the serial port
+         *
+         * On systems that use lock files to lock access to the serial port, this
+         * function should create the lock file and should return if the locking was
+         * successful.
+         *
+         * This function is called in openPort() automatically.
+         *
+         * \return \c true if locking was successful, \c false otherwise.
+         */
+        bool createLock();
+
+        /**
+         * \brief Removes the lock for the serial port
+         *
+         * On systems that use lock files, it should remove the lock file created by
+         * createLock().
+         */
+        void removeLock();
+
     private:
         SerialFilePrivate *d;
 };
 
 /**
- * @brief Prints the port name to the given ostream
+ * \brief Prints the port name to the given ostream
  *
  * Prints the name which has been passed in the constructor to the SerialFile object
  * to the given output stream.
  *
  * Use it for example for debugging:
  *
- * @code
+ * \code
  * SerialFile serialFile(portName);
  * if (!serialFile.openPort()) {
  *     std::cerr << "Unable to open serial device '" << serialFile << "': "
  *               << serialFile.getLastError() << std::endl;
  *     return false;
  * }
- * @endcode
+ * \endcode
  *
- * @param[in,out] os the output stream to which the name should be printed
- * @param[in] serialFile the serial file object
- * @return @p os
+ * \param[in,out] os the output stream to which the name should be printed
+ * \param[in] serialFile the serial file object
+ * \return \p os
  */
 std::ostream &operator<<(std::ostream &os, const SerialFile &serialFile);
 
 /* }}} */
 
+} // end namespace io
 } // end namespace bw
 
 #endif /* SERIALFILE_H */

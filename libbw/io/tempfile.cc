@@ -25,25 +25,67 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include <cerrno>
+#include <cstdio>
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include <libbw/log/errorlog.h>
+#include "tempfile.h"
 
-#endif // LIBBW_BWCONFIG_H_
+namespace bw {
+namespace io {
+
+TempFile::TempFile(const std::string &namepart, Flags flags)
+    : m_flags(flags)
+    , m_open(false)
+    , m_exitHandler(NULL)
+    , d(NULL)
+{
+    m_name = _create(namepart);
+    m_open = true;
+
+    if (getenv("LIBBW_TEMPFILE_NODELETE"))
+        m_flags = NoFlags;
+
+    if (m_flags & DeleteOnExit) {
+        m_exitHandler = new FileDeleteExitHandler(m_name);
+        registerExitHandler(m_exitHandler);
+    }
+}
+
+TempFile::~TempFile()
+{
+    close();
+}
+
+TempFile::Flags TempFile::flags() const
+{
+    return m_flags;
+}
+
+std::string TempFile::name() const
+{
+    return m_name;
+}
+
+void TempFile::close()
+{
+    if (!m_open)
+        return;
+
+    _close();
+    m_open = false;
+
+    if (m_flags & DeleteOnClose) {
+        int ret = std::remove(m_name.c_str());
+        if (ret != 0)
+            BW_ERROR_WARNING("Unable to remove '%s': %s", m_name.c_str(), std::strerror(errno));
+    }
+
+    if (m_exitHandler) {
+        unregisterExitHandler(m_exitHandler);
+        m_exitHandler = NULL;
+    }
+}
+
+} // end namespace io
+} // end namespace bw

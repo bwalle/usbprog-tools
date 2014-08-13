@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#include <ctime>
+#include <iostream>
+#include <cstring>
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include "fileerrorlog.h"
+#include "bwconfig.h"
+#include "datetime.h"
+#ifdef HAVE_THREADS
+#  include <thread/mutexlocker.h>
+#endif
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+namespace bw {
 
-#endif // LIBBW_BWCONFIG_H_
+/* FileErrorLog {{{ */
+
+FileErrorlog::FileErrorlog(const char *filename)
+    : m_file(NULL)
+{
+    if (!filename)
+        m_file = stderr;
+    else if (std::strcmp(filename, "stderr") == 0)
+        m_file = stderr;
+    else if (std::strcmp(filename, "stdout") == 0)
+        m_file = stdout;
+    else {
+        m_file = std::fopen(filename, "a");
+        if (!m_file) {
+            std::cerr << "Warning: Unable to open '" << filename << "' for writing." << std::endl;
+            m_file = stderr;
+        }
+    }
+}
+
+FileErrorlog::~FileErrorlog()
+{
+    if (m_closeInDtor)
+        std::fclose(m_file);
+}
+
+void FileErrorlog::vlog(Errorlog::Level level, const char *msg, std::va_list args)
+{
+#ifdef HAVE_THREADS
+    thread::MutexLocker locker(&m_mutex);
+#endif
+    fprintf(m_file, "%s [%-10.10s] ", bw::Datetime::now().str().c_str(), levelToString(level));
+    vfprintf(m_file, msg, args);
+    fprintf(m_file, "\n");
+    fflush(m_file);
+}
+
+/* }}} */
+
+} // end namespace bw

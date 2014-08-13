@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#ifndef LIBBW_LOG_SYSERRORLOG_H_
+#define LIBBW_LOG_SYSERRORLOG_H_
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include <cstdio>
+#include <string>
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include "errorlog.h"
 
-#endif // LIBBW_BWCONFIG_H_
+namespace bw {
+
+/* SysErrorlog {{{ */
+
+/**
+ * \brief Error log implementation for syslog
+ *
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup log
+ */
+class SysErrorlog : public Errorlog {
+
+    public:
+        /// Let Errorlog create instances of SysErrorlog, and only Errorlog.
+        friend class Errorlog;
+
+    protected:
+        /**
+         * \brief Creates a new SysErrorlog.
+         *
+         * Don't use that function directly. Instead, use Errorlog::configure().
+         *
+         * \param[in] ident the syslog ident string
+         */
+        SysErrorlog(const char *ident="");
+
+        /**
+         * \brief Destructor
+         */
+        ~SysErrorlog();
+
+        /**
+         * \copydoc Errorlog::vlog()
+         */
+        void vlog(Errorlog::Level level, const char *msg, std::va_list args);
+
+    private:
+        /**
+         * \brief Converts a bw loglevel to syslog
+         *
+         * \param[in] level the log level
+         * \return the syslog constant
+         */
+        int logToSyslog(Errorlog::Level level);
+};
+
+/* }}} */
+
+} // end namespace bw
+
+#endif /* LIBBW_LOG_SYSERRORLOG_H_ */

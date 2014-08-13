@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2007-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2007-2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ namespace bw {
 
 /* OptionValue {{{ */
 
-/* ---------------------------------------------------------------------------------------------- */
 OptionValue::OptionValue()
     : m_type(OT_INVALID)
     , m_integer(0)
@@ -51,63 +50,58 @@ OptionValue::OptionValue()
     , m_flag(false)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 void OptionValue::setType(OptionType type)
 {
     m_type = type;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 OptionType OptionValue::getType() const
 {
     return m_type;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void OptionValue::setString(const std::string &string)
 {
     m_string = string;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string OptionValue::getString() const
 {
     return m_string;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void OptionValue::setFlag(bool flag)
 {
     m_flag = flag;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool OptionValue::getFlag() const
 {
     return m_flag;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void OptionValue::setInteger(int value)
 {
     m_integer = value;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 int OptionValue::getInteger() const
 {
     return m_integer;
 }
 
+OptionValue::operator bool() const
+{
+    return m_type != OT_INVALID;
+}
+
 /* }}} */
 /* Option {{{ */
 
-/* ---------------------------------------------------------------------------------------------- */
 Option::Option()
     : m_type(OT_FLAG)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 Option::Option(const std::string &name, char letter, OptionType type,
                const std::string &description)
     : m_longName(name)
@@ -116,76 +110,61 @@ Option::Option(const std::string &name, char letter, OptionType type,
     , m_type(type)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 void Option::setLongName(const std::string &name)
 {
     m_longName = name;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string Option::getLongName() const
 {
     return m_longName;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Option::setLetter(char letter)
 {
     m_letter = letter;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 char Option::getLetter() const
 {
     return m_letter;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Option::setType(OptionType type)
 {
     m_type = type;
 }
 
-/* }}} */
-/* Option {{{ */
-
-/* ---------------------------------------------------------------------------------------------- */
 OptionType Option::getType() const
 {
     return m_type;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Option::setDescription(const std::string &description)
 {
     m_description = description;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string Option::getDescription() const
 {
     return m_description;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Option::setValue(OptionValue value)
 {
     m_value = value;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 OptionValue Option::getValue() const
 {
     return m_value;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool Option::isValid() const
 {
     return m_longName.size() > 0 && m_letter != 0;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string Option::getPlaceholder() const
 {
     switch (getType()) {
@@ -200,13 +179,59 @@ std::string Option::getPlaceholder() const
     }
 }
 
-/* ---------------------------------------------------------------------------------------------- */
-void OptionParser::addOption(Option option)
+/* }}} */
+/* OptionGroup {{{ */
+
+OptionGroup::OptionGroup(const std::string &title)
+    : m_title(title)
+{}
+
+std::string OptionGroup::getTitle() const
+{
+    return m_title;
+}
+
+const std::vector<Option> &OptionGroup::options() const
+{
+    return m_options;
+}
+
+std::vector<Option> &OptionGroup::options()
+{
+    return m_options;
+}
+
+size_t OptionGroup::size() const
+{
+    return m_options.size();
+}
+
+void OptionGroup::addOption(const Option &option)
 {
     m_options.push_back(option);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+void OptionGroup::addOption(const std::string    &name,
+                            char                 letter,
+                            OptionType           type,
+                            const std::string    &description)
+{
+    addOption(Option(name, letter, type, description));
+}
+
+/* }}} */
+/* OptionParser {{{ */
+
+OptionParser::OptionParser(const std::string &defaultGroupName)
+{
+    m_options.push_back(OptionGroup(defaultGroupName));
+}
+
+void OptionParser::addOption(Option option)
+{
+    m_options[0].addOption(option);
+}
+
 void OptionParser::addOption(const std::string &name, char letter,
         OptionType type, const std::string &description)
 {
@@ -214,33 +239,44 @@ void OptionParser::addOption(const std::string &name, char letter,
     addOption(op);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+void OptionParser::addOptions(const OptionGroup &group)
+{
+    m_options.push_back(group);
+}
+
 bool OptionParser::parse(int argc, char *argv[])
 {
     struct option *cur, *opt;
     std::string   getopt_string;
+    int totalNumber = calcTotalNumberOfOptions();
 
-    opt = new option[m_options.size() + 1];
+    opt = new option[totalNumber + 1];
     if (!opt) {
         std::cerr << "OptionParser::parse(): malloc failed" << std::endl;
         return false;
     }
     cur = opt;
 
-    // get a struct option array from the map
-    for (std::vector<Option>::iterator it = m_options.begin();
+    for (std::vector<OptionGroup>::const_iterator it = m_options.begin();
             it != m_options.end(); ++it) {
-        Option opt = *it;
-        cur->name = strdup(opt.getLongName().c_str());
-        cur->has_arg = opt.getType() != OT_FLAG;
-        cur->flag = 0;
-        cur->val = opt.getLetter();
 
-        getopt_string += opt.getLetter();
-        if (opt.getType() != OT_FLAG)
-            getopt_string += ":";
+        const std::vector<Option> options = it->options();
 
-        cur++;
+        for (std::vector<Option>::const_iterator opIter = options.begin();
+                opIter != options.end(); ++opIter) {
+
+            const Option opt = *opIter;
+            cur->name = strdup(opt.getLongName().c_str());
+            cur->has_arg = opt.getType() != OT_FLAG;
+            cur->flag = 0;
+            cur->val = opt.getLetter();
+
+            getopt_string += opt.getLetter();
+            if (opt.getType() != OT_FLAG)
+                getopt_string += ":";
+
+            cur++;
+        }
     }
     memset(cur, 0, sizeof(option));
 
@@ -292,7 +328,7 @@ bool OptionParser::parse(int argc, char *argv[])
 
     // free stuff
     cur = opt;
-    for (unsigned int i = 0; i < m_options.size(); i++) {
+    for (int i = 0; i < totalNumber; i++) {
         free((void *)cur->name);
         cur++;
     }
@@ -301,62 +337,106 @@ bool OptionParser::parse(int argc, char *argv[])
     return true;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 OptionValue OptionParser::getValue(const std::string &name)
 {
-    for (std::vector<Option>::iterator it = m_options.begin();
+    for (std::vector<OptionGroup>::const_iterator it = m_options.begin();
             it != m_options.end(); ++it) {
-        Option &op = *it;
 
-        if (op.getLongName() == name)
-            return op.getValue();
+        const std::vector<Option> options = it->options();
+
+        for (std::vector<Option>::const_iterator opIter = options.begin();
+                opIter != options.end(); ++opIter) {
+
+            const Option &op = *opIter;
+
+            if (op.getLongName() == name)
+                return op.getValue();
+        }
     }
 
     return OptionValue();
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 Option &OptionParser::findOption(char letter)
 {
     static Option invalid;
 
-    // get a struct option array from the map
-    for (std::vector<Option>::iterator it = m_options.begin();
+    for (std::vector<OptionGroup>::iterator it = m_options.begin();
             it != m_options.end(); ++it) {
 
-        Option &opt = *it;
-        if (opt.getLetter() == letter)
-            return opt;
+        std::vector<Option> &options = it->options();
+
+        for (std::vector<Option>::iterator opIter = options.begin();
+                opIter != options.end(); ++opIter) {
+
+            Option &opt = *opIter;
+
+            if (opt.getLetter() == letter)
+                return opt;
+        }
     }
 
     return invalid;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::vector<std::string> OptionParser::getArgs()
 {
     return m_args;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void OptionParser::printHelp(std::ostream &os, const std::string &name) const
 {
     os << name << std::endl << std::endl;
-    for (std::vector<Option>::const_iterator it = m_options.begin();
+
+    bool firstGroup = true;
+    for (std::vector<OptionGroup>::const_iterator it = m_options.begin();
             it != m_options.end(); ++it) {
 
-        const Option &opt = *it;
+        const OptionGroup &group = *it;
 
-        os << "--" << opt.getLongName();
-        std::string placeholder = opt.getPlaceholder();
-        if (placeholder.length() > 0)
-            os << "=" << opt.getPlaceholder();
-        os << " | -" << opt.getLetter();
-        if (placeholder.length() > 0)
-            os << " " << opt.getPlaceholder();
-        os << std::endl;
-        os << "     " << opt.getDescription() << std::endl;
+        // skip empty option groups
+        if (group.size() == 0)
+            continue;
+
+        // if it's not the first group, print a bit of vertical space
+        if (firstGroup)
+            firstGroup = false;
+        else
+            os << std::endl;
+
+        // print the title only if there's a title
+        if (!group.getTitle().empty())
+             os << group.getTitle() << ":" << std::endl;
+
+        const std::vector<Option> options = it->options();
+
+        for (std::vector<Option>::const_iterator opIter = options.begin();
+                opIter != options.end(); ++opIter) {
+
+            const Option &opt = *opIter;
+
+            os << "    --" << opt.getLongName();
+            std::string placeholder = opt.getPlaceholder();
+            if (placeholder.length() > 0)
+                os << "=" << opt.getPlaceholder();
+            os << " | -" << opt.getLetter();
+            if (placeholder.length() > 0)
+                os << " " << opt.getPlaceholder();
+            os << std::endl;
+            os << "        " << opt.getDescription() << std::endl;
+        }
     }
+}
+
+int OptionParser::calcTotalNumberOfOptions() const
+{
+    int total = 0;
+
+    for (std::vector<OptionGroup>::const_iterator it = m_options.begin();
+            it != m_options.end(); ++it)
+        total += it->size();
+
+    return total;
 }
 
 /* }}} */

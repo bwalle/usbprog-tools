@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,25 +25,63 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include <list>
+#include <algorithm>
+#include <cstdio>
+#include <cerrno>
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include "exithandler.h"
 
-#endif // LIBBW_BWCONFIG_H_
+#include "log/errorlog.h"
+
+namespace bw {
+
+/* FileDeleteExitHandler {{{ */
+
+FileDeleteExitHandler::FileDeleteExitHandler(const std::string &filename)
+    : m_filename(filename)
+{}
+
+void FileDeleteExitHandler::exitCleanup()
+{
+    std::remove(m_filename.c_str());
+}
+
+/* }}} */
+/* registerExitHandler {{{ */
+
+static std::list<ExitHandler *> s_exitHandlers;
+static bool s_globalExitHandlerRegistered = false;
+
+static void libbw_exithandler()
+{
+    std::list<ExitHandler *>::const_iterator it;
+    for (it = s_exitHandlers.begin(); it != s_exitHandlers.end(); ++it) {
+        ExitHandler *current = *it;
+        current->exitCleanup();
+        delete current;
+    }
+}
+
+void registerExitHandler(ExitHandler *exitHandler)
+{
+    if (!s_globalExitHandlerRegistered) {
+        if (std::atexit(libbw_exithandler) != 0)
+            BW_ERROR_WARNING("Unable to register 'libbw_exithandler': %s", std::strerror(errno));
+        s_globalExitHandlerRegistered = true;
+    }
+
+    s_exitHandlers.push_back(exitHandler);
+}
+
+void unregisterExitHandler(ExitHandler *exitHandler)
+{
+    std::list<ExitHandler *>::iterator it;
+    it = std::find(s_exitHandlers.begin(), s_exitHandlers.end(), exitHandler);
+    if (it != s_exitHandlers.end())
+        s_exitHandlers.erase(it);
+}
+
+/* }}} */
+
+} // namespace bw

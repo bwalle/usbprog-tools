@@ -27,28 +27,62 @@
 #ifndef OS_H
 #define OS_H
 
-/**
- * @file
- * @brief Operating system abstraction functions
- *
- * This file contains operating system specific functions.
- *
- * @author Bernhard Walle <bernhard@bwalle.de>
- */
+#include <vector>
+#include <string>
 
 namespace bw {
 
 /**
- * @brief Puts the current process to background.
+ * \brief Flags for daemonize
+ */
+enum DaemonizeFlags {
+    DAEMONIZE_NOCLOSE = (1<<0)   /**< don't close file descriptors */
+};
+
+/**
+ * \brief Puts the current process to background.
+ * \ingroup os
  *
  * Currently the function is implemented in POSIX only.
  *
  * The function is for programs wishing to detach themselves from the
  * controlling terminal and run in the background as system daemons.
  *
- * @return 0 on success, any standard error code on failure.
+ * If \p flags doesn't contain DAEMONIZE_NOCLOSE, then all file descriptors
+ * are closed. STDIN, STDOUT and STDERR are redirected to /dev/null, regardless
+ * of DAEMONIZE_NOCLOSE.
+ *
+ * \param[in] flags a bitwise OR'd combination of flags as described above.
+ * \return 0 on success, any standard error code on failure.
  */
-int daemonize();
+int daemonize(int flags=0);
+
+/**
+ * \brief Replacement for system() without a shell
+ * \ingroup os
+ *
+ * This function does the same as system but tries to avoid using a shell, so
+ * it's not necessary to quote the arguments.
+ *
+ * \code
+ * std::vector<std::string> args;
+ * args.push_back("ls");
+ * args.push_back("-l");
+ * int rc = bw::system(args[0], args);
+ * if (rc < 0) {
+ *      std::cerr << "Unable to execute 'ls -l':" << std::strerror(errno) << std::endl;
+ *      return -1;
+ * }
+ * \endcode
+ *
+ * \param[in] process the name of the program that should be executed, either the full path or just
+ *            the name of the binary which assumes that the program is in <tt>$PATH</tt>.
+ * \param[in] args the arguments including the 0th argument which usually is the name of the
+ *            exeutable proceded in \p process
+ * \return the return status of the process (between 0 and 255) on success, a negative value on
+ *         failure in which case the global value errno is set accordingly.
+ */
+int system(const std::string &process, const std::vector<std::string> &args);
 
 } // end namespace bw
 

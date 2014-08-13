@@ -34,7 +34,6 @@
 
 namespace bw {
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string strip(std::string a, const std::string &chars_to_strip)
 {
     if (a.length() == 0)
@@ -46,29 +45,26 @@ std::string strip(std::string a, const std::string &chars_to_strip)
     return a;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string stripl(std::string a)
 {
     if (a.length() == 0)
         return a;
 
-    a.erase(0, a.find_first_not_of("\n \t", 0));
+    a.erase(0, a.find_first_not_of("\r\n \t", 0));
 
     return a;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string stripr(std::string a)
 {
     if (a.length() == 0)
         return a;
 
-    a.erase(a.find_last_not_of("\n \t")+1);
+    a.erase(a.find_last_not_of("\r\n \t")+1);
 
     return a;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool startsWith(const std::string &str, const std::string &start, bool casesensitive)
 {
     size_t len = start.size();
@@ -81,13 +77,11 @@ bool startsWith(const std::string &str, const std::string &start, bool casesensi
         return strcasecmp(str.substr(0, len).c_str(), start.c_str()) == 0;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string getRest(const std::string &str, const std::string &prefix)
 {
     return str.substr(prefix.size(), str.size() - prefix.size());
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 char **stringvector_to_array(const std::vector<std::string> &vec)
 {
     if (vec.size() == 0)
@@ -104,7 +98,6 @@ char **stringvector_to_array(const std::vector<std::string> &vec)
     return ret;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::vector<std::string> stringsplit(const std::string &str, const std::string &pattern)
 {
     std::vector<std::string> retval;
@@ -124,25 +117,20 @@ std::vector<std::string> stringsplit(const std::string &str, const std::string &
     return retval;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string replace_char(const std::string  &input,
                          char               old_char,
                          const std::string  &new_string)
 {
     std::string ret = input;
     size_t pos = 0;
+    size_t correction = new_string.size() - 1;
 
-    while ((pos = input.find(old_char, pos)) != std::string::npos) {
-        ret.erase(pos);
-        ret.insert(pos, new_string);
-
-        pos++;
+    while ((pos = ret.find(old_char, pos)) != std::string::npos) {
+        ret.replace(pos, 1, new_string);
+        pos += 1 + correction;
     }
 
     return ret;
 }
 
-
 } // end namespace bw
-
-// :tabSize=4:indentSize=4:noTabs=true:mode=c++:folding=explicit:collapseFolds=1:maxLineLen=100:

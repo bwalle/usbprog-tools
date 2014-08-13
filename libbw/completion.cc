@@ -34,7 +34,7 @@
 
 #include "bwconfig.h"
 
-#if HAVE_LIBREADLINE
+#ifdef HAVE_LIBREADLINE
 # include <readline/readline.h>
 # include <readline/history.h>
 #endif
@@ -46,17 +46,15 @@ namespace bw {
 
 /* class definitions {{{ */
 
-#if HAVE_LIBREADLINE
+#ifdef HAVE_LIBREADLINE
 class ReadlineLineReader : public AbstractLineReader {
     public:
         ReadlineLineReader(const std::string &prompt);
 
     public:
         std::string readLine(const char *prompt = NULL);
-        void readHistory(const std::string &file)
-            throw (IOError);
-        void writeHistory(const std::string &file)
-            throw (IOError);
+        void readHistory(const std::string &file);
+        void writeHistory(const std::string &file);
         bool haveHistory() const;
         bool canEditLine() const;
         std::string editLine(const char *oldLine);
@@ -67,30 +65,30 @@ class ReadlineLineReader : public AbstractLineReader {
     private:
         Completor *m_completor;
 };
-#endif
+#endif /* HAVE_LIBREADLINE */
 
 /**
- * @brief Simple line reader without history and completion
+ * \brief Simple line reader without history and completion
  *
  * This line reader implementation is simple: You cannot use the cursor keys, it has
  * no history and also no completion.
  *
- * @author Bernhard Walle <bernhard@bwalle.de>
+ * \author Bernhard Walle <bernhard@bwalle.de>
  */
 class SimpleLineReader : public AbstractLineReader {
     public:
         /**
-         * @brief Constructor
+         * \brief Constructor
          *
          * Creates a new instance of a SimpleLineReader.
          *
-         * @param[in] prompt the prompt of the line reader
+         * \param[in] prompt the prompt of the line reader
          */
         SimpleLineReader(const std::string &prompt);
 
     public:
         /**
-         * @copydoc LineReader::readLine()
+         * \copydoc LineReader::readLine()
          */
         std::string readLine(const char *prompt = NULL);
 };
@@ -98,82 +96,68 @@ class SimpleLineReader : public AbstractLineReader {
 /* }}} */
 /* LineReader {{{ */
 
-/* ---------------------------------------------------------------------------------------------- */
 LineReader *LineReader::defaultLineReader(const std::string &prompt)
 {
-#if HAVE_LIBREADLINE
+#ifdef HAVE_LIBREADLINE
     return new ReadlineLineReader(prompt);
 #else
     return new SimpleLineReader(prompt);
-#endif
+#endif /* HAVE_LIBREADLINE */
 }
 
 /* }}} */
 /* AbstractLineReader {{{ */
 
-/* ---------------------------------------------------------------------------------------------- */
 AbstractLineReader::AbstractLineReader(const std::string &prompt)
     : m_prompt(prompt)
     , m_eof(false)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string AbstractLineReader::getPrompt() const
 {
     return m_prompt;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void AbstractLineReader::setEof(bool eof)
 {
     m_eof = eof;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool AbstractLineReader::eof() const
 {
     return m_eof;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void AbstractLineReader::readHistory(const std::string &file)
-    throw (IOError)
 {
     (void)file;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void AbstractLineReader::writeHistory(const std::string &file)
-    throw (IOError)
 {
     (void)file;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool AbstractLineReader::haveHistory() const
 {
     return false;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool AbstractLineReader::canEditLine() const
 {
     return false;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string AbstractLineReader::editLine(const char *line)
 {
     return line;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool AbstractLineReader::haveCompletion() const
 {
     return false;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void AbstractLineReader::setCompletor(Completor *comp)
 {
     (void)comp;
@@ -182,12 +166,10 @@ void AbstractLineReader::setCompletor(Completor *comp)
 /* }}} */
 /* SimpleLineReader {{{ */
 
-/* ---------------------------------------------------------------------------------------------- */
 SimpleLineReader::SimpleLineReader(const std::string &prompt)
     : AbstractLineReader(prompt)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string SimpleLineReader::readLine(const char *prompt)
 {
     std::string ret;
@@ -196,7 +178,7 @@ std::string SimpleLineReader::readLine(const char *prompt)
     else
         std::cout << prompt;
     std::getline(std::cin, ret, '\n');
-    if (std::cout.eof())
+    if (std::cin.eof())
         setEof(true);
     return ret;
 }
@@ -204,14 +186,12 @@ std::string SimpleLineReader::readLine(const char *prompt)
 /* }}} */
 /* ReadlineLineReader {{{ */
 
-#if HAVE_LIBREADLINE
+#ifdef HAVE_LIBREADLINE
 
 /* completion stuff, not really object oriented :-( */
 
-/* ---------------------------------------------------------------------------------------------- */
 Completor *g_current_completor;
 
-/* ---------------------------------------------------------------------------------------------- */
 char **readline_line_reader_complete(const char *text, int start, int end)
 {
     std::vector<std::string> completions = g_current_completor->complete(
@@ -239,12 +219,10 @@ char **readline_line_reader_complete(const char *text, int start, int end)
     return stringvector_to_array(completions);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 ReadlineLineReader::ReadlineLineReader(const std::string &prompt)
     : AbstractLineReader(prompt)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string ReadlineLineReader::readLine(const char *prompt)
 {
     char *line_read;
@@ -263,13 +241,11 @@ std::string ReadlineLineReader::readLine(const char *prompt)
     return ret;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool ReadlineLineReader::canEditLine() const
 {
     return true;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 static std::string buffer;
 static int my_rl_pre_input_hook()
 {
@@ -278,7 +254,6 @@ static int my_rl_pre_input_hook()
     return 0;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 std::string ReadlineLineReader::editLine(const char *line)
 {
     char *line_read;
@@ -299,9 +274,7 @@ std::string ReadlineLineReader::editLine(const char *line)
     return ret;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void ReadlineLineReader::readHistory(const std::string &file)
-    throw (IOError)
 {
     int ret = read_history(file.c_str());
     if (ret < 0)
@@ -309,9 +282,7 @@ void ReadlineLineReader::readHistory(const std::string &file)
                 + std::strerror(errno));
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void ReadlineLineReader::writeHistory(const std::string &file)
-    throw (IOError)
 {
     int ret = write_history(file.c_str());
     if (ret < 0)
@@ -319,19 +290,16 @@ void ReadlineLineReader::writeHistory(const std::string &file)
                 + std::strerror(errno));
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool ReadlineLineReader::haveHistory() const
 {
     return true;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool ReadlineLineReader::haveCompletion() const
 {
     return true;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void ReadlineLineReader::setCompletor(Completor *comp)
 {
     m_completor = comp;
@@ -345,8 +313,6 @@ void ReadlineLineReader::setCompletor(Completor *comp)
 
 /* }}} */
 
-#endif
+#endif /* HAVE_LIBREADLINE */
 
 } // end namespace bw
-
-// :tabSize=4:indentSize=4:noTabs=true:mode=c++:folding=explicit:collapseFolds=1:maxLineLen=100:

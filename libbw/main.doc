@@ -22,8 +22,7 @@
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
- */
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}} */
 
 /**
 
@@ -64,40 +63,48 @@ It's just shared!
 
 Assume you have a project structure like following:
 
-@verbatim
+\verbatim
 .
 |-- README
 |-- doc
 |-- ext
 |   `-- libbw
 `-- src
-@endverbatim
+\endverbatim
 
 then you can copy <i>LibBW</i> to the project directory by using a simple
 
-@verbatim
+\verbatim
  % ./update_target.sh /path/to/project/ext/libbw
-@endverbatim
+\endverbatim
 
 \subsection step1 CMake-based projects
 
 To finally use the library in the application, you need to add following code
 into the to-level <i>CMakeLists.txt</i> build file:
 
-@code
+\code
 # libbw
 
 ADD_SUBDIRECTORY(ext/libbw)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/ext)
 SET (EXTRA_LIBS ${EXTRA_LIBS} bw)
-@endcode
+\endcode
 
 Then you can include the header files for example with
 
-@code
+\code
 #include <libbw/error.h>
-@endcode
+\endcode
+
+\defgroup thread    Threading functions
+\defgroup io        I/O classes
+\defgroup log       Logging
+\defgroup string    String functions
+\defgroup datetime  Date/time functions
+\defgroup os        Operating system functions
+\defgroup misc      Miscellaneous utilities
 
 */
 
-// vim: set ft=doxygen:
+// vim: set ft=doxygen fdm=marker:

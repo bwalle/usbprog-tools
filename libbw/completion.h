@@ -25,17 +25,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
 
-/**
- * @file completion.h
- * @brief Shell-like command line reader with completion
- *
- * This file contains a shell-like command reader with completion.
- *
- * @author Bernhard Walle <bernhard@bwalle.de>
- */
+#ifndef LIBBW_COMPLETION_H_
+#define LIBBW_COMPLETION_H_
 
-#ifndef COMPLETION_H
-#define COMPLETION_H
+/**
+ * \defgroup completion Command-line completion
+ * \brief Shell-like command line reader with completion
+ *
+ * This modules contains a shell-like command reader with completion.
+ *
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ */
 
 #include "bwerror.h"
 #include <vector>
@@ -45,18 +45,19 @@ namespace bw {
 /* Interface for completors {{{ */
 
 /**
- * @class Completor completion.h libbw/completion.h
- * @brief Interface for auto-completion
+ * \class Completor completion.h libbw/completion.h
+ * \brief Interface for auto-completion
  *
  * This class represents an interface that one must implement to get
  * auto-completion.
  *
- * @author Bernhard Walle <bernhard@bwalle.de>
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup completion
  */
 class Completor {
     public:
         /**
-         * @brief Destructor
+         * \brief Destructor
          *
          * Deletes a Completor object.
          */
@@ -64,16 +65,16 @@ class Completor {
 
     public:
         /**
-         * @brief Complete function
+         * \brief Complete function
          *
          * This function must supply the completions that are available for
          * the specified text..
          *
-         * @param[in] text the currently entered text
-         * @param[in] full_text the full line
-         * @param[in] start_idx the start index
-         * @param[in] end_idx the end index
-         * @return the completed values
+         * \param[in] text the currently entered text
+         * \param[in] full_text the full line
+         * \param[in] start_idx the start index
+         * \param[in] end_idx the end index
+         * \return the completed values
          */
         virtual std::vector<std::string> complete(const std::string &text,
                                                   const std::string &full_text,
@@ -85,19 +86,20 @@ class Completor {
 /* Interface for a linereader {{{ */
 
 /**
- * @class LineReader completion.h libbw/complection.h
- * @brief Interface for a line reader
+ * \class LineReader completion.h libbw/complection.h
+ * \brief Interface for a line reader
  *
  * This class represents an interface for a line reader. A line reader is a
  * class that reads lines like a shell, including tab-complection. Completion
  * is optional.
  *
- * @author Bernhard Walle <bernhard@bwalle.de>
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup completion
  */
 class LineReader {
     public:
         /**
-         * @brief Destructor
+         * \brief Destructor
          *
          * Destroys a LineReader object.
          */
@@ -105,127 +107,125 @@ class LineReader {
 
     public:
         /**
-         * @brief Returns a suitable LineReader implementation
+         * \brief Returns a suitable LineReader implementation
          *
          * Returns a suitable LineReader implementation on the system. This is
          * a factory method.
          *
-         * @param[in] prompt the prompt for the LineReader
-         * @return the LineReader implementation. The caller is responsible to
+         * \param[in] prompt the prompt for the LineReader
+         * \return the LineReader implementation. The caller is responsible to
          *         free the LineReader object.
          */
         static LineReader *defaultLineReader(const std::string &prompt); /* factory */
 
     public:
         /**
-         * @brief Reads a line
+         * \brief Reads a line
          *
-         * Reads a whole line. Displays the supplied @p prompt.
+         * Reads a whole line. Displays the supplied \p prompt.
          *
-         * @param[in] prompt the prompt to display. You can pass @c NULL if
+         * \param[in] prompt the prompt to display. You can pass \c NULL if
          *            you want to use the default prompt (see
          *            defaultLineReader()).
-         * @return the read line
+         * \return the read line
          */
         virtual std::string readLine(const char *prompt = NULL) = 0;
 
         /**
-         * @brief Returns the prompt
+         * \brief Returns the prompt
          *
          * Returns the prompt of the LineReader.
          *
-         * @return the prompt
+         * \return the prompt
          */
         virtual std::string getPrompt() const = 0;
 
         /**
-         * @brief Checks for the end of file
+         * \brief Checks for the end of file
          *
          * Checks if the end of file character (Ctrl-D on Unix) has been
          * received. Normally the application should terminate then.
          *
-         * @return @c true if the end of line character has been received, @c
+         * \return \c true if the end of line character has been received, \c
          *         false otherwise
          */
         virtual bool eof() const = 0;
 
         /**
-         * @brief Reads the history from file
+         * \brief Reads the history from file
          *
          * Reads the history information from file. Normally that function is
          * called on startup of the application.
          *
-         * @param[in] file the history file that should be read
-         * @exception IOError if the file cannot be opened for reading
+         * \param[in] file the history file that should be read
+         * \exception IOError if the file cannot be opened for reading
          */
-        virtual void readHistory(const std::string &file)
-            throw (IOError) = 0;
+        virtual void readHistory(const std::string &file) = 0;
 
         /**
-         * @brief Write history to file
+         * \brief Write history to file
          *
          * Writes the history to a file. Normally that function is called on
          * shutdown of the application.
          *
-         * @param[in] file the file where the history should be written to
-         * @exception IOError if the file cannot be opened or written to
+         * \param[in] file the file where the history should be written to
+         * \exception IOError if the file cannot be opened or written to
          */
-        virtual void writeHistory(const std::string &file)
-            throw (IOError) = 0;
+        virtual void writeHistory(const std::string &file) = 0;
 
         /**
-         * @brief Checks if the implementation has history functionality.
+         * \brief Checks if the implementation has history functionality.
          *
          * Checks if the implementation has history functionality.
          *
-         * @return @c true if the implementation has history functionality, @c
+         * \return \c true if the implementation has history functionality, \c
          *         false otherwise
          */
         virtual bool haveHistory() const = 0;
 
         /**
-         * @brief Checks if the implementation has a completion
+         * \brief Checks if the implementation has a completion
          *
          * Checks if the implementation has completion functionality.
          *
-         * @return @c true if the implementation has completion functionality,
-         *         @c false otherwise
+         * \return \c true if the implementation has completion functionality,
+         *         \c false otherwise
          */
         virtual bool haveCompletion() const = 0;
 
         /**
-         * @brief Sets the completor
+         * \brief Sets the completor
          *
          * Sets the completor object. See the description of Completor for how
          * to implement a completor.
          *
-         * The memory management of @p completor has to be done by the
+         * The memory management of \p completor has to be done by the
          * application and is not done by the implementation of the
          * LineReader.
          *
-         * @param[in] comp the completor object
+         * \param[in] comp the completor object
          */
         virtual void setCompletor(Completor *comp) = 0;
 
         /**
-         * @brief Checks if the line is editable
+         * \brief Checks if the line is editable
          *
          * Checks if the line of the LineReader can be set by the application.
          * In other words, checks if editLine() is available.
          *
-         * @return @c true if the line is editable, @c false otherwise
+         * \return \c true if the line is editable, \c false otherwise
          */
         virtual bool canEditLine() const = 0;
 
         /**
-         * @brief Edits the current line
+         * \brief Edits the current line
          *
-         * Sets the contents of the current line to @p oldLine, lets the user
+         * Sets the contents of the current line to \p oldLine, lets the user
          * edit the line and finally returns the new contents as return value.
          *
-         * @param[in] oldLine the inital contents of the line or @c NULL if
+         * \param[in] oldLine the inital contents of the line or \c NULL if
          *            the line should be initially empty
-         * @return the contents of the new line after the user has edited the
+         * \return the contents of the new line after the user has edited the
          *         line
          */
         virtual std::string editLine(const char *oldLine) = 0;
@@ -235,98 +235,97 @@ class LineReader {
 /* Abstract base class for line readers {{{ */
 
 /**
- * @class AbstractLineReader completion.h libbw/completion.h
- * @brief Abstract base class for LineReader implementations
+ * \class AbstractLineReader completion.h libbw/completion.h
+ * \brief Abstract base class for LineReader implementations
  *
  * This is a abstract base class for line reader implementations.
  *
- * @author Bernhard Walle <bernhard@bwalle.de>
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup completion
  */
 class AbstractLineReader : public LineReader {
     public:
         /**
-         * @brief Constructor
+         * \brief Constructor
          *
          * Creates a new AbstractLineReader instance.
          *
-         * @param[in] prompt the prompt of the line reader
+         * \param[in] prompt the prompt of the line reader
          */
         AbstractLineReader(const std::string &prompt);
 
     public:
 
         /**
-         * @copydoc LineReader::getPrompt()
+         * \copydoc LineReader::getPrompt()
          */
         std::string getPrompt() const;
 
         /**
-         * @copydoc LineReader::eof()
+         * \copydoc LineReader::eof()
          */
         bool eof() const;
 
         /**
-         * @brief Reads the history
+         * \brief Reads the history
          *
          * Reads the history from file
          *
-         * @param[in] file the history file
-         * @exception IOError never
+         * \param[in] file the history file
+         * \exception IOError never
          */
-        void readHistory(const std::string &file)
-            throw (IOError);
+        void readHistory(const std::string &file);
 
         /**
-         * @brief Writes the history
+         * \brief Writes the history
          *
          * Does nothing, stub implementation.
          *
-         * @param[in] file the file that should be read
-         * @exception IOError never
+         * \param[in] file the file that should be read
+         * \exception IOError never
          */
-        void writeHistory(const std::string &file)
-            throw (IOError);
+        void writeHistory(const std::string &file);
 
         /**
-         * @copydoc LineReader::haveHistory()
+         * \copydoc LineReader::haveHistory()
          */
         virtual bool haveHistory() const;
 
         /**
-         * @copydoc LineReader::canEditLine()
+         * \copydoc LineReader::canEditLine()
          */
         virtual bool canEditLine() const;
 
         /**
-         * @copydoc LineReader::editLine(const char *)
+         * \copydoc LineReader::editLine(const char *)
          */
         virtual std::string editLine(const char *oldLine);
 
         /**
-         * @brief Checks if the implementation has completion
+         * \brief Checks if the implementation has completion
          *
-         * Returns always @c false.
+         * Returns always \c false.
          *
-         * @return @c false
+         * \return \c false
          */
         bool haveCompletion() const;
 
         /**
-         * @brief Sets the completor
+         * \brief Sets the completor
          *
-         * Does nothing, just throws away the @p comp.
+         * Does nothing, just throws away the \p comp.
          *
-         * @param[in] comp the completor
+         * \param[in] comp the completor
          */
         void setCompletor(Completor *comp);
 
     protected:
         /**
-         * @brief Sets the EOF status
+         * \brief Sets the EOF status
          *
          * Sets the EOF status that is returned by eof().
          *
-         * @param[in] eof the eof status
+         * \param[in] eof the eof status
          */
         void setEof(bool eof);
 
@@ -339,6 +338,4 @@ class AbstractLineReader : public LineReader {
 
 } // end namespace bw
 
-#endif /* COMPLETION_H */
-
-// :tabSize=4:indentSize=4:noTabs=true:mode=c++:folding=explicit:collapseFolds=1:maxLineLen=100:
+#endif /* LIBBW_COMPLETION_H_ */

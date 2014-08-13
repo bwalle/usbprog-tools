@@ -33,10 +33,8 @@
 
 namespace bw {
 
-/* ---------------------------------------------------------------------------------------------- */
 Debug *Debug::m_instance = NULL;
 
-/* ---------------------------------------------------------------------------------------------- */
 Debug *Debug::debug()
 {
     if (!m_instance)
@@ -45,19 +43,16 @@ Debug *Debug::debug()
     return m_instance;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 Debug::Debug()
     : m_debuglevel(DL_NONE)
     , m_handle(stderr)
 {}
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::setLevel(Debug::Level level)
 {
     m_debuglevel = level;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::setFileHandle(FILE *handle)
 {
     if (!handle)
@@ -66,13 +61,11 @@ void Debug::setFileHandle(FILE *handle)
         m_handle = handle;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 FILE *Debug::getFileHandle() const
 {
     return m_handle;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::dbg(const char *msg, ...)
 {
     va_list valist;
@@ -82,7 +75,6 @@ void Debug::dbg(const char *msg, ...)
     va_end(valist);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::info(const char *msg, ...)
 {
     va_list valist;
@@ -92,7 +84,6 @@ void Debug::info(const char *msg, ...)
     va_end(valist);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::trace(const char *msg, ...)
 {
     va_list valist;
@@ -102,26 +93,6 @@ void Debug::trace(const char *msg, ...)
     va_end(valist);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
-void Debug::dbg(const std::string &string)
-{
-    return dbg(string.c_str());
-}
-
-/* ---------------------------------------------------------------------------------------------- */
-void Debug::info(const std::string &string)
-{
-    return info(string.c_str());
-}
-
-/* ---------------------------------------------------------------------------------------------- */
-void Debug::trace(const std::string &string)
-{
-    return trace(string.c_str());
-}
-
-
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::msg(Debug::Level level, const char *msg, ...)
 {
     va_list valist;
@@ -131,7 +102,6 @@ void Debug::msg(Debug::Level level, const char *msg, ...)
     va_end(valist);
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 void Debug::vmsg(Debug::Level level, const char *msg, std::va_list args)
 {
     // if the global debug level is too small, then just do nothing
@@ -175,13 +145,16 @@ void Debug::vmsg(Debug::Level level, const char *msg, std::va_list args)
     delete[] newmsg;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
+void Debug::msg(Debug::Level level, const std::string &buffer)
+{
+    msg(level, "%s", buffer.c_str());
+}
+
 Debug::Level Debug::getLevel() const
 {
     return m_debuglevel;
 }
 
-/* ---------------------------------------------------------------------------------------------- */
 bool Debug::isDebugEnabled() const
 {
     return m_debuglevel < DL_NONE;

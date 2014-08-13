@@ -27,22 +27,13 @@
 #ifndef STRINGUTIL_COMPAT_H
 #define STRINGUTIL_COMPAT_H
 
-/**
- * @file stringutil_compat.h
- * @brief Compatibility functions for operating systems that lack some functions
- *
- * This file currently contains compatibility functions for Win32.
- *
- * @author Bernhard Walle <bernhard@bwalle.de>
- */
-
 #include <string.h>
 
 #include "bwconfig.h"
 
 namespace bw {
 
-#if !HAVE_STRCASECMP
+#ifndef HAVE_STRCASECMP
 
 /**
  * @brief Compares two strings case-insensitive
@@ -52,9 +43,13 @@ namespace bw {
  * or greater than zero if s1 is found, respectively, to be less than, to
  * match, or be greater than s2.
  *
+ * \note This function is only provided if the system has no strcasecmp() function.
+ *       You may import the function into your application's namespace for more compatibility.
+ *
  * @param[in] s1 the first string to compare
  * @param[in] s2 the second string to compare
  * @return see above
+ * \ingroup string
  */
 int strcasecmp(const char *s1, const char *s2)
 {

@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#include <syslog.h>
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include "syserrorlog.h"
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+namespace bw {
 
-#endif // LIBBW_BWCONFIG_H_
+/* SysErrorlog {{{ */
+
+SysErrorlog::SysErrorlog(const char *ident)
+{
+    openlog(ident, LOG_CONS, LOG_LOCAL0);
+}
+
+SysErrorlog::~SysErrorlog()
+{
+    closelog();
+}
+
+void SysErrorlog::vlog(Errorlog::Level level, const char *msg, std::va_list args)
+{
+    int syslogLevel = logToSyslog(level);
+    if (syslogLevel == -1)
+        return;
+
+    vsyslog(syslogLevel, msg, args);
+}
+
+int SysErrorlog::logToSyslog(Errorlog::Level level)
+{
+    switch (level) {
+        case LS_EMERG:
+            return LOG_EMERG;
+        case LS_ALERT:
+            return LOG_ALERT;
+        case LS_CRIT:
+            return LOG_CRIT;
+        case LS_WARNING:
+            return LOG_WARNING;
+        case LS_ERR:
+            return LOG_ERR;
+        default:
+            return -1;
+    }
+}
+
+/* }}} */
+
+} // end namespace bw

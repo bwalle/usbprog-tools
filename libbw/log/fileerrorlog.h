@@ -1,5 +1,5 @@
 /* {{{
- * Copyright (c) 2008-2010, Bernhard Walle <bernhard@bwalle.de>
+ * Copyright (c) 2011, Bernhard Walle <bernhard@bwalle.de>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. }}}
  */
+#ifndef LIBBW_LOG_FILEERRORLOG_H_
+#define LIBBW_LOG_FILEERRORLOG_H_
 
-#ifndef LIBBW_BWCONFIG_H_
-#define LIBBW_BWCONFIG_H_
+#include <cstdio>
+#include <string>
 
-#cmakedefine HAVE_LIBREADLINE
-#cmakedefine HAVE_STRCASECMP
-#cmakedefine HAVE_SYSLOG
-#cmakedefine HAVE_THREADS
-#cmakedefine HAVE_LOCALTIME_R
-#cmakedefine HAVE_GMTIME_R
-#cmakedefine HAVE_STRFTIME
-#cmakedefine HAVE_STRPTIME
-#cmakedefine HAVE_FTELLO
-#cmakedefine HAVE_FSEEKO
-#cmakedefine HAVE_STAT
-#cmakedefine HAVE__STAT
-#cmakedefine HAVE_MKDIR
-#cmakedefine HAVE__MKDIR
-#cmakedefine HAVE_GETPWUID_R
-#cmakedefine HAVE_DIRECT_H
-#cmakedefine HAVE_TIMEGM
+#include "errorlog.h"
+#include "bwconfig.h"
+#ifdef HAVE_THREADS
+#  include <thread/mutex.h>
+#endif
 
-#endif // LIBBW_BWCONFIG_H_
+namespace bw {
+
+/* FileErrorLog {{{ */
+
+/**
+ * \brief Error log implementation for std::FILE
+ *
+ * \author Bernhard Walle <bernhard@bwalle.de>
+ * \ingroup log
+ */
+class FileErrorlog : public Errorlog {
+
+    public:
+        /// Let Errorlog create instances of FileErrorlog, and only Errorlog.
+        friend class Errorlog;
+
+    protected:
+        /**
+         * \brief Creates a new FileErrorlog.
+         *
+         * Don't use that function directly. Instead, use Errorlog::configure().
+         *
+         * \param[in] filename the name of the file to which the logger should log. The
+         *            special values \c "stderr" and \c "stdout" are supported.
+         */
+        FileErrorlog(const char *filename="stderr");
+
+        /**
+         * \brief Destructor
+         */
+        ~FileErrorlog();
+
+        /**
+         * \copydoc Errorlog::vlog()
+         */
+        void vlog(Errorlog::Level level, const char *msg, std::va_list args);
+
+    private:
+        std::FILE *m_file;
+        bool m_closeInDtor;
+#ifdef HAVE_THREADS
+        thread::Mutex m_mutex;
+#endif
+};
+
+/* }}} */
+
+} // end namespace bw
+
+#endif /* LIBBW_LOG_FILEERRORLOG_H_ */
+
+// vim: set sw=4 ts=4 et fdm=marker:
