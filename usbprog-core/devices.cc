@@ -519,7 +519,7 @@ Device *DeviceManager::getDevice(size_t number) const
 }
 
 /* -------------------------------------------------------------------------- */
-void DeviceManager::setCurrentUpdateDevice(ssize_t number)
+void DeviceManager::setCurrentUpdateDevice(int number)
 {
     if (number < 0 || number >= int(m_updateDevices.size()))
         return;

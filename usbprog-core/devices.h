@@ -475,7 +475,7 @@ class DeviceManager {
          * @param[in] number the number which must be between 0 (inclusive) and
          *            getNumberUpdateDevices() (exclusive)
          */
-        void setCurrentUpdateDevice(ssize_t number);
+        void setCurrentUpdateDevice(int number);
 
         /**
          * @brief Rests the current update device
@@ -496,7 +496,7 @@ class DeviceManager {
 
     private:
         DeviceVector m_updateDevices;
-        ssize_t m_currentUpdateDevice;
+        int m_currentUpdateDevice;
         Sleeper *m_sleeper;
 };
 
