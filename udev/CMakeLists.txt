@@ -1,5 +1,5 @@
 #
-# (c) 2011, Bernhard Walle <bernhard@bwalle.de>
+# (c) 2011-2014, Bernhard Walle <bernhard@bwalle.de>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,14 +18,6 @@
 #
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    # find the udev version
-    pkg_check_modules(UDEV udev)
-
-    if (${UDEV_VERSION} VERSION_GREATER 147)
-        set(ATTR_KEYWORD "ATTR")
-    else (${UDEV_VERSION} VERSION_GREATER 147)
-        set(ATTR_KEYWORD "SYSFS")
-    endif (${UDEV_VERSION} VERSION_GREATER 147)
 
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/usbprog.rules.in"
