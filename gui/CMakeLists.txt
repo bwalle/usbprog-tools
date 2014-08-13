@@ -58,9 +58,6 @@ if (BUILD_GUI)
     )
 
     target_link_libraries(usbprog-gui ${EXTRA_LIBS} libusbprog-core libusbprog md5)
-    if (USE_QT5)
-        qt5_use_modules(usbprog-gui Xml Network)
-    endif (USE_QT5)
 
     install(
         TARGETS         usbprog-gui

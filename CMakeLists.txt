@@ -91,11 +91,13 @@ if (NOT BUILD_ONLY_CORE)
 
     if (USE_QT5)
 
+        find_package(Qt5Core)
+        find_package(Qt5Network)
+        find_package(Qt5Xml)
+        set(EXTRA_LIBS ${EXTRA_LIBS} Qt5::Core Qt5::Network Qt5::Xml)
         if (BUILD_GUI)
             find_package(Qt5Widgets)
             set(EXTRA_LIBS ${EXTRA_LIBS} Qt5::Widgets)
-        else (BUILD_GUI)
-            find_package(Qt5Core)
         endif (BUILD_GUI)
 
     else (USE_QT5)
@@ -174,6 +176,7 @@ add_subdirectory(udev)
 
 message(STATUS "Build only the core parts   : ${BUILD_ONLY_CORE}")
 message(STATUS "Building with GUI           : ${BUILD_GUI}")
+message(STATUS "Building with Qt5           : ${USE_QT5}")
 message(STATUS "Building manpages           : ${BUILD_MANPAGE}")
 
 # vim: set sw=4 ts=4 et:
