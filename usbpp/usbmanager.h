@@ -54,7 +54,7 @@ class UsbManager
          * @exception Error if creating the UsbManager instance failed. That exception an be only thrown
          *            in the first invocation of that method.
          */
-        static UsbManager &instance() throw (Error);
+        static UsbManager &instance();
 
     public:
         /**
@@ -88,12 +88,11 @@ class UsbManager
          *         be freed by the caller.
          * @exception std::out_of_range if @p number is out of range.
          */
-        Device *getDevice(size_t number)
-        throw (std::out_of_range);
+        Device *getDevice(size_t number);
 
     private:
         // make c'tor and d'tor private
-        UsbManager() throw (Error);
+        UsbManager();
         virtual ~UsbManager();
 
         // disable copy c-tor and assignment operator

@@ -78,8 +78,7 @@ class ConfigDescriptor
          * @return the number of alternate settings
          * @exception Error on any error
          */
-        size_t getNumberOfAltsettings(unsigned int interfaceNumber) const
-        throw (Error);
+        size_t getNumberOfAltsettings(unsigned int interfaceNumber) const;
 
         /**
          * @brief Returns the interface descriptor for a specific interface and altsetting
@@ -90,8 +89,7 @@ class ConfigDescriptor
          * @exception Error on any error
          */
         InterfaceDescriptor *getInterfaceDescriptor(unsigned int interfaceNumber,
-                                                    unsigned int altsetting)
-        throw (Error);
+                                                    unsigned int altsetting);
 
     protected:
         /**

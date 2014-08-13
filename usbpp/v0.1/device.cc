@@ -58,7 +58,6 @@ Device::Device(void *nativeHandle)
 
 /* -------------------------------------------------------------------------- */
 DeviceDescriptor Device::getDescriptor() const
-    throw (Error)
 {
     DeviceDescriptor ret;
 
@@ -75,7 +74,6 @@ DeviceDescriptor Device::getDescriptor() const
 
 /* -------------------------------------------------------------------------- */
 ConfigDescriptor *Device::getConfigDescriptor(int index)
-    throw (Error)
 {
     struct usb_config_descriptor *usb_config_descriptor = m_data->device->config;
 
@@ -84,7 +82,6 @@ ConfigDescriptor *Device::getConfigDescriptor(int index)
 
 /* -------------------------------------------------------------------------- */
 DeviceHandle *Device::open()
-    throw (Error)
 {
     usb_dev_handle *handle = usb_open(m_data->device);
     if (!handle)
