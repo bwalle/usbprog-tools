@@ -172,7 +172,7 @@ add_subdirectory(udev)
 # Print status
 #
 
-message(STATUS "Build only the core parts   : ${BUILD_GUI}")
+message(STATUS "Build only the core parts   : ${BUILD_ONLY_CORE}")
 message(STATUS "Building with GUI           : ${BUILD_GUI}")
 message(STATUS "Building manpages           : ${BUILD_MANPAGE}")
 
