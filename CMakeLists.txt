@@ -25,7 +25,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 #
 
 cmake_minimum_required(VERSION 2.6)
-cmake_policy(SET CMP0028 NEW)
+if ("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" GREATER 3.0)
+    cmake_policy(SET CMP0028 NEW)
+endif ()
 set (PACKAGE_STRING "usbprog")
 set (PACKAGE_VERSION "0.3.0")
 include_directories(${CMAKE_SOURCE_DIR})
