@@ -32,7 +32,7 @@ namespace gui {
 
 // -----------------------------------------------------------------------------
 const QString UsbprogApplication::NAME = "USBprog";
-const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.embedded-projects.net/index.php?page_id=135";
+const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.usbprog.org";
 
 // -----------------------------------------------------------------------------
 UsbprogApplication::UsbprogApplication(int &argc, char **argv)
