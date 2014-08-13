@@ -1,3 +1,10 @@
+2014-08-13  Bernhard Walle <bernhard@bwalle.de>
+
+	* Implement Qt5 compatibility.
+	* Support CMake 3.0.
+	* Change website.
+	* Update libbw.
+
 2011-03-05  Bernhard Walle <bernhard@bwalle.de>
 
 	* Drop boost dependency, add libbw.
