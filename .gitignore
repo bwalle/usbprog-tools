@@ -4,3 +4,4 @@ tags
 *.swp
 doc/api/html
 *.un~
+CMakeLists.txt.user
