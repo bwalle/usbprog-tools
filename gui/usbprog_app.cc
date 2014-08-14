@@ -1,5 +1,5 @@
 /*
- * (c) 2011, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2011-2014, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include <cstdlib>
+#include <cstdio>
 
 #include <usbprog-core/debug.h>
 #include <usbprog-core/util.h>
