@@ -17,7 +17,13 @@
 #ifndef LIBUSB_01_H
 #define LIBUSB_01_H
 
-#include <usb.h>
+#include "config.h"
+
+#ifdef USE_WINUSB_WIN32
+#  include <lusb0_usb.h>
+#else
+#  include <usb.h>
+#endif
 
 #endif // LIBUSB_01_H
 

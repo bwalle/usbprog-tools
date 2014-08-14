@@ -18,5 +18,6 @@
 #define HAVE_STRPTIME               @CONFIG_HAVE_STRPTIME@
 #define DOCDIR                      "@DOCDIR@"
 #define USBPROG_VERSION_STRING      "@PACKAGE_VERSION@"
+#cmakedefine USE_WINUSB_WIN32
 
 // :mode=c++:

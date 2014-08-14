@@ -26,7 +26,7 @@
 
 INCLUDE (FindPkgConfig)
 
-if (NOT USE_LEGACY_LIBUSB)
+if (NOT USE_WINUSB_WIN32 AND NOT USE_LEGACY_LIBUSB)
   # at first: try pkg-config to find libusb 1.0
   PKG_CHECK_MODULES(USB10 libusb-1.0)
   if (USB10_FOUND)
@@ -80,13 +80,22 @@ if (NOT USE_LEGACY_LIBUSB)
       set (LIBUSB_VERSION 1.0)
     endif (LIBUSB_INCLUDE_DIR AND LIBUSB_LIBRARY)
   endif (NOT LIBUSB_FOUND)
-endif (NOT USE_LEGACY_LIBUSB)
+endif (NOT USE_WINUSB_WIN32 AND NOT USE_LEGACY_LIBUSB)
 
 # then look manually for libusb 0.1
 if (NOT LIBUSB_FOUND)
+
+  if (USE_WINUSB_WIN32)
+    SET(USB_H_NAME lusb0_usb.h)
+  else ()
+    SET(USB_H_NAME usb.h)
+  endif ()
+
+  message(STATUS "Looking for ${USB_H_NAME} in ${LIBUSB_ADDITIONAL_INCLUDEDIR}")
+
   find_path(LIBUSB_INCLUDE_DIR
     NAMES
-      usb.h
+      ${USB_H_NAME}
     PATHS
       /usr/include
       /usr/local/include

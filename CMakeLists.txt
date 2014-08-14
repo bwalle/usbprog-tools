@@ -38,6 +38,10 @@ option(USE_QT5 "Use Qt5 instead of Qt4" OFF)
 option(BUILD_ONLY_CORE "Builds only the usbprog-core lib and a simple CLI program (has no library dependencies apart from libusb" OFF)
 option(USE_LEGACY_LIBUSB "Ignore the fact that libusb-1.0 is present and look for legacy libusb 0.1" OFF)
 
+if (WIN32)
+    option(USE_WINUSB_WIN32 "Use the libusb-win32 port of libusb" ON)
+endif (WIN32)
+
 #
 # Check if the configuration is sane
 #

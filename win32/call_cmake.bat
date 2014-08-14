@@ -1,10 +1,12 @@
 @echo off
 
-set LIBUSB_INCLUDE_DIR=C:\Users\bwalle\devel\libusb-pbatard\libusb
-set LIBUSB_LIBDIR=C:\Users\bwalle\devel\libusb-pbatard\Win32\Release\dll
-set GENERATOR="NMake Makefiles"
+set LIBUSB_INCLUDE_DIR=C:\Users\bwalle\devel\libusb-win32-bin\include
+set LIBUSB_LIBDIR=C:\Users\bwalle\devel\libusb-win32-bin\lib\gcc
+set GENERATOR="MinGW Makefiles"
+
 rem set GENERATOR="Visual Studio 9 2008"
 
 cd ..\build
-cmake -G %GENERATOR% -DLIBUSB_ADDITIONAL_INCLUDEDIR=%LIBUSB_INCLUDE_DIR% -DLIBUSB_ADDITIONAL_LIBDIR=%LIBUSB_LIBDIR% ..
+echo cmake -G %GENERATOR% -DUSE_LEGACY_LIBUSB=ON -DLIBUSB_ADDITIONAL_INCLUDEDIR=%LIBUSB_INCLUDE_DIR% -DLIBUSB_ADDITIONAL_LIBDIR=%LIBUSB_LIBDIR% ..
+cmake -G %GENERATOR% %C_COMPILER% %CXX_COMPILER% -DLIBUSB_ADDITIONAL_INCLUDEDIR=%LIBUSB_INCLUDE_DIR% -DLIBUSB_ADDITIONAL_LIBDIR=%LIBUSB_LIBDIR% -DBUILD_ONLY_CORE=ON ..
 cd ..\win32
