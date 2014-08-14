@@ -39,7 +39,7 @@ namespace bw {
 
 /* gmtime_r() / localtime_r() {{{ */
 
-#ifndef HAVE_GMTIME_R
+#if !defined(HAVE_GMTIME_R) && !defined(gmtime_r)
 struct tm *gmtime_r(const time_t *timep, struct tm *result)
 {
     assert(timep != NULL);
@@ -48,9 +48,9 @@ struct tm *gmtime_r(const time_t *timep, struct tm *result)
     *result = *(gmtime(timep));
     return result;
 }
-#endif // HAVE_GMTIME_R
+#endif // !defined(HAVE_GMTIME_R) && !defined(gmtime_r)
 
-#ifndef HAVE_LOCALTIME_R
+#if !defined(HAVE_LOCALTIME_R) && !defined(localtime_r)
 struct tm *localtime_r(const time_t *timep, struct tm *result)
 {
     assert(timep != NULL);
