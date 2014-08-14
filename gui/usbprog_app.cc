@@ -38,6 +38,7 @@ const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.usbprog.org";
 UsbprogApplication::UsbprogApplication(int &argc, char **argv)
     : QApplication(argc, argv)
     , m_mainWindow(NULL)
+    , m_logfile(NULL)
 {
     initConfig();
 }
@@ -102,8 +103,28 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
 // -----------------------------------------------------------------------------
 void UsbprogApplication::createAndSetMainWidget()
 {
-    m_mainWindow = new UsbprogMainWindow;
+    m_mainWindow = new UsbprogMainWindow(*this);
     m_mainWindow->show();
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogApplication::setDebugLoggingEnabled(bool enabled, const char *filename)
+{
+    core::Debug *debug = core::Debug::debug();
+
+    debug->setLevel(enabled ? core::Debug::DL_TRACE : core::Debug::DL_INFO);
+    if (enabled) {
+        m_logfile = fopen(filename, "a+");
+        if (!m_logfile)
+            throw core::ApplicationError("Unable to open logfile '" + std::string(filename) + "'");
+        debug->setFileHandle(m_logfile);
+    } else {
+        if (m_logfile) {
+            debug->setFileHandle(NULL);
+            fclose(m_logfile);
+            m_logfile = NULL;
+        }
+    }
 }
 
 

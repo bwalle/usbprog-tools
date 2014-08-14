@@ -29,6 +29,7 @@
 #include <QFileInfo>
 #include <QTextStream>
 #include <QDesktopServices>
+#include <QFileDialog>
 
 #include <usbprog-core/debug.h>
 #include <usbprog-core/util.h>
@@ -85,10 +86,11 @@ const int UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT = 2000;
 const char *UsbprogMainWindow::USERS_GUIDE_FILENAME = "USBprog.pdf";
 
 // -----------------------------------------------------------------------------
-UsbprogMainWindow::UsbprogMainWindow()
+UsbprogMainWindow::UsbprogMainWindow(UsbprogApplication &app)
     : m_deviceManager(NULL)
     , m_firmwarepool(NULL)
     , m_progressNotifier(NULL)
+    , m_app(app)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -126,6 +128,8 @@ UsbprogMainWindow::~UsbprogMainWindow()
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::initActions()
 {
+    m_actions.logging = new QAction(tr("Debug &logging"), this);
+    m_actions.logging->setCheckable(true);
     m_actions.quit = new QAction(QIcon(":/gtk-quit.png"), tr("&Quit"), this);
 #if QT_VERSION < 0x040600
     QKeySequence quitKey(Qt::CTRL | Qt::Key_Q);
@@ -162,6 +166,7 @@ void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
     connect(m_actions.quit, SIGNAL(triggered()), SLOT(close()));
+    connect(m_actions.logging, SIGNAL(triggered(bool)), SLOT(enableDebugging(bool)));
     connect(m_actions.help, SIGNAL(triggered()), SLOT(showHelp()));
     connect(m_actions.aboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(m_actions.about, SIGNAL(triggered()), SLOT(showAbout()));
@@ -182,6 +187,8 @@ void UsbprogMainWindow::initMenus()
 {
     QMenu *programMenu = new QMenu(this);
     programMenu->setTitle(tr("&Program"));
+    programMenu->addAction(m_actions.logging);
+    programMenu->addSeparator();
     programMenu->addAction(m_actions.quit);
 
     QMenu *cacheMenu = new QMenu(this);
@@ -613,6 +620,26 @@ void UsbprogMainWindow::showPinDialog()
 
     std::auto_ptr<PinDialog> pinDialog(new PinDialog(fw, this));
     pinDialog->exec();
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::enableDebugging(bool enabled)
+{
+    QString logfile;
+    if (enabled)
+        logfile = QFileDialog::getSaveFileName(this, tr("Specify logfile"));
+
+    if (logfile.isEmpty()) {
+        m_actions.logging->setChecked(false);
+        m_app.setDebugLoggingEnabled(false);
+    } else {
+        try {
+            m_app.setDebugLoggingEnabled(true, logfile.toLocal8Bit());
+        } catch (const core::ApplicationError &err) {
+            statusBar()->showMessage(QString::fromUtf8(err.what()));
+            m_actions.logging->setChecked(false);
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------

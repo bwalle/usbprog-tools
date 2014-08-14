@@ -86,6 +86,14 @@ class UsbprogApplication : public QApplication
          */
         void createAndSetMainWidget();
 
+        /**
+         * @brief Enables or disables logging to a logfile
+         *
+         * @param[in] enabled @c true if logging should be enabled, @c false otherwise.
+         * @param[in] filename if non-NULL, then the log output should be @p filename, not @c stderr
+         */
+        void setDebugLoggingEnabled(bool enabled, const char *filename=NULL);
+
     protected:
         /**
          * @brief Inits the configuration
@@ -96,6 +104,7 @@ class UsbprogApplication : public QApplication
 
     private:
         UsbprogMainWindow *m_mainWindow;
+        FILE *m_logfile;
 };
 
 /* }}} */

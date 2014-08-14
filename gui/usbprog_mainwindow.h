@@ -33,6 +33,8 @@
 namespace usbprog {
 namespace gui {
 
+class UsbprogApplication;
+
 /* MainWindowProgressNotifier {{{ */
 
 /**
@@ -110,7 +112,7 @@ class UsbprogMainWindow : public QMainWindow
         /**
          * @brief Constructor
          */
-        UsbprogMainWindow();
+        UsbprogMainWindow(UsbprogApplication &app);
 
         /**
          * @brief Destructor
@@ -204,6 +206,13 @@ class UsbprogMainWindow : public QMainWindow
          */
         void showPinDialog();
 
+        /**
+         * @brief Enables debugging
+         *
+         * @param[in] @c true if debugging should be enabled, @c false otherwise.
+         */
+        void enableDebugging(bool enabled);
+
     private:
         core::DeviceManager *m_deviceManager;
         Firmwarepool *m_firmwarepool;
@@ -230,6 +239,7 @@ class UsbprogMainWindow : public QMainWindow
         } m_widgets;
 
         struct {
+            QAction      *logging;
             QAction      *quit;
             QAction      *help;
             QAction      *aboutQt;
@@ -238,6 +248,8 @@ class UsbprogMainWindow : public QMainWindow
             QAction      *cacheClean;
             QAction      *cacheDownloadAll;
         } m_actions;
+
+        UsbprogApplication &m_app;
 };
 
 /* }}} */

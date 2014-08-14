@@ -43,7 +43,7 @@ namespace gui {
  * @class GuiConfiguration gui/guiconfiguration.h
  * @brief Configuration properties for the GUI.
  *
- * This class extends the core::Configuration with CLI-specific configuration properties.
+ * This class extends the core::Configuration with GUI-specific configuration properties.
  *
  * @author Bernhard Walle <bernhard@bwalle.de>
  * @ingroup gui
