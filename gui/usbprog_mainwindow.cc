@@ -366,6 +366,20 @@ void UsbprogMainWindow::refreshDevices()
         core::Device *dev = m_deviceManager->getDevice(i);
         m_widgets.devicesCombo->addItem(QString::fromStdString(dev->toShortString()), int(i));
     }
+
+    // if only one USBprog in update mode is found, select that automatically
+    size_t updateCount = 0;
+    size_t lastUpdateIndex = 0;
+    for (size_t i = 0; i < m_deviceManager->getNumberUpdateDevices(); ++i) {
+        core::Device *dev = m_deviceManager->getDevice(i);
+        if (dev->isUpdateMode()) {
+            updateCount++;
+            lastUpdateIndex = i;
+        }
+    }
+
+    if (updateCount == 1)
+        m_widgets.devicesCombo->setCurrentIndex(lastUpdateIndex+1);
 }
 
 // -----------------------------------------------------------------------------
