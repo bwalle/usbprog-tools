@@ -174,9 +174,11 @@ void UsbprogMainWindow::connectSignalsAndSlots()
     connect(m_actions.cacheDelete, SIGNAL(triggered()), SLOT(cacheDelete()));
     connect(m_actions.cacheDownloadAll, SIGNAL(triggered()), SLOT(cacheDownloadAll()));
 
+    connect(m_widgets.firmwareSourcePoolRadio, SIGNAL(toggled(bool)), SLOT(onlinePoolSourceToggled(bool)));
     connect(m_widgets.firmwareList,
             SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             SLOT(firmwareSelected(QListWidgetItem *)));
+    connect(m_widgets.fileChooseButton, SIGNAL(clicked()), SLOT(fileChooseButtonClicked()));
 
     connect(m_widgets.uploadButton, SIGNAL(clicked()), SLOT(uploadFirmware()));
     connect(m_widgets.pinButton, SIGNAL(clicked()), SLOT(showPinDialog()));
@@ -250,14 +252,24 @@ void UsbprogMainWindow::initWidgets()
     m_widgets.rightBox = new QWidget(this);
     QVBoxLayout *rightBoxLayout = new QVBoxLayout(m_widgets.rightBox);
 
+    m_widgets.firmwareSourceBox = new QWidget(this);
+    QHBoxLayout *firmwareSourceBoxLayout = new QHBoxLayout(m_widgets.firmwareSourceBox);
+
     m_widgets.rightTopBox = new QWidget(this);
     QHBoxLayout *rightTopBoxLayout = new QHBoxLayout(m_widgets.rightTopBox);
 
-    m_widgets.rightMiddleBox = new QWidget(this);
-    QHBoxLayout *rightMiddleBoxLayout = new QHBoxLayout(m_widgets.rightMiddleBox);
+    m_widgets.firmwareFileBox = new QWidget(this);
+    QGridLayout *firmwareFileBoxLayout = new QGridLayout(m_widgets.firmwareFileBox);
+
+    m_widgets.firmwarePoolBox = new QWidget(this);
+    QHBoxLayout *firmwarePoolBoxLayout = new QHBoxLayout(m_widgets.firmwarePoolBox);
 
     m_widgets.rightButtonBox = new QWidget(this);
     QVBoxLayout *rightButtonBoxLayout = new QVBoxLayout(m_widgets.rightButtonBox);
+
+    m_widgets.firmwareStack = new QStackedWidget(this);
+    m_widgets.firmwareStack->addWidget(m_widgets.firmwarePoolBox);
+    m_widgets.firmwareStack->addWidget(m_widgets.firmwareFileBox);
 
     // devices combo box
     m_widgets.devicesCombo = new QComboBox(this);
@@ -273,6 +285,12 @@ void UsbprogMainWindow::initWidgets()
     m_widgets.uploadButton->setText(tr("&Upload"));
     m_widgets.uploadButton->setIcon(QPixmap(":/gtk-go-up.png"));
 
+    // firmware source button
+    m_widgets.firmwareSourceLabel = new QLabel(tr("Firmware source:"), this);
+    m_widgets.firmwareSourcePoolRadio = new QRadioButton(tr("Online &pool"), this);
+    m_widgets.firmwareSourcePoolRadio->setChecked(true);
+    m_widgets.firmwareSourceFileRadio = new QRadioButton(tr("&File"), this);
+
     // list
     m_widgets.firmwareList = new QListWidget(this);
     m_widgets.firmwareInfo = new QTextBrowser(this);
@@ -282,6 +300,10 @@ void UsbprogMainWindow::initWidgets()
     // icons for the right icon box
     m_widgets.pinButton = new QToolButton(this);
     m_widgets.pinButton->setIcon(QPixmap(":/chip.png"));
+
+    // file chooser and line edit
+    m_widgets.fileEdit = new QLineEdit(this);
+    m_widgets.fileChooseButton = new QPushButton(tr("Choose ..."), this);
 
     // progress bar
     m_widgets.mainProgress = new QProgressBar(this);
@@ -294,19 +316,33 @@ void UsbprogMainWindow::initWidgets()
     rightTopBoxLayout->addWidget(m_widgets.uploadButton);
     rightTopBoxLayout->setContentsMargins(0, 0, 0, 0);
 
+    firmwareSourceBoxLayout->addWidget(m_widgets.firmwareSourceLabel);
+    firmwareSourceBoxLayout->addWidget(m_widgets.firmwareSourcePoolRadio);
+    firmwareSourceBoxLayout->addWidget(m_widgets.firmwareSourceFileRadio);
+    firmwareSourceBoxLayout->addStretch(1);
+    firmwareSourceBoxLayout->setContentsMargins(0, 0, 0, 0);
+
     rightButtonBoxLayout->addStretch(1);
     rightButtonBoxLayout->addWidget(m_widgets.pinButton);
     rightButtonBoxLayout->setContentsMargins(0, 0, 0, 0);
 
-    rightMiddleBoxLayout->addWidget(m_widgets.firmwareList);
-    rightMiddleBoxLayout->setStretchFactor(m_widgets.firmwareList, 1);
-    rightMiddleBoxLayout->addWidget(m_widgets.firmwareInfo);
-    rightMiddleBoxLayout->setStretchFactor(m_widgets.firmwareInfo, 4);
-    rightMiddleBoxLayout->addWidget(m_widgets.rightButtonBox);
-    rightMiddleBoxLayout->setContentsMargins(0, 0, 0, 0);
+    firmwareFileBoxLayout->addWidget(m_widgets.fileEdit, 0, 0);
+    firmwareFileBoxLayout->addWidget(m_widgets.fileChooseButton, 0, 1);
+    firmwareFileBoxLayout->addWidget(new QWidget(this), 1, 0);
+    firmwareFileBoxLayout->setRowStretch(0, 0);
+    firmwareFileBoxLayout->setRowStretch(1, 1);
+    firmwareFileBoxLayout->setContentsMargins(0, 0, 0, 0);
+
+    firmwarePoolBoxLayout->addWidget(m_widgets.firmwareList);
+    firmwarePoolBoxLayout->setStretchFactor(m_widgets.firmwareList, 1);
+    firmwarePoolBoxLayout->addWidget(m_widgets.firmwareInfo);
+    firmwarePoolBoxLayout->setStretchFactor(m_widgets.firmwareInfo, 4);
+    firmwarePoolBoxLayout->addWidget(m_widgets.rightButtonBox);
+    firmwarePoolBoxLayout->setContentsMargins(0, 0, 0, 0);
 
     rightBoxLayout->addWidget(m_widgets.rightTopBox);
-    rightBoxLayout->addWidget(m_widgets.rightMiddleBox);
+    rightBoxLayout->addWidget(m_widgets.firmwareSourceBox);
+    rightBoxLayout->addWidget(m_widgets.firmwareStack);
     rightBoxLayout->addSpacing(5);
     rightBoxLayout->addWidget(m_widgets.mainProgress);
 
@@ -453,12 +489,16 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 // -----------------------------------------------------------------------------
 void UsbprogMainWindow::uploadFirmware()
 {
-    QList<QListWidgetItem *> selectedItems = m_widgets.firmwareList->selectedItems();
-    if (selectedItems.size() != 1) {
-        statusBar()->showMessage(tr("No firmwares selected."), DEFAULT_MESSAGE_TIMEOUT);
-        return;
+    Firmware *fw = NULL;
+
+    if (m_widgets.firmwareSourcePoolRadio->isChecked()) {
+        QList<QListWidgetItem *> selectedItems = m_widgets.firmwareList->selectedItems();
+        if (selectedItems.size() != 1) {
+            statusBar()->showMessage(tr("No firmwares selected."), DEFAULT_MESSAGE_TIMEOUT);
+            return;
+        }
+        fw = m_firmwarepool->getFirmware(selectedItems.front()->text().toStdString());
     }
-    Firmware *fw = m_firmwarepool->getFirmware(selectedItems.front()->text().toStdString());
 
     int deviceIndex = m_widgets.devicesCombo->itemData(m_widgets.devicesCombo->currentIndex()).toInt();
     if (deviceIndex == -1) {
@@ -470,11 +510,33 @@ void UsbprogMainWindow::uploadFirmware()
     core::Device *updateDevice = m_deviceManager->getCurrentUpdateDevice();
     assert(updateDevice != NULL);
 
-    USBPROG_DEBUG_DBG("Uploading firmware '%s' to '%s'", fw->getName().c_str(), updateDevice->toShortString().c_str());
-
     // download firmware if necessary
-    if (!downloadFirmware(fw->getName()))
-        return;
+    core::ByteVector fwData;
+    std::string fwName;
+    if (fw) {
+        if (!downloadFirmware(fw->getName()))
+            return;
+        fwData = fw->getData();
+        fwName = fw->getName();
+    } else {
+        std::string firmwareFileName = m_widgets.fileEdit->text().toStdString();
+        if (firmwareFileName.empty()) {
+            statusBar()->showMessage(tr("No firmware file chosen."), DEFAULT_MESSAGE_TIMEOUT);
+            return;
+        }
+
+        try {
+            fwData = core::Fileutil::readBytesFromFile(firmwareFileName);
+        } catch (const core::IOError &ioe) {
+            QMessageBox::critical(this, UsbprogApplication::NAME,
+                                  tr("Error while reading data from file:\n\n%1").arg(
+                                      QString::fromUtf8(ioe.what())));
+            return;
+        }
+        fwName = "File '" + firmwareFileName + "'";
+    }
+
+    USBPROG_DEBUG_DBG("Uploading firmware '%s' to '%s'", fwName.c_str(), updateDevice->toShortString().c_str());
 
     // switch in update mode
     if (!updateDevice->isUpdateMode()) {
@@ -506,7 +568,7 @@ void UsbprogMainWindow::uploadFirmware()
 
         USBPROG_DEBUG_DBG("Writing firmware");
         statusBar()->showMessage(tr("Writing firmware ..."), DEFAULT_MESSAGE_TIMEOUT);
-        updater.writeFirmware(fw->getData());
+        updater.writeFirmware(fwData);
 
         USBPROG_DEBUG_DBG("Starting device");
         statusBar()->showMessage(tr("Starting device ..."), DEFAULT_MESSAGE_TIMEOUT);
@@ -655,6 +717,23 @@ void UsbprogMainWindow::enableDebugging(bool enabled)
             m_actions.logging->setChecked(false);
         }
     }
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::onlinePoolSourceToggled(bool enabled)
+{
+    m_widgets.firmwareStack->setCurrentIndex(enabled ? 0 : 1);
+}
+
+// -----------------------------------------------------------------------------
+void UsbprogMainWindow::fileChooseButtonClicked()
+{
+    QString currentFile = m_widgets.fileEdit->text();
+    QString firmware = QFileDialog::getOpenFileName(this, tr("Select firmware"), currentFile, "*.bin");
+    if (firmware.isEmpty())
+        return;
+
+    m_widgets.fileEdit->setText(firmware);
 }
 
 // -----------------------------------------------------------------------------

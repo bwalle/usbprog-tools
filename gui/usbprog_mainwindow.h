@@ -1,5 +1,5 @@
 /*
- * (c) 2010, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2010-2014, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@
 #include <QComboBox>
 #include <QListWidget>
 #include <QTextBrowser>
+#include <QStackedWidget>
+#include <QRadioButton>
+#include <QLineEdit>
 
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
@@ -213,6 +216,18 @@ class UsbprogMainWindow : public QMainWindow
          */
         void enableDebugging(bool enabled);
 
+        /**
+         * @brief Called when the online pool radio button is toggled
+         *
+         * @param[in] enabled @c true if the online pool is enabled, @c false if the file is enabled
+         */
+        void onlinePoolSourceToggled(bool enabled);
+
+        /**
+         * @brief Allows selection of a firmware file
+         */
+        void fileChooseButtonClicked();
+
     private:
         core::DeviceManager *m_deviceManager;
         Firmwarepool *m_firmwarepool;
@@ -220,22 +235,30 @@ class UsbprogMainWindow : public QMainWindow
 
         struct {
             // container widgets
-            QWidget      *mainWidget;
-            QWidget      *leftBox;
-            QWidget      *rightBox;
-            QWidget      *rightTopBox;
-            QWidget      *rightButtonBox;
-            QWidget      *rightMiddleBox;
+            QWidget        *mainWidget;
+            QWidget        *leftBox;
+            QWidget        *rightBox;
+            QWidget        *rightTopBox;
+            QWidget        *firmwareFileBox;
+            QWidget        *firmwareSourceBox;
+            QWidget        *rightButtonBox;
+            QWidget        *firmwarePoolBox;
+            QStackedWidget *firmwareStack;
             // the real widgets
-            QLabel       *usbprogGraphicsLabel;
-            QLabel       *websiteLinkLabel;
-            QComboBox    *devicesCombo;
-            QPushButton  *refreshButton;
-            QPushButton  *uploadButton;
-            QListWidget  *firmwareList;
-            QTextBrowser *firmwareInfo;
-            QToolButton  *pinButton;
-            QProgressBar *mainProgress;
+            QLabel         *usbprogGraphicsLabel;
+            QLabel         *websiteLinkLabel;
+            QComboBox      *devicesCombo;
+            QPushButton    *refreshButton;
+            QPushButton    *uploadButton;
+            QListWidget    *firmwareList;
+            QTextBrowser   *firmwareInfo;
+            QToolButton    *pinButton;
+            QProgressBar   *mainProgress;
+            QLabel         *firmwareSourceLabel;
+            QRadioButton   *firmwareSourcePoolRadio;
+            QRadioButton   *firmwareSourceFileRadio;
+            QLineEdit      *fileEdit;
+            QPushButton    *fileChooseButton;
         } m_widgets;
 
         struct {
