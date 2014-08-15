@@ -641,7 +641,8 @@ void UsbprogMainWindow::enableDebugging(bool enabled)
 {
     QString logfile;
     if (enabled)
-        logfile = QFileDialog::getSaveFileName(this, tr("Specify logfile"), QDir::currentPath(), "*.log");
+        logfile = QFileDialog::getSaveFileName(this, tr("Specify logfile"), QDir::currentPath(),
+                                               "*.log", 0, QFileDialog::DontConfirmOverwrite);
 
     if (logfile.isEmpty()) {
         m_actions.logging->setChecked(false);
