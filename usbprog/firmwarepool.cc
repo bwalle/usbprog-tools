@@ -53,41 +53,41 @@ namespace usbprog {
  * @ingroup usbprog
  */
 class FirmwareXMLParser {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new FirmwareXMLParser object.
-         *
-         * @param[in] pool a pointer to the firmware pool (that must be valid during the whole
-         * lifetime of the FirmwareXMLParser object).
-         */
-        FirmwareXMLParser(Firmwarepool *pool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new FirmwareXMLParser object.
+     *
+     * @param[in] pool a pointer to the firmware pool (that must be valid during the whole
+     * lifetime of the FirmwareXMLParser object).
+     */
+    FirmwareXMLParser(Firmwarepool *pool);
 
-    public:
-        /**
-         * @brief Parses the whole firmware pool
-         *
-         * Adds the result to the firmware pool (that has been passed in the constructor) directly.
-         *
-         * @param[in] doc the XML document
-         * @param[in] pool the root XML element
-         * @exception core::ParseError if parsing failed
-         */
-        void parsePool(const QDomDocument &doc, const QDomElement &pool);
+public:
+    /**
+     * @brief Parses the whole firmware pool
+     *
+     * Adds the result to the firmware pool (that has been passed in the constructor) directly.
+     *
+     * @param[in] doc the XML document
+     * @param[in] pool the root XML element
+     * @exception core::ParseError if parsing failed
+     */
+    void parsePool(const QDomDocument &doc, const QDomElement &pool);
 
-    protected:
-        /**
-         * @brief Parses a firmware element
-         *
-         * @param[in] doc the XML document
-         * @param[in] firmware the firmware XML element
-         * @exception core::ParseError if parsing failed
-         */
-        void parseFirmware(const QDomDocument &doc, const QDomElement &firmware);
+protected:
+    /**
+     * @brief Parses a firmware element
+     *
+     * @param[in] doc the XML document
+     * @param[in] firmware the firmware XML element
+     * @exception core::ParseError if parsing failed
+     */
+    void parseFirmware(const QDomDocument &doc, const QDomElement &firmware);
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
