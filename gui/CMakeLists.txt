@@ -27,13 +27,19 @@ if (BUILD_GUI)
         qtsleeper.cc
         pindialog.cc
     )
-    if (WIN32)
-        set(usbprog_gui_SRCS ${usbprog_gui_SRCS} usbprog_gui.rc)
-    endif (WIN32)
     set(usbprog_gui_MOCS
         usbprog_mainwindow.h
         pindialog.h
     )
+    if (WIN32)
+        set(usbprog_gui_SRCS ${usbprog_gui_SRCS}
+            zadigrunner.cc
+            driverassistant.cc
+            usbprog_gui.rc)
+        set(usbprog_gui_MOCS ${usbprog_gui_MOCS}
+            zadigrunner.h
+            driverassistant.h)
+    endif (WIN32)
 
     # Compiled-in pixmaps
     set(QtApp_RCCS usbprog.qrc)

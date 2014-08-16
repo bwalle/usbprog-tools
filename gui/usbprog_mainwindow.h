@@ -161,72 +161,20 @@ protected:
      */
     bool downloadFirmware(const std::string &name, bool failSilent=false);
 
-public slots:
-    /**
-     * @brief Refresh the device combo box
-     */
+private slots:
     void refreshDevices();
-
-    /**
-     * @brief Update the information for the selected firmware
-     *
-     * @param[in] newItem the firmware item that has been selected by the user
-     */
     void firmwareSelected(QListWidgetItem *newItem);
-
-    /**
-     * @brief Uploads the selected firmware to the selected device
-     */
     void uploadFirmware();
-
-    /**
-     * @brief Shows the help
-     */
     void showHelp();
-
-    /**
-     * @brief Shows the about dialog
-     */
     void showAbout();
-
-    /**
-     * @brief Cleans the cache.
-     */
     void cacheClean();
-
-    /**
-     * @brief Deletes the cache.
-     */
     void cacheDelete();
-
-    /**
-     * @brief Downloads all firmwares.
-     */
     void cacheDownloadAll();
-
-    /**
-     * @brief Displays the pin assignment dialog.
-     */
     void showPinDialog();
-
-    /**
-     * @brief Enables debugging
-     *
-     * @param[in] @c true if debugging should be enabled, @c false otherwise.
-     */
     void enableDebugging(bool enabled);
-
-    /**
-     * @brief Called when the online pool radio button is toggled
-     *
-     * @param[in] enabled @c true if the online pool is enabled, @c false if the file is enabled
-     */
     void onlinePoolSourceToggled(bool enabled);
-
-    /**
-     * @brief Allows selection of a firmware file
-     */
     void fileChooseButtonClicked();
+    void installDriver();
 
 private:
     core::DeviceManager *m_deviceManager;
@@ -270,6 +218,7 @@ private:
         QAction      *cacheDelete;
         QAction      *cacheClean;
         QAction      *cacheDownloadAll;
+        QAction      *installDriver;
     } m_actions;
 
     UsbprogApplication &m_app;

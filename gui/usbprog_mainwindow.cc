@@ -41,6 +41,10 @@
 #include "config.h"
 #include "pindialog.h"
 
+#ifdef Q_OS_WIN
+#  include "driverassistant.h"
+#endif
+
 namespace usbprog {
 namespace gui {
 
@@ -153,6 +157,9 @@ void UsbprogMainWindow::initActions()
     m_actions.cacheDelete = new QAction(QIcon(":/gtk-delete.png"), tr("&Delete files"), this);
     m_actions.cacheDelete->setStatusTip(tr("Deletes all cached firmware files."));
 
+    m_actions.installDriver = new QAction(tr("&Install driver"), this);
+    m_actions.installDriver->setStatusTip(tr("Starts the driver installation wizard."));
+
     m_actions.cacheDownloadAll = new QAction(tr("Download &all"), this);
     m_actions.cacheDownloadAll->setStatusTip(tr("Downloads all firmware files to have them locally available."));
 }
@@ -168,6 +175,7 @@ void UsbprogMainWindow::connectSignalsAndSlots()
     connect(m_actions.cacheClean, SIGNAL(triggered()), SLOT(cacheClean()));
     connect(m_actions.cacheDelete, SIGNAL(triggered()), SLOT(cacheDelete()));
     connect(m_actions.cacheDownloadAll, SIGNAL(triggered()), SLOT(cacheDownloadAll()));
+    connect(m_actions.installDriver, SIGNAL(triggered()), SLOT(installDriver()));
 
     connect(m_widgets.firmwareSourcePoolRadio, SIGNAL(toggled(bool)), SLOT(onlinePoolSourceToggled(bool)));
     connect(m_widgets.firmwareList,
@@ -194,6 +202,10 @@ void UsbprogMainWindow::initMenus()
     cacheMenu->addSeparator();
     cacheMenu->addAction(m_actions.cacheDownloadAll);
 
+    QMenu *deviceMenu = new QMenu(this);
+    deviceMenu->setTitle(tr("&Device"));
+    deviceMenu->addAction(m_actions.installDriver);
+
     QMenu *helpMenu = new QMenu(this);
     helpMenu->setTitle(tr("&Help"));
     helpMenu->addAction(m_actions.help);
@@ -203,6 +215,9 @@ void UsbprogMainWindow::initMenus()
 
     menuBar()->addMenu(programMenu);
     menuBar()->addMenu(cacheMenu);
+#ifdef Q_OS_WIN
+    menuBar()->addMenu(deviceMenu);
+#endif
     // align the "Help" menu on the right in the Motif and CDE style
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
@@ -714,6 +729,14 @@ void UsbprogMainWindow::fileChooseButtonClicked()
         return;
 
     m_widgets.fileEdit->setText(firmware);
+}
+
+void UsbprogMainWindow::installDriver()
+{
+#ifdef Q_OS_WIN
+    DriverAssistant wizard(this);
+    wizard.exec();
+#endif
 }
 
 bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilent)
