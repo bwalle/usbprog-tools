@@ -48,83 +48,83 @@ namespace core {
  */
 class Configuration
 {
-    public:
-        /**
-         * @brief Returns the data directory of USBprog
-         *
-         * @return the data directory
-         */
-        std::string getDataDir() const;
+public:
+    /**
+     * @brief Returns the data directory of USBprog
+     *
+     * @return the data directory
+     */
+    std::string getDataDir() const;
 
-        /**
-         * @brief Sets the data directory of USBprog
-         *
-         * @param[in] dir the new data directory
-         */
-        void setDataDir(const std::string &dir);
+    /**
+     * @brief Sets the data directory of USBprog
+     *
+     * @param[in] dir the new data directory
+     */
+    void setDataDir(const std::string &dir);
 
-        /**
-         * @brief Checks if debugging is enabled
-         *
-         * @return @c true if debugging is enabled, @c false otherwise
-         */
-        bool getDebug() const;
+    /**
+     * @brief Checks if debugging is enabled
+     *
+     * @return @c true if debugging is enabled, @c false otherwise
+     */
+    bool getDebug() const;
 
-        /**
-         * @brief Enables/disables debugging
-         *
-         * @param[in] debug @c true if debugging messagtes should be enabled, @c false otherwise.
-         */
-        void setDebug(bool debug);
+    /**
+     * @brief Enables/disables debugging
+     *
+     * @param[in] debug @c true if debugging messagtes should be enabled, @c false otherwise.
+     */
+    void setDebug(bool debug);
 
-        /**
-         * @brief Checks if we're in offline mode
-         *
-         * @return @c true if offline mode is enabled, @c false otherwise.
-         */
-        bool isOffline() const;
+    /**
+     * @brief Checks if we're in offline mode
+     *
+     * @return @c true if offline mode is enabled, @c false otherwise.
+     */
+    bool isOffline() const;
 
-        /**
-         * @brief Enables/disables offline mode
-         *
-         * @param[in] offline @c true if the offline mode should be enabled, @c false otherwise.
-         */
-        void setOffline(bool offline);
+    /**
+     * @brief Enables/disables offline mode
+     *
+     * @param[in] offline @c true if the offline mode should be enabled, @c false otherwise.
+     */
+    void setOffline(bool offline);
 
-        /**
-         * @brief Returns the index URL
-         *
-         * This is the URL where the <tt>versions.xml</tt> file is located.
-         *
-         * @return the index URL
-         */
-        std::string getIndexUrl() const;
+    /**
+     * @brief Returns the index URL
+     *
+     * This is the URL where the <tt>versions.xml</tt> file is located.
+     *
+     * @return the index URL
+     */
+    std::string getIndexUrl() const;
 
-        /**
-         * @brief Sets the index URL.
-         *
-         * @param[in] url the new index URL
-         */
-        void setIndexUrl(const std::string &url);
+    /**
+     * @brief Sets the index URL.
+     *
+     * @param[in] url the new index URL
+     */
+    void setIndexUrl(const std::string &url);
 
-        /**
-         * @brief Dumps the configuration to @p stream
-         *
-         * This function is for debugging.
-         *
-         * @param[in,out] stream the stream where the configuration should be written to.
-         */
-        virtual void dumpConfig(std::ostream &stream);
+    /**
+     * @brief Dumps the configuration to @p stream
+     *
+     * This function is for debugging.
+     *
+     * @param[in,out] stream the stream where the configuration should be written to.
+     */
+    virtual void dumpConfig(std::ostream &stream);
 
-    protected:
-        Configuration();
-        virtual ~Configuration();
+protected:
+    Configuration();
+    virtual ~Configuration();
 
-    private:
-        std::string m_dataDir;
-        bool m_debug;
-        bool m_offline;
-        std::string m_indexUrl;
+private:
+    std::string m_dataDir;
+    bool m_debug;
+    bool m_offline;
+    std::string m_indexUrl;
 };
 
 /* }}} */
