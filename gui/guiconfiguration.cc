@@ -1,5 +1,5 @@
 /*
- * (c) 2007-2010, Bernhard Walle <bernhard@bwalle.de>
+ * (c) 2007-2014, Bernhard Walle <bernhard@bwalle.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,6 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include <QNetworkProxyFactory>
+
 #include "guiconfiguration.h"
 
 namespace usbprog {
@@ -23,7 +26,9 @@ namespace gui {
 
 /* -------------------------------------------------------------------------- */
 GuiConfiguration::GuiConfiguration()
-{}
+{
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
+}
 
 /* -------------------------------------------------------------------------- */
 GuiConfiguration::~GuiConfiguration()
