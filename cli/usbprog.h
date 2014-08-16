@@ -52,31 +52,31 @@ namespace cli {
  * @ingroup cli
  */
 class HashNotifier : public core::ProgressNotifier {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new HashNotifier object with the given terminal width.
-         *
-         * @param[in] width the width of the terminal (i.e. the width of the progress bar).
-         */
-        HashNotifier(int width);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new HashNotifier object with the given terminal width.
+     *
+     * @param[in] width the width of the terminal (i.e. the width of the progress bar).
+     */
+    HashNotifier(int width);
 
-        /**
-         * @brief Destructor
-         */
-        ~HashNotifier();
+    /**
+     * @brief Destructor
+     */
+    ~HashNotifier();
 
-    public:
-        /// @copydoc core::ProgressNotifier::progressed()
-        int progressed(double total, double now);
+public:
+    /// @copydoc core::ProgressNotifier::progressed()
+    int progressed(double total, double now);
 
-        /// @copydoc core::ProgressNotifier::finished()
-        void finished();
+    /// @copydoc core::ProgressNotifier::finished()
+    void finished();
 
-    private:
-        int m_width;
-        int m_lastProgress;
+private:
+    int m_width;
+    int m_lastProgress;
 };
 
 /* }}} */
@@ -90,75 +90,75 @@ class HashNotifier : public core::ProgressNotifier {
  * @ingroup cli
  */
 class Usbprog {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new Usbprog instance. The arguments are the command line parameters passed from
-         * main().
-         *
-         * @param[in] argc the argument count
-         * @param[in] argv the argument vector
-         */
-        Usbprog(int argc, char *argv[]);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new Usbprog instance. The arguments are the command line parameters passed from
+     * main().
+     *
+     * @param[in] argc the argument count
+     * @param[in] argv the argument vector
+     */
+    Usbprog(int argc, char *argv[]);
 
-        /**
-         * @brief Virtual Destructor
-         */
-        virtual ~Usbprog();
+    /**
+     * @brief Virtual Destructor
+     */
+    virtual ~Usbprog();
 
-    public:
-        /**
-         * @brief Reads the configuration file
-         *
-         * @exception core::ApplicationError if initializing of the configuration failed
-         */
-        void initConfig();
+public:
+    /**
+     * @brief Reads the configuration file
+     *
+     * @exception core::ApplicationError if initializing of the configuration failed
+     */
+    void initConfig();
 
-        /**
-         * @brief Parses the command line given in the constructor
-         *
-         * @exception core::ApplicationError if initializing of the configuration failed
-         */
-        void parseCommandLine();
+    /**
+     * @brief Parses the command line given in the constructor
+     *
+     * @exception core::ApplicationError if initializing of the configuration failed
+     */
+    void parseCommandLine();
 
-        /**
-         * @brief Initializes the firmware pool
-         *
-         * @exception core::ApplicationError if initializing of the firmware pool failed
-         */
-        void initFirmwarePool();
+    /**
+     * @brief Initializes the firmware pool
+     *
+     * @exception core::ApplicationError if initializing of the firmware pool failed
+     */
+    void initFirmwarePool();
 
-        /**
-         * @brief Initializes the device manager
-         *
-         * @exception core::ApplicationError if initializing of the device manager failed
-         */
-        void initDeviceManager();
+    /**
+     * @brief Initializes the device manager
+     *
+     * @exception core::ApplicationError if initializing of the device manager failed
+     */
+    void initDeviceManager();
 
-        /**
-         * @brief Executes the application
-         *
-         * This function blocks.
-         *
-         * @exception core::ApplicationError if something went wrong
-         */
-        void exec();
+    /**
+     * @brief Executes the application
+     *
+     * This function blocks.
+     *
+     * @exception core::ApplicationError if something went wrong
+     */
+    void exec();
 
-    protected:
-        /**
-         * @brief Prints the help
-         */
-        void printHelp();
+protected:
+    /**
+     * @brief Prints the help
+     */
+    void printHelp();
 
-    private:
-        QCoreApplication m_coreApp;
-        Firmwarepool *m_firmwarepool;
-        std::vector<std::string> m_args;
-        core::DeviceManager *m_devicemanager;
-        core::ProgressNotifier *m_progressNotifier;
-        int m_argc;
-        char **m_argv;
+private:
+    QCoreApplication m_coreApp;
+    Firmwarepool *m_firmwarepool;
+    std::vector<std::string> m_args;
+    core::DeviceManager *m_devicemanager;
+    core::ProgressNotifier *m_progressNotifier;
+    int m_argc;
+    char **m_argv;
 };
 
 /* }}} */

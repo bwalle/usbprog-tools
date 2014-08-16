@@ -51,35 +51,35 @@ class InterfaceDescriptor
 {
     friend class ConfigDescriptor;
 
-    public:
-        /**
-         * @brief Destructor
-         */
-        virtual ~InterfaceDescriptor();
+public:
+    /**
+     * @brief Destructor
+     */
+    virtual ~InterfaceDescriptor();
 
-    public:
-        /**
-         * @brief Returns the USB interface number
-         *
-         * @return the interface number
-         */
-        unsigned short getInterfaceNumber() const;
+public:
+    /**
+     * @brief Returns the USB interface number
+     *
+     * @return the interface number
+     */
+    unsigned short getInterfaceNumber() const;
 
-    protected:
-        /**
-         * @brief Constructor
-         *
-         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
-         */
-        InterfaceDescriptor(const void *nativeHandle);
+protected:
+    /**
+     * @brief Constructor
+     *
+     * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+     */
+    InterfaceDescriptor(const void *nativeHandle);
 
-    private:
-        // noncopyable
-        InterfaceDescriptor(const InterfaceDescriptor &other);
-        InterfaceDescriptor &operator=(const InterfaceDescriptor &other);
+private:
+    // noncopyable
+    InterfaceDescriptor(const InterfaceDescriptor &other);
+    InterfaceDescriptor &operator=(const InterfaceDescriptor &other);
 
-    private:
-        InterfaceDescriptorPrivate *const m_data;
+private:
+    InterfaceDescriptorPrivate *const m_data;
 };
 
 /* }}} */

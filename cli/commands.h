@@ -51,33 +51,33 @@ namespace cli {
  * @ingroup cli
  */
 class ListCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new ListCommand instance.
-         *
-         * @param[in] firmwarepool the firmwarepool which is still owned by the caller
-         */
-        ListCommand(Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new ListCommand instance.
+     *
+     * @param[in] firmwarepool the firmwarepool which is still owned by the caller
+     */
+    ListCommand(Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::aliases()
-        core::StringVector aliases() const;
+    /// @copydoc Command::aliases()
+    core::StringVector aliases() const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
@@ -93,48 +93,48 @@ class ListCommand : public AbstractCommand {
  * @ingroup cli
  */
 class InfoCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new InfoCommand instance.
-         *
-         * @param[in] firmwarepool the firmwarepool which is still owned by the caller
-         */
-        InfoCommand(Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new InfoCommand instance.
+     *
+     * @param[in] firmwarepool the firmwarepool which is still owned by the caller
+     */
+    InfoCommand(Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::aliases()
-        core::StringVector aliases() const;
+    /// @copydoc Command::aliases()
+    core::StringVector aliases() const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
@@ -150,49 +150,49 @@ class InfoCommand : public AbstractCommand {
  * @ingroup cli
  */
 class PinCommand : public AbstractCommand {
-    public:
+public:
 
-        /**
-         * @brief Constructor
-         *
-         * Creates a new PinCommand instance.
-         *
-         * @param[in] firmwarepool the Firmwarepool which is still owned by the caller
-         */
-        PinCommand(Firmwarepool *firmwarepool);
+    /**
+     * @brief Constructor
+     *
+     * Creates a new PinCommand instance.
+     *
+     * @param[in] firmwarepool the Firmwarepool which is still owned by the caller
+     */
+    PinCommand(Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector       args,
-                     core::StringVector     options,
-                     std::ostream           &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector       args,
+                 core::StringVector     options,
+                 std::ostream           &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::aliases()
-        core::StringVector aliases() const;
+    /// @copydoc Command::aliases()
+    core::StringVector aliases() const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
@@ -208,58 +208,58 @@ class PinCommand : public AbstractCommand {
  * @ingroup cli
  */
 class DownloadCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new DownloadCommand.
-         *
-         * @param[in] firmwarepool the firmware pool
-         */
-        DownloadCommand(Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new DownloadCommand.
+     *
+     * @param[in] firmwarepool the firmware pool
+     */
+    DownloadCommand(Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector       args,
-                     core::StringVector     options,
-                     std::ostream           &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector       args,
+                 core::StringVector     options,
+                 std::ostream           &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::aliases()
-        core::StringVector aliases() const;
+    /// @copydoc Command::aliases()
+    core::StringVector aliases() const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-    protected:
-        /**
-         * @brief Downloads all firmwares
-         *
-         * @param[in,out] os the stream where the output should be printed to
-         * @return always @c true
-         * @exception core::IOError whenever downloading fails
-         */
-        bool downloadAll(std::ostream &os);
+protected:
+    /**
+     * @brief Downloads all firmwares
+     *
+     * @param[in,out] os the stream where the output should be printed to
+     * @return always @c true
+     * @exception core::IOError whenever downloading fails
+     */
+    bool downloadAll(std::ostream &os);
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
@@ -275,45 +275,45 @@ class DownloadCommand : public AbstractCommand {
  * @ingroup cli
  */
 class CacheCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new CacheCommand.
-         *
-         * @param[in] firmwarepool the firmware pool
-         */
-        CacheCommand(Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new CacheCommand.
+     *
+     * @param[in] firmwarepool the firmware pool
+     */
+    CacheCommand(Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector       args,
-                     core::StringVector     options,
-                     std::ostream           &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector       args,
+                 core::StringVector     options,
+                 std::ostream           &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-    private:
-        Firmwarepool *m_firmwarepool;
+private:
+    Firmwarepool *m_firmwarepool;
 };
 
 /* }}} */
@@ -329,30 +329,30 @@ class CacheCommand : public AbstractCommand {
  * @ingroup cli
  */
 class DevicesCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * @param[in] deviceManager the device manager (still owned by the caller)
-         * @param[in] firmwarepool the firmware pool (still owned by the caller)
-         */
-        DevicesCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * @param[in] deviceManager the device manager (still owned by the caller)
+     * @param[in] firmwarepool the firmware pool (still owned by the caller)
+     */
+    DevicesCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector       args,
-                     core::StringVector     options,
-                     std::ostream           &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector       args,
+                 core::StringVector     options,
+                 std::ostream           &os);
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-    private:
-        core::DeviceManager *m_deviceManager;
-        Firmwarepool        *m_firmwarepool;
+private:
+    core::DeviceManager *m_deviceManager;
+    Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -368,47 +368,47 @@ class DevicesCommand : public AbstractCommand {
  * @ingroup cli
  */
 class DeviceCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of DeviceCommand.
-         *
-         * @param[in] deviceManager the device manager (that is still owned by the caller)
-         * @param[in] firmwarepool the firmware pool (that is still owned by the caller)
-         */
-        DeviceCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of DeviceCommand.
+     *
+     * @param[in] deviceManager the device manager (that is still owned by the caller)
+     * @param[in] firmwarepool the firmware pool (that is still owned by the caller)
+     */
+    DeviceCommand(core::DeviceManager *deviceManager, Firmwarepool *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-    private:
-        core::DeviceManager *m_deviceManager;
-        Firmwarepool        *m_firmwarepool;
+private:
+    core::DeviceManager *m_deviceManager;
+    Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -424,50 +424,50 @@ class DeviceCommand : public AbstractCommand {
  * @ingroup cli
  */
 class UploadCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of DeviceCommand.
-         *
-         * @param[in] deviceManager the device manager (that is still owned by the caller)
-         * @param[in] firmwarepool the firmware pool (that is still owned by the caller)
-         */
-        UploadCommand(core::DeviceManager *deviceManager, Firmwarepool  *firmwarepool);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of DeviceCommand.
+     *
+     * @param[in] deviceManager the device manager (that is still owned by the caller)
+     * @param[in] firmwarepool the firmware pool (that is still owned by the caller)
+     */
+    UploadCommand(core::DeviceManager *deviceManager, Firmwarepool  *firmwarepool);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::getArgNumber()
-        size_t getArgNumber() const;
+    /// @copydoc Command::getArgNumber()
+    size_t getArgNumber() const;
 
-        /// @copydoc Command::getArgType()
-        CommandArg::Type getArgType(size_t pos) const;
+    /// @copydoc Command::getArgType()
+    CommandArg::Type getArgType(size_t pos) const;
 
-        /// @copydoc Command::getArgTitle()
-        std::string getArgTitle(size_t pos) const;
+    /// @copydoc Command::getArgTitle()
+    std::string getArgTitle(size_t pos) const;
 
-        /// @copydoc Command::getSupportedOptions()
-        core::StringVector getSupportedOptions() const;
+    /// @copydoc Command::getSupportedOptions()
+    core::StringVector getSupportedOptions() const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-        /// @copydoc Command::getCompletions()
-        std::vector<std::string> getCompletions(const std::string   &start,
-                                                size_t              pos,
-                                                bool                option,
-                                                bool                *filecompletion) const;
+    /// @copydoc Command::getCompletions()
+    std::vector<std::string> getCompletions(const std::string   &start,
+                                            size_t              pos,
+                                            bool                option,
+                                            bool                *filecompletion) const;
 
-    private:
-        core::DeviceManager *m_deviceManager;
-        Firmwarepool        *m_firmwarepool;
+private:
+    core::DeviceManager *m_deviceManager;
+    Firmwarepool        *m_firmwarepool;
 };
 
 /* }}} */
@@ -484,30 +484,30 @@ class UploadCommand : public AbstractCommand {
  * @ingroup cli
  */
 class StartCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of StartCommand.
-         *
-         * @param[in] deviceManager the device manager which is still owned by the caller
-         */
-        StartCommand(core::DeviceManager *deviceManager);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of StartCommand.
+     *
+     * @param[in] deviceManager the device manager which is still owned by the caller
+     */
+    StartCommand(core::DeviceManager *deviceManager);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-    private:
-        core::DeviceManager *m_deviceManager;
+private:
+    core::DeviceManager *m_deviceManager;
 };
 
 /* }}} */
@@ -523,30 +523,30 @@ class StartCommand : public AbstractCommand {
  * @ingroup cli
  */
 class ResetCommand : public AbstractCommand {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of a ResetCommand object.
-         *
-         * @param[in] deviceManager the device manager that is still owned by the caller
-         */
-        ResetCommand(core::DeviceManager *deviceManager);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of a ResetCommand object.
+     *
+     * @param[in] deviceManager the device manager that is still owned by the caller
+     */
+    ResetCommand(core::DeviceManager *deviceManager);
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 
-    private:
-        core::DeviceManager *m_deviceManager;
+private:
+    core::DeviceManager *m_deviceManager;
 };
 
 /* }}} */
@@ -562,23 +562,23 @@ class ResetCommand : public AbstractCommand {
  * @ingroup cli
  */
 class CopyingCommand : public AbstractCommand {
-    public:
-        CopyingCommand();
+public:
+    CopyingCommand();
 
-    public:
-        /// @copydoc Command::execute()
-        bool execute(CommandArgVector   args,
-                     core::StringVector options,
-                     std::ostream       &os);
+public:
+    /// @copydoc Command::execute()
+    bool execute(CommandArgVector   args,
+                 core::StringVector options,
+                 std::ostream       &os);
 
-        /// @copydoc Command::aliases()
-        core::StringVector aliases() const;
+    /// @copydoc Command::aliases()
+    core::StringVector aliases() const;
 
-        /// @copydoc Command::help()
-        std::string help() const;
+    /// @copydoc Command::help()
+    std::string help() const;
 
-        /// @copydoc Command::printLongHelp()
-        void printLongHelp(std::ostream &os) const;
+    /// @copydoc Command::printLongHelp()
+    void printLongHelp(std::ostream &os) const;
 };
 
 /* }}} */

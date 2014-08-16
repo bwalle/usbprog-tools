@@ -90,7 +90,7 @@ std::string MD5Digest::end()
 
 /* -------------------------------------------------------------------------- */
 bool check_digest(const std::string &file, const std::string &reference,
-        Digest::Algorithm da) throw(IOError)
+        Digest::Algorithm da)
 {
     char buffer[BUFFERSIZE];
 

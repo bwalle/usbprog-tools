@@ -45,39 +45,39 @@ namespace core {
  * @ingroup core
  */
 class StringTokenizer {
-    public:
-        /**
-         * @brief Virtual destructor
-         */
-        virtual ~StringTokenizer() {}
+public:
+    /**
+     * @brief Virtual destructor
+     */
+    virtual ~StringTokenizer() {}
 
-    public:
-        /**
-         * @brief Checks if there are more tokens available
-         *
-         * @return @c true if there are more tokens, @c false otherwise
-         */
-        virtual bool hasMoreTokens() const = 0;
+public:
+    /**
+     * @brief Checks if there are more tokens available
+     *
+     * @return @c true if there are more tokens, @c false otherwise
+     */
+    virtual bool hasMoreTokens() const = 0;
 
-        /**
-         * @brief Returns the next token
-         *
-         * If hasMoreTokens() returns @c true, then this function returns the next token
-         * as string.
-         *
-         * @return the token
-         */
-        virtual std::string nextToken() = 0;
+    /**
+     * @brief Returns the next token
+     *
+     * If hasMoreTokens() returns @c true, then this function returns the next token
+     * as string.
+     *
+     * @return the token
+     */
+    virtual std::string nextToken() = 0;
 
-        /**
-         * @brief Returns the result of a tokenize action
-         *
-         * This function can be used instead of calling hasMoreTokens() and nextToken() in
-         * a loop to tokenize a string.
-         *
-         * @return the tokens
-         */
-        virtual StringVector tokenize() = 0;
+    /**
+     * @brief Returns the result of a tokenize action
+     *
+     * This function can be used instead of calling hasMoreTokens() and nextToken() in
+     * a loop to tokenize a string.
+     *
+     * @return the tokens
+     */
+    virtual StringVector tokenize() = 0;
 };
 
 /* }}} */
@@ -96,23 +96,23 @@ class StringTokenizer {
  * @ingroup core
  */
 class ShellStringTokenizer : public StringTokenizer {
-    public:
-        /**
-         * @brief Creates a new ShellStringTokenizer object
-         *
-         * @param[in] string the string to tokenize
-         */
-        ShellStringTokenizer(const std::string &string);
+public:
+    /**
+     * @brief Creates a new ShellStringTokenizer object
+     *
+     * @param[in] string the string to tokenize
+     */
+    ShellStringTokenizer(const std::string &string);
 
-    public:
-        virtual bool hasMoreTokens() const;
-        virtual std::string nextToken();
+public:
+    virtual bool hasMoreTokens() const;
+    virtual std::string nextToken();
 
-        virtual StringVector tokenize();
+    virtual StringVector tokenize();
 
-    private:
-        std::string m_string;
-        size_t m_pos;
+private:
+    std::string m_string;
+    size_t m_pos;
 };
 
 /* }}} */

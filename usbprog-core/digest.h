@@ -56,52 +56,52 @@ namespace core {
  * @ingroup core
  */
 class Digest {
-    public:
-        /**
-         * @brief Different hash algorithms like MD5
-         */
-        enum Algorithm {
-            DA_MD5      /**< the well-known MD5 algorithm which is not secure any more but can be used
-                             to check against transmission errors */
-        };
+public:
+    /**
+     * @brief Different hash algorithms like MD5
+     */
+    enum Algorithm {
+        DA_MD5      /**< the well-known MD5 algorithm which is not secure any more but can be used
+                         to check against transmission errors */
+    };
 
-    public:
-        /**
-         * @brief Destructor
-         */
-        virtual ~Digest() {}
+public:
+    /**
+     * @brief Destructor
+     */
+    virtual ~Digest() {}
 
-    public:
-        /**
-         * @brief Adds the bytes of @p buffer to the digest calculation
-         *
-         * This member function may be called multiple times.
-         *
-         * @param[in] buffer the buffer that contains @p len bytes
-         * @param[in] len the length of the buffer
-         */
-        virtual void process(unsigned char *buffer, size_t len) = 0;
+public:
+    /**
+     * @brief Adds the bytes of @p buffer to the digest calculation
+     *
+     * This member function may be called multiple times.
+     *
+     * @param[in] buffer the buffer that contains @p len bytes
+     * @param[in] len the length of the buffer
+     */
+    virtual void process(unsigned char *buffer, size_t len) = 0;
 
-        /**
-         * @brief Finishes the calculation and returns the result
-         *
-         * Returns the result as hex string which is quite usual (the shell utilities
-         * @c md5sum or @c sha1sum do the same).
-         *
-         * @return the digest string in textual representation
-         */
-        virtual std::string end() = 0;
+    /**
+     * @brief Finishes the calculation and returns the result
+     *
+     * Returns the result as hex string which is quite usual (the shell utilities
+     * @c md5sum or @c sha1sum do the same).
+     *
+     * @return the digest string in textual representation
+     */
+    virtual std::string end() = 0;
 
-        /**
-         * @brief Factory function
-         *
-         * Create a concrete implementation of Digest with @p algorithm.
-         *
-         * @param[in] algorithm the digest algorith, e.g. Digest::DA_MD5.
-         * @return a newly created instance of Digest (which must be freed by the caller) or @c NULL if
-         *         @p algorithm contains an invalid value.
-         */
-        static Digest *create(enum Algorithm algorithm);
+    /**
+     * @brief Factory function
+     *
+     * Create a concrete implementation of Digest with @p algorithm.
+     *
+     * @param[in] algorithm the digest algorith, e.g. Digest::DA_MD5.
+     * @return a newly created instance of Digest (which must be freed by the caller) or @c NULL if
+     *         @p algorithm contains an invalid value.
+     */
+    static Digest *create(enum Algorithm algorithm);
 };
 
 /* }}} */
@@ -116,19 +116,19 @@ class Digest {
  * @ingroup core
  */
 class MD5Digest : public Digest {
-    public:
-        MD5Digest();
-        ~MD5Digest();
+public:
+    MD5Digest();
+    ~MD5Digest();
 
-    public:
-        void process(unsigned char *buffer, size_t len);
-        std::string end();
+public:
+    void process(unsigned char *buffer, size_t len);
+    std::string end();
 
-    private:
-        void *m_md5; /* using void here because that header file should
-                        not include md5 stuff and a simple forward declaration
-                        because md5_t is "typedef struct { } ..." instead of
-                        "struct ... { }" */
+private:
+    void *m_md5; /* using void here because that header file should
+                    not include md5 stuff and a simple forward declaration
+                    because md5_t is "typedef struct { } ..." instead of
+                    "struct ... { }" */
 };
 
 /* }}} */
@@ -149,8 +149,7 @@ class MD5Digest : public Digest {
  */
 bool check_digest(const std::string     &file,
                   const std::string     &reference,
-                  Digest::Algorithm     da)
-throw(IOError);
+                  Digest::Algorithm     da);
 
 
 /* }}} */

@@ -44,9 +44,9 @@ namespace gui {
  */
 class QtSleeper : public core::Sleeper
 {
-    public:
-        /// @copydoc core::Sleeper::sleep(int)
-        virtual void sleep(int ms);
+public:
+    /// @copydoc core::Sleeper::sleep(int)
+    virtual void sleep(int ms);
 };
 
 /* }}} */

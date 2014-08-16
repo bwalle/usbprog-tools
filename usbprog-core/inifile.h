@@ -45,56 +45,56 @@ namespace core {
  * @ingroup core
  */
 class IniFile {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new ini parser. The constructor doesn't check whether @p fileName exists.
-         * The user must call readFile() before using any getter methods like getValue(),
-         * getIntValue() or isKeyAvailable().
-         *
-         * @param[in] fileName the name of the file to parse
-         */
-        IniFile(const std::string &fileName);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new ini parser. The constructor doesn't check whether @p fileName exists.
+     * The user must call readFile() before using any getter methods like getValue(),
+     * getIntValue() or isKeyAvailable().
+     *
+     * @param[in] fileName the name of the file to parse
+     */
+    IniFile(const std::string &fileName);
 
-        /**
-         * @brief Reads the file whose file name has been set in the constructor.
-         *
-         * @exception IOError if reading the file failed.
-         */
-        void readFile();
+    /**
+     * @brief Reads the file whose file name has been set in the constructor.
+     *
+     * @exception IOError if reading the file failed.
+     */
+    void readFile();
 
-        /**
-         * @brief Returns the string value of @p key
-         *
-         * Don't forget to call readFile() before!
-         *
-         * @param[in] key the name of the key
-         * @return the value or the empty string (<tt>""</tt>) if the key doesn't exist
-         */
-        std::string getValue(const std::string &key) const;
+    /**
+     * @brief Returns the string value of @p key
+     *
+     * Don't forget to call readFile() before!
+     *
+     * @param[in] key the name of the key
+     * @return the value or the empty string (<tt>""</tt>) if the key doesn't exist
+     */
+    std::string getValue(const std::string &key) const;
 
-        /**
-         * @brief Returns the integer value of @p key
-         *
-         * Don't forget to call readFile() before!
-         *
-         * @param[in] key the name of the key
-         * @return the integer value or 0 if the key doesn't exist
-         */
-        int getIntValue(const std::string &key) const;
+    /**
+     * @brief Returns the integer value of @p key
+     *
+     * Don't forget to call readFile() before!
+     *
+     * @param[in] key the name of the key
+     * @return the integer value or 0 if the key doesn't exist
+     */
+    int getIntValue(const std::string &key) const;
 
-        /**
-         * @brief Checks if @p key exists
-         *
-         * @param[in] key the name of the key
-         * @return @c true if the key exists, @c false otherwise.
-         */
-        bool isKeyAvailable(const std::string &key) const;
+    /**
+     * @brief Checks if @p key exists
+     *
+     * @param[in] key the name of the key
+     * @return @c true if the key exists, @c false otherwise.
+     */
+    bool isKeyAvailable(const std::string &key) const;
 
-    private:
-        std::string m_fileName;
-        std::map<std::string, std::string> m_map;
+private:
+    std::string m_fileName;
+    std::map<std::string, std::string> m_map;
 };
 
 /* }}} */

@@ -41,39 +41,39 @@ namespace core {
  * @ingroup core
  */
 class ProgressNotifier {
-    public:
-        /**
-         * @brief Virtual destructor
-         */
-        virtual ~ProgressNotifier() {}
+public:
+    /**
+     * @brief Virtual destructor
+     */
+    virtual ~ProgressNotifier() {}
 
-    public:
-        /**
-         * @brief Gets called regularly
-         *
-         * This member function gets called regulary to notify the caller about the
-         * progress. The percentage value can be computed by the formula
-         *
-         * <tt>percentage = now * 100 / total</tt>
-         *
-         * The function should never throw.
-         *
-         * @param[in] total the total value
-         * @param[in] now the current value (must be less or equal to now)
-         * @return the return value is ignored and will be removed in the future (which means you
-         *         should return @c true when implementing the interface and ignore it when
-         *         calling that interface)
-         */
-        virtual int progressed(double total, double now) = 0;
+public:
+    /**
+     * @brief Gets called regularly
+     *
+     * This member function gets called regulary to notify the caller about the
+     * progress. The percentage value can be computed by the formula
+     *
+     * <tt>percentage = now * 100 / total</tt>
+     *
+     * The function should never throw.
+     *
+     * @param[in] total the total value
+     * @param[in] now the current value (must be less or equal to now)
+     * @return the return value is ignored and will be removed in the future (which means you
+     *         should return @c true when implementing the interface and ignore it when
+     *         calling that interface)
+     */
+    virtual int progressed(double total, double now) = 0;
 
-        /**
-         * @brief Gets called once when the operation has finished
-         *
-         * This function gets called once after the operation has finished. For example if
-         * a terminal application prints a progress bar with hashes, that hook can be used to
-         * print a newline.
-         */
-        virtual void finished() = 0;
+    /**
+     * @brief Gets called once when the operation has finished
+     *
+     * This function gets called once after the operation has finished. For example if
+     * a terminal application prints a progress bar with hashes, that hook can be used to
+     * print a newline.
+     */
+    virtual void finished() = 0;
 };
 
 /* }}} */

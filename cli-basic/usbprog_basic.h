@@ -50,23 +50,23 @@ enum ErrorCode {
 
 class UsbprogBasic {
 
-    public:
-        UsbprogBasic(int argc, char *argv[]);
-        virtual ~UsbprogBasic();
+public:
+    UsbprogBasic(int argc, char *argv[]);
+    virtual ~UsbprogBasic();
 
-    public:
-        int exec();
+public:
+    int exec();
 
-    protected:
-        Action parseCommandLine(int &deviceNumber, std::string &fw) const;
-        void printHelp() const;
-        ErrorCode listDevices() const;
-        ErrorCode uploadFirmware(int                deviceNumber,
-                                 const std::string  &firmwareFile) const;
+protected:
+    Action parseCommandLine(int &deviceNumber, std::string &fw) const;
+    void printHelp() const;
+    ErrorCode listDevices() const;
+    ErrorCode uploadFirmware(int                deviceNumber,
+                             const std::string  &firmwareFile) const;
 
-    private:
-        int m_argc;
-        char **m_argv;
+private:
+    int m_argc;
+    char **m_argv;
 };
 
 /* }}} */

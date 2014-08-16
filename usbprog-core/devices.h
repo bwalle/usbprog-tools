@@ -55,123 +55,123 @@ namespace core {
  */
 class UpdateDevice
 {
-    public:
-        /// Vendor ID which means "invalid vendor".
-        static const uint16_t VENDOR_INVALID = 0xffff;
+public:
+    /// Vendor ID which means "invalid vendor".
+    static const uint16_t VENDOR_INVALID = 0xffff;
 
-        /// Product ID which means "invalid product"
-        static const uint16_t PRODUCT_INVALID = 0xffff;
+    /// Product ID which means "invalid product"
+    static const uint16_t PRODUCT_INVALID = 0xffff;
 
-        /// BCD Device ID which means "invalid device".
-        static const uint16_t BCDDEVICE_INVALID = 0xffff;
+    /// BCD Device ID which means "invalid device".
+    static const uint16_t BCDDEVICE_INVALID = 0xffff;
 
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new update device. The vendor ID is set to UpdateDevice::VENDOR_INVALID,
-         * the product ID is set to UpdateDevice::PRODUCT_INVALID and the bcd device ID is set
-         * to UpdateDevice::BCDDEVICE_INVALID.
-         *
-         * @param[in] name the name of the device (which can be empty)
-         */
-        UpdateDevice(const std::string &name = "");
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new update device. The vendor ID is set to UpdateDevice::VENDOR_INVALID,
+     * the product ID is set to UpdateDevice::PRODUCT_INVALID and the bcd device ID is set
+     * to UpdateDevice::BCDDEVICE_INVALID.
+     *
+     * @param[in] name the name of the device (which can be empty)
+     */
+    UpdateDevice(const std::string &name = "");
 
-    public:
-        /**
-         * @brief Returns the name
-         *
-         * @return the name
-         */
-        std::string getName() const;
+public:
+    /**
+     * @brief Returns the name
+     *
+     * @return the name
+     */
+    std::string getName() const;
 
-        /**
-         * @brief Set the name
-         *
-         * @param[in] name the new name
-         */
-        void setName(const std::string &name);
+    /**
+     * @brief Set the name
+     *
+     * @param[in] name the new name
+     */
+    void setName(const std::string &name);
 
-        /**
-         * @brief Returns the label
-         *
-         * @return the label
-         */
-        std::string getLabel() const;
+    /**
+     * @brief Returns the label
+     *
+     * @return the label
+     */
+    std::string getLabel() const;
 
-        /**
-         * @brief Sets the label
-         *
-         * @param[in] label the new label
-         */
-        void setLabel(const std::string &label);
+    /**
+     * @brief Sets the label
+     *
+     * @param[in] label the new label
+     */
+    void setLabel(const std::string &label);
 
-        /**
-         * @brief Returns the vendor ID
-         *
-         * @return the vendor ID
-         */
-        uint16_t getVendor() const;
+    /**
+     * @brief Returns the vendor ID
+     *
+     * @return the vendor ID
+     */
+    uint16_t getVendor() const;
 
-        /**
-         * @brief Set the vendor ID
-         *
-         * @param[in] vendor the new vendor ID
-         */
-        void setVendor(uint16_t vendor);
+    /**
+     * @brief Set the vendor ID
+     *
+     * @param[in] vendor the new vendor ID
+     */
+    void setVendor(uint16_t vendor);
 
-        /**
-         * @brief Returns the product ID
-         *
-         * @return the product ID
-         */
-        uint16_t getProduct() const;
+    /**
+     * @brief Returns the product ID
+     *
+     * @return the product ID
+     */
+    uint16_t getProduct() const;
 
-        /**
-         * @brief Sets the product ID
-         *
-         * @param[in] product the product ID
-         */
-        void setProduct(uint16_t product);
+    /**
+     * @brief Sets the product ID
+     *
+     * @param[in] product the product ID
+     */
+    void setProduct(uint16_t product);
 
-        /**
-         * @brief Returns the device ID
-         *
-         * @return the device ID as BCD
-         */
-        uint16_t getBcdDevice() const;
+    /**
+     * @brief Returns the device ID
+     *
+     * @return the device ID as BCD
+     */
+    uint16_t getBcdDevice() const;
 
-        /**
-         * @brief Set the device ID
-         *
-         * @param[in] bcddevice the device ID as BCD
-         */
-        void setBcdDevice(uint16_t bcddevice);
+    /**
+     * @brief Set the device ID
+     *
+     * @param[in] bcddevice the device ID as BCD
+     */
+    void setBcdDevice(uint16_t bcddevice);
 
-        /**
-         * @brief Checks if the update device values are valid
-         *
-         * A device is valid when getVendorId() is not UpdateDevice::VENDOR_INVALID,
-         * getProductId() is not UpdateDevice::PRODUCT_INVALID and UpdateDevice::getBcdDevice()
-         * is not UpdateDevice::BCDDEVICE_INVALID.
-         *
-         * @return @c true if the update device is valid, @c false otherwise.
-         */
-        bool isValid() const;
+    /**
+     * @brief Checks if the update device values are valid
+     *
+     * A device is valid when getVendorId() is not UpdateDevice::VENDOR_INVALID,
+     * getProductId() is not UpdateDevice::PRODUCT_INVALID and UpdateDevice::getBcdDevice()
+     * is not UpdateDevice::BCDDEVICE_INVALID.
+     *
+     * @return @c true if the update device is valid, @c false otherwise.
+     */
+    bool isValid() const;
 
-        /**
-         * @brief Formats the device IDs
-         *
-         * @return a readable string for the device IDs
-         */
-        std::string formatDeviceId() const;
+    /**
+     * @brief Formats the device IDs
+     *
+     * @return a readable string for the device IDs
+     */
+    std::string formatDeviceId() const;
 
-    private:
-        std::string m_name;
-        std::string m_label;
-        uint16_t m_vendor;
-        uint16_t m_product;
-        uint16_t m_bcddevice;
+private:
+    std::string m_name;
+    std::string m_label;
+    uint16_t m_vendor;
+    uint16_t m_product;
+    uint16_t m_bcddevice;
 };
 
 /* }}} */
@@ -187,127 +187,127 @@ class UpdateDevice
  */
 class Device
 {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new Device object.
-         *
-         * @param[in] handle the USB handle
-         */
-        Device(class usb::Device *handle);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new Device object.
+     *
+     * @param[in] handle the USB handle
+     */
+    Device(class usb::Device *handle);
 
-        /**
-         * @brief Destructor
-         */
-        virtual ~Device() {}
+    /**
+     * @brief Destructor
+     */
+    virtual ~Device() {}
 
-    public:
-        /**
-         * @brief Returns the vendor ID
-         *
-         * @return the vendor ID
-         */
-        uint16_t getVendor() const;
+public:
+    /**
+     * @brief Returns the vendor ID
+     *
+     * @return the vendor ID
+     */
+    uint16_t getVendor() const;
 
-        /**
-         * @brief Returns the product ID
-         *
-         * @return the product ID
-         */
-        uint16_t getProduct() const;
+    /**
+     * @brief Returns the product ID
+     *
+     * @return the product ID
+     */
+    uint16_t getProduct() const;
 
-        /**
-         * @brief Returns the device number
-         *
-         * @return the device number
-         * @see getBusNumber()
-         */
-        unsigned short getDeviceNumber() const;
+    /**
+     * @brief Returns the device number
+     *
+     * @return the device number
+     * @see getBusNumber()
+     */
+    unsigned short getDeviceNumber() const;
 
-        /**
-         * @brief Returns the bus number
-         *
-         * @return the bus number
-         * @see getDeviceNumber()
-         */
-        unsigned short getBusNumber() const;
+    /**
+     * @brief Returns the bus number
+     *
+     * @return the bus number
+     * @see getDeviceNumber()
+     */
+    unsigned short getBusNumber() const;
 
-        /**
-         * @brief Creates a string representation of the device
-         *
-         * @return the string representation
-         * @see toShortString()
-         */
-        std::string toString() const;
+    /**
+     * @brief Creates a string representation of the device
+     *
+     * @return the string representation
+     * @see toShortString()
+     */
+    std::string toString() const;
 
-        /**
-         * @brief Creates a short string representation of the device
-         *
-         * @return the string representation
-         * @see toString()
-         */
-        std::string toShortString() const;
+    /**
+     * @brief Creates a short string representation of the device
+     *
+     * @return the string representation
+     * @see toString()
+     */
+    std::string toShortString() const;
 
-        /**
-         * @brief Checks if the device is in update mode
-         *
-         * @return @c true if the device is in update mode, @c false otherwise
-         */
-        bool isUpdateMode() const;
+    /**
+     * @brief Checks if the device is in update mode
+     *
+     * @return @c true if the device is in update mode, @c false otherwise
+     */
+    bool isUpdateMode() const;
 
-        /**
-         * @brief Sets if the device is in update mode or not
-         *
-         * @param[in] updateMode @c true if the device is in update mode, @c false otherwise
-         */
-        void setUpdateMode(bool updateMode);
+    /**
+     * @brief Sets if the device is in update mode or not
+     *
+     * @param[in] updateMode @c true if the device is in update mode, @c false otherwise
+     */
+    void setUpdateMode(bool updateMode);
 
-        /**
-         * @brief Returns the device name
-         *
-         * @return the name of the device
-         */
-        std::string getName() const;
+    /**
+     * @brief Returns the device name
+     *
+     * @return the name of the device
+     */
+    std::string getName() const;
 
-        /**
-         * @brief Sets the name of the device
-         *
-         * @param[in] name the name of the device
-         */
-        void setName(const std::string &name);
+    /**
+     * @brief Sets the name of the device
+     *
+     * @param[in] name the name of the device
+     */
+    void setName(const std::string &name);
 
-        /**
-         * @brief Returns the short name of the device
-         *
-         * @return the short name
-         */
-        std::string getShortName() const;
+    /**
+     * @brief Returns the short name of the device
+     *
+     * @return the short name
+     */
+    std::string getShortName() const;
 
-        /**
-         * @brief Sets the short name of the device
-         *
-         * @param[in] shortName the short name
-         */
-        void setShortName(const std::string &shortName);
+    /**
+     * @brief Sets the short name of the device
+     *
+     * @param[in] shortName the short name
+     */
+    void setShortName(const std::string &shortName);
 
-        /**
-         * @brief Returns the device handle
-         *
-         * @return a pointer to the device handle. The pointer is still owned by the
-         *         Device object and must not be freed outside.
-         */
-        usb::Device *getHandle() const;
+    /**
+     * @brief Returns the device handle
+     *
+     * @return a pointer to the device handle. The pointer is still owned by the
+     *         Device object and must not be freed outside.
+     */
+    usb::Device *getHandle() const;
 
-    private:
-        usb::Device *m_handle;
-        bool m_updateMode;
-        std::string m_name;
-        std::string m_shortName;
-        uint16_t m_vendorId;
-        uint16_t m_productId;
-        unsigned short m_deviceNumber;
-        unsigned short m_busNumber;
+private:
+    usb::Device *m_handle;
+    bool m_updateMode;
+    std::string m_name;
+    std::string m_shortName;
+    uint16_t m_vendorId;
+    uint16_t m_productId;
+    unsigned short m_deviceNumber;
+    unsigned short m_busNumber;
 };
 
 /**
@@ -368,134 +368,134 @@ bool operator==(const DeviceVector &a, const DeviceVector &b);
  * @ingroup core
  */
 class DeviceManager {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new DeviceVector.
-         */
-        DeviceManager();
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new DeviceVector.
+     */
+    DeviceManager();
 
-        /**
-         * @brief Constructor that sets the debug flag
-         *
-         * @param[in] debuggingEnabled @c true if USB debugging should be enabled, @c false otherwise (which is
-         *            the default)
-         * @see setUsbDebugging()
-         */
-        DeviceManager(bool debuggingEnabled);
+    /**
+     * @brief Constructor that sets the debug flag
+     *
+     * @param[in] debuggingEnabled @c true if USB debugging should be enabled, @c false otherwise (which is
+     *            the default)
+     * @see setUsbDebugging()
+     */
+    DeviceManager(bool debuggingEnabled);
 
-        /**
-         * @brief Destructor
-         */
-        virtual ~DeviceManager();
+    /**
+     * @brief Destructor
+     */
+    virtual ~DeviceManager();
 
-    public:
-        /**
-         * @brief Sets a custom sleeper
-         *
-         * The default sleeper implementation is an instance of BlockingSleeper.
-         *
-         * @param[in] sleeper the new sleeper object that gets freed by the DeviceManager
-         */
-        void setCustomSleeper(Sleeper *sleeper);
+public:
+    /**
+     * @brief Sets a custom sleeper
+     *
+     * The default sleeper implementation is an instance of BlockingSleeper.
+     *
+     * @param[in] sleeper the new sleeper object that gets freed by the DeviceManager
+     */
+    void setCustomSleeper(Sleeper *sleeper);
 
-        /**
-         * @brief Enables or diables USB debugging
-         *
-         * @param[in] enabled @c true if USB debugging should be enabled, @c false otherwise
-         *            (which is the default)
-         */
-        void setUsbDebugging(bool enabled);
+    /**
+     * @brief Enables or diables USB debugging
+     *
+     * @param[in] enabled @c true if USB debugging should be enabled, @c false otherwise
+     *            (which is the default)
+     */
+    void setUsbDebugging(bool enabled);
 
-        /**
-         * @brief Discover update devices
-         *
-         * @param[in] updateDevices a vector with devices that should be treated as update devices
-         *            in addition to USBprog in base mode. That vector is normally retrieved from the
-         *            firmware pool. This is needed to have a weak coupling between the FirmwarePool
-         *            (that is not in the core) and the DeviceManager (that is in the core).
-         * @throw IOError on any I/O error when communicating with USB device(s)
-         */
-        void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
+    /**
+     * @brief Discover update devices
+     *
+     * @param[in] updateDevices a vector with devices that should be treated as update devices
+     *            in addition to USBprog in base mode. That vector is normally retrieved from the
+     *            firmware pool. This is needed to have a weak coupling between the FirmwarePool
+     *            (that is not in the core) and the DeviceManager (that is in the core).
+     * @throw IOError on any I/O error when communicating with USB device(s)
+     */
+    void discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices =  std::vector<UpdateDevice>());
 
-        /**
-         * @brief Prints the list of devices
-         *
-         * @param[in,out] os the stream to which the device list should be printed
-         * @param[in] showActive @c true if the active device should be marked with a star
-         */
-        void printDevices(std::ostream &os, bool showActive=true) const;
+    /**
+     * @brief Prints the list of devices
+     *
+     * @param[in,out] os the stream to which the device list should be printed
+     * @param[in] showActive @c true if the active device should be marked with a star
+     */
+    void printDevices(std::ostream &os, bool showActive=true) const;
 
-        /**
-         * @brief Switch to update mode
-         *
-         * Switches the current update device to update mode.
-         *
-         * @throw IOError on any I/O error when communicating with USB device(s)
-         * @see setCurrentUpdateDevice()
-         */
-        void switchUpdateMode();
+    /**
+     * @brief Switch to update mode
+     *
+     * Switches the current update device to update mode.
+     *
+     * @throw IOError on any I/O error when communicating with USB device(s)
+     * @see setCurrentUpdateDevice()
+     */
+    void switchUpdateMode();
 
-        /**
-         * @brief Returns the number of update devices
-         *
-         * It's necessary to call discoverUpdateDevices() before.
-         *
-         * @return the number of update devices
-         */
-        size_t getNumberUpdateDevices() const;
+    /**
+     * @brief Returns the number of update devices
+     *
+     * It's necessary to call discoverUpdateDevices() before.
+     *
+     * @return the number of update devices
+     */
+    size_t getNumberUpdateDevices() const;
 
-        /**
-         * @brief Returns the update device number @p number
-         *
-         * @param[in] number the number which must be between 0 (inclusive) and
-         *            getNumberUpdateDevices() (exclusive)
-         * @return a pointer to the device object that is still owned by the DeviceManager and only
-         *         valid until the DeviceManager is valid and until discoverUpdateDevices() is called the
-         *         next time
-         */
-        Device *getDevice(size_t number) const;
+    /**
+     * @brief Returns the update device number @p number
+     *
+     * @param[in] number the number which must be between 0 (inclusive) and
+     *            getNumberUpdateDevices() (exclusive)
+     * @return a pointer to the device object that is still owned by the DeviceManager and only
+     *         valid until the DeviceManager is valid and until discoverUpdateDevices() is called the
+     *         next time
+     */
+    Device *getDevice(size_t number) const;
 
-        /**
-         * @brief Returns the current update device
-         *
-         * @return a pointer to the device object that is still owned by the DeviceManager and only
-         *         valid until the DeviceManager is valid and until discoverUpdateDevices() is called the
-         *         next time
-         * @see setCurrentUpdateDevice()
-         */
-        Device *getCurrentUpdateDevice() const;
+    /**
+     * @brief Returns the current update device
+     *
+     * @return a pointer to the device object that is still owned by the DeviceManager and only
+     *         valid until the DeviceManager is valid and until discoverUpdateDevices() is called the
+     *         next time
+     * @see setCurrentUpdateDevice()
+     */
+    Device *getCurrentUpdateDevice() const;
 
-        /**
-         * @brief Sets the current update device to @p number
-         *
-         * @param[in] number the number which must be between 0 (inclusive) and
-         *            getNumberUpdateDevices() (exclusive)
-         */
-        void setCurrentUpdateDevice(int number);
+    /**
+     * @brief Sets the current update device to @p number
+     *
+     * @param[in] number the number which must be between 0 (inclusive) and
+     *            getNumberUpdateDevices() (exclusive)
+     */
+    void setCurrentUpdateDevice(int number);
 
-        /**
-         * @brief Rests the current update device
-         */
-        void clearCurrentUpdateDevice();
+    /**
+     * @brief Rests the current update device
+     */
+    void clearCurrentUpdateDevice();
 
-    protected:
-        /**
-         * @brief Init function
-         *
-         * This function exists because C++ in the current release cannot call another constructor
-         * from a constructor.
-         *
-         * @param[in] debuggingEnabled @c true if USB debugging should be enabled, @c false otherwise (which is
-         *            the default)
-         */
-        void init(bool debuggingEnabled = false);
+protected:
+    /**
+     * @brief Init function
+     *
+     * This function exists because C++ in the current release cannot call another constructor
+     * from a constructor.
+     *
+     * @param[in] debuggingEnabled @c true if USB debugging should be enabled, @c false otherwise (which is
+     *            the default)
+     */
+    void init(bool debuggingEnabled = false);
 
-    private:
-        DeviceVector m_updateDevices;
-        int m_currentUpdateDevice;
-        Sleeper *m_sleeper;
+private:
+    DeviceVector m_updateDevices;
+    int m_currentUpdateDevice;
+    Sleeper *m_sleeper;
 };
 
 /* }}} */
@@ -510,77 +510,77 @@ class DeviceManager {
  * @ingroup core
  */
 class UsbprogUpdater {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a updater for @p dev.
-         *
-         * @param[in] dev the device which should be updated. The device pointer is still owned by the
-         *            caller and must be valid until the whole life time of UsbprogUpdater.
-         */
-        UsbprogUpdater(Device *dev);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a updater for @p dev.
+     *
+     * @param[in] dev the device which should be updated. The device pointer is still owned by the
+     *            caller and must be valid until the whole life time of UsbprogUpdater.
+     */
+    UsbprogUpdater(Device *dev);
 
-        /**
-         * @brief Destructor
-         */
-        virtual ~UsbprogUpdater();
+    /**
+     * @brief Destructor
+     */
+    virtual ~UsbprogUpdater();
 
-    public:
-        /**
-         * @brief Sets a progress notifier
-         *
-         * @param[in] notifier an implementation of the ProgressNotifier interface. The pointer is still
-         *            owned by the caller but must be valid during the whole life time of UsbprogUpdater.
-         */
-        void setProgress(ProgressNotifier *notifier);
+public:
+    /**
+     * @brief Sets a progress notifier
+     *
+     * @param[in] notifier an implementation of the ProgressNotifier interface. The pointer is still
+     *            owned by the caller but must be valid during the whole life time of UsbprogUpdater.
+     */
+    void setProgress(ProgressNotifier *notifier);
 
-        /**
-         * @brief Opens the update device for updating
-         *
-         * @exception IOError on any error when communicating with the USBprog device.
-         */
-        void updateOpen();
+    /**
+     * @brief Opens the update device for updating
+     *
+     * @exception IOError on any error when communicating with the USBprog device.
+     */
+    void updateOpen();
 
-        /**
-         * @brief Writes the firmware to the device.
-         *
-         * It's necessary that updateOpen() has been called before.
-         *
-         * @param[in] bv the firmware bytes
-         * @exception IOError on any error when communicating with the USBprog device.
-         */
-        void writeFirmware(const ByteVector &bv);
+    /**
+     * @brief Writes the firmware to the device.
+     *
+     * It's necessary that updateOpen() has been called before.
+     *
+     * @param[in] bv the firmware bytes
+     * @exception IOError on any error when communicating with the USBprog device.
+     */
+    void writeFirmware(const ByteVector &bv);
 
-        /**
-         * @brief Starts the firmware of the device.
-         *
-         * It's necessary that updateOpen() has been called before.
-         *
-         * @exception IOError on any error when communicating with the USBprog device.
-         */
-        void startDevice();
+    /**
+     * @brief Starts the firmware of the device.
+     *
+     * It's necessary that updateOpen() has been called before.
+     *
+     * @exception IOError on any error when communicating with the USBprog device.
+     */
+    void startDevice();
 
-        /**
-         * @brief Resets the device.
-         *
-         * @exception IOError on any error when communicating with the USBprog device.
-         */
-        void resetDevice();
+    /**
+     * @brief Resets the device.
+     *
+     * @exception IOError on any error when communicating with the USBprog device.
+     */
+    void resetDevice();
 
-        /**
-         * @brief Closes the update device.
-         *
-         * This is also done by the destructor automatically.
-         *
-         * @exception IOError if the device is already closed
-         */
-        void updateClose();
+    /**
+     * @brief Closes the update device.
+     *
+     * This is also done by the destructor automatically.
+     *
+     * @exception IOError if the device is already closed
+     */
+    void updateClose();
 
-    private:
-        Device              *m_dev;
-        ProgressNotifier    *m_progressNotifier;
-        usb::DeviceHandle   *m_devHandle;
+private:
+    Device              *m_dev;
+    ProgressNotifier    *m_progressNotifier;
+    usb::DeviceHandle   *m_devHandle;
 };
 
 /* }}} */

@@ -42,16 +42,16 @@ namespace core {
  * @author Bernhard Walle <bernhard@bwalle.de>
  */
 class IOError : public std::runtime_error {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new I/O error.
-         *
-         * @param[in] string the error string
-         */
-        IOError(const std::string& string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new I/O error.
+     *
+     * @param[in] string the error string
+     */
+    IOError(const std::string& string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */
@@ -64,16 +64,16 @@ class IOError : public std::runtime_error {
  * @author Bernhard Walle <bernhard@bwalle.de>
  */
 class ParseError : public std::runtime_error {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new ParseError instance.
-         *
-         * @param[in] string the error string
-         */
-        ParseError(const std::string& string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new ParseError instance.
+     *
+     * @param[in] string the error string
+     */
+    ParseError(const std::string& string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */
@@ -88,16 +88,16 @@ class ParseError : public std::runtime_error {
  * @author Bernhard Walle <bernhard@bwalle.de>
  */
 class ApplicationError : public std::runtime_error {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new ApplicationError instance.
-         *
-         * @param[in] string the error string
-         */
-        ApplicationError(const std::string& string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new ApplicationError instance.
+     *
+     * @param[in] string the error string
+     */
+    ApplicationError(const std::string& string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */

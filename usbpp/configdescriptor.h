@@ -50,62 +50,62 @@ class ConfigDescriptor
 {
     friend class Device;
 
-    public:
-        /**
-         * @brief Destructor
-         */
-        virtual ~ConfigDescriptor();
+public:
+    /**
+     * @brief Destructor
+     */
+    virtual ~ConfigDescriptor();
 
-        /**
-         * @brief Returns the configuration value
-         *
-         * @return the USB configuration
-         */
-        unsigned short getConfigurationValue() const;
+    /**
+     * @brief Returns the configuration value
+     *
+     * @return the USB configuration
+     */
+    unsigned short getConfigurationValue() const;
 
-        /**
-         * @brief Returns the number of interfaces
-         *
-         * @return the number of interfaces
-         */
-        size_t getNumberOfInterfaces() const;
+    /**
+     * @brief Returns the number of interfaces
+     *
+     * @return the number of interfaces
+     */
+    size_t getNumberOfInterfaces() const;
 
-        /**
-         * @brief Returns the number of alternate settings for interface @p interfaceNumber
-         *
-         * @param[in] interfaceNumber the interface number for which the number of alternate settings should
-         *            be returned
-         * @return the number of alternate settings
-         * @exception Error on any error
-         */
-        size_t getNumberOfAltsettings(unsigned int interfaceNumber) const;
+    /**
+     * @brief Returns the number of alternate settings for interface @p interfaceNumber
+     *
+     * @param[in] interfaceNumber the interface number for which the number of alternate settings should
+     *            be returned
+     * @return the number of alternate settings
+     * @exception Error on any error
+     */
+    size_t getNumberOfAltsettings(unsigned int interfaceNumber) const;
 
-        /**
-         * @brief Returns the interface descriptor for a specific interface and altsetting
-         *
-         * @param[in] interfaceNumber the interface number for which the interface descriptor should be returned
-         * @param[in] altsetting the alternate setting for which  the interface descriptor should be returned
-         * @return the InterfaceDescriptor. The pointer is still owned by the ConfigDescriptor.
-         * @exception Error on any error
-         */
-        InterfaceDescriptor *getInterfaceDescriptor(unsigned int interfaceNumber,
-                                                    unsigned int altsetting);
+    /**
+     * @brief Returns the interface descriptor for a specific interface and altsetting
+     *
+     * @param[in] interfaceNumber the interface number for which the interface descriptor should be returned
+     * @param[in] altsetting the alternate setting for which  the interface descriptor should be returned
+     * @return the InterfaceDescriptor. The pointer is still owned by the ConfigDescriptor.
+     * @exception Error on any error
+     */
+    InterfaceDescriptor *getInterfaceDescriptor(unsigned int interfaceNumber,
+                                                unsigned int altsetting);
 
-    protected:
-        /**
-         * @brief Constructor
-         *
-         * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
-         */
-        ConfigDescriptor(void *nativeHandle);
+protected:
+    /**
+     * @brief Constructor
+     *
+     * @param[in] nativeHandle the libusb handle for the InterfaceDescriptor
+     */
+    ConfigDescriptor(void *nativeHandle);
 
-    private:
-        // noncopyable
-        ConfigDescriptor(const ConfigDescriptor &other);
-        ConfigDescriptor &operator=(const ConfigDescriptor &other);
+private:
+    // noncopyable
+    ConfigDescriptor(const ConfigDescriptor &other);
+    ConfigDescriptor &operator=(const ConfigDescriptor &other);
 
-    private:
-        ConfigDescriptorPrivate *const m_data;
+private:
+    ConfigDescriptorPrivate *const m_data;
 };
 
 /* }}} */

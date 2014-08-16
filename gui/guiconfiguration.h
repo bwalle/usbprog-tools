@@ -50,25 +50,25 @@ namespace gui {
  */
 class GuiConfiguration : public core::Configuration
 {
-    public:
-        /**
-         * @brief Singleton accessor
-         *
-         * @return a reference to the only CliConfiguration object
-         */
-        static GuiConfiguration &config();
+public:
+    /**
+     * @brief Singleton accessor
+     *
+     * @return a reference to the only CliConfiguration object
+     */
+    static GuiConfiguration &config();
 
-        /**
-         * @copydoc core::Configuration::dumpConfig()
-         */
-        virtual void dumpConfig(std::ostream &stream);
+    /**
+     * @copydoc core::Configuration::dumpConfig()
+     */
+    virtual void dumpConfig(std::ostream &stream);
 
-    protected:
-        GuiConfiguration();
-        virtual ~GuiConfiguration();
+protected:
+    GuiConfiguration();
+    virtual ~GuiConfiguration();
 
-    private:
-        static GuiConfiguration *m_instance;
+private:
+    static GuiConfiguration *m_instance;
 };
 
 /* }}} */

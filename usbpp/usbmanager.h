@@ -44,63 +44,63 @@ class Device;
  */
 class UsbManager
 {
-    public:
-        /**
-         * @brief Singleton accessor
-         *
-         * Returns a reference to the only instance of UsbManager
-         *
-         * @return the reference as described above
-         * @exception Error if creating the UsbManager instance failed. That exception an be only thrown
-         *            in the first invocation of that method.
-         */
-        static UsbManager &instance();
+public:
+    /**
+     * @brief Singleton accessor
+     *
+     * Returns a reference to the only instance of UsbManager
+     *
+     * @return the reference as described above
+     * @exception Error if creating the UsbManager instance failed. That exception an be only thrown
+     *            in the first invocation of that method.
+     */
+    static UsbManager &instance();
 
-    public:
-        /**
-         * @brief Enables or disables USB debugging
-         *
-         * @param[in] debug @c true if debugging should be enabled, @c false otherwise
-         */
-        void setDebug(bool debug);
+public:
+    /**
+     * @brief Enables or disables USB debugging
+     *
+     * @param[in] debug @c true if debugging should be enabled, @c false otherwise
+     */
+    void setDebug(bool debug);
 
-        /**
-         * @brief Detects the devices
-         *
-         * This function must be called every time new devices are attached or old devices are removed,
-         * i.e. to keep the information up to date.
-         */
-        void detectDevices();
+    /**
+     * @brief Detects the devices
+     *
+     * This function must be called every time new devices are attached or old devices are removed,
+     * i.e. to keep the information up to date.
+     */
+    void detectDevices();
 
-        /**
-         * @brief Returns the number of currently attached devices
-         *
-         * @return the number of devices
-         */
-        size_t getNumberOfDevices() const;
+    /**
+     * @brief Returns the number of currently attached devices
+     *
+     * @return the number of devices
+     */
+    size_t getNumberOfDevices() const;
 
-        /**
-         * @brief Returns the device number @p number
-         *
-         * @param[in] number the device number that must be between 0 (inclusive) and getNumberOfDevices()
-         *            (exclusive)
-         * @return a pointer to the Device object. The pointer is still owned by the DeviceManager and must not
-         *         be freed by the caller.
-         * @exception std::out_of_range if @p number is out of range.
-         */
-        Device *getDevice(size_t number);
+    /**
+     * @brief Returns the device number @p number
+     *
+     * @param[in] number the device number that must be between 0 (inclusive) and getNumberOfDevices()
+     *            (exclusive)
+     * @return a pointer to the Device object. The pointer is still owned by the DeviceManager and must not
+     *         be freed by the caller.
+     * @exception std::out_of_range if @p number is out of range.
+     */
+    Device *getDevice(size_t number);
 
-    private:
-        // make c'tor and d'tor private
-        UsbManager();
-        virtual ~UsbManager();
+private:
+    // make c'tor and d'tor private
+    UsbManager();
+    virtual ~UsbManager();
 
-        // disable copy c-tor and assignment operator
-        UsbManager(const UsbManager &other);
-        UsbManager &operator=(const UsbManager &other);
+    // disable copy c-tor and assignment operator
+    UsbManager(const UsbManager &other);
+    UsbManager &operator=(const UsbManager &other);
 
-    private:
-        UsbManagerPrivate *const m_data;
+private:
+    UsbManagerPrivate *const m_data;
 };
 
 /* }}} */

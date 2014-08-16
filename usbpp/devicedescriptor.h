@@ -44,82 +44,82 @@ namespace usb {
  */
 class DeviceDescriptor
 {
-    public:
-        /**
-         * @brief Returns the USB device class
-         *
-         * @return the device class
-         */
-        unsigned short getDeviceClass() const;
+public:
+    /**
+     * @brief Returns the USB device class
+     *
+     * @return the device class
+     */
+    unsigned short getDeviceClass() const;
 
-        /**
-         * @brief Set the USB device class
-         *
-         * @param[in] deviceClass the USB device class
-         */
-        void setDeviceClass(unsigned short deviceClass);
+    /**
+     * @brief Set the USB device class
+     *
+     * @param[in] deviceClass the USB device class
+     */
+    void setDeviceClass(unsigned short deviceClass);
 
-        /**
-         * @brief Returns the USB device subclass
-         *
-         * @return the device subclass
-         */
-        unsigned short getDeviceSubclass() const;
+    /**
+     * @brief Returns the USB device subclass
+     *
+     * @return the device subclass
+     */
+    unsigned short getDeviceSubclass() const;
 
-        /**
-         * @brief Set the USB device subclass
-         *
-         * @param[in] deviceSubclass the USB device subclass */
-        void setDeviceSubclass(unsigned short deviceSubclass);
+    /**
+     * @brief Set the USB device subclass
+     *
+     * @param[in] deviceSubclass the USB device subclass */
+    void setDeviceSubclass(unsigned short deviceSubclass);
 
-        /**
-         * @brief Returns the vendor ID
-         *
-         * @return the vendor ID
-         */
-        unsigned int getVendorId() const;
+    /**
+     * @brief Returns the vendor ID
+     *
+     * @return the vendor ID
+     */
+    unsigned int getVendorId() const;
 
-        /**
-         * @brief Set the USB vendor ID
-         *
-         * @param[in] vendorId the USB vendor ID
-         */
-        void setVendorId(unsigned int vendorId);
+    /**
+     * @brief Set the USB vendor ID
+     *
+     * @param[in] vendorId the USB vendor ID
+     */
+    void setVendorId(unsigned int vendorId);
 
-        /**
-         * @brief Returns the USB produt ID
-         *
-         * @return the product ID
-         */
-        unsigned int getProductId() const;
+    /**
+     * @brief Returns the USB produt ID
+     *
+     * @return the product ID
+     */
+    unsigned int getProductId() const;
 
-        /**
-         * @brief Set the USB product ID
-         *
-         * @param[in] productId the product ID
-         */
-        void setProductId(unsigned int productId);
+    /**
+     * @brief Set the USB product ID
+     *
+     * @param[in] productId the product ID
+     */
+    void setProductId(unsigned int productId);
 
-        /**
-         * @brief Returns the USB BCD Device ID
-         *
-         * @return the device ID
-         */
-        unsigned short getBcdDevice() const;
+    /**
+     * @brief Returns the USB BCD Device ID
+     *
+     * @return the device ID
+     */
+    unsigned short getBcdDevice() const;
 
-        /**
-         * @brief Sets the USB BCD device ID
-         *
-         * @param[in] bcdDevice the device ID
-         */
-        void setBcdDevice(unsigned short bcdDevice);
+    /**
+     * @brief Sets the USB BCD device ID
+     *
+     * @param[in] bcdDevice the device ID
+     */
+    void setBcdDevice(unsigned short bcdDevice);
 
-    private:
-        unsigned short  m_bDeviceClass;
-        unsigned short  m_bDeviceSubClass;
-        unsigned int    m_idVendor;
-        unsigned int    m_idProduct;
-        unsigned short  m_bcdDevice;
+private:
+    unsigned short  m_bDeviceClass;
+    unsigned short  m_bDeviceSubClass;
+    unsigned int    m_idVendor;
+    unsigned int    m_idProduct;
+    unsigned short  m_bcdDevice;
 };
 
 /**

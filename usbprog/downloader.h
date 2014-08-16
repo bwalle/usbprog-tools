@@ -48,16 +48,16 @@ namespace usbprog {
  * @ingroup usbprog
  */
 class DownloadError : public std::runtime_error {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new DownloadError instance.
-         *
-         * @param[in] string the error as string
-         */
-        DownloadError(const std::string& string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new DownloadError instance.
+     *
+     * @param[in] string the error as string
+     */
+    DownloadError(const std::string& string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */
@@ -72,83 +72,83 @@ class DownloadError : public std::runtime_error {
  */
 class Downloader : public QObject
 {
-    Q_OBJECT
+Q_OBJECT
 
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new Downloader object.
-         *
-         * @param[in] output the output stream where the result will be stored.
-         * @exception DownloadError
-         */
-        Downloader(std::ostream &output);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new Downloader object.
+     *
+     * @param[in] output the output stream where the result will be stored.
+     * @exception DownloadError
+     */
+    Downloader(std::ostream &output);
 
-        /**
-         * @brief Destructor
-         */
-        virtual ~Downloader() {}
+    /**
+     * @brief Destructor
+     */
+    virtual ~Downloader() {}
 
-    public:
-        /**
-         * @brief Sets the URL of the file that should be downloaded.
-         *
-         * @param[in] url the URL
-         */
-        void setUrl(const std::string &url);
+public:
+    /**
+     * @brief Sets the URL of the file that should be downloaded.
+     *
+     * @param[in] url the URL
+     */
+    void setUrl(const std::string &url);
 
-        /**
-         * @brief Returns the URL of the file that should be downloaded.
-         *
-         * @return the URL
-         */
-        std::string getUrl() const;
+    /**
+     * @brief Returns the URL of the file that should be downloaded.
+     *
+     * @return the URL
+     */
+    std::string getUrl() const;
 
-        /**
-         * @brief Sets the progress notifier that gets notified during download()
-         *
-         * @param[in] notifier a pointer to the ProgressNotifier object. The object must be
-         *            valid during the whole life time of the Downloader object -- at least
-         *            until download() is running. It can be reset with @c NULL. It must be freed by
-         *            the caller.
-         */
-        void setProgress(core::ProgressNotifier *notifier);
+    /**
+     * @brief Sets the progress notifier that gets notified during download()
+     *
+     * @param[in] notifier a pointer to the ProgressNotifier object. The object must be
+     *            valid during the whole life time of the Downloader object -- at least
+     *            until download() is running. It can be reset with @c NULL. It must be freed by
+     *            the caller.
+     */
+    void setProgress(core::ProgressNotifier *notifier);
 
-        /**
-         * @brief Performs the download operation
-         *
-         * @exception DownloadError if downloading the file failed
-         */
-        void download();
+    /**
+     * @brief Performs the download operation
+     *
+     * @exception DownloadError if downloading the file failed
+     */
+    void download();
 
-    public slots:
+public slots:
 
-        /**
-         * @brief Progress function
-         *
-         * That's a slot that gets called by Qt during the download operation. It calls the progress
-         * notifier that has been registered with setProgress().
-         *
-         * @param[in] bytesReceived the number of bytes that have been received so far
-         * @param[in] bytesTotal the total size of the file
-         */
-        void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    /**
+     * @brief Progress function
+     *
+     * That's a slot that gets called by Qt during the download operation. It calls the progress
+     * notifier that has been registered with setProgress().
+     *
+     * @param[in] bytesReceived the number of bytes that have been received so far
+     * @param[in] bytesTotal the total size of the file
+     */
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
-        /**
-         * @brief Finish function
-         *
-         * That's a slot that gets called by Qt when the downloading has been finished. Since we
-         * implement downloading with a "busy loop" (which is not really busy since it is blocking)
-         * in the download() function, that function also has to signal the end in the loop.
-         */
-        void downloadFinished();
+    /**
+     * @brief Finish function
+     *
+     * That's a slot that gets called by Qt when the downloading has been finished. Since we
+     * implement downloading with a "busy loop" (which is not really busy since it is blocking)
+     * in the download() function, that function also has to signal the end in the loop.
+     */
+    void downloadFinished();
 
-    private:
-        core::ProgressNotifier  *m_notifier;
-        std::string             m_url;
-        std::ostream            &m_output;
-        bool                    m_finished;
+private:
+    core::ProgressNotifier  *m_notifier;
+    std::string             m_url;
+    std::ostream            &m_output;
+    bool                    m_finished;
 };
 
 /* }}} */

@@ -36,26 +36,26 @@ namespace gui {
  */
 class PinDialog : public QDialog
 {
-    Q_OBJECT
+Q_OBJECT
 
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of PinDialog to display the pinning of the firmware @p fw.
-         *
-         * @param[in] fw the firmware for which the pin assignment should be displayed.
-         * @param[in] parent the parent widget
-         */
-        PinDialog(Firmware *fw, QWidget *parent);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of PinDialog to display the pinning of the firmware @p fw.
+     *
+     * @param[in] fw the firmware for which the pin assignment should be displayed.
+     * @param[in] parent the parent widget
+     */
+    PinDialog(Firmware *fw, QWidget *parent);
 
-        /**
-         * @brief Setup the user interface.
-         */
-        void setupUI();
+    /**
+     * @brief Setup the user interface.
+     */
+    void setupUI();
 
-    private:
-        Firmware *m_firmware;
+private:
+    Firmware *m_firmware;
 };
 
 /* }}} */

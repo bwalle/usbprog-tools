@@ -48,63 +48,63 @@ namespace gui {
  */
 class UsbprogApplication : public QApplication
 {
-    public:
-        /// Name of the application.
-        static const QString NAME;
+public:
+    /// Name of the application.
+    static const QString NAME;
 
-        /// Website URL for the application.
-        static const QString USBPROG_WEBSITE;
+    /// Website URL for the application.
+    static const QString USBPROG_WEBSITE;
 
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of UsbprogApplication. The arguments of main() are just passed to
-         * that constructor.
-         *
-         * @param[in] argc the argument count (passed to QApplication)
-         * @param[in] argv the argument vector (passed to QApplication)
-         * @exception core::ApplicationError if it's not possible to determine the configuration
-         *            directory because of some system error
-         */
-        UsbprogApplication(int &argc, char **argv);
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of UsbprogApplication. The arguments of main() are just passed to
+     * that constructor.
+     *
+     * @param[in] argc the argument count (passed to QApplication)
+     * @param[in] argv the argument vector (passed to QApplication)
+     * @exception core::ApplicationError if it's not possible to determine the configuration
+     *            directory because of some system error
+     */
+    UsbprogApplication(int &argc, char **argv);
 
-    public:
-        /**
-         * @brief Parses the command line
-         *
-         * @param[in] argc the argument cound
-         * @param[in] argv the argument vector
-         * @param[out] rc the return value that should be used to exit the program if that function
-         *             returns @c false
-         * @return @c true on success, @c false otherwise.
-         */
-        bool parseCommandLine(int argc, char **argv, int &rc);
+public:
+    /**
+     * @brief Parses the command line
+     *
+     * @param[in] argc the argument cound
+     * @param[in] argv the argument vector
+     * @param[out] rc the return value that should be used to exit the program if that function
+     *             returns @c false
+     * @return @c true on success, @c false otherwise.
+     */
+    bool parseCommandLine(int argc, char **argv, int &rc);
 
-        /**
-         * @brief Creates and set the main widget
-         */
-        void createAndSetMainWidget();
+    /**
+     * @brief Creates and set the main widget
+     */
+    void createAndSetMainWidget();
 
-        /**
-         * @brief Enables or disables logging to a logfile
-         *
-         * @param[in] enabled @c true if logging should be enabled, @c false otherwise.
-         * @param[in] filename if non-NULL, then the log output should be @p filename, not @c stderr
-         */
-        void setDebugLoggingEnabled(bool enabled, const char *filename=NULL);
+    /**
+     * @brief Enables or disables logging to a logfile
+     *
+     * @param[in] enabled @c true if logging should be enabled, @c false otherwise.
+     * @param[in] filename if non-NULL, then the log output should be @p filename, not @c stderr
+     */
+    void setDebugLoggingEnabled(bool enabled, const char *filename=NULL);
 
-    protected:
-        /**
-         * @brief Inits the configuration
-         *
-         * @exception core::ApplicationError if something failed
-         */
-        void initConfig();
+protected:
+    /**
+     * @brief Inits the configuration
+     *
+     * @exception core::ApplicationError if something failed
+     */
+    void initConfig();
 
-    private:
-        UsbprogMainWindow *m_mainWindow;
-        FILE *m_logfile;
+private:
+    UsbprogMainWindow *m_mainWindow;
+    FILE *m_logfile;
 };
 
 /* }}} */

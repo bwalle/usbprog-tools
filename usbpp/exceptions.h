@@ -40,16 +40,16 @@ namespace usb {
  * @ingroup usbpp
  */
 class Error : public std::runtime_error {
-    public:
-        /**
-         * @brief Constructor
-         *
-         * Creates a new instance of Error.
-         *
-         * @param[in] string the error string
-         */
-        Error(const std::string& string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * @brief Constructor
+     *
+     * Creates a new instance of Error.
+     *
+     * @param[in] string the error string
+     */
+    Error(const std::string& string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */

@@ -53,19 +53,19 @@ namespace core {
  */
 class Sleeper
 {
-    public:
-        /**
-         * @brief The virtual destructor.
-         */
-        virtual ~Sleeper() {}
+public:
+    /**
+     * @brief The virtual destructor.
+     */
+    virtual ~Sleeper() {}
 
-    public:
-        /**
-         * @brief The real sleep function that does nothing but sleep
-         *
-         * @param[in] ms the amount of time in milliseconds that the function should sleep
-         */
-        virtual void sleep(int ms) = 0;
+public:
+    /**
+     * @brief The real sleep function that does nothing but sleep
+     *
+     * @param[in] ms the amount of time in milliseconds that the function should sleep
+     */
+    virtual void sleep(int ms) = 0;
 };
 
 /* }}} */
@@ -82,8 +82,8 @@ class Sleeper
  */
 class BlockingSleeper : public Sleeper
 {
-    public:
-        virtual void sleep(int ms);
+public:
+    virtual void sleep(int ms);
 };
 
 /* }}} */
