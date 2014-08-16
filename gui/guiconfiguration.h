@@ -67,8 +67,6 @@ protected:
     GuiConfiguration();
     virtual ~GuiConfiguration();
 
-private:
-    static GuiConfiguration *m_instance;
 };
 
 /* }}} */

@@ -21,8 +21,6 @@ namespace gui {
 
 /* GuiConfiguration {{{ */
 
-GuiConfiguration *GuiConfiguration::m_instance = NULL;
-
 /* -------------------------------------------------------------------------- */
 GuiConfiguration::GuiConfiguration()
 {}
