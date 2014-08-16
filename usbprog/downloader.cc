@@ -43,6 +43,19 @@ Downloader::Downloader(std::ostream &output)
 {}
 
 /* -------------------------------------------------------------------------- */
+QNetworkRequest Downloader::createRequest(const std::string &url)
+{
+    std::string userAgent("USBprog/" USBPROG_VERSION_STRING);
+    userAgent += " on " + Sysinfo::osName() + " " + Sysinfo::osVersion();
+
+    QNetworkRequest request(QUrl(url.c_str()));
+    request.setRawHeader("User-Agent", userAgent.c_str());
+    USBPROG_DEBUG_DBG("Setting 'User-Agent' header to '%s'", userAgent.c_str());
+
+    return request;
+}
+
+/* -------------------------------------------------------------------------- */
 void Downloader::setUrl(const std::string &url)
 {
     USBPROG_DEBUG_DBG("Setting URL to '%s'", url.c_str());
@@ -77,13 +90,8 @@ void Downloader::downloadFinished()
 /* -------------------------------------------------------------------------- */
 void Downloader::download()
 {
-    std::string userAgent("USBprog/" USBPROG_VERSION_STRING);
-    userAgent += " on " + Sysinfo::osName() + " " + Sysinfo::osVersion();
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    QNetworkRequest request(QUrl(m_url.c_str()));
-    request.setRawHeader("User-Agent", userAgent.c_str());
-    USBPROG_DEBUG_DBG("Setting 'User-Agent' header to '%s'", userAgent.c_str());
+    QNetworkRequest request(createRequest(m_url));
     m_finished = false;
 
     QNetworkReply *reply(manager->get(request));

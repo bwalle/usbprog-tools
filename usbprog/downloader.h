@@ -32,6 +32,7 @@
 #include <ostream>
 
 #include <QObject>
+#include <QNetworkRequest>
 
 #include <usbprog-core/progressnotifier.h>
 #include <usbprog/usbprog.h>
@@ -72,7 +73,7 @@ public:
  */
 class Downloader : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     /**
@@ -91,6 +92,16 @@ public:
     virtual ~Downloader() {}
 
 public:
+    /**
+     * @brief Creates a QNetworkRequest for @p url
+     *
+     * This function sets a special user agent.
+     *
+     * @param[in] url the URL to download
+     * @return the network request
+     */
+    static QNetworkRequest createRequest(const std::string &url);
+
     /**
      * @brief Sets the URL of the file that should be downloaded.
      *
