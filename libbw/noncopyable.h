@@ -52,13 +52,13 @@ namespace bw {
  */
 class Noncopyable
 {
-    protected:
-        Noncopyable() {}
-        ~Noncopyable() {}
+protected:
+    Noncopyable() {}
+    ~Noncopyable() {}
 
-    private:
-        Noncopyable(const Noncopyable &nc);
-        const Noncopyable &operator=(const Noncopyable &nc);
+private:
+    Noncopyable(const Noncopyable &nc);
+    const Noncopyable &operator=(const Noncopyable &nc);
 };
 
 

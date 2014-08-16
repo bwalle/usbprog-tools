@@ -296,154 +296,154 @@ namespace bw {
  */
 class Errorlog {
 
-    public:
-        /**
-         * \brief Enumeration value for Errorlog::configure().
-         */
-        enum LogMethod {
-            LM_FILE,            /**< logging to a C FILE object */
-            LM_SYSLOG           /**< logging to syslog on Unix */
-        };
+public:
+    /**
+     * \brief Enumeration value for Errorlog::configure().
+     */
+    enum LogMethod {
+        LM_FILE,            /**< logging to a C FILE object */
+        LM_SYSLOG           /**< logging to syslog on Unix */
+    };
 
-        /**
-         * \brief Configures the logging in the system.
-         *
-         * Before calling configure(), no logging is performed at all.
-         *
-         * If \p method is LM_FILE, then \p option is the name of the file to which the log messages
-         * are written to. The special values \c "stdout" and \c "stderr" are supported. Passing \c
-         * NULL means \c "stderr".
-         *
-         * If \p method is LM_SYSLOG, then \p option is the \c ident parameter for openlog(). Please
-         * note that LM_SYSLOG is only available on Unix.
-         *
-         * \param[in] method the log method which can be LM_FILE on all operating systems and
-         *            LM_SYSLOG on Unix.
-         * \param[in] option the option argument as described above.
-         * \return \c true on success and \c false on failure. The only failure cause can be calling
-         *         configure() with LM_SYSLOG on Windows.
-         */
-        static bool configure(enum LogMethod method, const char *option=NULL);
+    /**
+     * \brief Configures the logging in the system.
+     *
+     * Before calling configure(), no logging is performed at all.
+     *
+     * If \p method is LM_FILE, then \p option is the name of the file to which the log messages
+     * are written to. The special values \c "stdout" and \c "stderr" are supported. Passing \c
+     * NULL means \c "stderr".
+     *
+     * If \p method is LM_SYSLOG, then \p option is the \c ident parameter for openlog(). Please
+     * note that LM_SYSLOG is only available on Unix.
+     *
+     * \param[in] method the log method which can be LM_FILE on all operating systems and
+     *            LM_SYSLOG on Unix.
+     * \param[in] option the option argument as described above.
+     * \return \c true on success and \c false on failure. The only failure cause can be calling
+     *         configure() with LM_SYSLOG on Windows.
+     */
+    static bool configure(enum LogMethod method, const char *option=NULL);
 
-        /**
-         * \brief Returns the only instance of Errorlog
-         *
-         * If you don't call Errorlog::configure() before, \c NULL is returned.
-         *
-         * \return the instnace of Errorlog
-         */
-        static Errorlog *instance();
+    /**
+     * \brief Returns the only instance of Errorlog
+     *
+     * If you don't call Errorlog::configure() before, \c NULL is returned.
+     *
+     * \return the instnace of Errorlog
+     */
+    static Errorlog *instance();
 
-    public:
-        /**
-         * \brief D'tor
-         */
-        virtual ~Errorlog() {}
+public:
+    /**
+     * \brief D'tor
+     */
+    virtual ~Errorlog() {}
 
-    public:
-        /**
-         * \brief Supported severities
-         *
-         * These severities map 1:1 to syslog severities with the exception that INFO and DEBUG are
-         * not provided. Use the Debug class for that case.
-         */
-        enum Level {
-            LS_EMERG,       /**< A panic condition. */
-            LS_ALERT,       /**< A condition that should be corrected immediately. */
-            LS_CRIT,        /**< Critical conditions. */
-            LS_ERR,         /**< Errors */
-            LS_WARNING      /**< Warning messages. */
-        };
+public:
+    /**
+     * \brief Supported severities
+     *
+     * These severities map 1:1 to syslog severities with the exception that INFO and DEBUG are
+     * not provided. Use the Debug class for that case.
+     */
+    enum Level {
+        LS_EMERG,       /**< A panic condition. */
+        LS_ALERT,       /**< A condition that should be corrected immediately. */
+        LS_CRIT,        /**< Critical conditions. */
+        LS_ERR,         /**< Errors */
+        LS_WARNING      /**< Warning messages. */
+    };
 
-        /**
-         * \brief Converts \p level to string
-         *
-         * The strings are in uppercase. Since the returned strings point to a static string
-         * buffer, don't free or modify the returned string.
-         *
-         * \param[in] level the error level
-         * \return a string or \c NULL if \p level is invalid.
-         */
-        static const char *levelToString(enum Errorlog::Level level);
+    /**
+     * \brief Converts \p level to string
+     *
+     * The strings are in uppercase. Since the returned strings point to a static string
+     * buffer, don't free or modify the returned string.
+     *
+     * \param[in] level the error level
+     * \return a string or \c NULL if \p level is invalid.
+     */
+    static const char *levelToString(enum Errorlog::Level level);
 
-        /**
-         * \brief Logs an emergency error
-         *
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void emerg(const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(2, 3);
+    /**
+     * \brief Logs an emergency error
+     *
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void emerg(const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(2, 3);
 
-        /**
-         * \brief Logs an alert error
-         *
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void alert(const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(2, 3);
+    /**
+     * \brief Logs an alert error
+     *
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void alert(const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(2, 3);
 
-        /**
-         * \brief Logs a critical error
-         *
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void crit(const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(2, 3);
+    /**
+     * \brief Logs a critical error
+     *
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void crit(const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(2, 3);
 
-        /**
-         * \brief Logs an normal error
-         *
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void err(const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(2, 3);
+    /**
+     * \brief Logs an normal error
+     *
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void err(const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(2, 3);
 
-        /**
-         * \brief Logs an warning error
-         *
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void warning(const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(2, 3);
+    /**
+     * \brief Logs an warning error
+     *
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void warning(const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(2, 3);
 
-        /**
-         * \brief Prints a general error log message
-         *
-         * This is the general function that can be called instead of emerg(), alert(),
-         * crit(), err() and warning().
-         *
-         * \param[in] level the error level (see Errorlog::Level)
-         * \param[in] msg the printf()-like format string for the message
-         */
-        void log(Errorlog::Level level, const char *msg, ...)
-        BW_COMPILER_PRINTF_FORMAT(3, 4);
+    /**
+     * \brief Prints a general error log message
+     *
+     * This is the general function that can be called instead of emerg(), alert(),
+     * crit(), err() and warning().
+     *
+     * \param[in] level the error level (see Errorlog::Level)
+     * \param[in] msg the printf()-like format string for the message
+     */
+    void log(Errorlog::Level level, const char *msg, ...)
+    BW_COMPILER_PRINTF_FORMAT(3, 4);
 
-        /**
-         * \brief Prints a general error log message (vfprintf()-style)
-         *
-         * This is the function that is called internally by all other functions.
-         *
-         * \param[in] level the log level (see Errorlog::Level)
-         * \param[in] msg the printf()-like format string for the message
-         * \param[in] args the arguments to \p msg, consult a C book if you
-         *            don't know how to deal with that
-         */
-        virtual void vlog(Errorlog::Level level, const char *msg, std::va_list args)
-        BW_COMPILER_PRINTF_FORMAT(3, 0) = 0;
+    /**
+     * \brief Prints a general error log message (vfprintf()-style)
+     *
+     * This is the function that is called internally by all other functions.
+     *
+     * \param[in] level the log level (see Errorlog::Level)
+     * \param[in] msg the printf()-like format string for the message
+     * \param[in] args the arguments to \p msg, consult a C book if you
+     *            don't know how to deal with that
+     */
+    virtual void vlog(Errorlog::Level level, const char *msg, std::va_list args)
+    BW_COMPILER_PRINTF_FORMAT(3, 0) = 0;
 
-        /**
-         * \brief Prints a general error log message (string version)
-         *
-         * This is the general function that can be called instead of emerg(), alert(),
-         * crit(), err() and warning().
-         *
-         * \param[in] level the error level (see Errorlog::Level)
-         * \param[in] msg a message to print
-         */
-        void log(Errorlog::Level level, const std::string msg);
+    /**
+     * \brief Prints a general error log message (string version)
+     *
+     * This is the general function that can be called instead of emerg(), alert(),
+     * crit(), err() and warning().
+     *
+     * \param[in] level the error level (see Errorlog::Level)
+     * \param[in] msg a message to print
+     */
+    void log(Errorlog::Level level, const std::string msg);
 
-    private:
-        static Errorlog *m_instance;
+private:
+    static Errorlog *m_instance;
 };
 
 /* }}} */

@@ -290,13 +290,18 @@ bool SerialFile::reconfigure(int            baudrate,
     return true;
 }
 
-std::ostream &operator<<(std::ostream &os, const SerialFile &serialFile)
+std::string SerialFile::str() const
 {
-    os << serialFile.d->fileName;
-    return os;
+    return d->fileName;
 }
 
 /* }}} */
 
 } // end namespace io
 } // end namespace bw
+
+
+std::ostream &operator<<(std::ostream &os, const bw::io::SerialFile &serialFile)
+{
+    return os << serialFile.str();
+}

@@ -48,106 +48,106 @@ namespace bw {
  */
 class FileUtils {
 
-    public:
-        /**
-         * \brief Returns the size of \p filename
-         *
-         * On platforms that have large file support, the function supports retrieving the size
-         * of files larger than 2 GB on 32 bit platforms.
-         *
-         * \param[in] filename the name of the file, either absolute or relative to the current
-         *            working directory
-         * \return the size of the file in bytes which can be also 0
-         * \exception Error if the size of the file cannot be determined for example because the
-         *            file doesn't exist
-         */
-        static int64_t size(const std::string &filename);
+public:
+    /**
+     * \brief Returns the size of \p filename
+     *
+     * On platforms that have large file support, the function supports retrieving the size
+     * of files larger than 2 GB on 32 bit platforms.
+     *
+     * \param[in] filename the name of the file, either absolute or relative to the current
+     *            working directory
+     * \return the size of the file in bytes which can be also 0
+     * \exception Error if the size of the file cannot be determined for example because the
+     *            file doesn't exist
+     */
+    static int64_t size(const std::string &filename);
 
-        /**
-         * \brief Checks if the \p filename exists
-         *
-         * The function doesn't check if it's a real file, a directory, a character device or
-         * something else. It just says that there exists an object called \p filename in the
-         * file system.
-         *
-         * \param[in] filename the name of the file, either absolute or relative to the current
-         *            working directory
-         * \return \c true if the file exists, \c false otherwise
-         */
-        static bool exists(const std::string &filename);
+    /**
+     * \brief Checks if the \p filename exists
+     *
+     * The function doesn't check if it's a real file, a directory, a character device or
+     * something else. It just says that there exists an object called \p filename in the
+     * file system.
+     *
+     * \param[in] filename the name of the file, either absolute or relative to the current
+     *            working directory
+     * \return \c true if the file exists, \c false otherwise
+     */
+    static bool exists(const std::string &filename);
 
-        /**
-         * \brief Checks if \p dirname exists and is a directory
-         *
-         * \param[in] dirname the name of the directory
-         * \return \c true if \p dirname exists and is a directory, \c false if it exists
-         *         but is not a directory
-         * \exception Error if information about \p dirname cannot be retrieved, for example
-         *            because \p dirname doesn't exist or because permission is not granted
-         */
-        static bool isDirectory(const std::string &dirname);
+    /**
+     * \brief Checks if \p dirname exists and is a directory
+     *
+     * \param[in] dirname the name of the directory
+     * \return \c true if \p dirname exists and is a directory, \c false if it exists
+     *         but is not a directory
+     * \exception Error if information about \p dirname cannot be retrieved, for example
+     *            because \p dirname doesn't exist or because permission is not granted
+     */
+    static bool isDirectory(const std::string &dirname);
 
-        /**
-         * \brief Creates a new directory.
-         *
-         * It is not an error if the directory already exists. The function just ensures that
-         * the directory exists after calling the function if it doesn't throw.
-         *
-         * \warning While the function works on Win32, it accepts only path names separated
-         *          by slashes, not backslashes.
-         *
-         * \param[in] dir the name of the directory that should be created
-         * \param[in] recursive \b true if the behaviour of <tt>mkdir -p</tt> should be copied,
-         *            \c false otherwise.
-         *
-         * \throw Error on any error
-         */
-        static void mkdir(const std::string &dir, bool recursive=false);
+    /**
+     * \brief Creates a new directory.
+     *
+     * It is not an error if the directory already exists. The function just ensures that
+     * the directory exists after calling the function if it doesn't throw.
+     *
+     * \warning While the function works on Win32, it accepts only path names separated
+     *          by slashes, not backslashes.
+     *
+     * \param[in] dir the name of the directory that should be created
+     * \param[in] recursive \b true if the behaviour of <tt>mkdir -p</tt> should be copied,
+     *            \c false otherwise.
+     *
+     * \throw Error on any error
+     */
+    static void mkdir(const std::string &dir, bool recursive=false);
 
-        /**
-         * \brief Joins two path components
-         *
-         * This function uses the generic path separator <tt>"/"</tt> on all operating systems.
-         *
-         * \param[in] a the first path component
-         * \param[in] b the second path component
-         * \return the joined string
-         */
-        static std::string join(const std::string &a, const std::string &b);
+    /**
+     * \brief Joins two path components
+     *
+     * This function uses the generic path separator <tt>"/"</tt> on all operating systems.
+     *
+     * \param[in] a the first path component
+     * \param[in] b the second path component
+     * \return the joined string
+     */
+    static std::string join(const std::string &a, const std::string &b);
 
-        /**
-         * \brief Joins three path components
-         *
-         * This function uses the generic path separator <tt>"/"</tt> on all operating systems.
-         *
-         * \param[in] a the first path component
-         * \param[in] b the second path component
-         * \param[in] c the third path component
-         * \return the joined string
-         */
-        static std::string join(const std::string &a, const std::string &b, const std::string &c);
+    /**
+     * \brief Joins three path components
+     *
+     * This function uses the generic path separator <tt>"/"</tt> on all operating systems.
+     *
+     * \param[in] a the first path component
+     * \param[in] b the second path component
+     * \param[in] c the third path component
+     * \return the joined string
+     */
+    static std::string join(const std::string &a, const std::string &b, const std::string &c);
 
-        /**
-         * \brief Returns the file component of the \p path
-         *
-         * This is a C++ implementation of the POSIX basename() function.
-         *
-         * \warning While the function works on Win32, it accepts only path names separated
-         *          by slashes, not backslashes.
-         *
-         * \param[in] path the path for which the file name should be retrieved
-         * \return the basename
-         */
-        static std::string basename(const std::string &path);
+    /**
+     * \brief Returns the file component of the \p path
+     *
+     * This is a C++ implementation of the POSIX basename() function.
+     *
+     * \warning While the function works on Win32, it accepts only path names separated
+     *          by slashes, not backslashes.
+     *
+     * \param[in] path the path for which the file name should be retrieved
+     * \return the basename
+     */
+    static std::string basename(const std::string &path);
 
-        /**
-         * \brief Returns the full path to the home directory
-         *
-         * \return the home directory, e.g. <tt>"/home/bwalle"</tt> on Linux, <tt>"/Users/bwalle"</tt>
-         *         on Mac OS or <tt>"c:\users\bwalle"</tt> on MS Windows.
-         * \exception SystemError if operating system calls fail.
-         */
-        static std::string homeDirectory();
+    /**
+     * \brief Returns the full path to the home directory
+     *
+     * \return the home directory, e.g. <tt>"/home/bwalle"</tt> on Linux, <tt>"/Users/bwalle"</tt>
+     *         on Mac OS or <tt>"c:\users\bwalle"</tt> on MS Windows.
+     * \exception SystemError if operating system calls fail.
+     */
+    static std::string homeDirectory();
 };
 
 /* }}} */

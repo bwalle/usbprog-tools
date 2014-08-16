@@ -83,104 +83,104 @@ enum OptionType {
  */
 class OptionValue {
 
-    public:
-        /**
-         * \brief Constructor
-         *
-         * Creates a new instance of a OptionValue with the type OptionType::OT_INVALID.
-         */
-        OptionValue();
+public:
+    /**
+     * \brief Constructor
+     *
+     * Creates a new instance of a OptionValue with the type OptionType::OT_INVALID.
+     */
+    OptionValue();
 
-    public:
-        /**
-         * \brief Sets the type of an option.
-         *
-         * Sets the option type. See OptionType for a list of all valid types.
-         *
-         * \param[in] type the type
-         */
-        void setType(OptionType type);
+public:
+    /**
+     * \brief Sets the type of an option.
+     *
+     * Sets the option type. See OptionType for a list of all valid types.
+     *
+     * \param[in] type the type
+     */
+    void setType(OptionType type);
 
-        /**
-         * \brief Returns the option type.
-         *
-         * Returns the type of an option. See OptionType for a list of all
-         * valid types.
-         *
-         * \return the type
-         */
-        OptionType getType() const;
+    /**
+     * \brief Returns the option type.
+     *
+     * Returns the type of an option. See OptionType for a list of all
+     * valid types.
+     *
+     * \return the type
+     */
+    OptionType getType() const;
 
-        /**
-         * \brief Sets the string
-         *
-         * Sets the string value of an option. Makes only sense if the type is
-         * OptionType::OT_STRING.
-         *
-         * \param[in] string the string value
-         */
-        void setString(const std::string &string);
+    /**
+     * \brief Sets the string
+     *
+     * Sets the string value of an option. Makes only sense if the type is
+     * OptionType::OT_STRING.
+     *
+     * \param[in] string the string value
+     */
+    void setString(const std::string &string);
 
-        /**
-         * \brief Returns the string
-         *
-         * Returns the string value of an option. Makes only sense if the type
-         * is OptionType::OT_STRING.
-         *
-         * \return the string value of an option
-         */
-        std::string getString() const;
+    /**
+     * \brief Returns the string
+     *
+     * Returns the string value of an option. Makes only sense if the type
+     * is OptionType::OT_STRING.
+     *
+     * \return the string value of an option
+     */
+    std::string getString() const;
 
-        /**
-         * \brief Sets the flag value
-         *
-         * If type is OptionType::OT_FLAG, sets the value, i.e. \c true or \c
-         * false.
-         *
-         * \param[in] flag the flag value
-         */
-        void setFlag(bool flag);
+    /**
+     * \brief Sets the flag value
+     *
+     * If type is OptionType::OT_FLAG, sets the value, i.e. \c true or \c
+     * false.
+     *
+     * \param[in] flag the flag value
+     */
+    void setFlag(bool flag);
 
-        /**
-         * \brief Returns the flat value
-         *
-         * If type is OptionType::OT_STRING, returns the value, i.e. \c true
-         * or \c false.
-         *
-         * \return the boolean value
-         */
-        bool getFlag() const;
+    /**
+     * \brief Returns the flat value
+     *
+     * If type is OptionType::OT_STRING, returns the value, i.e. \c true
+     * or \c false.
+     *
+     * \return the boolean value
+     */
+    bool getFlag() const;
 
-        /**
-         * \brief Sets the integer value
-         *
-         * If type is OptionType::OT_INTEGER, sets the value.
-         *
-         * \param[in] value the integer value
-         */
-        void setInteger(int value);
+    /**
+     * \brief Sets the integer value
+     *
+     * If type is OptionType::OT_INTEGER, sets the value.
+     *
+     * \param[in] value the integer value
+     */
+    void setInteger(int value);
 
-        /**
-         * \brief Returns the integer value
-         *
-         * If type is OptionType::OT_INTEGER, returns the value.
-         *
-         * \return the integer value
-         */
-        int getInteger() const;
+    /**
+     * \brief Returns the integer value
+     *
+     * If type is OptionType::OT_INTEGER, returns the value.
+     *
+     * \return the integer value
+     */
+    int getInteger() const;
 
-        /**
-         * \brief Checks if the type contains valid data
-         *
-         * \return \c true if getValue() returns not OptionType::OT_INVALID.
-         */
-        operator bool() const;
+    /**
+     * \brief Checks if the type contains valid data
+     *
+     * \return \c true if getValue() returns not OptionType::OT_INVALID.
+     */
+    operator bool() const;
 
-    private:
-        OptionType      m_type;
-        int             m_integer;
-        std::string     m_string;
-        bool            m_flag;
+private:
+    OptionType      m_type;
+    int             m_integer;
+    std::string     m_string;
+    bool            m_flag;
 };
 
 /* }}} */
@@ -205,165 +205,166 @@ class OptionValue {
  * \ingroup optparse
  */
 class Option {
-    public:
-        /**
-         * \brief Default constructor
-         *
-         * Creates a new option with type OT_FLAG. You can use setLongName(),
-         * setLetter(), setType() and setDescription() to modify the elements
-         * after construction.
-         */
-        Option();
 
-        /**
-         * \brief Rich constructor
-         *
-         * Creates a new instance of an Option. This Constructor can
-         * initialise all properties.
-         *
-         * \param[in] name the long name of an option
-         * \param[in] letter the short name of an option
-         * \param[in] type the option type (OptionType::OT_FLAG, OptionType::OT_INTEGER
-         *            or OptionType::OT_STRING)
-         * \param[in] description a description for the help
-         */
-        Option(const std::string    &name,
-               char                 letter,
-               OptionType           type = OT_FLAG,
-               const std::string    &description = "");
+public:
+    /**
+     * \brief Default constructor
+     *
+     * Creates a new option with type OT_FLAG. You can use setLongName(),
+     * setLetter(), setType() and setDescription() to modify the elements
+     * after construction.
+     */
+    Option();
 
-    public:
-        /**
-         * \brief Sets the long name
-         *
-         * Sets the long name which is used like <tt>--long_name</tt> on the
-         * command line.
-         *
-         * \param[in] name the name
-         */
-        void setLongName(const std::string &name);
+    /**
+     * \brief Rich constructor
+     *
+     * Creates a new instance of an Option. This Constructor can
+     * initialise all properties.
+     *
+     * \param[in] name the long name of an option
+     * \param[in] letter the short name of an option
+     * \param[in] type the option type (OptionType::OT_FLAG, OptionType::OT_INTEGER
+     *            or OptionType::OT_STRING)
+     * \param[in] description a description for the help
+     */
+    Option(const std::string    &name,
+           char                 letter,
+           OptionType           type = OT_FLAG,
+           const std::string    &description = "");
 
-        /**
-         * \brief Returns the long name.
-         *
-         * Returns the long name which is used like <tt>--long_name</tt> on
-         * the command line.
-         *
-         * \return the long name
-         */
-        std::string getLongName() const;
+public:
+    /**
+     * \brief Sets the long name
+     *
+     * Sets the long name which is used like <tt>--long_name</tt> on the
+     * command line.
+     *
+     * \param[in] name the name
+     */
+    void setLongName(const std::string &name);
 
-        /**
-         * \brief Set the short letter
-         *
-         * Sets the short letter of the option which is used like <tt>-l</tt>
-         * on the command line.
-         *
-         * \param[in] letter the letter of the option
-         */
-        void setLetter(char letter);
+    /**
+     * \brief Returns the long name.
+     *
+     * Returns the long name which is used like <tt>--long_name</tt> on
+     * the command line.
+     *
+     * \return the long name
+     */
+    std::string getLongName() const;
 
-        /**
-         * \brief Returns the letter
-         *
-         * Returns the short letter of the option which is used like
-         * <tt>-l</tt> on the command line.
-         *
-         * \return the letter
-         */
-        char getLetter() const;
+    /**
+     * \brief Set the short letter
+     *
+     * Sets the short letter of the option which is used like <tt>-l</tt>
+     * on the command line.
+     *
+     * \param[in] letter the letter of the option
+     */
+    void setLetter(char letter);
 
-        /**
-         * \brief Set the option type
-         *
-         * Sets the type of the option. Valid types are OptionType::OT_STRING
-         * for string options, OptionType::OT_INTEGER for numeric options and
-         * OptionType::OT_FLAG for boolean options.
-         *
-         * \param[in] type the option type
-         */
-        void setType(OptionType type);
+    /**
+     * \brief Returns the letter
+     *
+     * Returns the short letter of the option which is used like
+     * <tt>-l</tt> on the command line.
+     *
+     * \return the letter
+     */
+    char getLetter() const;
 
-        /**
-         * \brief Return the option type
-         *
-         * Returns the type of the option. Valid types are OptionType::OT_STRING
-         * for string options, OptionType::OT_INTEGER for numeric options and
-         * OptionType::OT_FLAG for boolean options.
-         *
-         * \return the option type
-         */
-        OptionType getType() const;
+    /**
+     * \brief Set the option type
+     *
+     * Sets the type of the option. Valid types are OptionType::OT_STRING
+     * for string options, OptionType::OT_INTEGER for numeric options and
+     * OptionType::OT_FLAG for boolean options.
+     *
+     * \param[in] type the option type
+     */
+    void setType(OptionType type);
 
-        /**
-         * \brief Sets the description
-         *
-         * Sets the description of the option. The description is needed to
-         * print the help.
-         *
-         * \param[in] description the option description
-         */
-        void setDescription(const std::string &description);
+    /**
+     * \brief Return the option type
+     *
+     * Returns the type of the option. Valid types are OptionType::OT_STRING
+     * for string options, OptionType::OT_INTEGER for numeric options and
+     * OptionType::OT_FLAG for boolean options.
+     *
+     * \return the option type
+     */
+    OptionType getType() const;
 
-        /**
-         * \brief Returns the description
-         *
-         * Returns the description of the option.
-         *
-         * \return the option description
-         */
-        std::string getDescription() const;
+    /**
+     * \brief Sets the description
+     *
+     * Sets the description of the option. The description is needed to
+     * print the help.
+     *
+     * \param[in] description the option description
+     */
+    void setDescription(const std::string &description);
 
-        /**
-         * \brief Sets the option value
-         *
-         * This function sets the value of the option. It's set by the option
-         * parser, not by the user.
-         *
-         * \param[in] value the value of the option. The type of the
-         *            OptionValue can either be OptionType::OT_INVALID or the
-         *            type of the option (i.e. the return value of getType())
-         */
-        void setValue(OptionValue value);
+    /**
+     * \brief Returns the description
+     *
+     * Returns the description of the option.
+     *
+     * \return the option description
+     */
+    std::string getDescription() const;
 
-        /**
-         * \brief Returns the option value
-         *
-         * Returns the value of the option. If the option has no value, a
-         * value with type OptionValue::OT_INVALID is returned.
-         *
-         * \return the value
-         */
-        OptionValue getValue() const;
+    /**
+     * \brief Sets the option value
+     *
+     * This function sets the value of the option. It's set by the option
+     * parser, not by the user.
+     *
+     * \param[in] value the value of the option. The type of the
+     *            OptionValue can either be OptionType::OT_INVALID or the
+     *            type of the option (i.e. the return value of getType())
+     */
+    void setValue(OptionValue value);
 
-        /**
-         * \brief Checks if the option is valid
-         *
-         * Checks if the option has a valid value.
-         *
-         * \return \c true if the option is valid, \c false otherwise
-         */
-        bool isValid() const;
+    /**
+     * \brief Returns the option value
+     *
+     * Returns the value of the option. If the option has no value, a
+     * value with type OptionValue::OT_INVALID is returned.
+     *
+     * \return the value
+     */
+    OptionValue getValue() const;
 
-        /**
-         * \brief Returns a placeholder for the option value
-         *
-         * This function is needed by the OptionParser to format the help. In
-         * case this option is of type OptionType::OT_STRING, the string <tt>"<STRING>"</tt>
-         * is returned. In case it's of the type OptionType::OT_INTEGER, the
-         * string <tt>"<NUMBER>"</tt> is returned. In any other case, the
-         * empty string (<tt>""</tt>) is returned.
-         *
-         * \return the placeholder as described above
-         */
-        std::string getPlaceholder() const;
+    /**
+     * \brief Checks if the option is valid
+     *
+     * Checks if the option has a valid value.
+     *
+     * \return \c true if the option is valid, \c false otherwise
+     */
+    bool isValid() const;
 
-    private:
-        std::string m_longName;
-        std::string m_description;
-        char        m_letter;
-        OptionType  m_type;
-        OptionValue m_value;
+    /**
+     * \brief Returns a placeholder for the option value
+     *
+     * This function is needed by the OptionParser to format the help. In
+     * case this option is of type OptionType::OT_STRING, the string <tt>"<STRING>"</tt>
+     * is returned. In case it's of the type OptionType::OT_INTEGER, the
+     * string <tt>"<NUMBER>"</tt> is returned. In any other case, the
+     * empty string (<tt>""</tt>) is returned.
+     *
+     * \return the placeholder as described above
+     */
+    std::string getPlaceholder() const;
+
+private:
+    std::string m_longName;
+    std::string m_description;
+    char        m_letter;
+    OptionType  m_type;
+    OptionValue m_value;
 };
 
 /* }}} */
@@ -388,87 +389,87 @@ class OptionGroup {
 
     friend class OptionParser;
 
-    public:
-        /**
-         * \brief Constructor
-         *
-         * Creates a new OptionGroup object with \p title.
-         *
-         * \param[in] title the title for the option group. Once set, this title cannot be changed.
-         * \note The m_title member is non-const to provide an assignment operator.
-         */
-        OptionGroup(const std::string &title="");
+public:
+    /**
+     * \brief Constructor
+     *
+     * Creates a new OptionGroup object with \p title.
+     *
+     * \param[in] title the title for the option group. Once set, this title cannot be changed.
+     * \note The m_title member is non-const to provide an assignment operator.
+     */
+    OptionGroup(const std::string &title="");
 
-        /**
-         * \brief Destructor
-         */
-        virtual ~OptionGroup() {}
+    /**
+     * \brief Destructor
+     */
+    virtual ~OptionGroup() {}
 
-    public:
-        /**
-         * \brief Returns the title that has been set in the constructor.
-         *
-         * \return the title of the option group
-         */
-        std::string getTitle() const;
+public:
+    /**
+     * \brief Returns the title that has been set in the constructor.
+     *
+     * \return the title of the option group
+     */
+    std::string getTitle() const;
 
-        /**
-         * \brief Returns the options as vector
-         *
-         * \return a reference to the internal representation of options. The vector cannot be
-         *         changed. Use OptionGroup::addOption() instead.
-         * \sa OptionGroup::size()
-         */
-        const std::vector<Option> &options() const;
+    /**
+     * \brief Returns the options as vector
+     *
+     * \return a reference to the internal representation of options. The vector cannot be
+     *         changed. Use OptionGroup::addOption() instead.
+     * \sa OptionGroup::size()
+     */
+    const std::vector<Option> &options() const;
 
-    protected:
-        /**
-         * \brief Returns the options as vector (non-const)
-         *
-         * The non-const version is only accessible for friends.
-         *
-         * \return a reference to the internal representation of options. The vector cannot be
-         *         changed. Use OptionGroup::addOption() instead.
-         * \sa OptionGroup::size()
-         */
-        std::vector<Option> &options();
+protected:
+    /**
+     * \brief Returns the options as vector (non-const)
+     *
+     * The non-const version is only accessible for friends.
+     *
+     * \return a reference to the internal representation of options. The vector cannot be
+     *         changed. Use OptionGroup::addOption() instead.
+     * \sa OptionGroup::size()
+     */
+    std::vector<Option> &options();
 
-    public:
-        /**
-         * \brief Returns the number of options in this group
-         *
-         * Convenience function for OptionGroup::options().size().
-         *
-         * \return the number of options in this option group.
-         */
-        size_t size() const;
+public:
+    /**
+     * \brief Returns the number of options in this group
+     *
+     * Convenience function for OptionGroup::options().size().
+     *
+     * \return the number of options in this option group.
+     */
+    size_t size() const;
 
-        /**
-         * \brief Adds a option to the option group
-         *
-         * \param[in] option the option that should be added.
-         */
-        void addOption(const Option &option);
+    /**
+     * \brief Adds a option to the option group
+     *
+     * \param[in] option the option that should be added.
+     */
+    void addOption(const Option &option);
 
-        /**
-         * \brief Adds an option to the option group
-         *
-         * Convenience method that doesn't need to create an Option object.
-         * See also Option::Option(const std::string &, char, OptionType, const std::string &).
-         *
-         * \param[in] name the option name, see Option::setLongName()
-         * \param[in] letter the short letter, see Option::setLetter()
-         * \param[in] type the option type, see Option::setType()
-         * \param[in] description the option description, see Option::setDescription()
-         */
-        void addOption(const std::string    &name,
-                       char                 letter,
-                       OptionType           type = OT_FLAG,
-                       const std::string    &description = "");
+    /**
+     * \brief Adds an option to the option group
+     *
+     * Convenience method that doesn't need to create an Option object.
+     * See also Option::Option(const std::string &, char, OptionType, const std::string &).
+     *
+     * \param[in] name the option name, see Option::setLongName()
+     * \param[in] letter the short letter, see Option::setLetter()
+     * \param[in] type the option type, see Option::setType()
+     * \param[in] description the option description, see Option::setDescription()
+     */
+    void addOption(const std::string    &name,
+                   char                 letter,
+                   OptionType           type = OT_FLAG,
+                   const std::string    &description = "");
 
-    private:
-        std::string m_title;
-        std::vector<Option> m_options;
+private:
+    std::string m_title;
+    std::vector<Option> m_options;
 };
 
 /* }}} */
@@ -618,178 +619,178 @@ Debug options:
  */
 class OptionParser {
 
-    public:
-        /**
-         * \brief Constructor
-         *
-         * \param[in] defaultGroupName the name of the default option group
-         */
-        OptionParser(const std::string &defaultGroupName="");
+public:
+    /**
+     * \brief Constructor
+     *
+     * \param[in] defaultGroupName the name of the default option group
+     */
+    OptionParser(const std::string &defaultGroupName="");
 
-        /**
-         * \brief Destructor
-         */
-        virtual ~OptionParser() {}
+    /**
+     * \brief Destructor
+     */
+    virtual ~OptionParser() {}
 
-    public:
-        /**
-         * \brief Adds an option
-         *
-         * Adds an option to default anonymous group of the OptionParser.
-         *
-         * This is a convenience function for simple option parsing. Code
-         *
-         * \code
-         * bw::OptionGroup anonymouseGroup("");
-         * anonymouseGroup.addOption("bla", 'b', bw::OT_FLAG, "Some description");
-         * anonymouseGroup.addOption("fasel", 'f', bw::OT_FLAG, "Some other description");
-         *
-         * bw::OptionParser parser;
-         * parser.addOptions(anonymouseGroup);
-         * \endcode
-         *
-         * can be replaced with
-         *
-         * \code
-         * bw::OptionParser parser;
-         * parser.addOption("bla", 'b', bw::OT_FLAG, "Some description");
-         * parser.addOption("fasel", 'f', bw::OT_FLAG, "Some other description");
-         * \endcode
-         *
-         * \param[in] option the option to add
-         */
-        void addOption(Option option);
+public:
+    /**
+     * \brief Adds an option
+     *
+     * Adds an option to default anonymous group of the OptionParser.
+     *
+     * This is a convenience function for simple option parsing. Code
+     *
+     * \code
+     * bw::OptionGroup anonymouseGroup("");
+     * anonymouseGroup.addOption("bla", 'b', bw::OT_FLAG, "Some description");
+     * anonymouseGroup.addOption("fasel", 'f', bw::OT_FLAG, "Some other description");
+     *
+     * bw::OptionParser parser;
+     * parser.addOptions(anonymouseGroup);
+     * \endcode
+     *
+     * can be replaced with
+     *
+     * \code
+     * bw::OptionParser parser;
+     * parser.addOption("bla", 'b', bw::OT_FLAG, "Some description");
+     * parser.addOption("fasel", 'f', bw::OT_FLAG, "Some other description");
+     * \endcode
+     *
+     * \param[in] option the option to add
+     */
+    void addOption(Option option);
 
-        /**
-         * \brief Adds an option to the anonymouse grup
-         *
-         * Convenience method that doesn't need to create an Option object.
-         * See also Option::Option(const std::string &, char, OptionType, const std::string &).
-         *
-         * This is a convenience function for simple option parsing. Code
-         *
-         * \code
-         * bw::OptionGroup anonymouseGroup("");
-         * anonymouseGroup.addOption(bw::Option("bla", 'b', bw::OT_FLAG, "Some description"));
-         * anonymouseGroup.addOption(bw::Option("fasel", 'f', bw::OT_FLAG, "Some other description"));
-         *
-         * bw::OptionParser parser;
-         * parser.addOptions(anonymouseGroup);
-         * \endcode
-         *
-         * can be replaced with
-         *
-         * \code
-         * bw::OptionParser parser;
-         * parser.addOption(bw::Option("bla", 'b', bw::OT_FLAG, "Some description"));
-         * parser.addOption(bw::Option("fasel", 'f', bw::OT_FLAG, "Some other description"));
-         * \endcode
-         *
-         * \param[in] name the option name, see Option::setLongName()
-         * \param[in] letter the short letter, see Option::setLetter()
-         * \param[in] type the option type, see Option::setType()
-         * \param[in] description the option description, see Option::setDescription()
-         */
-        void addOption(const std::string    &name,
-                       char                 letter,
-                       OptionType           type = OT_FLAG,
-                       const std::string    &description = "");
+    /**
+     * \brief Adds an option to the anonymouse grup
+     *
+     * Convenience method that doesn't need to create an Option object.
+     * See also Option::Option(const std::string &, char, OptionType, const std::string &).
+     *
+     * This is a convenience function for simple option parsing. Code
+     *
+     * \code
+     * bw::OptionGroup anonymouseGroup("");
+     * anonymouseGroup.addOption(bw::Option("bla", 'b', bw::OT_FLAG, "Some description"));
+     * anonymouseGroup.addOption(bw::Option("fasel", 'f', bw::OT_FLAG, "Some other description"));
+     *
+     * bw::OptionParser parser;
+     * parser.addOptions(anonymouseGroup);
+     * \endcode
+     *
+     * can be replaced with
+     *
+     * \code
+     * bw::OptionParser parser;
+     * parser.addOption(bw::Option("bla", 'b', bw::OT_FLAG, "Some description"));
+     * parser.addOption(bw::Option("fasel", 'f', bw::OT_FLAG, "Some other description"));
+     * \endcode
+     *
+     * \param[in] name the option name, see Option::setLongName()
+     * \param[in] letter the short letter, see Option::setLetter()
+     * \param[in] type the option type, see Option::setType()
+     * \param[in] description the option description, see Option::setDescription()
+     */
+    void addOption(const std::string    &name,
+                   char                 letter,
+                   OptionType           type = OT_FLAG,
+                   const std::string    &description = "");
 
-        /**
-         * \brief Adds a group of options to the option list
-         *
-         * The group appears as grouped list with a title in the help output.
-         *
-         * \param[in] group the group of options to add
-         */
-        void addOptions(const OptionGroup &group);
+    /**
+     * \brief Adds a group of options to the option list
+     *
+     * The group appears as grouped list with a title in the help output.
+     *
+     * \param[in] group the group of options to add
+     */
+    void addOptions(const OptionGroup &group);
 
-        /**
-         * \brief Prints the help
-         *
-         * Auto-generates a help from the list of options and prints it to the
-         * stream specified with\p os. The \p name is displayed on the
-         * beginning and should contain the program name (and possibly a short
-         * synopsis).
-         *
-         * Example:
-         *
-         * \code
-         * op.printHelp(std::cerr, "myprogram [options] <filename>");
-         * \endcode
-         *
-         * \param[in] os the output stream (e.g. std::cerr)
-         * \param[in] name the program name, possibly with version and
-         *            synopsis
-         */
-        void printHelp(std::ostream &os, const std::string &name) const;
+    /**
+     * \brief Prints the help
+     *
+     * Auto-generates a help from the list of options and prints it to the
+     * stream specified with\p os. The \p name is displayed on the
+     * beginning and should contain the program name (and possibly a short
+     * synopsis).
+     *
+     * Example:
+     *
+     * \code
+     * op.printHelp(std::cerr, "myprogram [options] <filename>");
+     * \endcode
+     *
+     * \param[in] os the output stream (e.g. std::cerr)
+     * \param[in] name the program name, possibly with version and
+     *            synopsis
+     */
+    void printHelp(std::ostream &os, const std::string &name) const;
 
-        /**
-         * \brief Parses the command line arguments
-         *
-         * Parses the command line arguments from main(). Both \p argc and \p
-         * argv are not modified by parse().
-         *
-         * \param[in] argc the number of arguments
-         * \param[in] argv the argument vector, being the program name the
-         *            0-th element (i.e. ignored)
-         * \return \c true if the command line has been parsed successfully,
-         *         \c false if the command line did contain options that are invalid
-         */
-        bool parse(int argc, char *argv[]);
+    /**
+     * \brief Parses the command line arguments
+     *
+     * Parses the command line arguments from main(). Both \p argc and \p
+     * argv are not modified by parse().
+     *
+     * \param[in] argc the number of arguments
+     * \param[in] argv the argument vector, being the program name the
+     *            0-th element (i.e. ignored)
+     * \return \c true if the command line has been parsed successfully,
+     *         \c false if the command line did contain options that are invalid
+     */
+    bool parse(int argc, char *argv[]);
 
-        /**
-         * \brief Returns the option value for a option
-         *
-         * For option \p name (this is the long name), returns the option
-         * value argument. If the option value did not occur in the command
-         * line parsed with parse(), the option value with OptionType::OT_INVALID
-         * is returned.
-         *
-         * \param[in] name the name of the parameter for which the value
-         *            should be returned.
-         * \return the option value
-         */
-        OptionValue getValue(const std::string &name);
+    /**
+     * \brief Returns the option value for a option
+     *
+     * For option \p name (this is the long name), returns the option
+     * value argument. If the option value did not occur in the command
+     * line parsed with parse(), the option value with OptionType::OT_INVALID
+     * is returned.
+     *
+     * \param[in] name the name of the parameter for which the value
+     *            should be returned.
+     * \return the option value
+     */
+    OptionValue getValue(const std::string &name);
 
-        /**
-         * \brief Returns the arguments
-         *
-         * Returns the arguments (not options). For example if you parse
-         *
-         * <tt>./bla --fasel=5 --debug filename</tt>
-         *
-         * then <tt>fasel</tt> and <tt>debug</tt> are \e options while
-         * <tt>filename</tt> is the (only) \e argument.
-         *
-         * \return the argument vector, an empty vector if no arguments have
-         *         been supplied by parse()
-         */
-        std::vector<std::string> getArgs();
+    /**
+     * \brief Returns the arguments
+     *
+     * Returns the arguments (not options). For example if you parse
+     *
+     * <tt>./bla --fasel=5 --debug filename</tt>
+     *
+     * then <tt>fasel</tt> and <tt>debug</tt> are \e options while
+     * <tt>filename</tt> is the (only) \e argument.
+     *
+     * \return the argument vector, an empty vector if no arguments have
+     *         been supplied by parse()
+     */
+    std::vector<std::string> getArgs();
 
-    protected:
-        /**
-         * \brief Finds a option
-         *
-         * Finds the option with the letter \p letter.
-         *
-         * \param[in] letter the short letter that characterizes the option
-         * \return a reference of the option in m_options
-         */
-        Option &findOption(char letter);
+protected:
+    /**
+     * \brief Finds a option
+     *
+     * Finds the option with the letter \p letter.
+     *
+     * \param[in] letter the short letter that characterizes the option
+     * \return a reference of the option in m_options
+     */
+    Option &findOption(char letter);
 
-        /**
-         * \brief Calculates the total number of options
-         *
-         * The total number of options is the sum of options over all option groups.
-         *
-         * \return the total number of options.
-         */
-        int calcTotalNumberOfOptions() const;
+    /**
+     * \brief Calculates the total number of options
+     *
+     * The total number of options is the sum of options over all option groups.
+     *
+     * \return the total number of options.
+     */
+    int calcTotalNumberOfOptions() const;
 
-    private:
-        std::vector<OptionGroup> m_options;
-        std::vector<std::string> m_args;
+private:
+    std::vector<OptionGroup> m_options;
+    std::vector<std::string> m_args;
 };
 
 /* }}} */

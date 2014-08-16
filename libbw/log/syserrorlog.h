@@ -44,38 +44,38 @@ namespace bw {
  */
 class SysErrorlog : public Errorlog {
 
-    public:
-        /// Let Errorlog create instances of SysErrorlog, and only Errorlog.
-        friend class Errorlog;
+public:
+    /// Let Errorlog create instances of SysErrorlog, and only Errorlog.
+    friend class Errorlog;
 
-    protected:
-        /**
-         * \brief Creates a new SysErrorlog.
-         *
-         * Don't use that function directly. Instead, use Errorlog::configure().
-         *
-         * \param[in] ident the syslog ident string
-         */
-        SysErrorlog(const char *ident="");
+protected:
+    /**
+     * \brief Creates a new SysErrorlog.
+     *
+     * Don't use that function directly. Instead, use Errorlog::configure().
+     *
+     * \param[in] ident the syslog ident string
+     */
+    SysErrorlog(const char *ident="");
 
-        /**
-         * \brief Destructor
-         */
-        ~SysErrorlog();
+    /**
+     * \brief Destructor
+     */
+    ~SysErrorlog();
 
-        /**
-         * \copydoc Errorlog::vlog()
-         */
-        void vlog(Errorlog::Level level, const char *msg, std::va_list args);
+    /**
+     * \copydoc Errorlog::vlog()
+     */
+    void vlog(Errorlog::Level level, const char *msg, std::va_list args);
 
-    private:
-        /**
-         * \brief Converts a bw loglevel to syslog
-         *
-         * \param[in] level the log level
-         * \return the syslog constant
-         */
-        int logToSyslog(Errorlog::Level level);
+private:
+    /**
+     * \brief Converts a bw loglevel to syslog
+     *
+     * \param[in] level the log level
+     * \return the syslog constant
+     */
+    int logToSyslog(Errorlog::Level level);
 };
 
 /* }}} */

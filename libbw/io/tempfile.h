@@ -59,109 +59,109 @@ struct TempFilePrivate;
  */
 class TempFile {
 
-    public:
-        /**
-         * \brief Flags that can be applied with the constructor of the temprary file
-         *
-         *  - If the \c DeleteOnClose flag is set, the file deleted if the temporary file is closed
-         *    or if the object is destroyed.
-         *  - If the \c DeleteOnExit flag is set, the file is closed and deleted automatically after
-         *    termination of the application using a bw::ExitHandler. The file is only deleted if
-         *    the application is called using std::exit() or if the main function returns, not if
-         *    the application crashes. This flag implies \c DeleteOnClose.
-         *
-         * If the <tt>LIBBW_TEMPFILE_NODELETE</tt> environment variable is set, the temporary
-         * file is never deleted by this class. This is useful for debugging.
-         */
-        enum Flags {
-            NoFlags = 0,
-            DeleteOnClose = (1<<0),
-            DeleteOnExit  = DeleteOnClose|(1<<1)
-        };
+public:
+    /**
+     * \brief Flags that can be applied with the constructor of the temprary file
+     *
+     *  - If the \c DeleteOnClose flag is set, the file deleted if the temporary file is closed
+     *    or if the object is destroyed.
+     *  - If the \c DeleteOnExit flag is set, the file is closed and deleted automatically after
+     *    termination of the application using a bw::ExitHandler. The file is only deleted if
+     *    the application is called using std::exit() or if the main function returns, not if
+     *    the application crashes. This flag implies \c DeleteOnClose.
+     *
+     * If the <tt>LIBBW_TEMPFILE_NODELETE</tt> environment variable is set, the temporary
+     * file is never deleted by this class. This is useful for debugging.
+     */
+    enum Flags {
+        NoFlags = 0,
+        DeleteOnClose = (1<<0),
+        DeleteOnExit  = DeleteOnClose|(1<<1)
+    };
 
-    public:
-        /**
-         * \brief Creates a new TempFile object
-         *
-         * The constructor creates the temporary file immediately.
-         *
-         * \param[in] namepart a part that appears in the
-         * \param[in] flags the flags as specified in the documentation of TempFile::Flags
-         *
-         * \exception IOError
-         */
-        TempFile(const std::string &namepart, Flags flags=NoFlags);
+public:
+    /**
+     * \brief Creates a new TempFile object
+     *
+     * The constructor creates the temporary file immediately.
+     *
+     * \param[in] namepart a part that appears in the
+     * \param[in] flags the flags as specified in the documentation of TempFile::Flags
+     *
+     * \exception IOError
+     */
+    TempFile(const std::string &namepart, Flags flags=NoFlags);
 
-        /**
-         * \brief Destroys the temporary file
-         *
-         * Calls close() if the file is not already closed.
-         */
-        virtual ~TempFile();
+    /**
+     * \brief Destroys the temporary file
+     *
+     * Calls close() if the file is not already closed.
+     */
+    virtual ~TempFile();
 
-        /**
-         * \brief Returns the flags that have been set in the constructor
-         * \return the flags as documented in TempFile::Flags.
-         */
-        Flags flags() const;
+    /**
+     * \brief Returns the flags that have been set in the constructor
+     * \return the flags as documented in TempFile::Flags.
+     */
+    Flags flags() const;
 
-        /**
-         * \brief Returns the name of the temporary file
-         *
-         * While the temporary file is already open and can be accessed using nativeHandle(),
-         * it's valid to open the file again if portable file I/O should be used or to pass the
-         * name to other applications.
-         *
-         * However, accessing the file by its native I/O functions and using the name and opening
-         * again <b>at the same time</b> should be avoided as it causes synchronisation problems.
-         *
-         * \return the full path of the temporary file.
-         */
-        std::string name() const;
+    /**
+     * \brief Returns the name of the temporary file
+     *
+     * While the temporary file is already open and can be accessed using nativeHandle(),
+     * it's valid to open the file again if portable file I/O should be used or to pass the
+     * name to other applications.
+     *
+     * However, accessing the file by its native I/O functions and using the name and opening
+     * again <b>at the same time</b> should be avoided as it causes synchronisation problems.
+     *
+     * \return the full path of the temporary file.
+     */
+    std::string name() const;
 
-        /**
-         * \brief Returns a native handle to the file descriptor
-         *
-         * On Unix, this is a plain file descriptor. On Windows, this is a HANDLE pointer.
-         *
-         * \return the handle
-         */
-        uint64_t nativeHandle() const;
+    /**
+     * \brief Returns a native handle to the file descriptor
+     *
+     * On Unix, this is a plain file descriptor. On Windows, this is a HANDLE pointer.
+     *
+     * \return the handle
+     */
+    uint64_t nativeHandle() const;
 
-        /**
-         * \brief Closes the temporary file
-         *
-         * If the TempFile::Flags::DeleteOnClose flag is set, the file is deleted on disk.
-         */
-        void close();
+    /**
+     * \brief Closes the temporary file
+     *
+     * If the TempFile::Flags::DeleteOnClose flag is set, the file is deleted on disk.
+     */
+    void close();
 
-    protected:
-        /**
-         * \brief Creates the temporary file
-         *
-         * This function is implemented in <tt>tempfile_<i>specific</i>.cc</tt>. The implementation
-         * should not modify any member variables except \c d.
-         *
-         * \param[in] namePart the name part as described in TempFile.
-         * \return the name of the temporary file
-         * \throw IOError if creation of the temporary file failed.
-         */
-        std::string _create(const std::string &namePart);
+protected:
+    /**
+     * \brief Creates the temporary file
+     *
+     * This function is implemented in <tt>tempfile_<i>specific</i>.cc</tt>. The implementation
+     * should not modify any member variables except \c d.
+     *
+     * \param[in] namePart the name part as described in TempFile.
+     * \return the name of the temporary file
+     * \throw IOError if creation of the temporary file failed.
+     */
+    std::string _create(const std::string &namePart);
 
-        /**
-         * \brief Closes the temporary file handle
-         *
-         * This function is implemented in <tt>tempfile_<i>specific</i>.cc</tt>. The implementation
-         * should not modify any member variables except \c d.
-         */
-        void _close();
+    /**
+     * \brief Closes the temporary file handle
+     *
+     * This function is implemented in <tt>tempfile_<i>specific</i>.cc</tt>. The implementation
+     * should not modify any member variables except \c d.
+     */
+    void _close();
 
-    private:
-        std::string m_name;
-        Flags m_flags;
-        bool m_open;
-        ExitHandler *m_exitHandler;
-        TempFilePrivate *d;
+private:
+    std::string m_name;
+    Flags m_flags;
+    bool m_open;
+    ExitHandler *m_exitHandler;
+    TempFilePrivate *d;
 };
 
 /* }}} */

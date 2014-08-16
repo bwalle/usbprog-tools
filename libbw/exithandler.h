@@ -76,16 +76,16 @@ namespace bw {
  */
 class ExitHandler
 {
-    public:
-        /**
-         * \brief Virtual destructor
-         */
-        virtual ~ExitHandler() {}
+public:
+    /**
+     * \brief Virtual destructor
+     */
+    virtual ~ExitHandler() {}
 
-        /**
-         * \brief Callback that is executed on application termination.
-         */
-        virtual void exitCleanup() = 0;
+    /**
+     * \brief Callback that is executed on application termination.
+     */
+    virtual void exitCleanup() = 0;
 };
 
 /* }}} */
@@ -100,24 +100,24 @@ class ExitHandler
  */
 class FileDeleteExitHandler : public ExitHandler
 {
-    public:
-        /**
-         * \brief Constructor
-         *
-         * Creates a new FileDeleteExitHandler instance with \p filename as the file name
-         * that should be deleted.
-         *
-         * \param[in] filename the name of the file that should be deleted
-         */
-        FileDeleteExitHandler(const std::string &filename);
+public:
+    /**
+     * \brief Constructor
+     *
+     * Creates a new FileDeleteExitHandler instance with \p filename as the file name
+     * that should be deleted.
+     *
+     * \param[in] filename the name of the file that should be deleted
+     */
+    FileDeleteExitHandler(const std::string &filename);
 
-        /**
-         * \brief Deletes the file
-         */
-        void exitCleanup();
+    /**
+     * \brief Deletes the file
+     */
+    void exitCleanup();
 
-    private:
-        std::string m_filename;
+private:
+    std::string m_filename;
 };
 
 /* }}} */

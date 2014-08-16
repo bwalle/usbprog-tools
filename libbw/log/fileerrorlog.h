@@ -48,36 +48,36 @@ namespace bw {
  */
 class FileErrorlog : public Errorlog {
 
-    public:
-        /// Let Errorlog create instances of FileErrorlog, and only Errorlog.
-        friend class Errorlog;
+public:
+    /// Let Errorlog create instances of FileErrorlog, and only Errorlog.
+    friend class Errorlog;
 
-    protected:
-        /**
-         * \brief Creates a new FileErrorlog.
-         *
-         * Don't use that function directly. Instead, use Errorlog::configure().
-         *
-         * \param[in] filename the name of the file to which the logger should log. The
-         *            special values \c "stderr" and \c "stdout" are supported.
-         */
-        FileErrorlog(const char *filename="stderr");
+protected:
+    /**
+     * \brief Creates a new FileErrorlog.
+     *
+     * Don't use that function directly. Instead, use Errorlog::configure().
+     *
+     * \param[in] filename the name of the file to which the logger should log. The
+     *            special values \c "stderr" and \c "stdout" are supported.
+     */
+    FileErrorlog(const char *filename="stderr");
 
-        /**
-         * \brief Destructor
-         */
-        ~FileErrorlog();
+    /**
+     * \brief Destructor
+     */
+    ~FileErrorlog();
 
-        /**
-         * \copydoc Errorlog::vlog()
-         */
-        void vlog(Errorlog::Level level, const char *msg, std::va_list args);
+    /**
+     * \copydoc Errorlog::vlog()
+     */
+    void vlog(Errorlog::Level level, const char *msg, std::va_list args);
 
-    private:
-        std::FILE *m_file;
-        bool m_closeInDtor;
+private:
+    std::FILE *m_file;
+    bool m_closeInDtor;
 #ifdef HAVE_THREADS
-        thread::Mutex m_mutex;
+    thread::Mutex m_mutex;
 #endif
 };
 

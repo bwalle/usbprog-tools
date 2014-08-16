@@ -52,16 +52,16 @@ namespace bw {
  * \ingroup error
  */
 class Error : public std::runtime_error {
-    public:
-        /**
-         * \brief Constructor
-         *
-         * Creates a new Error.
-         *
-         * \param[in] string the error string
-         */
-        Error(const std::string &string)
-            : std::runtime_error(string) {}
+public:
+    /**
+     * \brief Constructor
+     *
+     * Creates a new Error.
+     *
+     * \param[in] string the error string
+     */
+    Error(const std::string &string)
+        : std::runtime_error(string) {}
 };
 
 /* }}} */
@@ -79,16 +79,16 @@ class Error : public std::runtime_error {
  * \ingroup error
  */
 class IOError : public Error {
-    public:
-        /**
-         * \brief Constructor
-         *
-         * Creates a new IOError.
-         *
-         * \param[in] string the error string
-         */
-        IOError(const std::string& string)
-            : Error(string) {}
+public:
+    /**
+     * \brief Constructor
+     *
+     * Creates a new IOError.
+     *
+     * \param[in] string the error string
+     */
+    IOError(const std::string& string)
+        : Error(string) {}
 };
 
 /* }}} */
@@ -101,38 +101,38 @@ class IOError : public Error {
  * \ingroup error
  */
 class SystemError : public Error {
-    public:
-        /**
-         * \brief Creates a new object of SystemError with string as error message.
-         *
-         * \param[in] string the error message
-         * \param[in] errorcode the system error code (errno)
-         */
-        SystemError(const std::string &string, int errorcode=errno)
-            : Error(string)
-            , m_errorcode(errorcode)
-        {
-            m_errorstring = string + " (" + std::strerror(m_errorcode) + ")";
-        }
+public:
+    /**
+     * \brief Creates a new object of SystemError with string as error message.
+     *
+     * \param[in] string the error message
+     * \param[in] errorcode the system error code (errno)
+     */
+    SystemError(const std::string &string, int errorcode=errno)
+        : Error(string)
+        , m_errorcode(errorcode)
+    {
+        m_errorstring = string + " (" + std::strerror(m_errorcode) + ")";
+    }
 
-        /**
-         * \brief Returns a readable error message from the string and the error code.
-         *
-         * \return Error message in the format 'string (strerror(errorcode))'.
-         */
-        virtual const char *what() const throw ()
-        {
-            return m_errorstring.c_str();
-        }
+    /**
+     * \brief Returns a readable error message from the string and the error code.
+     *
+     * \return Error message in the format 'string (strerror(errorcode))'.
+     */
+    virtual const char *what() const throw ()
+    {
+        return m_errorstring.c_str();
+    }
 
-        /**
-         * Don't know why that is necessary to avoid compiler errors.
-         */
-        virtual ~SystemError() throw () {}
+    /**
+     * Don't know why that is necessary to avoid compiler errors.
+     */
+    virtual ~SystemError() throw () {}
 
-    private:
-        int m_errorcode;
-        std::string m_errorstring;
+private:
+    int m_errorcode;
+    std::string m_errorstring;
 };
 
 /* }}} */
@@ -145,38 +145,38 @@ class SystemError : public Error {
  * \ingroup error
  */
 class SystemIOError : public IOError {
-    public:
-        /**
-         * \brief Creates a new object of SystemError with string as error message.
-         *
-         * \param[in] string the error message
-         * \param[in] errorcode the system error code (errno)
-         */
-        SystemIOError(const std::string &string, int errorcode)
-            : IOError(string)
-            , m_errorcode(errorcode)
-        {
-            m_errorstring = string + " (" + std::strerror(m_errorcode) + ")";
-        }
+public:
+    /**
+     * \brief Creates a new object of SystemError with string as error message.
+     *
+     * \param[in] string the error message
+     * \param[in] errorcode the system error code (errno)
+     */
+    SystemIOError(const std::string &string, int errorcode)
+        : IOError(string)
+        , m_errorcode(errorcode)
+    {
+        m_errorstring = string + " (" + std::strerror(m_errorcode) + ")";
+    }
 
-        /**
-         * \brief Returns a readable error message from the string and the error code.
-         *
-         * \return Error message in the format 'string (strerror(errorcode))'.
-         */
-        virtual const char *what() const throw ()
-        {
-            return m_errorstring.c_str();
-        }
+    /**
+     * \brief Returns a readable error message from the string and the error code.
+     *
+     * \return Error message in the format 'string (strerror(errorcode))'.
+     */
+    virtual const char *what() const throw ()
+    {
+        return m_errorstring.c_str();
+    }
 
-        /**
-         * Don't know why that is necessary to avoid compiler errors.
-         */
-        virtual ~SystemIOError() throw () {}
+    /**
+     * Don't know why that is necessary to avoid compiler errors.
+     */
+    virtual ~SystemIOError() throw () {}
 
-    private:
-        int m_errorcode;
-        std::string m_errorstring;
+private:
+    int m_errorcode;
+    std::string m_errorstring;
 };
 
 /* }}} */
