@@ -52,6 +52,10 @@ std::string Sysinfo::osVersion()
             return "Vista";
         case QSysInfo::WV_WINDOWS7:
             return "7";
+        case QSysInfo::WV_WINDOWS8:
+            return "8";
+        case QSysInfo::WV_WINDOWS8_1:
+            return "8.1";
         default:
             return "unknown";
     }
