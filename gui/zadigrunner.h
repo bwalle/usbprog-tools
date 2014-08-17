@@ -32,6 +32,8 @@
 #include <QTemporaryDir>
 #include <QNetworkReply>
 
+#include <usbprog/tempdir.h>
+
 namespace usbprog {
 namespace gui {
 
@@ -125,7 +127,7 @@ private slots:
     void downloadFinishedSlot(QNetworkReply *reply);
 
 private:
-    QTemporaryDir m_tempdir;
+    Tempdir m_tempdir;
 };
 
 

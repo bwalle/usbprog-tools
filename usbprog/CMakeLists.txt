@@ -24,6 +24,7 @@ set(libusbprog_MOCS
 set(libusbprog_SRCS
     firmwarepool.cc
     downloader.cc
+    tempdir.cc
 )
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
