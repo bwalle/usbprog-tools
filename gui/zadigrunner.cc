@@ -52,7 +52,6 @@ void ZadigRunner::startDownload()
             SLOT(downloadProgressSlot(qint64,qint64)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), SLOT(downloadFinishedSlot(QNetworkReply*)));
 
-    qDebug() << "Starting download";
 #if 0
     connect(reply, SIGNAL())
 
@@ -122,8 +121,6 @@ void ZadigRunner::downloadFinishedSlot(QNetworkReply *reply)
     QByteArray data = reply->readAll();
     if (outputFile.write(data) != data.size())
         emit downloadError(tr("Unable to write %1 bytes to %2").arg(data.size()).arg(filename));
-
-    qDebug() << "Download finished" << filename;
 
     emit downloadFinished();
 }
