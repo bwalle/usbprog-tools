@@ -51,6 +51,8 @@ void ZadigRunner::startDownload()
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
             SLOT(downloadProgressSlot(qint64,qint64)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), SLOT(downloadFinishedSlot(QNetworkReply*)));
+
+    qDebug() << "Starting download";
 #if 0
     connect(reply, SIGNAL())
 
@@ -81,10 +83,15 @@ bool ZadigRunner::startTool()
 
 std::string ZadigRunner::downloadUrl() const
 {
+#ifdef Q_OS_WIN
     if (QSysInfo::windowsVersion() < QSysInfo::WV_XP)
         return ZADIG_URL_XP;
     else
         return ZADIG_URL_VISTA;
+#else
+    // for testing only
+    return ZADIG_URL_VISTA;
+#endif
 }
 
 QString ZadigRunner::zadigFileName() const
@@ -101,6 +108,11 @@ void ZadigRunner::downloadProgressSlot(qint64 received, qint64 total)
 
 void ZadigRunner::downloadFinishedSlot(QNetworkReply *reply)
 {
+    if (reply->error() != QNetworkReply::NoError) {
+        emit downloadError(reply->errorString());
+        return;
+    }
+
     QString filename = zadigFileName();
 
     QFile outputFile(filename);
@@ -110,6 +122,8 @@ void ZadigRunner::downloadFinishedSlot(QNetworkReply *reply)
     QByteArray data = reply->readAll();
     if (outputFile.write(data) != data.size())
         emit downloadError(tr("Unable to write %1 bytes to %2").arg(data.size()).arg(filename));
+
+    qDebug() << "Download finished" << filename;
 
     emit downloadFinished();
 }

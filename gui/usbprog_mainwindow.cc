@@ -41,7 +41,7 @@
 #include "config.h"
 #include "pindialog.h"
 
-#ifdef Q_OS_WIN
+#ifdef WITH_DRIVERINSTALLER
 #  include "driverassistant.h"
 #endif
 
@@ -215,7 +215,7 @@ void UsbprogMainWindow::initMenus()
 
     menuBar()->addMenu(programMenu);
     menuBar()->addMenu(cacheMenu);
-#ifdef Q_OS_WIN
+#ifdef WITH_DRIVERINSTALLER
     menuBar()->addMenu(deviceMenu);
 #endif
     // align the "Help" menu on the right in the Motif and CDE style
@@ -733,7 +733,7 @@ void UsbprogMainWindow::fileChooseButtonClicked()
 
 void UsbprogMainWindow::installDriver()
 {
-#ifdef Q_OS_WIN
+#ifdef WITH_DRIVERINSTALLER
     DriverAssistant wizard(this);
     wizard.exec();
 #endif

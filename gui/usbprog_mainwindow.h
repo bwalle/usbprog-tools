@@ -33,6 +33,10 @@
 #include <usbprog-core/devices.h>
 #include <usbprog/firmwarepool.h>
 
+#ifdef Q_OS_MAC //Q_OS_WIN
+#  define WITH_DRIVERINSTALLER
+#endif
+
 namespace usbprog {
 namespace gui {
 

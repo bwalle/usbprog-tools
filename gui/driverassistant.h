@@ -29,9 +29,66 @@
 #define GUI_DRIVERASSISTANT_H_
 
 #include <QWizard>
+#include <QProgressBar>
+#include <QLabel>
+
+#include "zadigrunner.h"
 
 namespace usbprog {
 namespace gui {
+
+class IntroPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    IntroPage(QWidget *parent=0);
+};
+
+
+class DownloadPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    DownloadPage(ZadigRunner *zadigRunner, QWidget *parent=0);
+
+    virtual bool isComplete() const;
+
+private slots:
+    void startDownload();
+    void showDownloadError(const QString &msg);
+    void downloadFinished();
+
+private:
+    QProgressBar *m_downloadProgress;
+    QLabel *m_infoLabel;
+    ZadigRunner *m_zadigRunner;
+    QPushButton *m_startButton;
+    bool m_downloadComplete;
+};
+
+
+class RunPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    RunPage(ZadigRunner *zadigRunner, QWidget *parent=0);
+
+    virtual bool isComplete() const;
+
+private slots:
+    void startTool();
+
+private:
+    bool m_runComplete;
+    QLabel *m_infoLabel;
+    ZadigRunner *m_zadigRunner;
+    QPushButton *m_startButton;
+};
+
+
 
 class DriverAssistant : public QWizard
 {
@@ -40,8 +97,11 @@ class DriverAssistant : public QWizard
 public:
     DriverAssistant(QWidget *parent=0);
 
+private slots:
+
 private:
-    QWizardPage *createIntroPage();
+    QProgressBar *m_downloadProgress;
+    ZadigRunner *m_zadigRunner;
 };
 
 } // namespace gui
