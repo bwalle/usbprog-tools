@@ -21,7 +21,6 @@
 #include <usbpp/device.h>
 
 
-/* -------------------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
     usb::UsbManager &manager = usb::UsbManager::instance();

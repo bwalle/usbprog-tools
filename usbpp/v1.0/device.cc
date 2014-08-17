@@ -32,32 +32,27 @@ struct DevicePrivate {
 /* }}} */
 /* Device {{{ */
 
-/* -------------------------------------------------------------------------- */
 Device::~Device()
 {
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getDeviceNumber() const
 {
     return libusb_get_device_address(m_data->device);
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getBusNumber() const
 {
     return libusb_get_bus_number(m_data->device);
 }
 
-/* -------------------------------------------------------------------------- */
 Device::Device(void *nativeHandle)
     : m_data(new DevicePrivate)
 {
     m_data->device = static_cast<libusb_device *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceDescriptor Device::getDescriptor() const
 {
     DeviceDescriptor ret;
@@ -76,7 +71,6 @@ DeviceDescriptor Device::getDescriptor() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 ConfigDescriptor *Device::getConfigDescriptor(int index)
 {
     struct libusb_config_descriptor *usb_config_descriptor;
@@ -87,7 +81,6 @@ ConfigDescriptor *Device::getConfigDescriptor(int index)
     return new ConfigDescriptor(usb_config_descriptor);
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle *Device::open()
 {
     libusb_device_handle *handle;

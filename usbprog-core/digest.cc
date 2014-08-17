@@ -28,13 +28,11 @@ namespace core {
 
 /* Constants {{{ */
 
-/* -------------------------------------------------------------------------- */
 #define BUFFERSIZE 2048
 
 /* }}} */
 /* Digest {{{ */
 
-/* -------------------------------------------------------------------------- */
 Digest *Digest::create(enum Algorithm algorithm)
 {
     switch (algorithm) {
@@ -48,26 +46,22 @@ Digest *Digest::create(enum Algorithm algorithm)
 /* }}} */
 /* MD5Digest {{{ */
 
-/* -------------------------------------------------------------------------- */
 MD5Digest::MD5Digest()
 {
     m_md5 = new md5_t;
     md5_init(reinterpret_cast<md5_t *>(m_md5));
 }
 
-/* -------------------------------------------------------------------------- */
 MD5Digest::~MD5Digest()
 {
     delete reinterpret_cast<md5_t *>(m_md5);
 }
 
-/* -------------------------------------------------------------------------- */
 void MD5Digest::process(unsigned char *buffer, size_t len)
 {
     md5_process(reinterpret_cast<md5_t *>(m_md5), buffer, len);
 }
 
-/* -------------------------------------------------------------------------- */
 std::string MD5Digest::end()
 {
     char buffer[16];
@@ -88,7 +82,6 @@ std::string MD5Digest::end()
 /* }}} */
 /* Free functions {{{ */
 
-/* -------------------------------------------------------------------------- */
 bool check_digest(const std::string &file, const std::string &reference,
         Digest::Algorithm da)
 {

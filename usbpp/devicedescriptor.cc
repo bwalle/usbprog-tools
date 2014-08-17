@@ -22,61 +22,51 @@ namespace usb {
 
 /* DeviceDescriptor {{{ */
 
-/* -------------------------------------------------------------------------- */
 unsigned short DeviceDescriptor::getDeviceClass() const
 {
     return m_bDeviceClass;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceDescriptor::setDeviceClass(unsigned short deviceClass)
 {
     m_bDeviceClass = deviceClass;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short DeviceDescriptor::getDeviceSubclass() const
 {
     return m_bDeviceSubClass;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceDescriptor::setDeviceSubclass(unsigned short deviceSubclass)
 {
     m_bDeviceSubClass = deviceSubclass;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned int DeviceDescriptor::getVendorId() const
 {
     return m_idVendor;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceDescriptor::setVendorId(unsigned int vendorId)
 {
     m_idVendor = vendorId;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned int DeviceDescriptor::getProductId() const
 {
     return m_idProduct;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceDescriptor::setProductId(unsigned int productId)
 {
     m_idProduct = productId;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short DeviceDescriptor::getBcdDevice() const
 {
     return m_bcdDevice;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceDescriptor::setBcdDevice(unsigned short bcdDevice)
 {
     m_bcdDevice = bcdDevice;
@@ -84,7 +74,6 @@ void DeviceDescriptor::setBcdDevice(unsigned short bcdDevice)
 
 /* }}} */
 
-/* -------------------------------------------------------------------------- */
 std::ostream &operator<<(std::ostream &os, const DeviceDescriptor &desc)
 {
     os << "Class:       0x" << std::hex << std::setw(2) << std::setfill('0')

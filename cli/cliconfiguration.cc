@@ -26,48 +26,40 @@ namespace cli {
 
 CliConfiguration *CliConfiguration::m_instance = NULL;
 
-/* -------------------------------------------------------------------------- */
 CliConfiguration::CliConfiguration()
 {
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 }
 
-/* -------------------------------------------------------------------------- */
 CliConfiguration::~CliConfiguration()
 {}
 
-/* -------------------------------------------------------------------------- */
 CliConfiguration &CliConfiguration::config()
 {
     static CliConfiguration instance;
     return instance;
 }
 
-/* -------------------------------------------------------------------------- */
 void CliConfiguration::setHistoryFile(const std::string &history)
 {
     m_historyFile = history;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string CliConfiguration::getHistoryFile() const
 {
     return m_historyFile;
 }
 
-/* -------------------------------------------------------------------------- */
 void CliConfiguration::setBatchMode(bool batch)
 {
     m_batchMode = batch;
 }
 
-/* -------------------------------------------------------------------------- */
 bool CliConfiguration::getBatchMode() const
 {
     return m_batchMode;
 }
 
-/* -------------------------------------------------------------------------- */
 void CliConfiguration::dumpConfig(std::ostream &stream)
 {
     Configuration::dumpConfig(stream);

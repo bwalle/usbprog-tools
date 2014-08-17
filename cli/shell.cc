@@ -34,48 +34,40 @@ namespace cli {
 
 /* AbstractCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 AbstractCommand::AbstractCommand(const std::string &name)
     : m_name(name)
 {}
 
-/* -------------------------------------------------------------------------- */
 size_t AbstractCommand::getArgNumber() const
 {
     return 0;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type AbstractCommand::getArgType(size_t pos) const
 {
     return CommandArg::INVALID;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string AbstractCommand::getArgTitle(size_t pos) const
 {
     return "";
 }
 
-/* -------------------------------------------------------------------------- */
 std::string AbstractCommand::name() const
 {
     return m_name;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector AbstractCommand::aliases() const
 {
     return core::StringVector();
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector AbstractCommand::getSupportedOptions() const
 {
     return core::StringVector();
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector AbstractCommand::getCompletions(const std::string &start,
                                                    size_t            pos,
                                                    bool              option,
@@ -87,13 +79,11 @@ core::StringVector AbstractCommand::getCompletions(const std::string &start,
 /* }}} */
 /* CommandArg {{{ */
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type CommandArg::getType() const
 {
     return m_type;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string CommandArg::getString() const
 {
     if (m_type != STRING)
@@ -102,7 +92,6 @@ std::string CommandArg::getString() const
     return m_string;
 }
 
-/* -------------------------------------------------------------------------- */
 long long CommandArg::getInteger() const
 {
     if (m_type != INTEGER)
@@ -111,7 +100,6 @@ long long CommandArg::getInteger() const
     return m_int.ll;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned long long CommandArg::getUInteger() const
 {
     if (m_type != UINTEGER)
@@ -120,7 +108,6 @@ unsigned long long CommandArg::getUInteger() const
     return m_int.ull;
 }
 
-/* -------------------------------------------------------------------------- */
 double CommandArg::getFloat() const
 {
     if (m_type != FLOAT)
@@ -129,35 +116,30 @@ double CommandArg::getFloat() const
     return m_int.d;
 }
 
-/* -------------------------------------------------------------------------- */
 void CommandArg::setString(const std::string &string)
 {
     m_type = STRING;
     m_string = string;
 }
 
-/* -------------------------------------------------------------------------- */
 void CommandArg::setInteger(long long integer)
 {
     m_type = INTEGER;
     m_int.ll = integer;
 }
 
-/* -------------------------------------------------------------------------- */
 void CommandArg::setUInteger(unsigned long long integer)
 {
     m_type = UINTEGER;
     m_int.ull = integer;
 }
 
-/* -------------------------------------------------------------------------- */
 void CommandArg::setFloat(double value)
 {
     m_type = FLOAT;
     m_int.d = value;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg *CommandArg::fromString(const std::string &str, CommandArg::Type type)
 {
     std::stringstream string;
@@ -201,7 +183,6 @@ CommandArg *CommandArg::fromString(const std::string &str, CommandArg::Type type
 /* }}} */
 /* Shell {{{ */
 
-/* -------------------------------------------------------------------------- */
 Shell::Shell(const std::string &prompt)
 {
     m_lineReader = bw::LineReader::defaultLineReader(prompt);
@@ -218,7 +199,6 @@ Shell::Shell(const std::string &prompt)
     addCommand(new HelpCmdCommand(this));
 }
 
-/* -------------------------------------------------------------------------- */
 Shell::~Shell()
 {
     std::vector<Command *> deleteList;
@@ -240,7 +220,6 @@ Shell::~Shell()
     delete m_lineReader;
 }
 
-/* -------------------------------------------------------------------------- */
 void Shell::addCommand(Command *cmd)
 {
     // if it's already in the map, remove it first and free the memory
@@ -258,7 +237,6 @@ void Shell::addCommand(Command *cmd)
         m_commands[*it] = cmd;
 }
 
-/* -------------------------------------------------------------------------- */
 std::vector<std::string> Shell::complete(const std::string     &text,
                                          const std::string     &full_text,
                                          size_t                start_idx,
@@ -320,7 +298,6 @@ std::vector<std::string> Shell::complete(const std::string     &text,
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void Shell::run()
 {
     bool result = true;
@@ -345,7 +322,6 @@ void Shell::run()
         std::cout << std::endl;
 }
 
-/* -------------------------------------------------------------------------- */
 bool Shell::run(core::StringVector input, bool multiple)
 {
     bool result = true;
@@ -435,12 +411,10 @@ bool Shell::run(core::StringVector input, bool multiple)
 /* }}} */
 /* ExitCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 ExitCommand::ExitCommand()
     : AbstractCommand("exit")
 {}
 
-/* -------------------------------------------------------------------------- */
 bool ExitCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
@@ -448,7 +422,6 @@ bool ExitCommand::execute(CommandArgVector   args,
     return false;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector ExitCommand::aliases() const
 {
     core::StringVector sv;
@@ -458,13 +431,11 @@ core::StringVector ExitCommand::aliases() const
     return sv;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string ExitCommand::help() const
 {
     return "Exits the program";
 }
 
-/* -------------------------------------------------------------------------- */
 void ExitCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            exit" << std::endl;
@@ -477,14 +448,12 @@ void ExitCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* HelpCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 HelpCommand::HelpCommand(Shell *sh)
     : AbstractCommand("help")
 {
     m_sh = sh;
 }
 
-/* -------------------------------------------------------------------------- */
 bool HelpCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
@@ -503,13 +472,11 @@ bool HelpCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string HelpCommand::help() const
 {
     return "Prints an overview about all commands.";
 }
 
-/* -------------------------------------------------------------------------- */
 void HelpCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            help" << std::endl;
@@ -523,14 +490,12 @@ void HelpCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* HelpCmdCommand  {{{ */
 
-/* -------------------------------------------------------------------------- */
 HelpCmdCommand::HelpCmdCommand(Shell *sh)
     : AbstractCommand("helpcmd")
 {
     m_sh = sh;
 }
 
-/* -------------------------------------------------------------------------- */
 bool HelpCmdCommand::execute(CommandArgVector    args,
                              core::StringVector  options,
                              std::ostream        &os)
@@ -547,13 +512,11 @@ bool HelpCmdCommand::execute(CommandArgVector    args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t HelpCmdCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type HelpCmdCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -562,7 +525,6 @@ CommandArg::Type HelpCmdCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string HelpCmdCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -571,7 +533,6 @@ std::string HelpCmdCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector HelpCmdCommand::aliases() const
 {
     core::StringVector sv;
@@ -579,7 +540,6 @@ core::StringVector HelpCmdCommand::aliases() const
     return sv;
 }
 
-/* -------------------------------------------------------------------------- */
 std::vector<std::string> HelpCmdCommand::getCompletions(const std::string &start,
                                                         size_t            pos,
                                                         bool              option,
@@ -599,13 +559,11 @@ std::vector<std::string> HelpCmdCommand::getCompletions(const std::string &start
 }
 
 
-/* -------------------------------------------------------------------------- */
 std::string HelpCmdCommand::help() const
 {
     return "Prints help for a command";
 }
 
-/* -------------------------------------------------------------------------- */
 void HelpCmdCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            helpcmd" << std::endl;

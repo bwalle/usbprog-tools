@@ -33,7 +33,6 @@ struct DeviceHandlePrivate {
 /* }}} */
 /* DeviceHandle {{{ */
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle::~DeviceHandle()
 {
     for (std::list<int>::iterator it = m_data->claimed_interfaces.begin();
@@ -44,21 +43,18 @@ DeviceHandle::~DeviceHandle()
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle::DeviceHandle(void *nativeHandle)
     : m_data(new DeviceHandlePrivate)
 {
     m_data->device_handle = static_cast<usb_dev_handle *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 int DeviceHandle::getConfiguration() const
 {
     // XXX: I'm not sure if that's right
     return usb_device(m_data->device_handle)->config[0].bConfigurationValue;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::setConfiguration(int newConfiguration)
 {
     int err = usb_set_configuration(m_data->device_handle, newConfiguration);
@@ -66,7 +62,6 @@ void DeviceHandle::setConfiguration(int newConfiguration)
         throw Error(usb_strerror());
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::claimInterface(int interfaceNumber)
 {
     int err = usb_claim_interface(m_data->device_handle, interfaceNumber);
@@ -76,7 +71,6 @@ void DeviceHandle::claimInterface(int interfaceNumber)
     m_data->claimed_interfaces.push_back(interfaceNumber);
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::releaseInterface(int interfaceNumber)
 {
     int err = usb_release_interface(m_data->device_handle, interfaceNumber);
@@ -90,7 +84,6 @@ void DeviceHandle::releaseInterface(int interfaceNumber)
         m_data->claimed_interfaces.erase(result);
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSetting)
 {
     int err = usb_set_altinterface(m_data->device_handle, alternateSetting);
@@ -98,7 +91,6 @@ void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSett
         throw Error(usb_strerror());
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
                                    unsigned char      bRequest,
                                    unsigned short     wValue,
@@ -113,7 +105,6 @@ void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
         throw Error(usb_strerror());
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::bulkTransfer(unsigned char     endpoint,
                                 unsigned char     *data,
                                 int               length,
@@ -128,7 +119,6 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
         *transferred = ret;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::resetDevice()
 {
     int err = usb_reset(m_data->device_handle);

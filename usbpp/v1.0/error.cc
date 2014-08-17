@@ -18,7 +18,6 @@
 
 namespace usb {
 
-/* -------------------------------------------------------------------------- */
 const char *errorcodeToString(int err)
 {
     static const char *errortable[] = {

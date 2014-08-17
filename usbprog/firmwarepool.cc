@@ -96,12 +96,10 @@ private:
 #define XMLCHAR(a) \
     reinterpret_cast<const xmlChar *>(a)
 
-/* -------------------------------------------------------------------------- */
 FirmwareXMLParser::FirmwareXMLParser(Firmwarepool *pool)
     : m_firmwarepool(pool)
 {}
 
-/* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &pool)
 {
     for (QDomNode node = pool.firstChild(); !node.isNull(); node = node.nextSibling()) {
@@ -113,7 +111,6 @@ void FirmwareXMLParser::parsePool(const QDomDocument &doc, const QDomElement &po
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement &firmware)
 {
     Firmware *fw;
@@ -165,102 +162,85 @@ void FirmwareXMLParser::parseFirmware(const QDomDocument &doc, const QDomElement
 
 /* Firmware {{{ */
 
-/* -------------------------------------------------------------------------- */
 Firmware::Firmware(const std::string &name)
     : m_updateDevice(name)
 {}
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getName() const
 {
     return m_updateDevice.getName();
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getLabel() const
 {
     return m_updateDevice.getLabel();
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setFilename(const std::string &filename)
 {
     m_filename = filename;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getFilename() const
 {
     return m_filename;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getVerFilename() const
 {
     return m_filename + "." + getVersionString();
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setUrl(const std::string &url)
 {
     m_url = url;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getUrl() const
 {
     return m_url;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setAuthor(const std::string &author)
 {
     m_author = author;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getAuthor() const
 {
     return m_author;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setVersion(int version)
 {
     m_version = version;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setDate(const core::DateTime &date)
 {
     m_date = date;
 }
 
-/* -------------------------------------------------------------------------- */
 const core::DateTime Firmware::getDate() const
 {
     return m_date;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setMD5Sum(const std::string &md5)
 {
     m_md5sum = md5;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getMD5Sum() const
 {
     return m_md5sum;
 }
 
-/* -------------------------------------------------------------------------- */
 int Firmware::getVersion() const
 {
     return m_version;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getVersionString() const
 {
     std::stringstream ss;
@@ -268,25 +248,21 @@ std::string Firmware::getVersionString() const
     return ss.str();
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setDescription(const std::string &description)
 {
     m_description = description;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getDescription() const
 {
     return m_description;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setPin(const std::string &name, const std::string &value)
 {
     m_pins[name] = value;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::getPin(const std::string &name) const
 {
     core::StringStringMap::const_iterator it = m_pins.find(name);
@@ -296,7 +272,6 @@ std::string Firmware::getPin(const std::string &name) const
         return std::string();
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector Firmware::getPins() const
 {
     core::StringVector ret;
@@ -308,37 +283,31 @@ core::StringVector Firmware::getPins() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmware::setData(const core::ByteVector &data)
 {
     m_data = data;
 }
 
-/* -------------------------------------------------------------------------- */
 core::ByteVector &Firmware::getData()
 {
     return m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 const core::ByteVector &Firmware::getData() const
 {
     return m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 const core::UpdateDevice &Firmware::updateDevice() const
 {
     return m_updateDevice;
 }
 
-/* -------------------------------------------------------------------------- */
 core::UpdateDevice &Firmware::updateDevice()
 {
     return m_updateDevice;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::toString() const
 {
     std::stringstream ss;
@@ -370,7 +339,6 @@ std::string Firmware::toString() const
     return ss.str();
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmware::formatDateVersion() const
 {
     std::stringstream ss;
@@ -384,7 +352,6 @@ std::string Firmware::formatDateVersion() const
 /* }}} */
 /* Firmwarepool {{{ */
 
-/* -------------------------------------------------------------------------- */
 Firmwarepool::Firmwarepool(const std::string &cacheDir)
     : m_cacheDir(cacheDir)
     , m_progressNotifier(NULL)
@@ -395,7 +362,6 @@ Firmwarepool::Firmwarepool(const std::string &cacheDir)
             throw core::IOError("Creating directory '" + cacheDir + "' failed");
 }
 
-/* -------------------------------------------------------------------------- */
 Firmwarepool::~Firmwarepool()
 {
     for (StringFirmwareMap::iterator it = m_firmware.begin();
@@ -403,19 +369,16 @@ Firmwarepool::~Firmwarepool()
         delete it->second;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmwarepool::getCacheDir() const
 {
     return m_cacheDir;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::setIndexUpdatetime(int minutes)
 {
     m_indexAutoUpdatetime = minutes;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadIndex(const std::string &url)
 {
     std::string newPath(core::pathconcat(m_cacheDir, std::string(INDEX_FILE_NAME) + ".new"));
@@ -449,7 +412,6 @@ void Firmwarepool::downloadIndex(const std::string &url)
     rename(newPath.c_str(), oldPath.c_str());
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::readIndex()
 {
     QDomDocument doc("usbprog");
@@ -477,7 +439,6 @@ void Firmwarepool::readIndex()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteIndex()
 {
     std::string file = core::pathconcat(m_cacheDir, INDEX_FILE_NAME);
@@ -486,13 +447,11 @@ void Firmwarepool::deleteIndex()
         throw core::IOError("Deleting index file failed: " + std::string(std::strerror(errno)));
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::setProgress(core::ProgressNotifier *notifier)
 {
     m_progressNotifier = notifier;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::downloadFirmware(const std::string &name)
 {
     Firmware *fw = getFirmware(name);
@@ -540,7 +499,6 @@ void Firmwarepool::downloadFirmware(const std::string &name)
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::fillFirmware(const std::string &name)
 {
     Firmware *fw = getFirmware(name);
@@ -551,13 +509,11 @@ void Firmwarepool::fillFirmware(const std::string &name)
     fw->setData(core::Fileutil::readBytesFromFile(file));
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Firmwarepool::getFirmwareFilename(Firmware *fw) const
 {
     return core::pathconcat(m_cacheDir, fw->getVerFilename());
 }
 
-/* -------------------------------------------------------------------------- */
 StringList Firmwarepool::getFirmwareNameList() const
 {
     StringList ret;
@@ -568,7 +524,6 @@ StringList Firmwarepool::getFirmwareNameList() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 Firmware *Firmwarepool::getFirmware(const std::string &name) const
 {
     StringFirmwareMap::const_iterator it = m_firmware.find(name);
@@ -578,7 +533,6 @@ Firmware *Firmwarepool::getFirmware(const std::string &name) const
         return it->second;
 }
 
-/* -------------------------------------------------------------------------- */
 std::vector<Firmware *> Firmwarepool::getFirmwareList() const
 {
     std::vector<Firmware *> ret;
@@ -590,7 +544,6 @@ std::vector<Firmware *> Firmwarepool::getFirmwareList() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 std::vector<core::UpdateDevice> Firmwarepool::getUpdateDeviceList() const
 {
     std::vector<core::UpdateDevice> ret;
@@ -604,7 +557,6 @@ std::vector<core::UpdateDevice> Firmwarepool::getUpdateDeviceList() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::deleteCache()
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
@@ -620,7 +572,6 @@ void Firmwarepool::deleteCache()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
 {
     Firmware *fw = getFirmware(name);
@@ -630,7 +581,6 @@ bool Firmwarepool::isFirmwareOnDisk(const std::string &name)
     return core::Fileutil::isFile(getFirmwareFilename(fw));
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::cleanCache()
 {
     QDir cacheDir(QString::fromStdString(m_cacheDir));
@@ -664,7 +614,6 @@ void Firmwarepool::cleanCache()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void Firmwarepool::addFirmware(Firmware *fw)
 {
     m_firmware[fw->getName()] = fw;

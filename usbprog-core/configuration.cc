@@ -21,65 +21,54 @@ namespace core {
 
 /* Configuration {{{ */
 
-/* -------------------------------------------------------------------------- */
 Configuration::Configuration()
     : m_debug(false)
     , m_offline(false)
 {}
 
-/* -------------------------------------------------------------------------- */
 Configuration::~Configuration()
 {}
 
-/* -------------------------------------------------------------------------- */
 std::string Configuration::getDataDir() const
 {
     return m_dataDir;
 }
 
-/* -------------------------------------------------------------------------- */
 void Configuration::setDataDir(const std::string &dir)
 {
     m_dataDir = dir;
 }
 
-/* -------------------------------------------------------------------------- */
 bool Configuration::getDebug() const
 {
     return m_debug;
 }
 
-/* -------------------------------------------------------------------------- */
 void Configuration::setDebug(bool debug)
 {
     m_debug = debug;
 }
 
-/* -------------------------------------------------------------------------- */
 bool Configuration::isOffline() const
 {
     return m_offline;
 }
 
-/* -------------------------------------------------------------------------- */
 void Configuration::setOffline(bool offline)
 {
     m_offline = offline;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Configuration::getIndexUrl() const
 {
     return m_indexUrl;
 }
 
-/* -------------------------------------------------------------------------- */
 void Configuration::setIndexUrl(const std::string &url)
 {
     m_indexUrl = url;
 }
 
-/* -------------------------------------------------------------------------- */
 void Configuration::dumpConfig(std::ostream &stream)
 {
     stream << "dataDir     = " << m_dataDir  << std::endl

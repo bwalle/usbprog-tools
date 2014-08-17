@@ -32,20 +32,17 @@ struct InterfaceDescriptorPrivate {
 /* }}} */
 /* InterfaceDescriptor {{{ */
 
-/* -------------------------------------------------------------------------- */
 InterfaceDescriptor::InterfaceDescriptor(const void *nativeHandle)
     : m_data(new InterfaceDescriptorPrivate)
 {
     m_data->interface_descriptor = static_cast<const usb_interface_descriptor *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 InterfaceDescriptor::~InterfaceDescriptor()
 {
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short InterfaceDescriptor::getInterfaceNumber() const
 {
     return m_data->interface_descriptor->bInterfaceNumber;

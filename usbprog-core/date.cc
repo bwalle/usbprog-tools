@@ -35,42 +35,35 @@ namespace core {
 
 /* DateTime {{{ */
 
-/* -------------------------------------------------------------------------- */
 DateTime::DateTime()
 {
     setDateTime(time(NULL));
 }
 
-/* -------------------------------------------------------------------------- */
 DateTime::DateTime(time_t time)
     : m_dateTime(time)
 {}
 
-/* -------------------------------------------------------------------------- */
 DateTime::DateTime(struct tm *time)
 {
     setDateTime(time);
 }
 
-/* -------------------------------------------------------------------------- */
 DateTime::DateTime(const std::string &string, DateTimeFormat format)
 {
     setDateTime(string, format);
 }
 
-/* -------------------------------------------------------------------------- */
 void DateTime::setDateTime(time_t time)
 {
     m_dateTime = time;
 }
 
-/* -------------------------------------------------------------------------- */
 void DateTime::setDateTime(struct tm *time)
 {
     m_dateTime = mktime(time);
 }
 
-/* -------------------------------------------------------------------------- */
 #if HAVE_STRPTIME
 void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
 {
@@ -126,19 +119,16 @@ void DateTime::setDateTime(const std::string &string, DateTimeFormat format)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 time_t DateTime::getDateTimeSeconds() const
 {
     return m_dateTime;
 }
 
-/* -------------------------------------------------------------------------- */
 struct tm DateTime::getDateTimeTm() const
 {
     return *(localtime(&m_dateTime));
 }
 
-/* -------------------------------------------------------------------------- */
 std::string DateTime::getDateTimeString(DateTimeFormat format) const
 {
     char        buffer[1024];
@@ -154,49 +144,41 @@ std::string DateTime::getDateTimeString(DateTimeFormat format) const
 /* }}} */
 /* Operators {{{ */
 
-/* -------------------------------------------------------------------------- */
 bool operator==(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() == b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator!=(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() != b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator<=(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() <= b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator<(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() < b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator>(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() > b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator>=(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() >= b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 long long operator-(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() - b.getDateTimeSeconds();
 }
 
-/* -------------------------------------------------------------------------- */
 long long operator+(const DateTime &a, const DateTime &b)
 {
     return a.getDateTimeSeconds() - b.getDateTimeSeconds();

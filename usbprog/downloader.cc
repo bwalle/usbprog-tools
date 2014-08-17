@@ -36,13 +36,11 @@ namespace usbprog {
 
 /* Members {{{ */
 
-/* -------------------------------------------------------------------------- */
 Downloader::Downloader(std::ostream &output)
     : m_notifier(NULL)
     , m_output(output)
 {}
 
-/* -------------------------------------------------------------------------- */
 QNetworkRequest Downloader::createRequest(const std::string &url)
 {
     std::string userAgent("USBprog/" USBPROG_VERSION_STRING);
@@ -55,39 +53,33 @@ QNetworkRequest Downloader::createRequest(const std::string &url)
     return request;
 }
 
-/* -------------------------------------------------------------------------- */
 void Downloader::setUrl(const std::string &url)
 {
     USBPROG_DEBUG_DBG("Setting URL to '%s'", url.c_str());
     m_url = url;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Downloader::getUrl() const
 {
     return m_url;
 }
 
-/* -------------------------------------------------------------------------- */
 void Downloader::setProgress(core::ProgressNotifier *notifier)
 {
     m_notifier = notifier;
 }
 
-/* -------------------------------------------------------------------------- */
 void Downloader::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     if (m_notifier)
         m_notifier->progressed(bytesTotal, bytesReceived);
 }
 
-/* -------------------------------------------------------------------------- */
 void Downloader::downloadFinished()
 {
     m_finished = true;
 }
 
-/* -------------------------------------------------------------------------- */
 void Downloader::download()
 {
     QNetworkAccessManager *manager = new QNetworkAccessManager(this);

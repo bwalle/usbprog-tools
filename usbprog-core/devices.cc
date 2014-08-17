@@ -39,7 +39,6 @@ namespace core {
 
 /* UpdateDevice {{{ */
 
-// -----------------------------------------------------------------------------
 UpdateDevice::UpdateDevice(const std::string &name)
     : m_name(name)
     , m_vendor(VENDOR_INVALID)
@@ -47,67 +46,56 @@ UpdateDevice::UpdateDevice(const std::string &name)
     , m_bcddevice(BCDDEVICE_INVALID)
 {}
 
-// -----------------------------------------------------------------------------
 uint16_t UpdateDevice::getVendor() const
 {
     return m_vendor;
 }
 
-// -----------------------------------------------------------------------------
 void UpdateDevice::setVendor(uint16_t vendor)
 {
     m_vendor = vendor;
 }
 
-// -----------------------------------------------------------------------------
 uint16_t UpdateDevice::getProduct() const
 {
     return m_product;
 }
 
-// -----------------------------------------------------------------------------
 void UpdateDevice::setProduct(uint16_t product)
 {
     m_product = product;
 }
 
-// -----------------------------------------------------------------------------
 uint16_t UpdateDevice::getBcdDevice() const
 {
     return m_bcddevice;
 }
 
-// -----------------------------------------------------------------------------
 void UpdateDevice::setBcdDevice(uint16_t bcddevice)
 {
     m_bcddevice = bcddevice;
 }
 
-// -----------------------------------------------------------------------------
 std::string UpdateDevice::getName() const
 {
     return m_name;
 }
 
-// -----------------------------------------------------------------------------
 void UpdateDevice::setName(const std::string &name)
 {
     m_name = name;
 }
 
-// -----------------------------------------------------------------------------
 std::string UpdateDevice::getLabel() const
 {
     return m_label;
 }
 
-// -----------------------------------------------------------------------------
 void UpdateDevice::setLabel(const std::string &label)
 {
     m_label = label;
 }
 
-// -----------------------------------------------------------------------------
 bool UpdateDevice::isValid() const
 {
     return m_vendor != VENDOR_INVALID &&
@@ -115,7 +103,6 @@ bool UpdateDevice::isValid() const
            m_bcddevice != BCDDEVICE_INVALID;
 }
 
-// -----------------------------------------------------------------------------
 std::string UpdateDevice::formatDeviceId() const
 {
     std::stringstream ss;
@@ -139,7 +126,6 @@ std::string UpdateDevice::formatDeviceId() const
 /* }}} */
 /* Device {{{ */
 
-/* -------------------------------------------------------------------------- */
 Device::Device(usb::Device *handle)
     : m_handle(handle)
     , m_updateMode(false)
@@ -149,73 +135,61 @@ Device::Device(usb::Device *handle)
     , m_busNumber(handle->getBusNumber())
 {}
 
-/* -------------------------------------------------------------------------- */
 uint16_t Device::getVendor() const
 {
     return m_vendorId;
 }
 
-/* -------------------------------------------------------------------------- */
 uint16_t Device::getProduct() const
 {
     return m_productId;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getDeviceNumber() const
 {
     return m_deviceNumber;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getBusNumber() const
 {
     return m_busNumber;
 }
 
-/* -------------------------------------------------------------------------- */
 bool Device::isUpdateMode() const
 {
     return m_updateMode;
 }
 
-/* -------------------------------------------------------------------------- */
 void Device::setShortName(const std::string &shortName)
 {
     m_shortName = shortName;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Device::getShortName() const
 {
     return m_shortName;
 }
 
-/* -------------------------------------------------------------------------- */
 void Device::setUpdateMode(bool updateMode)
 {
     m_updateMode = updateMode;
 }
 
-/* -------------------------------------------------------------------------- */
 usb::Device *Device::getHandle() const
 {
     return m_handle;
 }
 
-/* -------------------------------------------------------------------------- */
 void Device::setName(const std::string &name)
 {
     m_name = name;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Device::getName() const
 {
     return m_name;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Device::toString() const
 {
     std::stringstream ss;
@@ -232,7 +206,6 @@ std::string Device::toString() const
     return ss.str();
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Device::toShortString() const
 {
     std::stringstream ss;
@@ -247,7 +220,6 @@ std::string Device::toShortString() const
     return ss.str();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator==(const DeviceVector &a, const DeviceVector &b)
 {
     if (a.size() != b.size())
@@ -263,7 +235,6 @@ bool operator==(const DeviceVector &a, const DeviceVector &b)
 /* }}} */
 /* DeviceManager {{{ */
 
-/* -------------------------------------------------------------------------- */
 DeviceManager::DeviceManager()
     : m_currentUpdateDevice(-1)
     , m_sleeper(NULL)
@@ -271,7 +242,6 @@ DeviceManager::DeviceManager()
     init();
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceManager::DeviceManager(bool debuggingEnabled)
     : m_currentUpdateDevice(-1)
     , m_sleeper(NULL)
@@ -279,7 +249,6 @@ DeviceManager::DeviceManager(bool debuggingEnabled)
     init(debuggingEnabled);
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceManager::~DeviceManager()
 {
     for (DeviceVector::const_iterator it = m_updateDevices.begin(); it != m_updateDevices.end(); ++it)
@@ -287,7 +256,6 @@ DeviceManager::~DeviceManager()
     delete m_sleeper;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::init(bool debuggingEnabled)
 {
     usb::UsbManager &usbManager = usb::UsbManager::instance();
@@ -296,21 +264,18 @@ void DeviceManager::init(bool debuggingEnabled)
     m_sleeper = new BlockingSleeper;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::setUsbDebugging(bool enabled)
 {
     USBPROG_DEBUG_TRACE("usb_set_debug(%s)", enabled ? "true" : "false");
     usb::UsbManager::instance().setDebug(enabled);
 }
 
-// -----------------------------------------------------------------------------
 void DeviceManager::setCustomSleeper(Sleeper *sleeper)
 {
     delete m_sleeper;
     m_sleeper = sleeper;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updateDevices)
 {
     try {
@@ -367,7 +332,6 @@ void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updat
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::printDevices(std::ostream &os, bool showActive) const
 {
     int i = 0;
@@ -403,7 +367,6 @@ void DeviceManager::printDevices(std::ostream &os, bool showActive) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::switchUpdateMode()
 {
     Device *dev = getCurrentUpdateDevice();
@@ -477,13 +440,11 @@ void DeviceManager::switchUpdateMode()
     setCurrentUpdateDevice(updatedev);
 }
 
-/* -------------------------------------------------------------------------- */
 size_t DeviceManager::getNumberUpdateDevices() const
 {
     return m_updateDevices.size();
 }
 
-/* -------------------------------------------------------------------------- */
 Device *DeviceManager::getCurrentUpdateDevice() const
 {
     if (m_currentUpdateDevice < -1 ||
@@ -501,13 +462,11 @@ Device *DeviceManager::getCurrentUpdateDevice() const
         return m_updateDevices[m_currentUpdateDevice];
 }
 
-// -----------------------------------------------------------------------------
 void DeviceManager::clearCurrentUpdateDevice()
 {
     m_currentUpdateDevice = -1;
 }
 
-/* -------------------------------------------------------------------------- */
 Device *DeviceManager::getDevice(size_t number) const
 {
     if (number >= m_updateDevices.size())
@@ -516,7 +475,6 @@ Device *DeviceManager::getDevice(size_t number) const
     return m_updateDevices[number];
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceManager::setCurrentUpdateDevice(int number)
 {
     if (number < 0 || number >= int(m_updateDevices.size()))
@@ -524,7 +482,6 @@ void DeviceManager::setCurrentUpdateDevice(int number)
     m_currentUpdateDevice = number;
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator==(const Device &a, const Device &b)
 {
     return a.getBusNumber() == b.getBusNumber() &&
@@ -533,7 +490,6 @@ bool operator==(const Device &a, const Device &b)
         a.getVendor() == b.getVendor();
 }
 
-/* -------------------------------------------------------------------------- */
 bool operator!=(const Device &a, const Device &b)
 {
     return !(a == b);
@@ -546,27 +502,23 @@ bool operator!=(const Device &a, const Device &b)
 #define WRITEPAGE      0x02
 #define STARTAPP       0x01
 
-/* -------------------------------------------------------------------------- */
 UsbprogUpdater::UsbprogUpdater(Device *dev)
     : m_dev(dev)
     , m_progressNotifier(NULL)
     , m_devHandle(NULL)
 {}
 
-/* -------------------------------------------------------------------------- */
 UsbprogUpdater::~UsbprogUpdater()
 {
     if (m_devHandle)
         updateClose();
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::setProgress(ProgressNotifier *progress)
 {
     m_progressNotifier = progress;
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::writeFirmware(const ByteVector &bv)
 {
     unsigned char buf[USB_PAGESIZE];
@@ -621,7 +573,6 @@ void UsbprogUpdater::writeFirmware(const ByteVector &bv)
         m_progressNotifier->finished();
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::updateOpen()
 {
     usb::Device *dev = m_dev->getHandle();
@@ -658,7 +609,6 @@ void UsbprogUpdater::updateOpen()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::updateClose()
 {
     USBPROG_DEBUG_DBG("UsbprogUpdater::updateClose()");
@@ -671,7 +621,6 @@ void UsbprogUpdater::updateClose()
     m_devHandle = NULL;
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::startDevice()
 {
     if (!m_devHandle)
@@ -692,7 +641,6 @@ void UsbprogUpdater::startDevice()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogUpdater::resetDevice()
 {
     if (!m_devHandle)

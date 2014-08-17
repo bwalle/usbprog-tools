@@ -22,13 +22,11 @@ namespace usbprog {
 
 /* Sysinfo {{{ */
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osName()
 {
     return "Windows";
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osVersion()
 {
     switch (QSysInfo::WinVersion()) {

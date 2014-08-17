@@ -36,7 +36,6 @@ namespace cli {
 
 /* functions {{{ */
 
-/* -------------------------------------------------------------------------- */
 core::StringVector complete_firmware(const std::string &start, Firmwarepool *pool)
 {
     core::StringVector result;
@@ -56,12 +55,10 @@ core::StringVector complete_firmware(const std::string &start, Firmwarepool *poo
 /* }}} */
 /* ListCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 ListCommand::ListCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("list"), m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool ListCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
@@ -92,7 +89,6 @@ bool ListCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector ListCommand::aliases() const
 {
     core::StringVector ret;
@@ -100,13 +96,11 @@ core::StringVector ListCommand::aliases() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string ListCommand::help() const
 {
     return "Lists all available firmwares.";
 }
 
-/* -------------------------------------------------------------------------- */
 void ListCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            list\n"
@@ -124,7 +118,6 @@ InfoCommand::InfoCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("info"), m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool InfoCommand::execute(CommandArgVector   args,
                           core::StringVector options,
                           std::ostream       &os)
@@ -163,13 +156,11 @@ bool InfoCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t InfoCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type InfoCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -178,7 +169,6 @@ CommandArg::Type InfoCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string InfoCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -187,7 +177,6 @@ std::string InfoCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector InfoCommand::aliases() const
 {
     core::StringVector ret;
@@ -195,7 +184,6 @@ core::StringVector InfoCommand::aliases() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector InfoCommand::getCompletions(const std::string &start,
                                                size_t            pos,
                                                bool              option,
@@ -207,13 +195,11 @@ core::StringVector InfoCommand::getCompletions(const std::string &start,
     return complete_firmware(start, m_firmwarepool);
 }
 
-/* -------------------------------------------------------------------------- */
 std::string InfoCommand::help() const
 {
     return "Prints information about a specific firmware.";
 }
 
-/* -------------------------------------------------------------------------- */
 void InfoCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            info\n"
@@ -227,11 +213,11 @@ void InfoCommand::printLongHelp(std::ostream &os) const
 
 /* }}} */
 /* PinCommand {{{ */
+
 PinCommand::PinCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("pin"), m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool PinCommand::execute(CommandArgVector   args,
                          core::StringVector options,
                          std::ostream       &os)
@@ -288,13 +274,11 @@ bool PinCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t PinCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type PinCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -303,7 +287,6 @@ CommandArg::Type PinCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string PinCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -312,7 +295,6 @@ std::string PinCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector PinCommand::aliases() const
 {
     core::StringVector ret;
@@ -320,7 +302,6 @@ core::StringVector PinCommand::aliases() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector PinCommand::getCompletions(const std::string &start,
                                               size_t            pos,
                                               bool              option,
@@ -332,13 +313,11 @@ core::StringVector PinCommand::getCompletions(const std::string &start,
     return complete_firmware(start, m_firmwarepool);
 }
 
-/* -------------------------------------------------------------------------- */
 std::string PinCommand::help() const
 {
     return "Prints information about pin assignment.";
 }
 
-/* -------------------------------------------------------------------------- */
 void PinCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            pin\n"
@@ -353,12 +332,10 @@ void PinCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* DownloadCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 DownloadCommand::DownloadCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("download"), m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool DownloadCommand::downloadAll(std::ostream &os)
 {
     std::vector<Firmware *> firmwares = m_firmwarepool->getFirmwareList();
@@ -382,7 +359,6 @@ bool DownloadCommand::downloadAll(std::ostream &os)
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 bool DownloadCommand::execute(CommandArgVector   args,
                               core::StringVector options,
                               std::ostream       &os)
@@ -412,13 +388,11 @@ bool DownloadCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t DownloadCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type DownloadCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -427,7 +401,6 @@ CommandArg::Type DownloadCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string DownloadCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -436,7 +409,6 @@ std::string DownloadCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector DownloadCommand::aliases() const
 {
     core::StringVector ret;
@@ -444,7 +416,6 @@ core::StringVector DownloadCommand::aliases() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector DownloadCommand::getCompletions(
         const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
@@ -457,13 +428,11 @@ core::StringVector DownloadCommand::getCompletions(
     return comp;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string DownloadCommand::help() const
 {
     return "Downloads a firmware file.";
 }
 
-/* -------------------------------------------------------------------------- */
 void DownloadCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            download\n"
@@ -478,12 +447,10 @@ void DownloadCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* CacheCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 CacheCommand::CacheCommand(Firmwarepool *firmwarepool)
     : AbstractCommand("cache"), m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool CacheCommand::execute(CommandArgVector   args,
                            core::StringVector options,
                            std::ostream       &os)
@@ -504,13 +471,11 @@ bool CacheCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t CacheCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type CacheCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -519,7 +484,6 @@ CommandArg::Type CacheCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string CacheCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -528,7 +492,6 @@ std::string CacheCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector CacheCommand::getCompletions(
         const std::string &start, size_t pos, bool option, bool *filecompletion) const
 {
@@ -544,13 +507,11 @@ core::StringVector CacheCommand::getCompletions(
     return result;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string CacheCommand::help() const
 {
     return "Performs operation on the cache.";
 }
 
-/* -------------------------------------------------------------------------- */
 void CacheCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            cache\n"
@@ -566,7 +527,6 @@ void CacheCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* DevicesCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 DevicesCommand::DevicesCommand(core::DeviceManager *deviceManager,
                                Firmwarepool        *firmwarepool)
     : AbstractCommand("devices")
@@ -574,7 +534,6 @@ DevicesCommand::DevicesCommand(core::DeviceManager *deviceManager,
     , m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool DevicesCommand::execute(CommandArgVector   args,
                              core::StringVector options,
                              std::ostream       &os)
@@ -598,13 +557,11 @@ bool DevicesCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string DevicesCommand::help() const
 {
     return "Lists all update devices.";
 }
 
-/* -------------------------------------------------------------------------- */
 void DevicesCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            devices\n\n"
@@ -616,7 +573,6 @@ void DevicesCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* DeviceCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 DeviceCommand::DeviceCommand(core::DeviceManager *deviceManager,
                              Firmwarepool        *firmwarepool)
     : AbstractCommand("device")
@@ -624,7 +580,6 @@ DeviceCommand::DeviceCommand(core::DeviceManager *deviceManager,
     , m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool DeviceCommand::execute(CommandArgVector   args,
                             core::StringVector options,
                             std::ostream       &os)
@@ -676,13 +631,11 @@ bool DeviceCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t DeviceCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type DeviceCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -691,7 +644,6 @@ CommandArg::Type DeviceCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string DeviceCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -700,7 +652,6 @@ std::string DeviceCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector DeviceCommand::getCompletions(const std::string &start,
                                                  size_t            pos,
                                                  bool              option,
@@ -719,14 +670,11 @@ core::StringVector DeviceCommand::getCompletions(const std::string &start,
     return result;
 }
 
-
-/* -------------------------------------------------------------------------- */
 std::string DeviceCommand::help() const
 {
     return "Sets the update device.";
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            cache\n"
@@ -742,7 +690,6 @@ void DeviceCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* UploadCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 UploadCommand::UploadCommand(core::DeviceManager *deviceManager,
                              Firmwarepool        *firmwarepool)
     : AbstractCommand("upload")
@@ -750,7 +697,6 @@ UploadCommand::UploadCommand(core::DeviceManager *deviceManager,
     , m_firmwarepool(firmwarepool)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool UploadCommand::execute(CommandArgVector   args,
                             core::StringVector options,
                             std::ostream       &os)
@@ -839,13 +785,11 @@ bool UploadCommand::execute(CommandArgVector   args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t UploadCommand::getArgNumber() const
 {
     return 1;
 }
 
-/* -------------------------------------------------------------------------- */
 CommandArg::Type UploadCommand::getArgType(size_t pos) const
 {
     switch (pos) {
@@ -854,7 +798,6 @@ CommandArg::Type UploadCommand::getArgType(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 std::string UploadCommand::getArgTitle(size_t pos) const
 {
     switch (pos) {
@@ -863,7 +806,6 @@ std::string UploadCommand::getArgTitle(size_t pos) const
     }
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector UploadCommand::getCompletions(const std::string &start,
                                                  size_t            pos,
                                                  bool              option,
@@ -888,13 +830,11 @@ core::StringVector UploadCommand::getCompletions(const std::string &start,
 }
 
 
-/* -------------------------------------------------------------------------- */
 std::string UploadCommand::help() const
 {
     return "Uploads a new firmware.";
 }
 
-/* -------------------------------------------------------------------------- */
 void UploadCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            upload\n"
@@ -909,7 +849,6 @@ void UploadCommand::printLongHelp(std::ostream &os) const
        << std::endl;
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector UploadCommand::getSupportedOptions() const
 {
     core::StringVector sv;
@@ -920,13 +859,11 @@ core::StringVector UploadCommand::getSupportedOptions() const
 /* }}} */
 /* StartCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 StartCommand::StartCommand(core::DeviceManager *deviceManager)
     : AbstractCommand("start")
     , m_deviceManager(deviceManager)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool StartCommand::execute(CommandArgVector     args,
                            core::StringVector   options,
                            std::ostream         &os)
@@ -951,13 +888,11 @@ bool StartCommand::execute(CommandArgVector     args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string StartCommand::help() const
 {
     return "Starts the firmware.";
 }
 
-/* -------------------------------------------------------------------------- */
 void StartCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            start\n\n"
@@ -969,13 +904,11 @@ void StartCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* ResetCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 ResetCommand::ResetCommand(core::DeviceManager *deviceManager)
     : AbstractCommand("reset")
     , m_deviceManager(deviceManager)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool ResetCommand::execute(CommandArgVector     args,
                            core::StringVector   options,
                            std::ostream         &os)
@@ -1000,13 +933,11 @@ bool ResetCommand::execute(CommandArgVector     args,
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string ResetCommand::help() const
 {
     return "Resets the firmware.";
 }
 
-/* -------------------------------------------------------------------------- */
 void ResetCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            reset\n\n"
@@ -1019,12 +950,10 @@ void ResetCommand::printLongHelp(std::ostream &os) const
 /* }}} */
 /* CopyingCommand {{{ */
 
-/* -------------------------------------------------------------------------- */
 CopyingCommand::CopyingCommand()
     : AbstractCommand("copying")
 {}
 
-/* -------------------------------------------------------------------------- */
 bool CopyingCommand::execute(CommandArgVector   args,
                              core::StringVector options,
                              std::ostream       &os)
@@ -1045,13 +974,11 @@ bool CopyingCommand::execute(CommandArgVector   args,
    return true;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string CopyingCommand::help() const
 {
     return "Displays the copyright";
 }
 
-/* -------------------------------------------------------------------------- */
 core::StringVector CopyingCommand::aliases() const
 {
     core::StringVector ret;
@@ -1059,7 +986,6 @@ core::StringVector CopyingCommand::aliases() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 void CopyingCommand::printLongHelp(std::ostream &os) const
 {
     os << "Name:            copying\n"

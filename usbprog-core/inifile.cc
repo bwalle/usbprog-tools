@@ -26,12 +26,10 @@ namespace core {
 
 /* IniFile {{{ */
 
-/* -------------------------------------------------------------------------- */
 IniFile::IniFile(const std::string &fileName)
     : m_fileName(fileName)
 {}
 
-/* -------------------------------------------------------------------------- */
 void IniFile::readFile()
 {
     std::ifstream file(m_fileName.c_str());
@@ -51,7 +49,6 @@ void IniFile::readFile()
 }
 
 
-/* -------------------------------------------------------------------------- */
 std::string IniFile::getValue(const std::string &key) const
 {
     std::map<std::string, std::string>::const_iterator result = m_map.find(key);
@@ -63,7 +60,6 @@ std::string IniFile::getValue(const std::string &key) const
 }
 
 
-/* -------------------------------------------------------------------------- */
 int IniFile::getIntValue(const std::string &key) const
 {
     std::map<std::string, std::string>::const_iterator result = m_map.find(key);
@@ -81,7 +77,6 @@ int IniFile::getIntValue(const std::string &key) const
 }
 
 
-/* -------------------------------------------------------------------------- */
 bool IniFile::isKeyAvailable(const std::string &key) const
 {
     return m_map.find(key) != m_map.end();

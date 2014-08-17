@@ -31,32 +31,27 @@ struct DevicePrivate {
 /* }}} */
 /* Device {{{ */
 
-/* -------------------------------------------------------------------------- */
 Device::~Device()
 {
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getDeviceNumber() const
 {
     return m_data->device->devnum;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short Device::getBusNumber() const
 {
     return m_data->device->bus->location;
 }
 
-/* -------------------------------------------------------------------------- */
 Device::Device(void *nativeHandle)
     : m_data(new DevicePrivate)
 {
     m_data->device = static_cast<struct usb_device *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceDescriptor Device::getDescriptor() const
 {
     DeviceDescriptor ret;
@@ -72,7 +67,6 @@ DeviceDescriptor Device::getDescriptor() const
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 ConfigDescriptor *Device::getConfigDescriptor(int index)
 {
     struct usb_config_descriptor *usb_config_descriptor = m_data->device->config;
@@ -80,7 +74,6 @@ ConfigDescriptor *Device::getConfigDescriptor(int index)
     return new ConfigDescriptor(usb_config_descriptor);
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle *Device::open()
 {
     usb_dev_handle *handle = usb_open(m_data->device);

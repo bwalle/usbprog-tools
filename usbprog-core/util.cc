@@ -47,7 +47,6 @@ namespace core {
 
 /* Fileutil {{{ */
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 std::string Fileutil::homeDir()
 {
@@ -72,7 +71,6 @@ std::string Fileutil::homeDir()
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 std::string Fileutil::configDir(const std::string &program)
 {
@@ -91,7 +89,6 @@ std::string Fileutil::configDir(const std::string &program)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 bool Fileutil::mkdir(const std::string &dir)
 {
@@ -104,7 +101,6 @@ bool Fileutil::mkdir(const std::string &dir)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 bool Fileutil::isDir(const std::string &dir)
 {
     int         ret;
@@ -117,7 +113,6 @@ bool Fileutil::isDir(const std::string &dir)
     return S_ISDIR(my_stat.st_mode);
 }
 
-/* -------------------------------------------------------------------------- */
 bool Fileutil::isFile(const std::string &file)
 {
     int         ret;
@@ -130,7 +125,6 @@ bool Fileutil::isFile(const std::string &file)
     return S_ISREG(my_stat.st_mode);
 }
 
-/* -------------------------------------------------------------------------- */
 DateTime Fileutil::getMTime(const std::string &file)
 {
     int         ret;
@@ -143,7 +137,6 @@ DateTime Fileutil::getMTime(const std::string &file)
     return DateTime(my_stat.st_mtime);
 }
 
-/* -------------------------------------------------------------------------- */
 #if _WIN32
 bool Fileutil::isPathName(const std::string &file)
 {
@@ -157,7 +150,6 @@ bool Fileutil::isPathName(const std::string &file)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 std::string Fileutil::resolvePath(const std::string &path)
 {
@@ -189,7 +181,6 @@ std::string Fileutil::resolvePath(const std::string &path)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 ByteVector Fileutil::readBytesFromFile(const std::string &file)
 {
     ByteVector bv;
@@ -214,7 +205,6 @@ ByteVector Fileutil::readBytesFromFile(const std::string &file)
 /* }}} */
 /* global {{{ */
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 std::string pathconcat(const std::string &a, const std::string &b)
 {
@@ -227,13 +217,11 @@ std::string pathconcat(const std::string &a, const std::string &b)
 }
 #endif
 
-/* -------------------------------------------------------------------------- */
 void usbprog_sleep(unsigned int seconds)
 {
     usbprog_msleep(seconds * 1000);
 }
 
-/* -------------------------------------------------------------------------- */
 #ifdef _WIN32
 void usbprog_msleep(unsigned int msec)
 {

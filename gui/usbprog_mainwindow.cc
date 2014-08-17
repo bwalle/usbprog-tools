@@ -81,11 +81,9 @@ void ProgressBarProgressNotifier::resetProgressbar()
 /* }}} */
 /* UsbprogMainWindow {{{ */
 
-// -----------------------------------------------------------------------------
 const int UsbprogMainWindow::DEFAULT_MESSAGE_TIMEOUT = 2000;
 const char *UsbprogMainWindow::USERS_GUIDE_FILENAME = "USBprog.pdf";
 
-// -----------------------------------------------------------------------------
 UsbprogMainWindow::UsbprogMainWindow(UsbprogApplication &app)
     : m_deviceManager(NULL)
     , m_firmwarepool(NULL)
@@ -118,14 +116,12 @@ UsbprogMainWindow::UsbprogMainWindow(UsbprogApplication &app)
     m_widgets.firmwareList->setFocus();
 }
 
-// -----------------------------------------------------------------------------
 UsbprogMainWindow::~UsbprogMainWindow()
 {
     delete m_deviceManager;
     delete m_firmwarepool;
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::initActions()
 {
     m_actions.logging = new QAction(tr("Debug &logging"), this);
@@ -161,7 +157,6 @@ void UsbprogMainWindow::initActions()
     m_actions.cacheDownloadAll->setStatusTip(tr("Downloads all firmware files to have them locally available."));
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::connectSignalsAndSlots()
 {
     connect(m_widgets.refreshButton, SIGNAL(clicked()), SLOT(refreshDevices()));
@@ -184,7 +179,6 @@ void UsbprogMainWindow::connectSignalsAndSlots()
     connect(m_widgets.pinButton, SIGNAL(clicked()), SLOT(showPinDialog()));
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::initMenus()
 {
     QMenu *programMenu = new QMenu(this);
@@ -214,7 +208,6 @@ void UsbprogMainWindow::initMenus()
     menuBar()->addMenu(helpMenu);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::initWidgets()
 {
     // main widget and the layout
@@ -356,7 +349,6 @@ void UsbprogMainWindow::initWidgets()
     setCentralWidget(m_widgets.mainWidget);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::initFirmwares()
 {
     GuiConfiguration &conf = GuiConfiguration::config();
@@ -383,7 +375,6 @@ void UsbprogMainWindow::initFirmwares()
         m_widgets.firmwareList->setCurrentItem(m_widgets.firmwareList->item(0));
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::refreshDevices()
 {
     m_deviceManager->discoverUpdateDevices(m_firmwarepool->getUpdateDeviceList());
@@ -418,7 +409,6 @@ void UsbprogMainWindow::refreshDevices()
         m_widgets.devicesCombo->setCurrentIndex(lastUpdateIndex+1);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 {
     if (!newItem)
@@ -486,7 +476,6 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
     m_widgets.firmwareInfo->setHtml(html);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::uploadFirmware()
 {
     Firmware *fw = NULL;
@@ -586,7 +575,6 @@ void UsbprogMainWindow::uploadFirmware()
     QTimer::singleShot(2000, this, SLOT(refreshDevices()));
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::showHelp()
 {
     USBPROG_DEBUG_DBG("Open help (docdir=%s)", DOCDIR);
@@ -613,7 +601,6 @@ void UsbprogMainWindow::showHelp()
         statusBar()->showMessage(tr("Unable to open PDF viewer."), DEFAULT_MESSAGE_TIMEOUT);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::showAbout()
 {
     USBPROG_DEBUG_DBG("Open about dialog");
@@ -623,7 +610,6 @@ void UsbprogMainWindow::showAbout()
                              .arg(USBPROG_VERSION_STRING));
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheClean()
 {
     USBPROG_DEBUG_DBG("Cleanup cache");
@@ -639,7 +625,6 @@ void UsbprogMainWindow::cacheClean()
     statusBar()->showMessage(tr("Cache successfully cleaned."), DEFAULT_MESSAGE_TIMEOUT);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheDelete()
 {
     USBPROG_DEBUG_DBG("Delete cache");
@@ -658,7 +643,6 @@ void UsbprogMainWindow::cacheDelete()
     firmwareSelected(NULL);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::cacheDownloadAll()
 {
     USBPROG_DEBUG_DBG("Download all");
@@ -683,7 +667,6 @@ void UsbprogMainWindow::cacheDownloadAll()
     }
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::showPinDialog()
 {
     // get the selected firmware
@@ -698,7 +681,6 @@ void UsbprogMainWindow::showPinDialog()
     pinDialog->exec();
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::enableDebugging(bool enabled)
 {
     QString logfile;
@@ -719,13 +701,11 @@ void UsbprogMainWindow::enableDebugging(bool enabled)
     }
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::onlinePoolSourceToggled(bool enabled)
 {
     m_widgets.firmwareStack->setCurrentIndex(enabled ? 0 : 1);
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogMainWindow::fileChooseButtonClicked()
 {
     QString currentFile = m_widgets.fileEdit->text();
@@ -736,7 +716,6 @@ void UsbprogMainWindow::fileChooseButtonClicked()
     m_widgets.fileEdit->setText(firmware);
 }
 
-// -----------------------------------------------------------------------------
 bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilent)
 {
     QString qName = QString::fromStdString(name);

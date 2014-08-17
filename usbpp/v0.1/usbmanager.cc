@@ -34,14 +34,12 @@ struct UsbManagerPrivate {
 /* }}} */
 /* UsbManager {{{ */
 
-/* -------------------------------------------------------------------------- */
 UsbManager::UsbManager()
   : m_data(new UsbManagerPrivate)
 {
     usb_init();
 }
 
-/* -------------------------------------------------------------------------- */
 UsbManager::~UsbManager()
 {
     for (size_t i = 0; i < m_data->devices.size(); ++i)
@@ -50,14 +48,12 @@ UsbManager::~UsbManager()
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 UsbManager &UsbManager::instance()
 {
     static UsbManager instance;
     return instance;
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbManager::setDebug(bool debug)
 {
     if (debug)
@@ -66,7 +62,6 @@ void UsbManager::setDebug(bool debug)
         usb_set_debug(0);
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbManager::detectDevices()
 {
     for (size_t i = 0; i < m_data->devices.size(); ++i)
@@ -82,13 +77,11 @@ void UsbManager::detectDevices()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 size_t UsbManager::getNumberOfDevices() const
 {
     return m_data->devices.size();
 }
 
-/* -------------------------------------------------------------------------- */
 Device *UsbManager::getDevice(size_t number)
 {
     if (number >= m_data->devices.size()) {

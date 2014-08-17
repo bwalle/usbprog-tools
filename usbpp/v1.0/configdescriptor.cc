@@ -33,33 +33,28 @@ struct ConfigDescriptorPrivate {
 /* }}} */
 /* ConfigDescriptor {{{ */
 
-/* -------------------------------------------------------------------------- */
 ConfigDescriptor::ConfigDescriptor(void *nativeHandle)
     : m_data(new ConfigDescriptorPrivate)
 {
     m_data->config_descriptor = static_cast<libusb_config_descriptor *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 ConfigDescriptor::~ConfigDescriptor()
 {
     libusb_free_config_descriptor(m_data->config_descriptor);
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned short ConfigDescriptor::getConfigurationValue() const
 {
     return m_data->config_descriptor->bConfigurationValue;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t ConfigDescriptor::getNumberOfInterfaces() const
 {
     return m_data->config_descriptor->bNumInterfaces;
 }
 
-/* -------------------------------------------------------------------------- */
 size_t ConfigDescriptor::getNumberOfAltsettings(unsigned int interfaceNumber) const
 {
     if (interfaceNumber >= getNumberOfInterfaces()) {
@@ -71,7 +66,6 @@ size_t ConfigDescriptor::getNumberOfAltsettings(unsigned int interfaceNumber) co
     return m_data->config_descriptor->interface[interfaceNumber].num_altsetting;
 }
 
-/* -------------------------------------------------------------------------- */
 InterfaceDescriptor *ConfigDescriptor::getInterfaceDescriptor(unsigned interfaceNumber,
                                                               unsigned int altsetting)
 {

@@ -34,7 +34,6 @@ struct DeviceHandlePrivate {
 /* }}} */
 /* DeviceHandle {{{ */
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle::~DeviceHandle()
 {
     for (std::list<int>::iterator it = m_data->claimed_interfaces.begin();
@@ -45,14 +44,12 @@ DeviceHandle::~DeviceHandle()
     delete m_data;
 }
 
-/* -------------------------------------------------------------------------- */
 DeviceHandle::DeviceHandle(void *nativeHandle)
     : m_data(new DeviceHandlePrivate)
 {
     m_data->device_handle = static_cast<libusb_device_handle *>(nativeHandle);
 }
 
-/* -------------------------------------------------------------------------- */
 int DeviceHandle::getConfiguration() const
 {
     int configuration;
@@ -63,7 +60,6 @@ int DeviceHandle::getConfiguration() const
     return configuration;
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::setConfiguration(int newConfiguration)
 {
     int err = libusb_set_configuration(m_data->device_handle, newConfiguration);
@@ -71,7 +67,6 @@ void DeviceHandle::setConfiguration(int newConfiguration)
         throw Error(errorcodeToString(err));
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::claimInterface(int interfaceNumber)
 {
     int err = libusb_claim_interface(m_data->device_handle, interfaceNumber);
@@ -81,7 +76,6 @@ void DeviceHandle::claimInterface(int interfaceNumber)
     m_data->claimed_interfaces.push_back(interfaceNumber);
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::releaseInterface(int interfaceNumber)
 {
     int err = libusb_release_interface(m_data->device_handle, interfaceNumber);
@@ -95,7 +89,6 @@ void DeviceHandle::releaseInterface(int interfaceNumber)
         m_data->claimed_interfaces.erase(result);
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSetting)
 {
     int err =libusb_set_interface_alt_setting(m_data->device_handle, interfaceNumber, alternateSetting);
@@ -103,7 +96,6 @@ void DeviceHandle::setInterfaceAltSetting(int interfaceNumber, int alternateSett
         throw Error(errorcodeToString(err));
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
                                    unsigned char      bRequest,
                                    unsigned short     wValue,
@@ -118,7 +110,6 @@ void DeviceHandle::controlTransfer(unsigned char      bmRequestType,
         throw Error(errorcodeToString(err));
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::bulkTransfer(unsigned char     endpoint,
                                 unsigned char     *data,
                                 int               length,
@@ -135,7 +126,6 @@ void DeviceHandle::bulkTransfer(unsigned char     endpoint,
         throw Error(errorcodeToString(err));
 }
 
-/* -------------------------------------------------------------------------- */
 void DeviceHandle::resetDevice()
 {
     int err = libusb_reset_device(m_data->device_handle);

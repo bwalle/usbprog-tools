@@ -38,19 +38,16 @@ namespace cli {
 
 /* HashNotifier {{{ */
 
-/* -------------------------------------------------------------------------- */
 HashNotifier::HashNotifier(int width)
     : m_width(width), m_lastProgress(0)
 {}
 
-/* -------------------------------------------------------------------------- */
 HashNotifier::~HashNotifier()
 {
     if (m_lastProgress != 0)
         finished();
 }
 
-/* -------------------------------------------------------------------------- */
 int HashNotifier::progressed(double total, double now)
 {
     /* zero division */
@@ -69,7 +66,6 @@ int HashNotifier::progressed(double total, double now)
     return true;
 }
 
-/* -------------------------------------------------------------------------- */
 void HashNotifier::finished()
 {
     if (m_lastProgress != 0) {
@@ -81,7 +77,6 @@ void HashNotifier::finished()
 /* }}} */
 /* Usbprog {{{ */
 
-/* -------------------------------------------------------------------------- */
 Usbprog::Usbprog(int argc, char *argv[])
     : m_coreApp(argc, argv)
     , m_firmwarepool(NULL)
@@ -91,7 +86,6 @@ Usbprog::Usbprog(int argc, char *argv[])
     , m_argv(argv)
 {}
 
-/* -------------------------------------------------------------------------- */
 Usbprog::~Usbprog()
 {
     delete m_firmwarepool;
@@ -99,7 +93,6 @@ Usbprog::~Usbprog()
     delete m_devicemanager;
 }
 
-/* -------------------------------------------------------------------------- */
 void Usbprog::initConfig()
 {
     CliConfiguration &conf = CliConfiguration::config();
@@ -114,7 +107,6 @@ void Usbprog::initConfig()
     conf.setIndexUrl(DEFAULT_INDEX_URL);
 }
 
-/* -------------------------------------------------------------------------- */
 void Usbprog::parseCommandLine()
 {
     CliConfiguration &conf = CliConfiguration::config();
@@ -165,7 +157,6 @@ void Usbprog::parseCommandLine()
         m_progressNotifier = new HashNotifier(DEFAULT_TERMINAL_WIDTH);
 }
 
-/* -------------------------------------------------------------------------- */
 void Usbprog::initFirmwarePool()
 {
     CliConfiguration &conf = CliConfiguration::config();
@@ -183,14 +174,12 @@ void Usbprog::initFirmwarePool()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void Usbprog::initDeviceManager()
 {
     bool debug = CliConfiguration::config().getDebug();
     m_devicemanager = new core::DeviceManager(debug);
 }
 
-/* -------------------------------------------------------------------------- */
 void Usbprog::exec()
 {
     Shell sh("(usbprog) ");

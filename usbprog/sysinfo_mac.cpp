@@ -22,13 +22,11 @@ namespace usbprog {
 
 /* Sysinfo {{{ */
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osName()
 {
     return "Mac OS";
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osVersion()
 {
     switch (QSysInfo::MacintoshVersion) {

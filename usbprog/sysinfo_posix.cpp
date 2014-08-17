@@ -22,7 +22,6 @@ namespace usbprog {
 
 /* Sysinfo {{{ */
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osName()
 {
     struct utsname utsname;
@@ -33,7 +32,6 @@ std::string Sysinfo::osName()
         return std::string(utsname.sysname);
 }
 
-/* -------------------------------------------------------------------------- */
 std::string Sysinfo::osVersion()
 {
     struct utsname utsname;

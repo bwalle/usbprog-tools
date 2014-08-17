@@ -27,7 +27,6 @@ namespace gui {
 
 /* PinDialog {{{ */
 
-/* -------------------------------------------------------------------------- */
 PinDialog::PinDialog(Firmware *fw, QWidget *parent)
     : QDialog(parent)
     , m_firmware(fw)
@@ -36,7 +35,6 @@ PinDialog::PinDialog(Firmware *fw, QWidget *parent)
     layout()->setSizeConstraint( QLayout::SetFixedSize );
 }
 
-/* -------------------------------------------------------------------------- */
 void PinDialog::setupUI()
 {
     QString labels[] = {

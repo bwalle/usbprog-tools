@@ -24,24 +24,20 @@ namespace gui {
 
 /* GuiConfiguration {{{ */
 
-/* -------------------------------------------------------------------------- */
 GuiConfiguration::GuiConfiguration()
 {
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 }
 
-/* -------------------------------------------------------------------------- */
 GuiConfiguration::~GuiConfiguration()
 {}
 
-/* -------------------------------------------------------------------------- */
 GuiConfiguration &GuiConfiguration::config()
 {
     static GuiConfiguration instance;
     return instance;
 }
 
-/* -------------------------------------------------------------------------- */
 void GuiConfiguration::dumpConfig(std::ostream &stream)
 {
     Configuration::dumpConfig(stream);

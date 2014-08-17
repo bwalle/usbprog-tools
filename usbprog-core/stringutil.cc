@@ -36,12 +36,10 @@ enum ShellStringTokenizerState {
     STATE_SPACE
 };
 
-/* -------------------------------------------------------------------------- */
 ShellStringTokenizer::ShellStringTokenizer(const std::string &str)
     : m_string(str), m_pos(0)
 {}
 
-/* -------------------------------------------------------------------------- */
 bool ShellStringTokenizer::hasMoreTokens() const
 {
     return m_pos < m_string.size();
@@ -52,7 +50,6 @@ bool ShellStringTokenizer::hasMoreTokens() const
 #define isbackslash(c) \
     ((c) == '\\')
 
-/* -------------------------------------------------------------------------- */
 std::string ShellStringTokenizer::nextToken()
 {
     ShellStringTokenizerState state = STATE_SPACE;
@@ -111,7 +108,6 @@ end:
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 StringVector ShellStringTokenizer::tokenize()
 {
     StringVector ret;
@@ -124,7 +120,6 @@ StringVector ShellStringTokenizer::tokenize()
 /* }}} */
 /* global functions {{{ */
 
-/* -------------------------------------------------------------------------- */
 std::string wordwrap(const std::string &text, int margins)
 {
     std::string ret, s;
@@ -149,7 +144,6 @@ std::string wordwrap(const std::string &text, int margins)
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 std::string strip(std::string a)
 {
     if (a.length() == 0)
@@ -173,7 +167,6 @@ std::string strip(std::string a)
     return a;
 }
 
-/* -------------------------------------------------------------------------- */
 unsigned long parse_long(const char *string)
 {
     std::stringstream ss;
@@ -187,7 +180,6 @@ unsigned long parse_long(const char *string)
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 char **stringvector_to_array(const StringVector &vec)
 {
     if (vec.size() == 0)
@@ -207,13 +199,11 @@ char **stringvector_to_array(const StringVector &vec)
     return ret;
 }
 
-/* -------------------------------------------------------------------------- */
 bool str_starts_with(const std::string &string, const std::string &start)
 {
     return start.size() == 0 || string.find(start, 0) == 0;
 }
 
-/* -------------------------------------------------------------------------- */
 StringVector empty_element_sv()
 {
     StringVector sv;

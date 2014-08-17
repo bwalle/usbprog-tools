@@ -31,11 +31,9 @@ namespace gui {
 
 /* UsbprogApplication {{{ */
 
-// -----------------------------------------------------------------------------
 const QString UsbprogApplication::NAME = "USBprog";
 const QString UsbprogApplication::USBPROG_WEBSITE = "http://www.usbprog.org";
 
-// -----------------------------------------------------------------------------
 UsbprogApplication::UsbprogApplication(int &argc, char **argv)
     : QApplication(argc, argv)
     , m_mainWindow(NULL)
@@ -44,7 +42,6 @@ UsbprogApplication::UsbprogApplication(int &argc, char **argv)
     initConfig();
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogApplication::initConfig()
 {
     GuiConfiguration &conf = GuiConfiguration::config();
@@ -57,7 +54,6 @@ void UsbprogApplication::initConfig()
     conf.setIndexUrl(DEFAULT_INDEX_URL);
 }
 
-// -----------------------------------------------------------------------------
 bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
 {
     GuiConfiguration &conf = GuiConfiguration::config();
@@ -101,14 +97,12 @@ bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
     return true;
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogApplication::createAndSetMainWidget()
 {
     m_mainWindow = new UsbprogMainWindow(*this);
     m_mainWindow->show();
 }
 
-// -----------------------------------------------------------------------------
 void UsbprogApplication::setDebugLoggingEnabled(bool enabled, const char *filename)
 {
     core::Debug *debug = core::Debug::debug();

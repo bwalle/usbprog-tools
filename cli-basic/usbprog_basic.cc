@@ -27,17 +27,14 @@ namespace cli_basic {
 
 /* UsbprogBasic {{{ */
 
-/* -------------------------------------------------------------------------- */
 UsbprogBasic::UsbprogBasic(int argc, char *argv[])
     : m_argc(argc)
     , m_argv(argv)
 {}
 
-/* -------------------------------------------------------------------------- */
 UsbprogBasic::~UsbprogBasic()
 {}
 
-/* -------------------------------------------------------------------------- */
 Action UsbprogBasic::parseCommandLine(int &deviceNumber, std::string &fw) const
 {
     // std::string is easier to use
@@ -77,7 +74,6 @@ Action UsbprogBasic::parseCommandLine(int &deviceNumber, std::string &fw) const
     return ACTION_ERROR;
 }
 
-/* -------------------------------------------------------------------------- */
 int UsbprogBasic::exec()
 {
     int deviceNumber;
@@ -105,7 +101,6 @@ int UsbprogBasic::exec()
     }
 }
 
-/* -------------------------------------------------------------------------- */
 void UsbprogBasic::printHelp() const
 {
     std::cout << "Usage: usbprog-basic [-h] <command> [args...]\n"
@@ -123,7 +118,6 @@ void UsbprogBasic::printHelp() const
               << " (3) usbprog-basic upload blinkdemo.bin 1" << std::endl;
 }
 
-/* -------------------------------------------------------------------------- */
 ErrorCode UsbprogBasic::listDevices() const
 {
     try {
@@ -138,7 +132,6 @@ ErrorCode UsbprogBasic::listDevices() const
     return RC_SUCCESS;
 }
 
-/* -------------------------------------------------------------------------- */
 ErrorCode UsbprogBasic::uploadFirmware(int deviceNumber, const std::string &firmwareFile) const
 {
     core::DeviceManager deviceManager;
