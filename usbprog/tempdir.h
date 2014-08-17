@@ -108,6 +108,14 @@ public:
      */
     bool remove();
 
+public:
+    /**
+     * @brief Delete a directory along with all of its contents
+     *
+     * @param[in] dirName the directory to delete
+     */
+    static bool removeRecursively(const QString &dirName);
+
 private:
     void create(const QString &templateName);
     static QString defaultTemplateName();

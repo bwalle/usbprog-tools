@@ -128,7 +128,28 @@ bool Tempdir::remove()
     Q_ASSERT(!path().isEmpty());
     Q_ASSERT(path() != QLatin1String("."));
 
-    return QDir(path()).removeRecursively();
+    return removeRecursively(m_path);
+}
+
+bool Tempdir::removeRecursively(const QString &dirName)
+{
+    bool result = true;
+    QDir dir(dirName);
+
+    if (dir.exists(dirName)) {
+       Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+           if (info.isDir())
+               result = removeRecursively(info.absoluteFilePath());
+           else
+               result = QFile::remove(info.absoluteFilePath());
+
+           if (!result)
+               return result;
+       }
+       result = dir.rmdir(dirName);
+   }
+
+   return result;
 }
 
 void Tempdir::create(const QString &templateName)
