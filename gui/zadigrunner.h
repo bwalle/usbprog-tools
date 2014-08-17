@@ -29,7 +29,6 @@
 #define ZADIGRUNNER_H
 
 #include <QObject>
-#include <QTemporaryDir>
 #include <QNetworkReply>
 
 #include <usbprog/tempdir.h>
