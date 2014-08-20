@@ -57,27 +57,6 @@ void ZadigRunner::startDownload()
     connect(reply, SIGNAL(downloadProgress(qint64, qint64)),
             SLOT(downloadProgressSlot(qint64,qint64)));
     connect(manager, SIGNAL(finished(QNetworkReply*)), SLOT(downloadFinishedSlot(QNetworkReply*)));
-
-#if 0
-    connect(reply, SIGNAL())
-
-    USBPROG_DEBUG_DBG("Performing download");
-    while (!m_finished) {
-        QByteArray readData = reply->readAll();
-        m_output.write(readData.constData(), readData.size());
-        qApp->processEvents(QEventLoop::WaitForMoreEvents, 500);
-    }
-
-    QByteArray readData = reply->readAll();
-    m_output.write(readData.constData(), readData.size());
-
-    if (m_notifier)
-        m_notifier->finished();
-
-    if (reply->error() != QNetworkReply::NoError)
-        throw DownloadError(static_cast<const char *>(reply->errorString().toUtf8()));
-#endif
-
 }
 
 bool ZadigRunner::startTool()
