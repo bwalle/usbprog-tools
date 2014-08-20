@@ -112,7 +112,8 @@ signals:
 
 private:
     std::string downloadUrl() const;
-    QString zadigFileName() const;
+    QString filenameInTemp(const QString &name) const;
+    bool generateConfigurationFiles();
 
 private slots:
     void downloadProgressSlot(qint64 received, qint64 total);
