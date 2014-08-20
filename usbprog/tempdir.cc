@@ -59,17 +59,8 @@ static char *mkdtemp(char *templateName)
 
         QString templateNameStr = QFile::decodeName(templateName);
 
-        QFileSystemEntry fileSystemEntry(templateNameStr);
-        if (QFileSystemEngine::createDirectory(fileSystemEntry, false)) {
-            QSystemError error;
-            QFileSystemEngine::setPermissions(fileSystemEntry,
-                                              QFile::ReadOwner |
-                                              QFile::WriteOwner |
-                                              QFile::ExeOwner, error);
-            if (error.error() != 0)
-                continue;
+        if (QDir(templateNameStr).mkpath("."))
             return templateName;
-        }
     }
     return 0;
 }
