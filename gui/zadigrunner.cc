@@ -19,9 +19,15 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QDir>
+#include <QDebug>
 
 #include <usbprog/downloader.h>
 #include <usbprog-core/debug.h>
+
+#ifdef Q_OS_WIN
+#  include <windows.h>
+#  include <shellapi.h>
+#endif
 
 #include "zadigrunner.h"
 
@@ -76,8 +82,24 @@ void ZadigRunner::startDownload()
 
 bool ZadigRunner::startTool()
 {
+    QString exeName = zadigFileName();
+
+#ifdef Q_OS_WIN
+    int result = (int)::ShellExecuteA(0, "open", exeName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
+    if (result == SE_ERR_ACCESSDENIED) {
+        // Requesting elevation
+        result = (int)::ShellExecuteA(0, "runas", exeName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
+    }
+    if (result <= 32) {
+        USBPROG_DEBUG_DBG("Windows error code for running zadig.exe: %d", result);
+        return false;
+    }
 
     return true;
+#else
+    USBPROG_DEBUG_INFO("Unable to start zadig.exe on non-Windows operating systems.");
+    return false;
+#endif
 }
 
 std::string ZadigRunner::downloadUrl() const
@@ -122,6 +144,7 @@ void ZadigRunner::downloadFinishedSlot(QNetworkReply *reply)
     if (outputFile.write(data) != data.size())
         emit downloadError(tr("Unable to write %1 bytes to %2").arg(data.size()).arg(filename));
 
+    qDebug() << "Zadig downloaded to " << filename;
     emit downloadFinished();
 }
 

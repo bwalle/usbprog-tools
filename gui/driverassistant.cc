@@ -79,12 +79,16 @@ DownloadPage::DownloadPage(ZadigRunner *zadigRunner, QWidget *parent) :
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(label);
-    QWidget *filler = new QWidget;
+    QWidget *filler1 = new QWidget;
+    QWidget *filler2 = new QWidget;
+
+    layout->addWidget(filler1);
     layout->addLayout(buttonLayout);
-    layout->addWidget(filler);
+    layout->addWidget(filler2);
     layout->addWidget(m_downloadProgress);
     layout->addWidget(m_infoLabel);
-    layout->setStretchFactor(filler, 1);
+    layout->setStretchFactor(filler1, 1);
+    layout->setStretchFactor(filler2, 8);
 
     setLayout(layout);
 
@@ -124,8 +128,8 @@ void DownloadPage::downloadFinished()
 
 RunPage::RunPage(ZadigRunner *zadigRunner, QWidget *parent) :
     QWizardPage(parent),
-    m_runComplete(false),
-    m_zadigRunner(zadigRunner)
+    m_zadigRunner(zadigRunner),
+    m_toolStarted(false)
 {
     setTitle(tr("Driver Installation"));
 
@@ -162,11 +166,13 @@ RunPage::RunPage(ZadigRunner *zadigRunner, QWidget *parent) :
 
 bool RunPage::isComplete() const
 {
-    return m_runComplete;
+    return m_toolStarted;
 }
 
 void RunPage::startTool()
 {
+    m_toolStarted = m_zadigRunner->startTool();
+    emit completeChanged();
 }
 
 //

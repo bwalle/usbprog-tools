@@ -110,13 +110,6 @@ signals:
      */
     void downloadFinished();
 
-    /**
-     * @brief Indicates that zadig was terminated
-     *
-     * @param[in] success @c true if the program terminated successfully, @c false otherwise.
-     */
-    void toolTerminated(bool success);
-
 private:
     std::string downloadUrl() const;
     QString zadigFileName() const;

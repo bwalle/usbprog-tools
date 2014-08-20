@@ -82,10 +82,10 @@ private slots:
     void startTool();
 
 private:
-    bool m_runComplete;
     QLabel *m_infoLabel;
     ZadigRunner *m_zadigRunner;
     QPushButton *m_startButton;
+    bool m_toolStarted;
 };
 
 
