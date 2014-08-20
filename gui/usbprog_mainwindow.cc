@@ -30,6 +30,8 @@
 #include <QTextStream>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QFileSystemModel>
+#include <QCompleter>
 
 #include <usbprog-core/debug.h>
 #include <usbprog-core/util.h>
@@ -312,6 +314,15 @@ void UsbprogMainWindow::initWidgets()
     // file chooser and line edit
     m_widgets.fileEdit = new QLineEdit(this);
     m_widgets.fileChooseButton = new QPushButton(tr("Choose ..."), this);
+
+    // set the completer for the file line edit
+    QFileSystemModel *fsModel = new QFileSystemModel(this);
+    fsModel->setRootPath(QDir::rootPath());
+    fsModel->setNameFilters(QStringList("*.bin"));
+    QCompleter *completer = new QCompleter(this);
+    completer->setModel(fsModel);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    m_widgets.fileEdit->setCompleter(completer);
 
     // progress bar
     m_widgets.mainProgress = new QProgressBar(this);
