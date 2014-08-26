@@ -181,6 +181,9 @@ private slots:
     void installDriver();
 
 private:
+    QString yesNoGraphic(bool yes) const;
+
+private:
     core::DeviceManager *m_deviceManager;
     Firmwarepool *m_firmwarepool;
     ProgressBarProgressNotifier *m_progressNotifier;

@@ -481,9 +481,7 @@ void UsbprogMainWindow::firmwareSelected(QListWidgetItem *newItem)
 
     // cached?
     htmlStream << "<tr><td align=\"right\"><b>Cached:</b></td> <td>&nbsp;</td> <td>"
-               << QString(m_firmwarepool->isFirmwareOnDisk(fw->getName())
-                          ? QChar(0x2713)
-                          : QChar(0x2717))
+               << yesNoGraphic(m_firmwarepool->isFirmwareOnDisk(fw->getName()))
                << "</td> </tr>\n";
 
     htmlStream << "</table>";
@@ -748,6 +746,20 @@ void UsbprogMainWindow::installDriver()
     DriverAssistant wizard(this);
     wizard.exec();
 #endif
+}
+
+QString UsbprogMainWindow::yesNoGraphic(bool yes) const
+{
+#ifdef Q_OS_WIN
+    const bool runningOnXp = QSysInfo::windowsVersion() == QSysInfo::WV_XP;
+#else
+    const bool runningOnXp = false;
+#endif
+
+    if (runningOnXp)
+        return yes ? tr("Yes") : tr("No");
+    else
+        return QString(yes ? QChar(0x2713) : QChar(0x2717));
 }
 
 bool UsbprogMainWindow::downloadFirmware(const std::string &name, bool failSilent)
