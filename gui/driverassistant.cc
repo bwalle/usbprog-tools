@@ -35,15 +35,15 @@ IntroPage::IntroPage(QWidget *parent) :
     setTitle(tr("Introduction"));
 
     QLabel *label = new QLabel(
-        tr("<html>This wizard installs the device driver needed on Windows systems to access USBprog.<p>"
+        tr("<html>This wizard installs the device driver needed on Windows systems to access the "
+           "USBprog hardware.<p>"
            "We use <a href=\"http://libusb-win32.sf.net\">libusb-win32</a> as device driver and "
-           "<a href=\"http://zadig.akeo.ie\">Zadig</a> as driver installer. This installer solves "
-           "the problem with digital signatures also on 64 bit versions of Windows 7 and Windows 8 "
-           "which prevent installation of unsigned drivers. <p>"
-           "So the first step is to download the program and to generate the configuration files for it, "
-           "the second step is to run Zadig.<p>"
-           "You can repeat that steps at any time by running <i>Device</i> &rarr; <i>Install driver</i>."
-           "</html>")
+           "<a href=\"http://zadig.akeo.ie\">Zadig</a> as driver installer. That installer solves "
+           "the problem that 64 bit versions of Windows enforce digitally signed drivers. <p>"
+           "The first step of this wizard is to download the program and to generate the configuration files "
+           "for it, the second step is to run Zadig.<p>"
+           "You can repeat that steps at any time by running <i><u>D</u>evice</i> &rarr; "
+           "<i><u>I</u>nstall driver</i>.</html>")
         );
     label->setWordWrap(true);
     label->setOpenExternalLinks(true);
@@ -134,13 +134,20 @@ RunPage::RunPage(ZadigRunner *zadigRunner, QWidget *parent) :
     setTitle(tr("Driver Installation"));
 
     QLabel *label = new QLabel(
-        tr("As mentioned on the first page, the actual driver installation is performed by <i>Zadig</i>, "
+        tr("As mentioned in the introduction, the actual driver installation is performed by <i>Zadig</i>, "
            "an external tool. To install the driver, perform following steps:<p>"
            "<ol>"
            " <li>If not already done, plug USBprog to your computer. Wait until Windows "
-           "     finishes is finished with automatic driver installation, if it tries to do so.</li>"
-           " <li>Click on the <i>Start Zadig</i> button below. A new window pops up.</li>"
-           " <li>Now open .... ?</li>"
+           "   is finished with automatic driver installation, if it tries to do so.</li>"
+           " <li>Click on the <i>Start Zadig</i> button below. Probably Windows wants you to confirm "
+           "   that the application needs to make changes to this computer - the so-called \"User Account "
+           "   Control\" (UAC) dialog. Allow this to install the driver.</li>"
+           " <li>In Zadig, open the <i><u>D</u>evice</i> menu and choose <i>Load Preset Device</i>.</li>"
+           " <li>A file dialog pops up. Choose <tt>usbprog.cfg</tt> and click on <i>Open</i>.</li>"
+           ""
+           " <li>Now perform the driver installation by clicking on <i>Install driver</i>. This takes some time. "
+           " If the driver installation finishes successfully, then Zadig quits automatically. You can now finish "
+           " that assistant by clicking on <i>Finish</i>.</li>"
            "</ol>")
     );
     label->setWordWrap(true);
