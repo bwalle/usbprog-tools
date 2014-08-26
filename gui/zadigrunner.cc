@@ -95,7 +95,7 @@ bool ZadigRunner::startTool()
 std::string ZadigRunner::downloadUrl() const
 {
 #ifdef Q_OS_WIN
-    if (QSysInfo::windowsVersion() < QSysInfo::WV_XP)
+    if (QSysInfo::windowsVersion() <= QSysInfo::WV_XP)
         return ZADIG_URL_XP;
     else
         return ZADIG_URL_VISTA;
