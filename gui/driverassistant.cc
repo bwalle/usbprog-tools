@@ -183,6 +183,8 @@ DriverAssistant::DriverAssistant(QWidget *parent) :
     QWizard(parent),
     m_zadigRunner(new ZadigRunner(this))
 {
+    setWindowTitle(tr("Driver installation assistant"));
+
     // show the cancel button even on Mac OS
     // this is just for testing since in the real world, the driver wizard is only
     // used on Windows
