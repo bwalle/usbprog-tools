@@ -404,7 +404,14 @@ void Firmwarepool::downloadIndex(const std::string &url)
     Downloader dl(fout);
     dl.setUrl(url);
     dl.setProgress(m_progressNotifier);
-    dl.download();
+    try {
+        dl.download();
+    } catch (const DownloadError &err) {
+        fout.close();
+        remove(newPath.c_str());
+        throw;
+    }
+
     fout.close();
 
     // after the download is successful, rename new file to old file
