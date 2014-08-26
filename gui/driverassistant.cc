@@ -190,6 +190,9 @@ DriverAssistant::DriverAssistant(QWidget *parent) :
     // used on Windows
     WizardOptions currentOptions = options();
     currentOptions &= ~NoCancelButton;
+#if QT_VERSION >= 0x050000
+     currentOptions |= NoCancelButtonOnLastPage;
+#endif
     setOptions(currentOptions);
 
     addPage(new IntroPage);
