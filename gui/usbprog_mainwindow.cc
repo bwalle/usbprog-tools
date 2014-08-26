@@ -381,14 +381,21 @@ void UsbprogMainWindow::initFirmwares()
 
     // init the firmware pool and download firmwares first
     try {
-        m_progressNotifier->setStatusMessage(tr("Downloading of firmware index finished."));
-        m_firmwarepool->setIndexUpdatetime(AUTO_NOT_UPDATE_TIME);
-        if (!conf.isOffline())
-            m_firmwarepool->downloadIndex(conf.getIndexUrl());
-        m_firmwarepool->readIndex();
+        try {
+            m_firmwarepool->setIndexUpdatetime(AUTO_NOT_UPDATE_TIME);
+            if (!conf.isOffline())
+                m_firmwarepool->downloadIndex(conf.getIndexUrl());
+            m_firmwarepool->readIndex();
+            m_progressNotifier->setStatusMessage(tr("Downloading of firmware index finished."));
+        } catch (const DownloadError &de) {
+            statusBar()->showMessage(tr("Failed to download firmware index. Starting in offline mode!"),
+                                     DEFAULT_MESSAGE_TIMEOUT);
+            conf.setOffline(true);
+            m_firmwarepool->readIndex();
+        }
     } catch (const std::runtime_error &re) {
         QMessageBox::critical(this, UsbprogApplication::NAME,
-                              tr("Error while downloading firmware index:\n\n%1").arg(re.what()));
+                              tr("Error while reading firmware index:\n\n%1").arg(re.what()));
         return;
     }
 
@@ -410,7 +417,8 @@ void UsbprogMainWindow::refreshDevices()
 
 
     if (m_deviceManager->getNumberUpdateDevices() == 0) {
-        statusBar()->showMessage(tr("No devices found."), DEFAULT_MESSAGE_TIMEOUT);
+        if (statusBar()->currentMessage().isEmpty())
+            statusBar()->showMessage(tr("No devices found."), DEFAULT_MESSAGE_TIMEOUT);
         return;
     }
 
