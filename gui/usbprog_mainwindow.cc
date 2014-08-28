@@ -297,7 +297,7 @@ void UsbprogMainWindow::initWidgets()
 
     // firmware source button
     m_widgets.firmwareSourceLabel = new QLabel(tr("Firmware source:"), this);
-    m_widgets.firmwareSourcePoolRadio = new QRadioButton(tr("Online &pool"), this);
+    m_widgets.firmwareSourcePoolRadio = new QRadioButton(tr("&Online pool"), this);
     m_widgets.firmwareSourcePoolRadio->setChecked(true);
     m_widgets.firmwareSourceFileRadio = new QRadioButton(tr("&File"), this);
 
