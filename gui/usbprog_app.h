@@ -103,6 +103,9 @@ protected:
     void initConfig();
 
 private:
+    void installQtMessageHandlers();
+
+private:
     UsbprogMainWindow *m_mainWindow;
     FILE *m_logfile;
 };

@@ -22,12 +22,63 @@
 
 #include <libbw/optionparser.h>
 
+#include <QFileInfo>
+
 #include "usbprog_app.h"
 #include "guiconfiguration.h"
 #include "config.h"
 
 namespace usbprog {
 namespace gui {
+
+namespace {
+
+#if QT_VERSION >= 0x050000
+    inline QString qtBasename(const QString &file)
+    {
+        return QFileInfo(file).fileName();
+    }
+
+    void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+    {
+        QByteArray localMsg = msg.toLocal8Bit();
+        switch (type) {
+        case QtDebugMsg:
+            USBPROG_DEBUG_DBG("[%s:%u] %s", qPrintable(qtBasename(context.file)), context.line, localMsg.constData());
+            break;
+        case QtWarningMsg:
+            USBPROG_DEBUG_INFO("[%s:%u] %s", qPrintable(qtBasename(context.file)), context.line, localMsg.constData());
+            break;
+        case QtCriticalMsg:
+            USBPROG_DEBUG_INFO("[%s:%u] CRITICAL %s", qPrintable(qtBasename(context.file)), context.line, localMsg.constData());
+            break;
+        case QtFatalMsg:
+            USBPROG_DEBUG_INFO("[%s:%u] FATAL %s)", qPrintable(qtBasename(context.file)), context.line, localMsg.constData());
+            abort();
+        }
+    }
+#else
+    void myMessageOutput(QtMsgType type, const char *msg)
+    {
+        switch (type) {
+        case QtDebugMsg:
+            USBPROG_DEBUG_DBG("%s", msg);
+            break;
+        case QtWarningMsg:
+            USBPROG_DEBUG_INFO("%s", msg);
+            break;
+        case QtCriticalMsg:
+            USBPROG_DEBUG_INFO("CRITICAL: %s", msg);
+            break;
+        case QtFatalMsg:
+            USBPROG_DEBUG_INFO(stderr, "FATAL: %s", msg);
+            abort();
+        }
+    }
+#endif
+
+
+} // anonymous namespace
 
 /* UsbprogApplication {{{ */
 
@@ -39,6 +90,7 @@ UsbprogApplication::UsbprogApplication(int &argc, char **argv)
     , m_mainWindow(NULL)
     , m_logfile(NULL)
 {
+    installQtMessageHandlers();
     initConfig();
 }
 
@@ -52,6 +104,15 @@ void UsbprogApplication::initConfig()
 
     conf.setDataDir(configDir);
     conf.setIndexUrl(DEFAULT_INDEX_URL);
+}
+
+void UsbprogApplication::installQtMessageHandlers()
+{
+#if QT_VERSION >= 0x050000
+    qInstallMessageHandler(myMessageOutput);
+#else
+    qInstallMsgHandler(myMessageOutput);
+#endif
 }
 
 bool UsbprogApplication::parseCommandLine(int argc, char **argv, int &exitCode)
