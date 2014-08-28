@@ -19,7 +19,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QDir>
-#include <QDebug>
 #include <QTextStream>
 
 #include <usbprog/downloader.h>
@@ -68,8 +67,10 @@ bool ZadigRunner::startTool()
     QString workingDir = QDir::currentPath();
 
     // change working directory
-    if (!QDir::setCurrent(m_tempdir.path()))
-        qWarning() << "Unable to set working directory to " << m_tempdir.path();
+    if (!QDir::setCurrent(m_tempdir.path())) {
+        USBPROG_DEBUG_DBG("Unable to set working directory to %s", qPrintable(m_tempdir.path()));
+        return false;
+    }
 
     int result = (int)::ShellExecuteA(0, "open", exeName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
     if (result == SE_ERR_ACCESSDENIED) {
@@ -77,8 +78,10 @@ bool ZadigRunner::startTool()
         result = (int)::ShellExecuteA(0, "runas", exeName.toUtf8().constData(), 0, 0, SW_SHOWNORMAL);
     }
 
-    if (!QDir::setCurrent(workingDir))
-        qWarning() << "Unable to restore working directory to " << workingDir;
+    if (!QDir::setCurrent(workingDir)) {
+        USBPROG_DEBUG_DBG("Unable to restore working directory to %s", qPrintable(workingDir));
+        return false;
+    }
 
     if (result <= 32) {
         USBPROG_DEBUG_DBG("Windows error code for running zadig.exe: %d", result);
@@ -187,7 +190,7 @@ void ZadigRunner::downloadFinishedSlot(QNetworkReply *reply)
         return;
     }
 
-    qDebug() << "Zadig downloaded to " << zadigExe;
+    USBPROG_DEBUG_INFO("Zadig downloaded to %s", qPrintable(zadigExe));
 
     if (!generateConfigurationFiles()) {
         emit downloadError(tr("Unable to generate Zadig configuration files"));

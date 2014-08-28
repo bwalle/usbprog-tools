@@ -18,7 +18,6 @@
 #include <QDialogButtonBox>
 #include <QGridLayout>
 #include <QLabel>
-#include <QDebug>
 
 #include "pindialog.h"
 
