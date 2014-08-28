@@ -280,7 +280,6 @@ void DeviceManager::discoverUpdateDevices(const std::vector<UpdateDevice> &updat
 {
     try {
         usb::UsbManager &usbManager = usb::UsbManager::instance();
-        USBPROG_DEBUG_TRACE("usb::UsbManager::detectDevices()");
         usbManager.detectDevices();
 
         DeviceVector oldDevices = m_updateDevices;
