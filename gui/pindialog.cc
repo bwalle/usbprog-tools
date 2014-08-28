@@ -91,6 +91,7 @@ void PinDialog::setupUI()
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
 
     setLayout(mainLayout);
+    setWindowTitle(tr("Pin assignment for %1").arg( QString::fromStdString(m_firmware->getName())) );
 }
 
 /* }}} */
