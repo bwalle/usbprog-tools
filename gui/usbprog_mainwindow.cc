@@ -638,7 +638,7 @@ void UsbprogMainWindow::showAbout()
     USBPROG_DEBUG_DBG("Open about dialog");
 
     QMessageBox::information(this, UsbprogApplication::NAME,
-                             tr("USBprog %1\n\n(c) 2007-2011 Bernhard Walle <bernhard@bwalle.de>")
+                             tr("USBprog %1\n\n(c) 2007-2014 Bernhard Walle <bernhard@bwalle.de>")
                              .arg(USBPROG_VERSION_STRING));
 }
 
